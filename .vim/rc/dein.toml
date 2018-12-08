@@ -1,0 +1,116 @@
+# dein.vim config file
+
+[[plugins]]
+repo = 'vim-airline/vim-airline'
+depends = ['vim-airline-themes']
+hook_add = """
+let g:airline#extensions#tabline#enabled = 1
+" let g:airline_theme = 'gruvbox'
+" let g:airline_theme = 'dracula'
+let g:airline_theme = 'sol'
+nmap <C-p> <Plug>AirlineSelectPrevTab
+nmap <C-n> <Plug>AirlineSelectNextTab
+"""
+
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes'
+
+[[plugins]]
+repo = 'yuttie/comfortable-motion.vim'
+hook_add = """
+let g:comfortable_motion_scroll_down_key = "j"
+let g:comfortable_motion_scroll_up_key = "k"
+let g:comfortable_motion_friction =  200.0
+let g:comfortable_motion_air_drag = 1.8
+let g:comfortable_motion_no_default_key_mappings = 1
+let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
+nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
+nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
+nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
+"""
+
+[[plugins]]
+repo = 'morhetz/gruvbox'
+
+[[plugins]]
+repo = 'kana/vim-submode'
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = """
+nnoremap <Space>z :NERDTreeToggle<CR>
+" let g:NERDTreeDirArrows = 0
+" let g:NERDTreeDirArrowExpandable  = '>'
+" let g:NERDTreeDirArrowCollapsible = 'V'
+if !has('gui_running')
+  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+endif
+"""
+
+[[plugins]]
+repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+[[plugins]]
+repo = 'scrooloose/nerdcommenter'
+hook_add = """
+let g:NERDSpaceDelims = 1  " コメント時に挿入するスペース
+let g:NERDCommentEmptyLines = 1 " 空行のコメントを許す
+"""
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'kana/vim-operator-user'
+
+[[plugins]]
+repo = 'rhysd/vim-operator-surround'
+depends = ['kana/vim-operator-user']
+hook_add = """
+map sa <Plug>(operator-surround-append)
+map sd <Plug>(operator-surround-delete)a
+map sr <Plug>(operator-surround-replace)a
+let g:operator#surround#blocks = {}
+let g:operator#surround#blocks['-'] = [
+    \   { 'block' : ['（', '）'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['P'] },
+    \   { 'block' : ['「', '」'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
+    \   { 'block' : ['『', '』'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['D'] },
+    \ ]
+"""
+
+# [[plugins]]
+# repo = 'LeafCage/foldCC'
+# hook_add = """
+# " set foldtext=FoldCCtext()
+# " set foldcolumn=3
+# " set fillchars=vert:\|
+# " let g:foldCCtext_tail = 'printf("   %s[%4d lines  Lv%-2d]%s",
+# " \ v:folddashes, v:foldend-v:foldstart+1, v:foldlevel, v:folddashes)'
+# "
+# " hi Folded gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey30 guifg=Grey80
+# " hi FoldColumn gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
+# """
+
+[[plugins]]
+repo = 'tweekmonster/braceless.vim'
+hook_add = """
+autocmd FileType python,yaml BracelessEnable +fold
+"""
+
+[[plugins]]
+repo = 'lervag/vimtex'
+
+[[plugins]]
+repo = 'Rykka/riv.vim'
+
+[[plugins]]
+repo = 'davidhalter/jedi-vim'
+
+[[plugins]]
+repo = 'jsfaint/gen_tags.vim'
+hook_add = """
+let g:gen_tags#ctags_auto_gen = 1
+let g:gen_tags#gtags_auto_gen = 1
+"""

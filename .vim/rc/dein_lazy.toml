@@ -1,0 +1,109 @@
+# only with specific commands
+
+[[plugins]]
+repo = 'wsdjeg/dein-ui.vim'
+on_cmd = ["DeinUpdate"]
+
+# only in insert mode
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+on_i = 1
+hook_post_source = """
+call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})
+call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': ['latex', 'tex']})
+call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': ['latex', 'tex']})
+call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': ['latex', 'tex']})
+call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex']})
+"""
+
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+on_i = 1
+hook_post_source = """
+imap <C-s> <Plug>(neosnippet_expand_or_jump)
+smap <C-s> <Plug>(neosnippet_expand_or_jump)
+xmap <C-s> <Plug>(neosnippet_expand_target)
+
+let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
+"""
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+on_i = 1
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+on_i = 1
+hook_source = """
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_completion_start_length = 1
+"""
+
+[[plugins]]
+repo = 'zchee/deoplete-jedi'
+on_i = 1
+hook_source = """
+let g:deoplete#sources#jedi#server_timeout=100
+let g:deoplete#sources#jedi#statement_length=100
+"""
+
+# only in python
+
+[[plugins]]
+repo = 'w0rp/ale'
+on_ft = ['python']
+hook_source = """
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_sign_column_always = 1
+let g:ale_linters = {
+  \ 'python': ['flake8'],
+  \ 'tex': [],
+  \ 'plaintex': [],
+  \ }
+"""
+
+[[plugins]]
+repo = 'davidhalter/jedi-vim'
+on_ft = ['python']
+hook_source = """
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 0
+" 補完は deoplete-jedi に任せる
+let g:jedi#completions_enabled = 0
+autocmd FileType python setlocal completeopt-=preview
+"""
+
+[[plugins]]
+repo = 'Vimjas/vim-python-pep8-indent'
+on_ft = ['python']
+
+
+# only in LaTeX or TeX
+
+[[plugins]]
+repo = 'lervag/vimtex'
+on_ft = ['tex', 'latex']
+hook_source = """
+let g:vimtex_compiler_latexmk = {'callback' : 0}
+" let g:vimtex_imaps_list = []
+let g:tex_flavor = "latex"
+"""
+
+# only in ReST
+
+[[plugins]]
+repo = 'Rykka/riv.vim'
+on_ft = ['rst', 'restructuredtext']
+
+
+# only in dein.vim config file (this file or others)
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+depends = ['Shougo/context_filetype.vim']
+on_ft = ['conf']
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+on_ft = ['conf']

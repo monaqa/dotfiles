@@ -85,11 +85,12 @@ set history=10000
 
 nnoremap <Space>V :<C-u>tabedit $MYVIMRC<CR>
 nnoremap <Space>v :<C-u>source $MYVIMRC<CR>
+nnoremap <Space><C-V> :<C-u>tabedit ~/.vimrc<CR>
 nnoremap <C-h> :<C-u>help<Space>
 
 " 日本語を扱うために {{{2
 
-set matchpairs+=「:」,（:）,【:】
+set matchpairs+=「:」,（:）,【:】,『:』
 
 " 補完 {{{2
 
@@ -97,103 +98,93 @@ inoremap <C-q> <C-x><C-o>
 " Plugins {{{1
 """""""""""""""
 
-call plug#begin('~/.vim/plugged')
+" Required:
+set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
 
-" Themes
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'morhetz/gruvbox'
+" Required:
+if dein#load_state('$HOME/.cache/dein')
+  call dein#begin('$HOME/.cache/dein')
 
-" Scroll
-Plug 'yuttie/comfortable-motion.vim' 
-" Submode
-Plug 'kana/vim-submode'
+  " Let dein manage dein
+  " Required:
+  call dein#add('$HOME/.cache/dein/repos/github.com/Shougo/dein.vim')
 
-" folder tree
-Plug 'scrooloose/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+  " プラグインリストを収めた TOML ファイル
+  " 予め TOML ファイル（後述）を用意しておく
+  let g:rc_dir    = expand('~/.vim/rc')
+  let s:toml      = g:rc_dir . '/dein.toml'
+  let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
 
-" comment out
-Plug 'scrooloose/nerdcommenter'
+  " TOML を読み込み、キャッシュしておく
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
-" parens
-Plug 'tpope/vim-surround'
-Plug 'cohama/lexima.vim'
+  " Required:
+  call dein#end()
+  call dein#save_state()
+endif
 
-" snippets
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
+" Required:
+filetype plugin indent on
+syntax enable
 
-" folding
-Plug 'LeafCage/foldCC'
-Plug 'tweekmonster/braceless.vim'
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+ call dein#install()
+endif
 
-" syntax checker
-Plug 'w0rp/ale'
+"End dein Scripts-------------------------
 
-" Various languages in vim
-Plug 'lervag/vimtex'
-Plug 'Rykka/riv.vim'
-Plug 'davidhalter/jedi-vim'
-
-call plug#end()
+function! DeinUpdate()
+  call dein#update()
+endfunction
 
 " Plugin Settings {{{1
 """""""""""""""""""""""
 
 " vim-airline {{{2
-let g:airline#extensions#tabline#enabled = 1
-" let g:airline_theme = 'gruvbox'
-let g:airline_theme = 'dracula'
-nmap <C-p> <Plug>AirlineSelectPrevTab
-nmap <C-n> <Plug>AirlineSelectNextTab
-set noshowmode  " もう必要ない
+" let g:airline#extensions#tabline#enabled = 1
+" " let g:airline_theme = 'gruvbox'
+" let g:airline_theme = 'dracula'
+" nmap <C-p> <Plug>AirlineSelectPrevTab
+" nmap <C-n> <Plug>AirlineSelectNextTab
 
 " comfortable-motion {{{2
 
-let g:comfortable_motion_scroll_down_key = "j"
-let g:comfortable_motion_scroll_up_key = "k"
-let g:comfortable_motion_friction =  900.0
-let g:comfortable_motion_air_drag = 8.0
-let g:comfortable_motion_no_default_key_mappings = 1
-let g:comfortable_motion_impulse_multiplier = 3  " Feel free to increase/decrease this value.
-nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
-nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
-nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
-nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
+" let g:comfortable_motion_scroll_down_key = "j"
+" let g:comfortable_motion_scroll_up_key = "k"
+" let g:comfortable_motion_friction =  200.0
+" let g:comfortable_motion_air_drag = 1.8
+" let g:comfortable_motion_no_default_key_mappings = 1
+" let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
+" nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
+" nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+" nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
+" nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
 
-" new submode {{{2
-call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
-call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
-call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
-call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
-call submode#map('bufmove', 'n', '', '>', '<C-w>>')
-call submode#map('bufmove', 'n', '', '<', '<C-w><')
-call submode#map('bufmove', 'n', '', '+', '<C-w>+')
-call submode#map('bufmove', 'n', '', '-', '<C-w>-')
 
 " call submpde#enter_with('mgmsearchline', 'n', '', '<Space>f', '<Space>f')
 "
-command! MgmUpSameIndent call search("^". matchstr (getline (line (".")+ 1), '\(\s*\)') ."\\S", 'b')
-command! MgmDownSameIndent call search("^". matchstr (getline (line (".")), '\(\s*\)') ."\\S")
-
-call submode#enter_with('imove', 'n', '', '<Space>k', 'k:MgmUpSameIndent<CR>^')
-call submode#enter_with('imove', 'n', '', '<Space>j', ':MgmDownSameIndent<CR>^')
-call submode#map('imove', 'n', '', 'k', 'k:MgmUpSameIndent<CR>^')
-call submode#map('imove', 'n', '', 'j', ':MgmDownSameIndent<CR>^')
+" command! MgmUpSameIndent call search("^". matchstr (getline (line (".")+ 1), '\(\s*\)') ."\\S", 'b')
+" command! MgmDownSameIndent call search("^". matchstr (getline (line (".")), '\(\s*\)') ."\\S")
+" 
+" call submode#enter_with('imove', 'n', '', '<Space>k', 'k:MgmUpSameIndent<CR>^')
+" call submode#enter_with('imove', 'n', '', '<Space>j', ':MgmDownSameIndent<CR>^')
+" call submode#map('imove', 'n', '', 'k', 'k:MgmUpSameIndent<CR>^')
+" call submode#map('imove', 'n', '', 'j', ':MgmDownSameIndent<CR>^')
 
 " NERD tree {{{2
-nnoremap <Space>z :NERDTreeToggle<CR>
+" nnoremap <Space>z :NERDTreeToggle<CR>
 " let g:NERDTreeDirArrows = 0
 " let g:NERDTreeDirArrowExpandable  = '>'
 " let g:NERDTreeDirArrowCollapsible = 'V'
 "
 " NERD tree がデフォルトで表示されるようにする設定
-if !has('gui_running')
-  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-endif
-
+" if !has('gui_running')
+  " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+  " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" endif
+" 
 " 色付け
 " function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
   " exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
@@ -238,27 +229,22 @@ endif
 
 " NERD Commenter setting {{{2
 
-let g:NERDSpaceDelims = 1  " コメント時に挿入するスペース
-let g:NERDCommentEmptyLines = 1 " 空行のコメントを許す
+" let g:NERDSpaceDelims = 1  " コメント時に挿入するスペース
+" let g:NERDCommentEmptyLines = 1 " 空行のコメントを許す
 
 " parens (vim-surround, lexima) {{{2
-call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})
-call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': ['latex', 'tex']})
-call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': ['latex', 'tex']})
-call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': ['latex', 'tex']})
-call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex']})
 
 " }}}
 " neosnippets {{{2
 " Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-s> <Plug>(neosnippet_expand_or_jump)
-smap <C-s> <Plug>(neosnippet_expand_or_jump)
-xmap <C-s> <Plug>(neosnippet_expand_target)
-
-" Snippets
-
-let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
+" imap <C-s> <Plug>(neosnippet_expand_or_jump)
+" smap <C-s> <Plug>(neosnippet_expand_or_jump)
+" xmap <C-s> <Plug>(neosnippet_expand_target)
+" 
+" " Snippets
+" 
+" let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
 
 " foldCC "{{{2
 
@@ -272,34 +258,46 @@ let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
 " hi FoldColumn gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
 
 " braceless {{{2
-autocmd FileType python,yaml BracelessEnable +fold
+" autocmd FileType python,yaml BracelessEnable +fold
 
 
 " ale {{{2
 
 " let g:syntastic_python_checkers = ["flake8"]
-let g:ale_linters = {
-  \ 'python': ['flake8'],
-  \ 'tex': [],
-  \ 'plaintex': [],
-  \ }
+" let g:ale_linters = {
+  " \ 'python': ['flake8'],
+  " \ 'tex': [],
+  " \ 'plaintex': [],
+  " \ }
 
 " Vimtex {{{2
 
-let g:vimtex_compiler_latexmk = {'callback' : 0}
-" let g:vimtex_imaps_list = []
-let g:tex_flavor = "latex"
+" let g:vimtex_compiler_latexmk = {'callback' : 0}
+" " let g:vimtex_imaps_list = []
+" let g:tex_flavor = "latex"
 
 " Jedi-vim {{{2
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 0
-autocmd FileType python setlocal completeopt-=preview
+" let g:jedi#popup_on_dot = 0
+" let g:jedi#popup_select_first = 0
+" autocmd FileType python setlocal completeopt-=preview
 
 " Key Remapping {{{1 
 """""""""""""""""""""
 
+" new submode {{{2
+" call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
+" call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
+" call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
+" call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
+" call submode#map('bufmove', 'n', '', '>', '<C-w>>')
+" call submode#map('bufmove', 'n', '', '<', '<C-w><')
+" call submode#map('bufmove', 'n', '', '+', '<C-w>+')
+" call submode#map('bufmove', 'n', '', '-', '<C-w>-')
+
 " 画面分割のキーリマップ {{{2
 " https://qiita.com/tekkoc/items/98adcadfa4bdc8b5a6ca
+"
+" vim-operator-surround と衝突しないように注意！
 nnoremap s <Nop>
 " バッファ作成と削除
 nnoremap ss :<C-u>sp<CR>
@@ -318,7 +316,7 @@ nnoremap sJ <C-w>J
 nnoremap sK <C-w>K
 nnoremap sL <C-w>L
 nnoremap sH <C-w>H
-nnoremap sr <C-w>r
+" nnoremap sr <C-w>r
 " 各ウィンドウの大きさ変更
 " submode も参照
 nnoremap s= <C-w>=
@@ -484,3 +482,4 @@ function! s:put_foldmarker(foldclose_p) "{{{
   exe 'norm! A'. padding. cms_start. fmr. cms_end
 endfunction
 "}}}
+
