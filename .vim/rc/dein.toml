@@ -93,11 +93,11 @@ let g:operator#surround#blocks['-'] = [
 # " hi FoldColumn gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
 # """
 
-[[plugins]]
-repo = 'tweekmonster/braceless.vim'
-hook_add = """
-autocmd FileType python,yaml BracelessEnable +fold
-"""
+# [[plugins]]
+# repo = 'tweekmonster/braceless.vim'
+# hook_add = """
+# autocmd FileType python,yaml BracelessEnable +fold
+# """
 
 [[plugins]]
 repo = 'lervag/vimtex'
@@ -114,3 +114,7 @@ hook_add = """
 let g:gen_tags#ctags_auto_gen = 1
 let g:gen_tags#gtags_auto_gen = 1
 """
+
+[[plugins]]
+repo = 'kshenoy/vim-signature'
+

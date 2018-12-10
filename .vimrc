@@ -99,8 +99,19 @@ inoremap <C-q> <C-x><C-o>
 """""""""""""""
 
 " Required:
-set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
+" set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
+" dein settings {{{
+" https://qiita.com/kawaz/items/ee725f6214f91337b42b
+" dein自体の自動インストール
+let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
+let s:dein_dir = s:cache_home . '/dein'
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+if !isdirectory(s:dein_repo_dir)
+  call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
+endif
+let &runtimepath = s:dein_repo_dir .",". &runtimepath
 
+" プラグイン読み込み＆キャッシュ作成
 " Required:
 if dein#load_state('$HOME/.cache/dein')
   call dein#begin('$HOME/.cache/dein')
