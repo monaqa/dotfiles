@@ -15,8 +15,9 @@ function pyenv
   end
 end
 
-# ssh alias
+alias ll='ls -laF'
 
+# ssh alias
 alias sviv1='ssh -L 13389:133.11.210.119:3389 sys1'
 alias sviv2='ssh -L 13389:133.11.210.120:3389 sys1'
 alias selg4='ssh -L 1928:localhost:1928 elger4.sys1'
