@@ -21,11 +21,11 @@ call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex']})
 [[plugins]]
 repo = 'Shougo/neosnippet.vim'
 on_i = 1
+depends = ['neosnippet-snippets']
 hook_post_source = """
 imap <C-s> <Plug>(neosnippet_expand_or_jump)
 smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
-
 let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
 """
 
@@ -38,7 +38,45 @@ repo = 'Shougo/deoplete.nvim'
 on_i = 1
 hook_source = """
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_completion_start_length = 1
+let g:deoplete#auto_complete_delay = 0
+let g:deoplete#auto_complete_start_length = 1
+let g:deoplete#enable_camel_case = 0
+let g:deoplete#enable_ignore_case = 0
+let g:deoplete#enable_refresh_always = 0
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#file#enable_buffer_path = 1
+let g:deoplete#max_list = 100
+imap <expr><tab> 
+\ neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" :
+\ pumvisible() ? "\<C-n>" : 
+\ neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" :
+\ "\<tab>"
+" func! Multiple_cursors_before()
+"   call deoplete#init#_disable()
+" endfunc
+" func! Multiple_cursors_after()
+"   call deoplete#init#_enable()
+" endfunc
+let g:vimtex_re_deoplete_mgm = '\\\\(?:'
+      \ .  '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
+      " \ . '|(text|block)cquote\*?(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
+      " \ . '|(for|hy)\w*cquote\*?{[^}]*}(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
+      \ . '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
+      " \ . '|hyperref\s*\[[^]]*'
+      " \ . '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+      " \ . '|(?:include(?:only)?|input|subfile)\s*\{[^}]*'
+      " \ . '|\w*(gls|Gls|GLS)(pl)?\w*(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+      " \ . '|includepdf(\s*\[[^]]*\])?\s*\{[^}]*'
+      " \ . '|includestandalone(\s*\[[^]]*\])?\s*\{[^}]*'
+      " \ . '|(usepackage|RequirePackage|PassOptionsToPackage)(\s*\[[^]]*\])?\s*\{[^}]*'
+      " \ . '|documentclass(\s*\[[^]]*\])?\s*\{[^}]*'
+      " \ . '|begin(\s*\[[^]]*\])?\s*\{[^}]*'
+      " \ . '|end(\s*\[[^]]*\])?\s*\{[^}]*'
+      " \ . '|\w*'
+      \ .')'
+call deoplete#custom#var('omni', 'input_patterns', {
+        \ 'tex': g:vimtex_re_deoplete_mgm
+        \})
 """
 
 [[plugins]]
@@ -85,7 +123,7 @@ on_ft = ['python']
 
 [[plugins]]
 repo = 'lervag/vimtex'
-on_ft = ['tex', 'latex']
+on_ft = ['tex', 'latex', 'plaintex']
 hook_source = """
 let g:vimtex_compiler_latexmk = {'callback' : 0}
 " let g:vimtex_imaps_list = []

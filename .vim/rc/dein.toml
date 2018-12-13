@@ -118,3 +118,7 @@ let g:gen_tags#gtags_auto_gen = 1
 [[plugins]]
 repo = 'kshenoy/vim-signature'
 
+# [[plugins]]
+# repo = 'terryma/vim-multiple-cursors'
+
+

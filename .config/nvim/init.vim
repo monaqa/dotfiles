@@ -21,6 +21,8 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 source ~/.vimrc
 
+set ambiwidth=double
+
 if has('mac')
   let g:vimtex_view_method='skim'
 else
