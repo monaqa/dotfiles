@@ -87,7 +87,7 @@ set history=10000
 
 nnoremap <Space>V :<C-u>tabedit $MYVIMRC<CR>
 nnoremap <Space>v :<C-u>source $MYVIMRC<CR>
-nnoremap <Space><C-V> :<C-u>tabedit ~/.vimrc<CR>
+nnoremap <Space><C-V> :<C-u>tabedit ~/.config/vim/init.vim<CR>
 
 " 日本語を扱うために {{{2
 
@@ -172,6 +172,9 @@ if !has('gui_running')
   imap ✢ <C-S-CR>
 endif
 
+" imap <Nul> <Nop>
+" 上でうまくいかないので，苦肉の策で <C-@> を潰す
+imap <C-Space> <Space>
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
@@ -182,12 +185,12 @@ inoremap <C-l> <Right>
 " nnoremap <Left> 15k
 " nnoremap <Right> 15j
 
-nnoremap <Space>h ^
-nnoremap <Space>l $
-nnoremap <Space>m %
-vnoremap <Space>h ^
-vnoremap <Space>l $
-vnoremap <Space>m %
+noremap <Space>h ^
+noremap <Space>l $
+noremap <Space>m %
+" vnoremap <Space>h ^
+" vnoremap <Space>l $
+" vnoremap <Space>m %
 
 " モード間移動のキーリマップ {{{2
 " inoremap jj <Esc>
@@ -203,10 +206,10 @@ inoremap zx <Esc>
 " 日本語を扱いやすくするためのキーマップ {{{2
 
 " 句読点の検索（;や,が使えなくなることに注意）
-nnoremap <silent> f, :call search('[，、,]', '', line("."))<CR>
-nnoremap <silent> f. :call search('[．。.]', '', line("."))<CR>
-nnoremap <silent> F, :call search('[，、,]', 'b', line("."))<CR>
-nnoremap <silent> F. :call search('[．。.]', 'b', line("."))<CR>
+noremap <silent> f, :call search('[，、,]', '', line("."))<CR>
+noremap <silent> f. :call search('[．。.]', '', line("."))<CR>
+noremap <silent> F, :call search('[，、,]', 'b', line("."))<CR>
+noremap <silent> F. :call search('[．。.]', 'b', line("."))<CR>
 " 長い文の改行をノーマルモードから楽に行う
 " try: f.<Space><CR> or f,<Space><CR>
 nnoremap <silent> <Space><CR> a<CR><Esc>
@@ -235,16 +238,16 @@ command! -nargs=1 MgmLineSearch let @m=<q-args> | call search('^\s*'. @m)
 command! MgmLineSameSearch call search('^\s*'. @m)
 command! -nargs=1 MgmLineBackSearch let @m=<q-args> | call search('^\s*'. @m, 'b')
 command! MgmLineBackSameSearch call search('^\s*'. @m, 'b')
-nnoremap <Space>f :MgmLineSearch<Space>
-nnoremap <Space>F :MgmLineBackSearch<Space>
+noremap <Space>f :MgmLineSearch<Space>
+noremap <Space>F :MgmLineBackSearch<Space>
 " nnoremap <Space>; :MgmLineSameSearch<CR>
 " nnoremap <Space>, :MgmLineBackSameSearch<CR>
-nnoremap d<Space>f d:MgmLineSearch<Space>
-nnoremap d<Space>F d:MgmLineBackSearch<Space>
-nnoremap c<Space>f c:MgmLineSearch<Space>
-nnoremap c<Space>F c:MgmLineBackSearch<Space>
-nnoremap y<Space>f y:MgmLineSearch<Space>
-nnoremap y<Space>F y:MgmLineBackSearch<Space>
+" nnoremap d<Space>f d:MgmLineSearch<Space>
+" nnoremap d<Space>F d:MgmLineBackSearch<Space>
+" nnoremap c<Space>f c:MgmLineSearch<Space>
+" nnoremap c<Space>F c:MgmLineBackSearch<Space>
+" nnoremap y<Space>f y:MgmLineSearch<Space>
+" nnoremap y<Space>F y:MgmLineBackSearch<Space>
 
 call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':MgmLineSameSearch<CR>')
 call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':MgmLineBackSameSearch<CR>')
@@ -258,40 +261,40 @@ nnoremap <Space>c :redi @c<CR>:%s/.//gn<CR>:redi end<CR>:let @/=''<CR>:echo @c<C
 
 " folding {{{2
 " http://leafcage.hateblo.jp/entry/2013/04/24/053113#f-87298d83
-nnoremap <expr>l  foldclosed('.') != -1 ? 'zo' : 'l'
-nnoremap <silent><C-_> :<C-u>call <SID>smart_foldcloser()<CR>
-function! s:smart_foldcloser() "{{{
-  if foldlevel('.') == 0
-    norm! zM
-    return
-  endif
-
-  let foldc_lnum = foldclosed('.')
-  norm! zc
-  if foldc_lnum == -1
-    return
-  endif
-
-  if foldclosed('.') != foldc_lnum
-    return
-  endif
-  norm! zM
-endfunction
-"}}}
-
-nnoremap  z[     :<C-u>call <SID>put_foldmarker(0)<CR>
-nnoremap  z]     :<C-u>call <SID>put_foldmarker(1)<CR>
-function! s:put_foldmarker(foldclose_p) "{{{
-  let crrstr = getline('.')
-  let padding = crrstr=='' ? '' : crrstr=~'\s$' ? '' : ' '
-  let [cms_start, cms_end] = ['', '']
-  let outside_a_comment_p = synIDattr(synID(line('.'), col('$')-1, 1), 'name') !~? 'comment'
-  if outside_a_comment_p
-    let cms_start = matchstr(&cms,'\V\s\*\zs\.\+\ze%s')
-    let cms_end = matchstr(&cms,'\V%s\zs\.\+')
-  endif
-  let fmr = split(&fmr, ',')[a:foldclose_p]. (v:count ? v:count : '')
-  exe 'norm! A'. padding. cms_start. fmr. cms_end
-endfunction
-"}}}
-
+" nnoremap <expr>l  foldclosed('.') != -1 ? 'zo' : 'l'
+" nnoremap <silent><C-_> :<C-u>call <SID>smart_foldcloser()<CR>
+" function! s:smart_foldcloser() "{{{
+  " if foldlevel('.') == 0
+    " norm! zM
+    " return
+  " endif
+" 
+  " let foldc_lnum = foldclosed('.')
+  " norm! zc
+  " if foldc_lnum == -1
+    " return
+  " endif
+" 
+  " if foldclosed('.') != foldc_lnum
+    " return
+  " endif
+  " norm! zM
+" endfunction
+" "}}}
+" 
+" nnoremap  z[     :<C-u>call <SID>put_foldmarker(0)<CR>
+" nnoremap  z]     :<C-u>call <SID>put_foldmarker(1)<CR>
+" function! s:put_foldmarker(foldclose_p) "{{{
+  " let crrstr = getline('.')
+  " let padding = crrstr=='' ? '' : crrstr=~'\s$' ? '' : ' '
+  " let [cms_start, cms_end] = ['', '']
+  " let outside_a_comment_p = synIDattr(synID(line('.'), col('$')-1, 1), 'name') !~? 'comment'
+  " if outside_a_comment_p
+    " let cms_start = matchstr(&cms,'\V\s\*\zs\.\+\ze%s')
+    " let cms_end = matchstr(&cms,'\V%s\zs\.\+')
+  " endif
+  " let fmr = split(&fmr, ',')[a:foldclose_p]. (v:count ? v:count : '')
+  " exe 'norm! A'. padding. cms_start. fmr. cms_end
+" endfunction
+" "}}}
+" 

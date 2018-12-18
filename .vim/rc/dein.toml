@@ -123,4 +123,5 @@ repo = 'kshenoy/vim-signature'
 # [[plugins]]
 # repo = 'terryma/vim-multiple-cursors'
 
-
+[[plugins]]
+repo = 'Konfekt/FastFold'
