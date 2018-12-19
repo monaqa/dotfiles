@@ -29,10 +29,12 @@ autocmd VimEnter * match FullWidthSpace /　/
 " endif
 
 " Color scheme {{{2
-let g:gruvbox_contrast_dark = 'soft'
+let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_vert_split = 'fg0'
 colorscheme gruvbox
 set background=dark
+hi! link SpecialKey GruvboxBg4
+hi! link NonText GruvboxPurple
 
 " 一般 {{{2
 set nobackup  " backup ファイルを作らない
@@ -105,10 +107,10 @@ nnoremap s <Nop>
 " バッファ作成と削除
 nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
-nnoremap sN :<C-u>bn<CR>
-nnoremap sP :<C-u>bp<CR>
-nnoremap sq :<C-u>q<CR>
-nnoremap sQ :<C-u>bd<CR>
+nnoremap sn :<C-u>bn<CR>
+nnoremap sp :<C-u>bp<CR>
+nnoremap sq :<C-u>bd<CR>
+nnoremap sQ :<C-u>q<CR>
 " バッファ間移動
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
@@ -127,8 +129,8 @@ nnoremap so <C-w>_<C-w>|
 nnoremap sO <C-w>=
 " タブページ
 nnoremap st :<C-u>tabnew<CR>
-nnoremap sn gt
-nnoremap sp gT
+nnoremap sN gt
+nnoremap sP gT
 " nnoremap sT :<C-u>Unite tab<CR>
 " nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
 " nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
@@ -152,6 +154,8 @@ set splitright
 " 移動のキーリマップ {{{2
 nnoremap j gj
 nnoremap k gk
+nnoremap gj j
+nnoremap gk k
 
 nnoremap <Space><Up> "zdd<Up>"zP
 nnoremap <Space><Down> "zdd"zp
