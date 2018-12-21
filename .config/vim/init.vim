@@ -15,20 +15,27 @@ set mouse=a
 " https://qiita.com/morikooooo/items/34bb2466f98ab58f2e77
 " https://qiita.com/ikeisuke/items/f84818516e8337cf4c80
 " https://qiita.com/iwaseasahi/items/0b2da68269397906c14c
-" 
-
+ 
+let g:tex_flavor = 'latex'
 
 " 全角スペース強調 {{{2
-autocmd Colorscheme * highlight FullWidthSpace ctermbg=white
-autocmd VimEnter * match FullWidthSpace /　/
+" https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776
+augroup MyVimrc
+    autocmd!
+augroup END
+
+augroup MyVimrc
+    autocmd ColorScheme * highlight link UnicodeSpaces Error
+    autocmd VimEnter,WinEnter * match UnicodeSpaces /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
+augroup END
+
+" Color scheme {{{2
 " if has('gui_running')
   " colorscheme dracula
 " else
   " colorscheme default
   " set term=xterm-256color
 " endif
-
-" Color scheme {{{2
 let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_vert_split = 'fg0'
 colorscheme gruvbox
@@ -66,7 +73,12 @@ set breakindent
 set lazyredraw
 set ttyfast
 
+" spell check
+
+set spelllang+=cjk
+
 " タブ文字の設定 {{{2   
+set list
 set listchars=tab:\▸\-,trail:･
 set expandtab
 set tabstop=2
@@ -301,4 +313,6 @@ nnoremap <Space>c :redi @c<CR>:%s/.//gn<CR>:redi end<CR>:let @/=''<CR>:echo @c<C
   " exe 'norm! A'. padding. cms_start. fmr. cms_end
 " endfunction
 " "}}}
-" 
+
+" https://github.com/scrooloose/nerdtree/issues/400
+nnoremap \d :bp<cr>:bd #<cr>
