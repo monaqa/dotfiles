@@ -1,7 +1,9 @@
-#!/usr/local/bin/fish
+#!/bin/bash
 
-set dir (pwd)
-ln -fs $dir/.config/fish/config.fish ~/.config/fish/config.fish
+dir=$(pwd)
+mkdir -p ~/.config/nvim
+mkdir -p ~/.config/vim
+mkdir -p ~/.vim/rc
 ln -fs $dir/.config/nvim/init.vim ~/.config/nvim/init.vim
 ln -fs $dir/.config/vim/init.vim ~/.config/vim/init.vim
 ln -fs $dir/.vimrc ~/.vimrc
