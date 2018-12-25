@@ -45,15 +45,16 @@ nnoremap <Space>z :NERDTreeToggle<CR>
 " let g:NERDTreeDirArrows = 0
 " let g:NERDTreeDirArrowExpandable  = '>'
 " let g:NERDTreeDirArrowCollapsible = 'V'
-if !has('gui_running')
-  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-endif
-let NERDTreeIgnore=[
+" if !has('gui_running')
+"   autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" endif
+let g:NERDTreeIgnore=[
   \ '\.aux$', '\.bbl$', '\.blg$', '\.dvi$', '\.fdb_latexmk$', '\.fls$', '\.synctex\.gz$', '\.toc$',
   \ '\.pdf$', '\.eps$',
   \ '\.png$',
   \ '\.ipynb$',
+  \ '^\.git$[[dir]]',
   \ ]
 """
 
@@ -116,12 +117,12 @@ repo = 'Rykka/riv.vim'
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
 
-[[plugins]]
-repo = 'jsfaint/gen_tags.vim'
-hook_add = """
-let g:gen_tags#ctags_auto_gen = 1
-let g:gen_tags#gtags_auto_gen = 1
-"""
+# [[plugins]]
+# repo = 'jsfaint/gen_tags.vim'
+# hook_add = """
+# let g:gen_tags#ctags_auto_gen = 1
+# let g:gen_tags#gtags_auto_gen = 1
+# """
 
 [[plugins]]
 repo = 'kshenoy/vim-signature'
@@ -131,3 +132,34 @@ repo = 'kshenoy/vim-signature'
 
 [[plugins]]
 repo = 'Konfekt/FastFold'
+
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+hook_add = """
+nnoremap <Space>b :Denite buffer<CR>
+nnoremap <Space>r :Denite register<CR>
+nnoremap <Space>g :Denite grep -buffer-name=search-buffer-denite<CR>
+nnoremap <Space>t :Denite grep -input=TODO: -mode="normal"<CR>
+nnoremap <Space>G :Denite -resume -buffer-name=search-buffer-denite<CR>
+nnoremap <Space>] :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
+nnoremap <Space>[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
+nnoremap <Space>o :Denite file_rec<CR>
+nnoremap <Space><Space> :Denite<Space>
+"""
+hook_source = """
+call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+      \ [ '.git/', '.ropeproject/', '__pycache__/',
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/',
+      \   '*.aux', '*.bbl', '*.blg', '*.dvi', '*.fdb_latexmk', '*.fls', '*.synctex.gz', '*.toc',
+      \   '*.pdf', '*.eps', '*.svg',
+      \   '*.png',
+      \   'searchindex.js',
+      \   '*.ipynb',
+      \   ])
+call denite#custom#source('grep',
+  \ 'matchers', ['converter/abbr_word', 'matcher_fuzzy', 'matcher/ignore_globs'],
+  \ )
+call denite#custom#source('file_rec',
+  \ 'matchers', ['matcher_fuzzy', 'matcher/ignore_globs'])
+"""

@@ -2,7 +2,7 @@
 
 
 " 最初に書いておきたい重要なコマンド群 {{{2
-set fenc=utf-8
+" set fenc=utf-8
 syntax on
 let mapleader=","
 set mouse=a
@@ -121,7 +121,9 @@ nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap sn :<C-u>bn<CR>
 nnoremap sp :<C-u>bp<CR>
-nnoremap sq :<C-u>bd<CR>
+" nnoremap sq :<C-u>bd<CR>
+" https://github.com/scrooloose/nerdtree/issues/400
+nnoremap sq :<C-u>bp<CR>:bd #<CR>
 nnoremap sQ :<C-u>q<CR>
 " バッファ間移動
 nnoremap sj <C-w>j
@@ -314,5 +316,3 @@ nnoremap <Space>c :redi @c<CR>:%s/.//gn<CR>:redi end<CR>:let @/=''<CR>:echo @c<C
 " endfunction
 " "}}}
 
-" https://github.com/scrooloose/nerdtree/issues/400
-nnoremap \d :bp<cr>:bd #<cr>

@@ -87,11 +87,11 @@ on_ft = ['rst', 'restructuredtext']
 
 
 # only in dein.vim config file (this file or others)
-[[plugins]]
-repo = 'osyo-manga/vim-precious'
-depends = ['Shougo/context_filetype.vim']
-on_ft = ['conf']
-
-[[plugins]]
-repo = 'Shougo/context_filetype.vim'
-on_ft = ['conf']
+# [[plugins]]
+# repo = 'osyo-manga/vim-precious'
+# depends = ['Shougo/context_filetype.vim']
+# on_ft = ['conf']
+# 
+# [[plugins]]
+# repo = 'Shougo/context_filetype.vim'
+# on_ft = ['conf']
