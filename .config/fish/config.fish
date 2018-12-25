@@ -21,6 +21,7 @@ alias ll='ls -laF'
 alias sviv1='ssh -L 13389:133.11.210.119:3389 sys1'
 alias sviv2='ssh -L 13389:133.11.210.120:3389 sys1'
 alias selg4='ssh -L 1928:localhost:1928 elger4.sys1'
+alias belg4='open -a Firefox; ssh -D 10000 elger4.sys1' # Blouse
 
 alias secc1='ssh -L 1928:localhost:1928 9452181327@ssh0-01.ecc.u-tokyo.ac.jp'
 alias secc2='ssh -L 1928:localhost:1928 9452181327@ssh0-02.ecc.u-tokyo.ac.jp'
