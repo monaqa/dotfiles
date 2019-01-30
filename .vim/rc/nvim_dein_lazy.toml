@@ -42,6 +42,11 @@ let g:vimtex_re_deoplete_mgm = '\\\\(?:'
 call deoplete#custom#var('omni', 'input_patterns', {
         \ 'tex': g:vimtex_re_deoplete_mgm
         \})
+" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+" function! s:my_cr_function()
+"   return deoplete#mappings#smart_close_popup() . "\<CR>"
+" endfunction
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>" : "\<CR>\<c-g>u")
 """
 
 [[plugins]]

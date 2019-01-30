@@ -38,56 +38,155 @@ repo = 'kana/vim-submode'
 hook_add = """
 """
 
+# [[plugins]]
+# repo = 'scrooloose/nerdtree'
+# hook_add = """
+# nnoremap <Space>z :NERDTreeToggle<CR>
+# " let g:NERDTreeDirArrows = 0
+# " let g:NERDTreeDirArrowExpandable  = '>'
+# " let g:NERDTreeDirArrowCollapsible = 'V'
+# " if !has('gui_running')
+# "   autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+# "   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+# " endif
+# let g:NERDTreeIgnore=[
+#   \ '\.aux$', '\.bbl$', '\.blg$', '\.dvi$', '\.fdb_latexmk$', '\.fls$', '\.synctex\.gz$', '\.toc$',
+#   \ '\.pdf$', '\.eps$',
+#   \ '\.png$',
+#   \ '\.ipynb$',
+#   \ '^\.git$[[dir]]',
+#   \ ]
+# """
+
 [[plugins]]
-repo = 'scrooloose/nerdtree'
+repo = 'Shougo/defx.nvim'
+depends = ['kristijanhusak/defx-git']
 hook_add = """
-nnoremap <Space>z :NERDTreeToggle<CR>
-" let g:NERDTreeDirArrows = 0
-" let g:NERDTreeDirArrowExpandable  = '>'
-" let g:NERDTreeDirArrowCollapsible = 'V'
-" if !has('gui_running')
-"   autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" endif
-let g:NERDTreeIgnore=[
-  \ '\.aux$', '\.bbl$', '\.blg$', '\.dvi$', '\.fdb_latexmk$', '\.fls$', '\.synctex\.gz$', '\.toc$',
-  \ '\.pdf$', '\.eps$',
-  \ '\.png$',
-  \ '\.ipynb$',
-  \ '^\.git$[[dir]]',
-  \ ]
+nnoremap <silent> <Space>z :Defx
+  \ -columns=git:mark:filename
+  \ -toggle -split=vertical -winwidth=30 -direction=topleft<CR>
+nnoremap <silent> <Space><S-z> :Defx
+  \ -columns=git:mark:filename:size:time
+  \ -toggle -split=horizontal -winheight=20 -direction=botright<CR>
+autocmd FileType defx call s:defx_my_settings()
+function! s:defx_my_settings() abort
+  " Define mappings
+  " nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
+  nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
+  nnoremap <silent><buffer><expr> c
+  \ defx#do_action('copy')
+  nnoremap <silent><buffer><expr> m
+  \ defx#do_action('move')
+  nnoremap <silent><buffer><expr> p
+  \ defx#do_action('paste')
+  nnoremap <silent><buffer><expr> l
+  \ defx#do_action('drop')
+  nnoremap <silent><buffer><expr> E
+  \ defx#do_action('open', 'vsplit')
+  nnoremap <silent><buffer><expr> P
+  \ defx#do_action('open', 'pedit')
+  nnoremap <silent><buffer><expr> K
+  \ defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr> N
+  \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> M
+  \ defx#do_action('new_multiple_files')
+  nnoremap <silent><buffer><expr> C
+  \ defx#do_action('toggle_columns',
+  \                'mark:filename:type:size:time')
+  nnoremap <silent><buffer><expr> S
+  \ defx#do_action('toggle_sort', 'time')
+  nnoremap <silent><buffer><expr> d
+  " \ defx#do_action('remove')
+  " nnoremap <silent><buffer><expr> r
+  \ defx#do_action('rename')
+  nnoremap <silent><buffer><expr> !
+  \ defx#do_action('execute_command')
+  nnoremap <silent><buffer><expr> x
+  \ defx#do_action('execute_system')
+  nnoremap <silent><buffer><expr> yy
+  \ defx#do_action('yank_path')
+  nnoremap <silent><buffer><expr> .
+  \ defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> ;
+  \ defx#do_action('repeat')
+  nnoremap <silent><buffer><expr> h
+  \ defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> ~
+  \ defx#do_action('cd')
+  nnoremap <silent><buffer><expr> q
+  \ defx#do_action('quit')
+  nnoremap <silent><buffer><expr> <Space>
+  \ defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> *
+  \ defx#do_action('toggle_select_all')
+  nnoremap <silent><buffer><expr> j
+  \ line('.') == line('$') ? 'gg' : 'j'
+  nnoremap <silent><buffer><expr> k
+  \ line('.') == 1 ? 'G' : 'k'
+  nnoremap <silent><buffer><expr> <C-l>
+  \ defx#do_action('redraw')
+  nnoremap <silent><buffer><expr> <C-g>
+  \ defx#do_action('print')
+  nnoremap <silent><buffer><expr> cd
+  \ defx#do_action('change_vim_cwd')
+endfunction
 """
+
+[[plugins]]
+repo = 'kristijanhusak/defx-git'
+
 
 [[plugins]]
 repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
 
+
 [[plugins]]
-repo = 'scrooloose/nerdcommenter'
+repo = 'tyru/caw.vim'
 hook_add = """
-let g:NERDSpaceDelims = 1  " コメント時に挿入するスペース
-let g:NERDCommentEmptyLines = 1 " 空行のコメントを許す
+let g:caw_operator_keymappings = 1
+nmap <Space>c gcc
 """
+
+
+# [[plugins]]
+# repo = 'scrooloose/nerdcommenter'
+# hook_add = """
+# let g:NERDSpaceDelims = 1  " コメント時に挿入するスペース
+# let g:NERDCommentEmptyLines = 1 " 空行のコメントを許す
+# """
 
 [[plugins]]
 repo = 'tpope/vim-surround'
+hook_add = """
+nmap sa ys
+vmap sa S
+"""
 
 [[plugins]]
 repo = 'kana/vim-operator-user'
-
-[[plugins]]
-repo = 'rhysd/vim-operator-surround'
-depends = ['kana/vim-operator-user']
 hook_add = """
-map sa <Plug>(operator-surround-append)
-map sd <Plug>(operator-surround-delete)a
-map sr <Plug>(operator-surround-replace)a
-let g:operator#surround#blocks = {}
-let g:operator#surround#blocks['-'] = [
-    \   { 'block' : ['（', '）'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['P'] },
-    \   { 'block' : ['「', '」'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
-    \   { 'block' : ['『', '』'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['D'] },
-    \ ]
+autocmd FileType tex let b:surround_66 = "\\\\{\r\\\\}"
 """
+
+# [[plugins]]
+# repo = 'rhysd/vim-operator-surround'
+# depends = ['kana/vim-operator-user']
+# " map sa <Plug>(operator-surround-append)
+# " map sd <Plug>(operator-surround-delete)a
+# map sr <Plug>(operator-surround-replace)a
+# map sa ys
+# let g:operator#surround#blocks = {}
+# let g:operator#surround#blocks['-'] = [
+    # \   { 'block' : ['（', '）'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['P'] },
+    # \   { 'block' : ['「', '」'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
+    # \   { 'block' : ['『', '』'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['D'] },
+    # \ ]
+# hook_add = """
+# " let g:operator#surround#blocks['tex'] = [
+# "     \   { 'block' : ['\{', '\}'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
+# "     \ ]
+# """
 
 # [[plugins]]
 # repo = 'LeafCage/foldCC'
@@ -126,6 +225,9 @@ repo = 'davidhalter/jedi-vim'
 
 [[plugins]]
 repo = 'kshenoy/vim-signature'
+hook_add = """
+let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXYZ'
+"""
 
 # [[plugins]]
 # repo = 'terryma/vim-multiple-cursors'
@@ -137,7 +239,7 @@ repo = 'Konfekt/FastFold'
 [[plugins]]
 repo = 'Shougo/denite.nvim'
 hook_add = """
-nnoremap <Space>b :Denite buffer<CR>
+nnoremap <Space>b :Denite buffer -mode="normal" -sorters=sorter/word<CR>
 nnoremap <Space>r :Denite register<CR>
 nnoremap <Space>g :Denite grep -buffer-name=search-buffer-denite<CR>
 nnoremap <Space>t :Denite grep -input=TODO: -mode="normal"<CR>
@@ -146,12 +248,11 @@ nnoremap <Space>] :<C-u>Denite -resume -buffer-name=search-buffer-denite -select
 nnoremap <Space>[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
 nnoremap <Space>o :Denite file_rec<CR>
 nnoremap <Space><Space> :Denite<Space>
-"""
-hook_source = """
 call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
       \ [ '.git/', '.ropeproject/', '__pycache__/',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/',
       \   '*.aux', '*.bbl', '*.blg', '*.dvi', '*.fdb_latexmk', '*.fls', '*.synctex.gz', '*.toc',
+      \   '*.out', '*.snm', '*.nav',
       \   '*.pdf', '*.eps', '*.svg',
       \   '*.png',
       \   'searchindex.js',
@@ -162,4 +263,29 @@ call denite#custom#source('grep',
   \ )
 call denite#custom#source('file_rec',
   \ 'matchers', ['matcher_fuzzy', 'matcher/ignore_globs'])
+"""
+
+[[plugins]]
+repo = 'xolox/vim-misc'
+
+[[plugins]]
+repo = 'xolox/vim-session'
+depends = ['xolox/vim-misc']
+hook_add = """
+let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
+" 存在すれば
+if isdirectory(s:local_session_directory)
+  " session保存ディレクトリをそのディレクトリの設定
+  let g:session_directory = s:local_session_directory
+  " vimを辞める時に自動保存
+  let g:session_autosave = 'yes'
+  " 引数なしでvimを起動した時にsession保存ディレクトリのdefault.vimを開く
+  let g:session_autoload = 'yes'
+  " 1分間に1回自動保存
+  " let g:session_autosave_periodic = 1
+else
+  let g:session_autosave = 'no'
+  let g:session_autoload = 'no'
+endif
+unlet s:local_session_directory
 """

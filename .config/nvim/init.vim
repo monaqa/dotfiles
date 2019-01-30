@@ -11,7 +11,8 @@
           " \      '*': 'xclip -o -selection primary',
           " \   },
           " \ }
- 
+
+
 " Mac では以下のようにしないと pbcopy が使えないっぽい
 " https://github.com/neovim/neovim/issues/8631
 

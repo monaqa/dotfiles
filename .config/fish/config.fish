@@ -1,3 +1,5 @@
+fish_vi_key_bindings
+
 # eval (pyenv init - fish)
 set -gx PATH '/Users/shinichi/.pyenv/shims' $PATH
 set -gx PYENV_SHELL fish
@@ -20,8 +22,11 @@ alias ll='ls -laF'
 # ssh alias
 alias sviv1='ssh -L 13389:133.11.210.119:3389 sys1'
 alias sviv2='ssh -L 13389:133.11.210.120:3389 sys1'
+# alias selg4='ssh -L 1928:localhost:1928 elger4.sys1'
 alias selg4='ssh -L 1928:localhost:1928 elger4.sys1'
+# alias selg4='ssh -L 1928:localhost:1928 mogami@elger4.sp.ipc.i.u-tokyo.ac.jp'
 alias belg4='open -a Firefox; ssh -D 10000 elger4.sys1' # Blouse
+alias bviv2='open -a Firefox; sviv2 -D 10000' # Blouse
 
 alias secc1='ssh -L 1928:localhost:1928 9452181327@ssh0-01.ecc.u-tokyo.ac.jp'
 alias secc2='ssh -L 1928:localhost:1928 9452181327@ssh0-02.ecc.u-tokyo.ac.jp'
@@ -53,6 +58,9 @@ alias jlb='jupyter lab'
 # vim
 # balias v 'env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim'
 function v --wraps nvim
+  nvim $argv
+end
+function vtex --wraps nvim
   env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim $argv
 end
 

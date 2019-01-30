@@ -15,6 +15,9 @@ call lexima#add_rule({'at': '\%#\\', 'char': '{', 'input': '{', 'filetype': ['la
 call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': ['latex', 'tex']})
+call lexima#add_rule({'char': '\{', 'input_after': '\}', 'filetype': ['latex', 'tex']})
+call lexima#add_rule({'char': '}', 'at': '\\\%#}', 'leave': 1, 'filetype': ['latex', 'tex']})
+call lexima#add_rule({'char': '<BS>', 'at': '\\\{\%#\\\}', 'input': '<BS><BS><DEL><DEL>', 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex']})
 """
 
@@ -77,6 +80,7 @@ let g:vimtex_compiler_latexmk = {'callback' : 0}
 let g:tex_flavor = "latex"
 " let g:vimtex_fold_manual = 1
 let g:vimtex_fold_enabled = 1
+let g:vimtex_indent_ignored_envs = ['document', 'frame']
 """
 
 # only in ReST

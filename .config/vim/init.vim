@@ -7,6 +7,12 @@ syntax on
 let mapleader=","
 set mouse=a
 
+if has('persistent_undo')
+  set undodir=~/.vim/undo
+  set undofile
+endif
+
+
 " Basic config "{{{1
 """"""""""""""""""""
 
@@ -42,6 +48,10 @@ colorscheme gruvbox
 set background=dark
 hi! link SpecialKey GruvboxBg4
 hi! link NonText GruvboxPurple
+hi! ColorColumn ctermbg=238
+hi! CursorColumn ctermbg=236
+hi! CursorLine ctermbg=236
+hi! link Folded GruvboxPurpleBold
 
 " 一般 {{{2
 set nobackup  " backup ファイルを作らない
@@ -50,7 +60,9 @@ set noswapfile  " swap ファイルを作らない
 set autoread  " 編集中ファイルの変更を自動で読む
 set hidden  " バッファが編集中でも他のファイルを開けるようにする
 set showcmd
-
+set colorcolumn=80
+" let &colorcolumn=join(range(81,999),",")
+" hi ColorColumn ctermbg=235 guibg=#2c2d27
 set clipboard+=unnamed
 
 " visual {{{2
@@ -60,7 +72,7 @@ set cursorcolumn
 set virtualedit=onemore  " 行末の1文字先までカーソルを移動したい
 set visualbell
 set noerrorbells
-set showmatch " 対応カッコを表示
+" set showmatch " 対応カッコを表示
 hi MatchParen ctermbg=0
 set laststatus=2 " ステータスラインを常に表示
 set scrolloff=10
@@ -75,7 +87,7 @@ set ttyfast
 
 " spell check
 
-set spelllang+=cjk
+set spelllang=en,cjk
 
 " タブ文字の設定 {{{2   
 set list
@@ -90,12 +102,29 @@ set smartcase
 set incsearch
 set wrapscan
 set hlsearch
-nmap <Esc><Esc> :nohlsearch<CR><Esc>
-
+" nmap <Esc><Esc> :nohlsearch<CR><Esc>
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+" command! -nargs=1 MgmYankToSlash let @/ = '\V' . escape(<q-args>, '/\')
+" command! -nargs=1 MgmYankToM let @m = escape(<q-args>, '/\')
+" vnoremap <CR> "my:set hlsearch<CR>:MgmYankToSlash <C-r>m<CR>
+" substitute command
+" https://stackoverflow.com/questions/7598133/vim-global-search-replace-starting-from-the-cursor-position
+" vnoremap <S-CR> "my:set hlsearch<CR>:MgmYankToM <C-r>m<CR>:,$s/\V<C-r>m/<C-r>m/gc\|1,''-&&<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 set virtualedit=block  " 矩形選択時に文字がなくても選択可
 set backspace=indent,eol,start
 set ambiwidth=double  "全角文字幅
 set history=10000
+
+" http://vim.wikia.com/wiki/Search_for_visually_selected_text
+vnoremap <CR> "my/\V<C-R><C-R>=substitute(
+  \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>N
+
+vnoremap <S-CR> "sy:set hlsearch<CR>/\V<C-R><C-R>=substitute(
+  \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \:,$s/\V<C-R><C-R>=substitute(
+  \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR>
+  \/<C-R><C-R>=escape(@s, '/\&~')<CR>
+  \/gce<Bar>1,''-&&<CR>
 
 " vimrc や help を即座に開く {{{2
 
@@ -110,6 +139,10 @@ set matchpairs+=「:」,（:）,【:】,『:』
 
 " Key Remapping {{{1 
 """""""""""""""""""""
+
+" yank mapping (see :h Y)
+:map Y y$
+
 
 " 画面分割のキーリマップ {{{2
 " https://qiita.com/tekkoc/items/98adcadfa4bdc8b5a6ca
@@ -147,9 +180,11 @@ nnoremap sN gt
 nnoremap sP gT
 " nnoremap sT :<C-u>Unite tab<CR>
 " nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
-" nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
+" nnoremap sb :<c-u>unite buffer -buffer-name=file<cr>
 " nnoremap sc <C-w>c
 " nnoremap sw <C-w>w
+" Scroll bind
+nnoremap sw :set<Space>scb<CR>:vs<Space>
 
 call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
 call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
@@ -176,8 +211,9 @@ nnoremap <Space><Down> "zdd"zp
 vnoremap <Space><Up> "zx<Up>"zP`[V`]
 vnoremap <Space><Down> "zx"zp`[V`]
 
-imap <S-CR> <End><CR>
-imap <C-S-CR> <Up><End><CR>
+" inoremap <CR> <CR><C-g>u
+inoremap <S-CR> <End><CR>
+inoremap <C-S-CR> <Up><End><CR>
 nnoremap <S-CR> mzo<ESC>`z
 nnoremap <C-S-CR> mzO<ESC>`z
 if !has('gui_running')
@@ -250,12 +286,14 @@ nnoremap <silent> <Space>w :call MgmDispWordToggle()<CR>
 nnoremap x "_x
 
 " 縦方向 f 移動 {{{2
-"
 
-command! -nargs=1 MgmLineSearch let @m=<q-args> | call search('^\s*'. @m)
-command! MgmLineSameSearch call search('^\s*'. @m)
-command! -nargs=1 MgmLineBackSearch let @m=<q-args> | call search('^\s*'. @m, 'b')
-command! MgmLineBackSameSearch call search('^\s*'. @m, 'b')
+" vnoremap <CR> "my/\V<C-R><C-R>=substitute(
+  " \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+
+command! -nargs=1 MgmLineSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m)
+command! MgmLineSameSearch call search('^\s*\V'. @m)
+command! -nargs=1 MgmLineBackSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 'b')
+command! MgmLineBackSameSearch call search('^\s*\V'. @m, 'b')
 noremap <Space>f :MgmLineSearch<Space>
 noremap <Space>F :MgmLineBackSearch<Space>
 " nnoremap <Space>; :MgmLineSameSearch<CR>
@@ -273,9 +311,6 @@ call submode#map('vertjmp', 'n', '', ';', ':MgmLineSameSearch<CR>')
 call submode#map('vertjmp', 'n', '', ',', ':MgmLineBackSameSearch<CR>')
 call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
-" 文字数カウント {{{2
-
-nnoremap <Space>c :redi @c<CR>:%s/.//gn<CR>:redi end<CR>:let @/=''<CR>:echo @c<CR>
 
 " folding {{{2
 " http://leafcage.hateblo.jp/entry/2013/04/24/053113#f-87298d83
@@ -316,3 +351,8 @@ nnoremap <Space>c :redi @c<CR>:%s/.//gn<CR>:redi end<CR>:let @/=''<CR>:echo @c<C
 " endfunction
 " "}}}
 
+" LaTeX で \cs を一単語に
+autocmd Filetype tex set iskeyword+=92
+
+" Asciidoc のプレビュー
+command! MgmViewAdoc :!python make.py;asciidoctor %;open -a Vivaldi %:r.html<CR>
