@@ -76,13 +76,15 @@ let &packpath = &runtimepath
 
 set ambiwidth=double
 
-if has('mac')
-  let g:vimtex_view_method='skim'
-else
-  let g:vimtex_view_method='zathura'
-endif
+" めっさ遅い
+" if has('mac')
+"   let g:vimtex_view_method='skim'
+" else
+"   let g:vimtex_view_method='zathura'
+" endif
+"
 
-let g:vimtex_compiler_progname = 'nvr'
+" let g:vimtex_compiler_progname = 'nvr'
 
 let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '@line @pdf @tex'
