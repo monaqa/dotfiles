@@ -63,7 +63,8 @@ set showcmd
 set colorcolumn=80
 " let &colorcolumn=join(range(81,999),",")
 " hi ColorColumn ctermbg=235 guibg=#2c2d27
-set clipboard+=unnamed
+" set clipboard+=unnamed
+set clipboard=
 
 " visual {{{2
 set number
