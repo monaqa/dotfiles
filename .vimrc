@@ -4,6 +4,8 @@
 " Plugins {{{1
 """""""""""""""
 
+" let g:python3_host_prog = expand('/Users/shinichi/.pyenv/shims/python')
+
 " Required:
 " set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
 " dein settings {{{

@@ -83,11 +83,17 @@ let g:vimtex_fold_enabled = 1
 let g:vimtex_indent_ignored_envs = ['document', 'frame']
 """
 
+[[plugins]]
+repo = 'bps/vim-textobj-python'
+# depends = ['kana/vim-textobj-user']
+on_ft = ['python']
+
 # only in ReST
 
 [[plugins]]
 repo = 'Rykka/riv.vim'
 on_ft = ['rst', 'restructuredtext']
+
 
 
 # only in dein.vim config file (this file or others)

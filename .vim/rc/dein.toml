@@ -4,13 +4,18 @@
 repo = 'vim-airline/vim-airline'
 depends = ['vim-airline-themes']
 hook_add = """
-let g:airline#extensions#tabline#enabled = 1
 " let g:airline_theme = 'gruvbox'
 " let g:airline_theme = 'dracula'
 let g:airline_theme = 'sol'
-nmap <C-p> <Plug>AirlineSelectPrevTab
-nmap <C-n> <Plug>AirlineSelectNextTab
+" nmap <C-p> <Plug>AirlineSelectPrevTab
+" nmap <C-n> <Plug>AirlineSelectNextTab
+" let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#buffer_idx_mode = 1
+" let g:airline#extensions#whitespace#mixed_indent_algo = 1
 """
+
+
 
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
@@ -96,9 +101,9 @@ function! s:defx_my_settings() abort
   \                'mark:filename:type:size:time')
   nnoremap <silent><buffer><expr> S
   \ defx#do_action('toggle_sort', 'time')
-  nnoremap <silent><buffer><expr> d
+  " nnoremap <silent><buffer><expr> d
   " \ defx#do_action('remove')
-  " nnoremap <silent><buffer><expr> r
+  nnoremap <silent><buffer><expr> r
   \ defx#do_action('rename')
   nnoremap <silent><buffer><expr> !
   \ defx#do_action('execute_command')
@@ -131,6 +136,11 @@ function! s:defx_my_settings() abort
   nnoremap <silent><buffer><expr> cd
   \ defx#do_action('change_vim_cwd')
 endfunction
+call defx#custom#column('mark', {
+      \ 'directory_icon': '▸',
+      \ 'readonly_icon': '✗',
+      \ 'selected_icon': '✓',
+      \ })
 """
 
 [[plugins]]
@@ -145,7 +155,7 @@ repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
 repo = 'tyru/caw.vim'
 hook_add = """
 let g:caw_operator_keymappings = 1
-nmap <Space>c gcc
+map <Space>c gcc
 """
 
 
@@ -168,6 +178,9 @@ repo = 'kana/vim-operator-user'
 hook_add = """
 autocmd FileType tex let b:surround_66 = "\\\\{\r\\\\}"
 """
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
 
 # [[plugins]]
 # repo = 'rhysd/vim-operator-surround'
@@ -289,3 +302,7 @@ else
 endif
 unlet s:local_session_directory
 """
+
+
+[[plugins]]
+repo = 'qnighy/satysfi.vim'
