@@ -270,21 +270,26 @@ noremap <silent> F. :call search('[．。.]', 'b', line("."))<CR>
 nnoremap <silent> <Space><CR> a<CR><Esc>
 " 日本語の単語区切りを表示
 
-function! MgmDispWordToggle()
-  if @/ == '\<'
-    let @/=''
-    echo "Word Highlight OFF."
-  else
-    let @/='\<'
-    echo "Word Highlight ON."
-  endif
-endfunction
+" function! MgmDispWordToggle()
+"   if @/ == '\<'
+"     let @/=''
+"     echo "Word Highlight OFF."
+"   else
+"     let @/='\<'
+"     echo "Word Highlight ON."
+"   endif
+" endfunction
 
-nnoremap <silent> <Space>w :call MgmDispWordToggle()<CR>
+" nnoremap <silent> <Space>w :call MgmDispWordToggle()<CR>
+
+vnoremap <Space>w :s/./&/gn\|:noh<CR>
 
 " yank & paste のキーリマップ {{{2
 " x の結果をいちいちバッファに入れたくない
 nnoremap x "_x
+
+noremap <Space>y "+y
+noremap <Space>p "+p
 
 " 縦方向 f 移動 {{{2
 

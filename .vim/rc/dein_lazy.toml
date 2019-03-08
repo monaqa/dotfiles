@@ -19,6 +19,10 @@ call lexima#add_rule({'char': '\{', 'input_after': '\}', 'filetype': ['latex', '
 call lexima#add_rule({'char': '}', 'at': '\\\%#}', 'leave': 1, 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': '<BS>', 'at': '\\\{\%#\\\}', 'input': '<BS><BS><DEL><DEL>', 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex']})
+call lexima#add_rule({'input_after': '>', 'char': '<', 'filetype': ['satysfi']})
+call lexima#add_rule({'char': '<', 'at': '\\\%#', 'filetype': ['satysfi']})
+call lexima#add_rule({'char': '>', 'leave': 1, 'at': '\%#>', 'filetype': ['satysfi']})
+call lexima#add_rule({'char': '<BS>', 'at': '<\%#>', 'delete': 1, 'filetype': ['satysfi']})
 """
 
 [[plugins]]
@@ -51,6 +55,8 @@ let g:ale_linters = {
   \ 'tex': [],
   \ 'plaintex': [],
   \ }
+nmap <silent> <Space>j <Plug>(ale_previous_wrap)
+nmap <silent> <Space>k <Plug>(ale_next_wrap)
 """
 
 [[plugins]]

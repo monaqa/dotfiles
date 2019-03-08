@@ -86,6 +86,8 @@ function! s:defx_my_settings() abort
   \ defx#do_action('paste')
   nnoremap <silent><buffer><expr> l
   \ defx#do_action('drop')
+  nnoremap <silent><buffer><expr> t
+  \ defx#do_action('open_or_close_tree')
   nnoremap <silent><buffer><expr> E
   \ defx#do_action('open', 'vsplit')
   nnoremap <silent><buffer><expr> P
@@ -137,9 +139,11 @@ function! s:defx_my_settings() abort
   \ defx#do_action('change_vim_cwd')
 endfunction
 call defx#custom#column('mark', {
-      \ 'directory_icon': '▸',
       \ 'readonly_icon': '✗',
       \ 'selected_icon': '✓',
+      \ })
+call defx#custom#column('filename',{
+      \ 'indent': '| ',
       \ })
 """
 
@@ -168,38 +172,94 @@ map <Space>c gcc
 
 [[plugins]]
 repo = 'tpope/vim-surround'
+# char2nr 関数を使えば文字に対応する数字を知ることができる
 hook_add = """
 nmap sa ys
 vmap sa S
+let g:surround_{char2nr("P")} = "（\r）"
+let g:surround_{char2nr("B")} = "「\r」"
+let g:surround_{char2nr("D")} = "『\r』"
+let g:surround_{char2nr("m")} = "{{{\r}}}"
+" 例えば saiwB とすることで \{word\} などとできる
+autocmd FileType tex let b:surround_{char2nr("B")} = "\\\\{\r\\\\}"
 """
 
 [[plugins]]
 repo = 'kana/vim-operator-user'
-hook_add = """
-autocmd FileType tex let b:surround_66 = "\\\\{\r\\\\}"
-"""
 
 [[plugins]]
 repo = 'kana/vim-textobj-user'
+hook_add = """
+call textobj#user#plugin('line', {
+\   '-': {
+\     'select-a-function': 'CurrentLineA',
+\     'select-a': 'al',
+\     'select-i-function': 'CurrentLineI',
+\     'select-i': 'il',
+\   },
+\ })
 
-# [[plugins]]
-# repo = 'rhysd/vim-operator-surround'
-# depends = ['kana/vim-operator-user']
+function! CurrentLineA()
+  normal! 0
+  let head_pos = getpos('.')
+  normal! $
+  let tail_pos = getpos('.')
+  return ['v', head_pos, tail_pos]
+endfunction
+
+function! CurrentLineI()
+  normal! ^
+  let head_pos = getpos('.')
+  normal! g_
+  let tail_pos = getpos('.')
+  let non_blank_char_exists_p = getline('.')[head_pos[2] - 1] !~# '\s'
+  return
+  \ non_blank_char_exists_p
+  \ ? ['v', head_pos, tail_pos]
+  \ : 0
+endfunction
+
+call textobj#user#plugin('jbraces', {
+    \   'parens': {
+    \       'pattern': ['（', '）'],
+    \       'select-a': 'aP', 'select-i': 'iP'
+    \  },
+    \   'braces': {
+    \       'pattern': ['「', '」'],
+    \       'select-a': 'aB', 'select-i': 'iB'
+    \  },
+    \  'double-braces': {
+    \       'pattern': ['『', '』'],
+    \       'select-a': 'aD', 'select-i': 'iD'
+    \  },
+    \})
+"""
+
+[[plugins]]
+repo = 'rhysd/vim-operator-surround'
+depends = ['kana/vim-operator-user']
 # " map sa <Plug>(operator-surround-append)
 # " map sd <Plug>(operator-surround-delete)a
 # map sr <Plug>(operator-surround-replace)a
 # map sa ys
 # let g:operator#surround#blocks = {}
-# let g:operator#surround#blocks['-'] = [
-    # \   { 'block' : ['（', '）'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['P'] },
-    # \   { 'block' : ['「', '」'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
-    # \   { 'block' : ['『', '』'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['D'] },
-    # \ ]
-# hook_add = """
-# " let g:operator#surround#blocks['tex'] = [
-# "     \   { 'block' : ['\{', '\}'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
-# "     \ ]
-# """
+hook_add = """
+" let g:operator#surround#blocks['tex'] = [
+"     \   { 'block' : ['\{', '\}'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
+"     \ ]
+nmap dsP <Plug>(operator-surround-delete)aP
+nmap dsB <Plug>(operator-surround-delete)aB
+nmap dsD <Plug>(operator-surround-delete)aD
+nmap csP <Plug>(operator-surround-replace)aP
+nmap csB <Plug>(operator-surround-replace)aB
+nmap csD <Plug>(operator-surround-replace)aD
+let g:operator#surround#blocks = {}
+let g:operator#surround#blocks['-'] = [
+    \   { 'block' : ['（', '）'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['P'] },
+    \   { 'block' : ['「', '」'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
+    \   { 'block' : ['『', '』'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['D'] },
+    \ ]
+"""
 
 # [[plugins]]
 # repo = 'LeafCage/foldCC'
