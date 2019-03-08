@@ -12,19 +12,18 @@ fish_vi_key_bindings
 # set -g fish_ambiguous_width 2
 
 # Spacefish settings
-set SPACEFISH_PROMPT_ORDER time user dir host git package node docker ruby golang php rust haskell julia aws conda pyenv kubecontext exec_time battery line_sep jobs vi_mode exit_code char
+# set SPACEFISH_PROMPT_ORDER time user dir host git package node docker ruby golang php rust haskell julia aws conda pyenv kubecontext exec_time battery line_sep jobs vi_mode exit_code char
+set SPACEFISH_PROMPT_ORDER user dir git battery line_sep jobs vi_mode char
 # prompt
 set SPACEFISH_PROMPT_ADD_NEWLINE true
 set SPACEFISH_PROMPT_SEPARATE_LINE true
 # user
-set SPACEFISH_USER_SHOW always
+set SPACEFISH_USER_SHOW true
 # dir
 set SPACEFISH_DIR_TRUNC 0
 set SPACEFISH_DIR_TRUNC_REPO true
 # git
 set SPACEFISH_GIT_SYMBOL 'br:'
-# exec_time
-set SPACEFISH_EXEC_TIME_SHOW false
 # battery
 set SPACEFISH_BATTERY_THRESHOLD 80
 # vi mode
