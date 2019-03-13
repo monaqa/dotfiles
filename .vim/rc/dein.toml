@@ -40,8 +40,6 @@ repo = 'morhetz/gruvbox'
 
 [[plugins]]
 repo = 'kana/vim-submode'
-hook_add = """
-"""
 
 # [[plugins]]
 # repo = 'scrooloose/nerdtree'
@@ -68,17 +66,18 @@ repo = 'Shougo/defx.nvim'
 depends = ['kristijanhusak/defx-git']
 hook_add = """
 nnoremap <silent> <Space>z :Defx
-  \ -columns=git:mark:filename
+  \ -columns=git:icons:filename
   \ -toggle -split=vertical -winwidth=30 -direction=topleft<CR>
 nnoremap <silent> <Space><S-z> :Defx
-  \ -columns=git:mark:filename:size:time
+  \ -columns=git:icons:filename:type:size:time
   \ -toggle -split=horizontal -winheight=20 -direction=botright<CR>
 autocmd FileType defx call s:defx_my_settings()
+autocmd FileType defx set nonumber
 function! s:defx_my_settings() abort
   " Define mappings
   " nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
   nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
-  nnoremap <silent><buffer><expr> c
+  nnoremap <silent><buffer><expr> cc
   \ defx#do_action('copy')
   nnoremap <silent><buffer><expr> m
   \ defx#do_action('move')
@@ -103,8 +102,8 @@ function! s:defx_my_settings() abort
   \                'mark:filename:type:size:time')
   nnoremap <silent><buffer><expr> S
   \ defx#do_action('toggle_sort', 'time')
-  " nnoremap <silent><buffer><expr> d
-  " \ defx#do_action('remove')
+  " nnoremap <silent><buffer><expr> dd
+  " \ defx#do_action('remove_trash')
   nnoremap <silent><buffer><expr> r
   \ defx#do_action('rename')
   nnoremap <silent><buffer><expr> !
@@ -143,16 +142,18 @@ call defx#custom#column('mark', {
       \ 'selected_icon': '✓',
       \ })
 call defx#custom#column('filename',{
-      \ 'indent': '| ',
+      \ 'indent': '│',
       \ })
 """
 
 [[plugins]]
 repo = 'kristijanhusak/defx-git'
 
-
 [[plugins]]
-repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
+repo = 'kristijanhusak/defx-icons'
+
+# [[plugins]]
+# repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 
 [[plugins]]
@@ -160,6 +161,7 @@ repo = 'tyru/caw.vim'
 hook_add = """
 let g:caw_operator_keymappings = 1
 map <Space>c gcc
+nmap <Space>cc gcc$
 """
 
 
