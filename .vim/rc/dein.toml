@@ -15,8 +15,6 @@ let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#whitespace#mixed_indent_algo = 1
 """
 
-
-
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
 
@@ -186,6 +184,34 @@ let g:surround_{char2nr("m")} = "{{{\r}}}"
 autocmd FileType tex let b:surround_{char2nr("B")} = "\\\\{\r\\\\}"
 """
 
+
+[[plugins]]
+repo = 'rhysd/vim-operator-surround'
+depends = ['kana/vim-operator-user']
+# " map sa <Plug>(operator-surround-append)
+# " map sd <Plug>(operator-surround-delete)a
+# map sr <Plug>(operator-surround-replace)a
+# map sa ys
+# let g:operator#surround#blocks = {}
+hook_add = """
+" let g:operator#surround#blocks['tex'] = [
+"     \   { 'block' : ['\{', '\}'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
+"     \ ]
+nmap dsP <Plug>(operator-surround-delete)aP
+nmap dsB <Plug>(operator-surround-delete)aB
+nmap dsD <Plug>(operator-surround-delete)aD
+nmap csP <Plug>(operator-surround-replace)aP
+nmap csB <Plug>(operator-surround-replace)aB
+nmap csD <Plug>(operator-surround-replace)aD
+let g:operator#surround#blocks = {}
+let g:operator#surround#blocks['-'] = [
+    \   { 'block' : ['（', '）'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['P'] },
+    \   { 'block' : ['「', '」'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
+    \   { 'block' : ['『', '』'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['D'] },
+    \ ]
+"""
+
+
 [[plugins]]
 repo = 'kana/vim-operator-user'
 
@@ -237,32 +263,6 @@ call textobj#user#plugin('jbraces', {
     \})
 """
 
-[[plugins]]
-repo = 'rhysd/vim-operator-surround'
-depends = ['kana/vim-operator-user']
-# " map sa <Plug>(operator-surround-append)
-# " map sd <Plug>(operator-surround-delete)a
-# map sr <Plug>(operator-surround-replace)a
-# map sa ys
-# let g:operator#surround#blocks = {}
-hook_add = """
-" let g:operator#surround#blocks['tex'] = [
-"     \   { 'block' : ['\{', '\}'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
-"     \ ]
-nmap dsP <Plug>(operator-surround-delete)aP
-nmap dsB <Plug>(operator-surround-delete)aB
-nmap dsD <Plug>(operator-surround-delete)aD
-nmap csP <Plug>(operator-surround-replace)aP
-nmap csB <Plug>(operator-surround-replace)aB
-nmap csD <Plug>(operator-surround-replace)aD
-let g:operator#surround#blocks = {}
-let g:operator#surround#blocks['-'] = [
-    \   { 'block' : ['（', '）'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['P'] },
-    \   { 'block' : ['「', '」'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
-    \   { 'block' : ['『', '』'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['D'] },
-    \ ]
-"""
-
 # [[plugins]]
 # repo = 'LeafCage/foldCC'
 # hook_add = """
@@ -282,14 +282,14 @@ let g:operator#surround#blocks['-'] = [
 # autocmd FileType python,yaml BracelessEnable +fold
 # """
 
-[[plugins]]
-repo = 'lervag/vimtex'
+# [[plugins]]
+# repo = 'lervag/vimtex'
 
-[[plugins]]
-repo = 'Rykka/riv.vim'
+# [[plugins]]
+# repo = 'Rykka/riv.vim'
 
-[[plugins]]
-repo = 'davidhalter/jedi-vim'
+# [[plugins]]
+# repo = 'davidhalter/jedi-vim'
 
 # [[plugins]]
 # repo = 'jsfaint/gen_tags.vim'
