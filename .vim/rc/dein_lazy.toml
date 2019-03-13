@@ -23,6 +23,7 @@ call lexima#add_rule({'input_after': '>', 'char': '<', 'filetype': ['satysfi']})
 call lexima#add_rule({'char': '<', 'at': '\\\%#', 'filetype': ['satysfi']})
 call lexima#add_rule({'char': '>', 'leave': 1, 'at': '\%#>', 'filetype': ['satysfi']})
 call lexima#add_rule({'char': '<BS>', 'at': '<\%#>', 'delete': 1, 'filetype': ['satysfi']})
+call lexima#add_rule({'char': '``', 'input_after': '``', 'filetype': ['rst']})
 """
 
 [[plugins]]
@@ -99,6 +100,12 @@ on_ft = ['python']
 [[plugins]]
 repo = 'Rykka/riv.vim'
 on_ft = ['rst', 'restructuredtext']
+hook_source = """
+let g:riv_fold_level = 1
+let g:riv_fold_info_pos = 'left'
+" let g:riv_ignored_imaps = "<S-CR>,<C-CR>"
+let g:riv_ignored_nmaps = ">,<"
+"""
 
 
 
