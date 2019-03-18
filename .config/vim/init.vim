@@ -353,5 +353,41 @@ autocmd Filetype tex set iskeyword+=92
 command! MgmViewAdoc :!python make.py;asciidoctor %;open -a Vivaldi %:r.html<CR>
 " }}}
 
+" netrw {{{2
+augroup netrw_mapping
+    autocmd!
+    autocmd filetype netrw call NetrwMapping()
+augroup END
+
+function! NetrwMapping()
+    noremap <buffer> i h
+    noremap <buffer> s <Nop>
+endfunction
+
+" https://www.tomcky.net/entry/2018/03/18/005927
+" 上部に表示される情報を非表示
+let g:netrw_banner = 0
+" 表示形式をTreeViewに変更
+let g:netrw_liststyle = 3
+" 左右分割を右側に開く
+let g:netrw_altv = 1
+" 分割で開いたときに85%のサイズで開く
+let g:netrw_winsize = 85
 " }}}
 
+" satysfi{{{2
+
+command! MgmSatyCompile !satysfi %
+command! MgmSatyShowPDF silent !open %:r.pdf
+
+nnoremap sc :MgmSatyCompile<CR>
+nnoremap sC :MgmSatyShowPDF<CR>
+
+autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages
+autocmd filetype satysfi set suffixesadd+=.saty,.satyh
+
+" autocmd filetype satysfi set foldmethod=
+
+" }}}
+
+" }}}

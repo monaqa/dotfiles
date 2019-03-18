@@ -121,8 +121,8 @@ set -x PATH '/usr/local/opt/qt/bin' $PATH
 # wrike
 alias wps='python /Users/shinichi/Documents/git/hobby/wrike_personal/wrike_personal/wrike_personal.py'
 
+
 # opam configuration
 source /Users/shinichi/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
-
 
 set fish_theme default

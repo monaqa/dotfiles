@@ -162,6 +162,9 @@ map <Space>c gcc
 nmap <Space>cc gcc$
 """
 
+[[plugins]]
+repo = 'glts/vim-textobj-comment'
+depends = ['kana/vim-textobj-user']
 
 # [[plugins]]
 # repo = 'scrooloose/nerdcommenter'
@@ -341,9 +344,6 @@ call denite#custom#source('file_rec',
 """
 
 [[plugins]]
-repo = 'xolox/vim-misc'
-
-[[plugins]]
 repo = 'xolox/vim-session'
 depends = ['xolox/vim-misc']
 hook_add = """
@@ -365,6 +365,8 @@ endif
 unlet s:local_session_directory
 """
 
+[[plugins]]
+repo = 'xolox/vim-misc'
 
 [[plugins]]
 repo = 'qnighy/satysfi.vim'
