@@ -1,0 +1,6 @@
+# -*- enable-delete-trailing-whitespace-before-save: nil -*-
+.DS_Store
+
+Icon
+
+.vimsessions/

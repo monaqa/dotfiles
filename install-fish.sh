@@ -4,6 +4,7 @@ set dir (pwd)
 ln -fs $dir/.config/fish/config.fish ~/.config/fish/config.fish
 ln -fs $dir/.config/nvim/init.vim ~/.config/nvim/init.vim
 ln -fs $dir/.config/vim/init.vim ~/.config/vim/init.vim
+ln -fs $dir/.config/git/ignore ~/.config/git/ignore
 ln -fs $dir/.vimrc ~/.vimrc
 ln -fs $dir/.gvimrc ~/.gvimrc
 ln -fs $dir/.vim/rc/dein.toml ~/.vim/rc/dein.toml 
