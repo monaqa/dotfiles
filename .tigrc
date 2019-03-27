@@ -1,0 +1,5 @@
+set git-colors = no
+set ignore-case = true
+set mouse = true
+bind generic <Ctrl-f> move-page-down
+bind generic <Ctrl-b> move-page-up

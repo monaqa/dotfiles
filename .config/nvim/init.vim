@@ -16,6 +16,8 @@
 " Mac では以下のようにしないと pbcopy が使えないっぽい
 " https://github.com/neovim/neovim/issues/8631
 
+let g:python3_host_prog = $PYENV_ROOT . '/versions/anaconda3-2018.12/bin/python'
+
 " Plugins {{{1
 """""""""""""""
 

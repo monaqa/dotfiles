@@ -324,7 +324,7 @@ nnoremap <Space>t :Denite grep -input=TODO: -mode="normal"<CR>
 nnoremap <Space>G :Denite -resume -buffer-name=search-buffer-denite<CR>
 nnoremap <Space>] :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
 nnoremap <Space>[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
-nnoremap <Space>o :Denite file_rec<CR>
+nnoremap <Space>o :Denite file/rec<CR>
 nnoremap <Space><Space> :Denite<Space>
 call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
       \ [ '.git/', '.ropeproject/', '__pycache__/',
@@ -339,7 +339,7 @@ call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
 call denite#custom#source('grep',
   \ 'matchers', ['converter/abbr_word', 'matcher_fuzzy', 'matcher/ignore_globs'],
   \ )
-call denite#custom#source('file_rec',
+call denite#custom#source('file/rec',
   \ 'matchers', ['matcher_fuzzy', 'matcher/ignore_globs'])
 """
 

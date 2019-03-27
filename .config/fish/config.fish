@@ -35,7 +35,7 @@ set SPACEFISH_CHAR_SYMBOL_ROOT '><;>'
 # eval (pyenv init - fish)
 set -gx PATH '/Users/shinichi/.pyenv/shims' $PATH
 set -gx PYENV_SHELL fish
-source '/usr/local/Cellar/pyenv/1.1.5/libexec/../completions/pyenv.fish'
+# source '/usr/local/Cellar/pyenv/1.1.5/libexec/../completions/pyenv.fish'
 command pyenv rehash 2>/dev/null
 function pyenv
   set command $argv[1]
@@ -48,6 +48,8 @@ function pyenv
     command pyenv "$command" $argv
   end
 end
+
+set -gx PYENV_ROOT "$HOME/.pyenv"
 
 alias ll='ls -laF'
 
