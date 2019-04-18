@@ -116,6 +116,16 @@ vnoremap <S-CR> "sy:set hlsearch<CR>/\V<C-R><C-R>=substitute(
   \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR>
   \/<C-R><C-R>=escape(@s, '/\&~')<CR>
   \/gce<Bar>1,''-&&<CR>
+
+" f 移動をさらに便利に
+noremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[ABCDEFGHIJKLMNOPQRSTUVWXYZ]', v:count1, '')<CR>
+noremap <silent> F✠ :<C-u>call MgmNumSearchLine('[ABCDEFGHIJKLMNOPQRSTUVWXYZ]', v:count1, 'b')<CR>
+
+function! MgmNumSearchLine(ptn, num, opt)
+  for i in range(a:num)
+    call search(a:ptn, a:opt, line("."))
+  endfor
+endfunction
 " }}}
 
 " }}}
@@ -127,12 +137,17 @@ vnoremap <S-CR> "sy:set hlsearch<CR>/\V<C-R><C-R>=substitute(
 set matchpairs+=「:」,（:）,【:】,『:』
 
 " 句読点の検索（;や,が使えなくなることに注意）
-noremap <silent> f, :call search('[，、,]', '', line("."))<CR>
-noremap <silent> f. :call search('[．。.]', '', line("."))<CR>
-noremap <silent> F, :call search('[，、,]', 'b', line("."))<CR>
-noremap <silent> F. :call search('[．。.]', 'b', line("."))<CR>
-" }}}
+" noremap <silent> f, :call search('[，、,]', '', line("."))<CR>
+" noremap <silent> f. :call search('[．。.]', '', line("."))<CR>
+" noremap <silent> F, :call search('[，、,]', 'b', line("."))<CR>
+" noremap <silent> F. :call search('[．。.]', 'b', line("."))<CR>
 
+noremap <silent> f, :<C-u>call MgmNumSearchLine('[，、,]', v:count1, '' )<CR>
+noremap <silent> f. :<C-u>call MgmNumSearchLine('[．。.]', v:count1, '' )<CR>
+noremap <silent> F, :<C-u>call MgmNumSearchLine('[，、,]', v:count1, 'b')<CR>
+noremap <silent> F. :<C-u>call MgmNumSearchLine('[．。.]', v:count1, 'b')<CR>
+
+" }}}
 
 " Window/buffer の設定{{{1
 """"""""""""""""""""""""""
