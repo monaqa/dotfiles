@@ -13,6 +13,7 @@ let g:airline_theme = 'sol'
 let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#buffer_idx_mode = 1
 " let g:airline#extensions#whitespace#mixed_indent_algo = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 """
 
 [[plugins]]
@@ -338,7 +339,10 @@ call denite#custom#source('grep',
   \ )
 call denite#custom#source('file/rec',
   \ 'matchers', ['matcher_fuzzy', 'matcher/ignore_globs'])
+call denite#custom#var('buffer', 'date_format', '')
+call denite#custom#source('buffer', 'matchers', ['converter/abbr_word', 'matcher/substring'])
 """
+
 
 [[plugins]]
 repo = 'xolox/vim-session'
@@ -362,8 +366,14 @@ endif
 unlet s:local_session_directory
 """
 
+
 [[plugins]]
 repo = 'xolox/vim-misc'
 
+
 [[plugins]]
 repo = 'qnighy/satysfi.vim'
+
+
+# hook_post_update = 'call hook#post_update#language_client_neovim#load()'
+# hook_add = 'call hook#add#language_client_neovim#load()'

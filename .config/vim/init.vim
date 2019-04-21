@@ -149,6 +149,7 @@ noremap <silent> F. :<C-u>call MgmNumSearchLine('[．。.]', v:count1, 'b')<CR>
 
 " }}}
 
+
 " Window/buffer の設定{{{1
 """"""""""""""""""""""""""
 
@@ -220,6 +221,41 @@ set clipboard=
 noremap <Space>y "+y
 noremap <Space>p "+p
 
+" nmap <silent> R :set opfunc=MgmReplace<CR>g@
+nmap <silent> R :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplace<CR>g@
+nmap <silent> RR :<C-u>let w:replace_buffer = v:register <Bar> call MgmReplaceALine(v:count1)<CR>
+
+function MgmReplace(type)
+  let sel_save = &selection
+  let &selection = "inclusive"
+  " let m_reg = @m
+  exe "let @m = @" . w:replace_buffer
+
+  if a:type == 'line'
+    exe "normal! '[V']d"
+  else
+    exe "normal! `[v`]d"
+  endif
+
+  exe "normal! " . '"' . "mP"
+
+  let &selection = sel_save
+  " let @m=m_reg
+endfunction
+
+function MgmReplaceALine(nline)
+  let sel_save = &selection
+  let &selection = "inclusive"
+  " let m_reg = @m
+  exe "let @m = @" . w:replace_buffer
+
+  exe "normal! " . a:nline . "dd"
+  exe "normal! " . '"' . "mP"
+
+  let &selection = sel_save
+  " let @m=m_reg
+endfunction
+
 " }}}
 
 
@@ -290,8 +326,8 @@ call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
 " 行の操作/空行追加{{{2
 nnoremap <Space><Up> "zdd<Up>"zP
-nnoremap <Space><Down> "zdd"zp
 vnoremap <Space><Up> "zx<Up>"zP`[V`]
+nnoremap <Space><Down> "zdd"zp
 vnoremap <Space><Down> "zx"zp`[V`]
 
 inoremap <S-CR> <End><CR>

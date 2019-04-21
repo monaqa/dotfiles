@@ -34,7 +34,7 @@ hook_post_source = """
 imap <C-s> <Plug>(neosnippet_expand_or_jump)
 smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
-let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
+let g:neosnippet#snippets_directory='~/.vim/snippets'
 """
 
 [[plugins]]
@@ -103,10 +103,24 @@ on_ft = ['rst', 'restructuredtext']
 hook_post_source = """
 let g:riv_fold_level = 1
 let g:riv_fold_info_pos = 'left'
-" let g:riv_ignored_imaps = "<S-CR>,<C-CR>"
+" let g:riv_ignored_imaps = "<S-CR>,<C-CR>,<Tab>"
 let g:riv_ignored_nmaps = ">,<"
 """
 
+
+[[plugins]]
+repo = 'autozimu/LanguageClient-neovim'
+rev = 'next'
+on_ft = ['python', 'java']
+build = 'bash install.sh'
+hook_add = '''
+source ~/.config/nvim/plugins/languageclient-neovim.rc.vim
+'''
+
+# only in Julia
+
+# [[plugins]]
+# repo = 'JuliaEditorSupport/julia-vim'
 
 
 # only in dein.vim config file (this file or others)
