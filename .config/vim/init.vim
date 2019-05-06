@@ -118,8 +118,8 @@ vnoremap <S-CR> "sy:set hlsearch<CR>/\V<C-R><C-R>=substitute(
   \/gce<Bar>1,''-&&<CR>
 
 " f 移動をさらに便利に
-noremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[ABCDEFGHIJKLMNOPQRSTUVWXYZ]', v:count1, '')<CR>
-noremap <silent> F✠ :<C-u>call MgmNumSearchLine('[ABCDEFGHIJKLMNOPQRSTUVWXYZ]', v:count1, 'b')<CR>
+noremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, '')<CR>
+noremap <silent> F✠ :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, 'b')<CR>
 
 function! MgmNumSearchLine(ptn, num, opt)
   for i in range(a:num)
@@ -163,7 +163,7 @@ nnoremap sp :<C-u>bp<CR>
 " nnoremap sq :<C-u>bd<CR>
 " https://github.com/scrooloose/nerdtree/issues/400
 nnoremap sq :<C-u>bp<CR>:bd #<CR>
-" nnoremap sQ :<C-u>q<CR>
+nnoremap sw :<C-u>q<CR>
 " バッファ間移動
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
@@ -184,13 +184,12 @@ nnoremap sO <C-w>=
 nnoremap st :<C-u>tabnew<CR>
 nnoremap sN gt
 nnoremap sP gT
-" nnoremap sT :<C-u>Unite tab<CR>
-" nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
-" nnoremap sb :<c-u>unite buffer -buffer-name=file<cr>
 " nnoremap sc <C-w>c
 " nnoremap sw <C-w>w
 " Scroll bind
 " nnoremap sw :set<Space>scb<CR>:vs<Space>
+
+nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 
 call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
 call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
