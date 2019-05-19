@@ -1,3 +1,5 @@
+export EDITOR=nvim
+
 fish_vi_key_bindings
 
 # Powerline 2 width

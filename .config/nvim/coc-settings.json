@@ -1,0 +1,19 @@
+{
+  "suggest.snippetIndicator": "►",
+  "suggest.acceptSuggestionOnCommitCharacter": false,
+  "diagnostic.messageTarget": "float",
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextPrefix": " ",
+  "diagnostic.warningSign": "⚠",
+  "diagnostic.errorSign": "",
+  "codeLens.enable": true,
+
+  "python.jediEnabled": true,
+  "python.linting.mypyPath": "mypy",
+  "python.linting.flake8Path": "flake8",
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.flake8CategorySeverity.E": "Warning",
+  "python.linting.flake8CategorySeverity.F": "Warning",
+  "python.linting.pep8CategorySeverity.E": "Warning"
+}

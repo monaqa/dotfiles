@@ -72,6 +72,7 @@ nnoremap <silent> <Space><S-z> :Defx
   \ -toggle -split=horizontal -winheight=20 -direction=botright<CR>
 autocmd FileType defx call s:defx_my_settings()
 autocmd FileType defx set nonumber
+autocmd FileType defx set signcolumn=no
 function! s:defx_my_settings() abort
   " Define mappings
   " nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
@@ -374,6 +375,13 @@ repo = 'xolox/vim-misc'
 [[plugins]]
 repo = 'qnighy/satysfi.vim'
 
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+merge = 0
+# build = './install.sh nightly'
+build = 'yarn install --frozen-lockfile'
+hook_add = 'source ~/.config/nvim/plugins/coc-settings.vim'
 
 # hook_post_update = 'call hook#post_update#language_client_neovim#load()'
 # hook_add = 'call hook#add#language_client_neovim#load()'

@@ -49,6 +49,9 @@ set modelines=3
 
 set lazyredraw
 set ttyfast
+
+set statusline^=%{coc#status()}
+set signcolumn=yes
 " }}}
 
 " 全角スペース強調 {{{2
@@ -85,6 +88,7 @@ hi! link Folded GruvboxPurpleBold
 " エディタの機能に関する設定 {{{1
 """""""""""""""""""""""""""""""""
 
+set backupskip=/tmp/*,/private/tmp/*
 set nobackup  " backup ファイルを作らない
 " set nowritebackup  " たとえ書き込みに失敗しても backup しない
 set noswapfile  " swap ファイルを作らない
@@ -302,14 +306,41 @@ onoremap <Space>f :MgmLineSearch<Space>
 onoremap <Space>F :MgmLineBackSearch<Space>
 vnoremap <Space>f :<C-u>MgmVisualLineSearch<Space>
 vnoremap <Space>F :<C-u>MgmVisualLineBackSearch<Space>
-" nnoremap <Space>; :MgmLineSameSearch<CR>
-" nnoremap <Space>, :MgmLineBackSameSearch<CR>
+nnoremap <Space>; :MgmLineSameSearch<CR>
+nnoremap <Space>, :MgmLineBackSameSearch<CR>
 
 call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':MgmLineSameSearch<CR>')
 call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':MgmLineBackSameSearch<CR>')
 call submode#map('vertjmp', 'n', '', ';', ':MgmLineSameSearch<CR>')
 call submode#map('vertjmp', 'n', '', ',', ':MgmLineBackSameSearch<CR>')
 call submode#leave_with('vertjmp', 'n', '', '<Space>')
+
+function MgmVertSearch(opt)
+  let posnow = getcurpos()
+  let lspaces = posnow[2] - 1
+  let @m = nr2char(getchar())
+  let pos = searchpos('^.\{' . lspaces . '}\zs' . @m, a:opt)
+  call cursor(pos)
+endfunction
+
+function MgmVisualVertSearch(opt)
+  let posnow = getpos("'>")
+  let lspaces = posnow[2] - 1
+  let @m = nr2char(getchar())
+  let pos = searchpos('^.\{' . lspaces . '}\zs' . @m, a:opt)
+  call cursor(pos)
+  normal v`'o
+endfunction
+
+" 改訂版縦方向 f 移動
+" nnoremap <silent> <Space>f :<C-u>call MgmVertSearch('')<CR>
+" nnoremap <silent> <Space>F :<C-u>call MgmVertSearch('b')<CR>
+" onoremap <silent> <Space>f :<C-u>call MgmVertSearch('')<CR>
+" onoremap <silent> <Space>F :<C-u>call MgmVertSearch('b')<CR>
+" vnoremap <silent> <Space>f :<C-u>call MgmVisualVertSearch('s')<CR>
+" vnoremap <silent> <Space>F :<C-u>call MgmVisualVertSearch('bs')<CR>
+
+
 " }}}
 
 " モード間移動{{{2
@@ -346,6 +377,7 @@ endif
 " 長い文の改行をノーマルモードから楽に行う
 " try: f.<Space><CR> or f,<Space><CR>
 nnoremap <silent> <Space><CR> a<CR><Esc>
+" nnoremap <silent> <CR> :exe "i".nr2char(getchar())<CR>
 " }}}
 
 " folding (invalid){{{2

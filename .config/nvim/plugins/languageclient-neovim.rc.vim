@@ -49,11 +49,13 @@ let g:LanguageClient_autoStart = 1
 " nnoremap <Leader>lf :call LanguageClient_textDocument_formatting()<CR>
 "
 "
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-    let g:LanguageClient_serverCommands['python'] = ['pyls']
-endif
+let g:LanguageClient_diagnosticsEnable = 0
+
+" if executable('pyls')
+"     au User lsp_setup call lsp#register_server({
+"        \ 'name': 'pyls',
+"        \ 'cmd': {server_info->['pyls']},
+"        \ 'whitelist': ['python'],
+"        \ })
+"     let g:LanguageClient_serverCommands['python'] = ['pyls']
+" endif
