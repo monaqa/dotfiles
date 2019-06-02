@@ -31,7 +31,9 @@ repo = 'Shougo/neosnippet.vim'
 on_i = 1
 depends = ['neosnippet-snippets']
 hook_post_source = """
-imap <C-s> <Plug>(neosnippet_expand_or_jump)
+imap <silent><expr> <C-s>
+  \ pumvisible() ? "\<C-e>\<Plug>(neosnippet_expand_or_jump)"
+  \ : "\<Plug>(neosnippet_expand_or_jump)"
 smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
 let g:neosnippet#snippets_directory='~/.vim/snippets'
@@ -122,9 +124,11 @@ let g:riv_ignored_maps = "<CR>,<S-CR>"
 # '''
 
 # only in Julia
-
-# [[plugins]]
-# repo = 'JuliaEditorSupport/julia-vim'
+[[plugins]]
+repo = 'JuliaEditorSupport/julia-vim'
+on_ft = ["jl", "julia"]
+hook_add = """
+"""
 
 
 # only in dein.vim config file (this file or others)

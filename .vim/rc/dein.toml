@@ -356,7 +356,20 @@ repo = 'neoclide/coc.nvim'
 merge = 0
 # build = './install.sh nightly'
 build = 'yarn install --frozen-lockfile'
-hook_add = 'source ~/.config/nvim/plugins/coc-settings.vim'
+hook_add = """
+source ~/.config/nvim/plugins/coc-settings.vim
+let g:LanguageClient_serverCommands = {
+\   'julia': ['/Applications/Julia-1.1.app/Contents/Resources/julia/bin/julia']}
+"""
+
+
+[[plugins]]
+repo = 'leafgarland/typescript-vim'
+
+[[plugins]]
+# repo = 'dag/vim-fish'  # 重すぎる
+repo = 'vim-scripts/fish-syntax'
+
 
 # hook_post_update = 'call hook#post_update#language_client_neovim#load()'
 # hook_add = 'call hook#add#language_client_neovim#load()'

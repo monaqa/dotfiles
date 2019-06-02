@@ -466,7 +466,9 @@ nnoremap sc :MgmSatyCompile<CR>
 nnoremap sC :MgmSatyShowPDF<CR>
 
 autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages
-autocmd filetype satysfi set suffixesadd+=.saty,.satyh
+autocmd filetype satysfi set suffixesadd+=.saty,.satyh,.satyg
+autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
+autocmd filetype satysfi let b:caw_oneline_comment = "%"
 
 " autocmd filetype satysfi set foldmethod=
 
