@@ -316,32 +316,7 @@ repo = 'Konfekt/FastFold'
 [[plugins]]
 repo = 'Shougo/denite.nvim'
 hook_add = """
-nnoremap <Space>b :Denite buffer -mode="normal" -sorters=sorter/word<CR>
-nnoremap <Space>r :Denite register<CR>
-nnoremap <Space>g :Denite grep -buffer-name=search-buffer-denite<CR>
-nnoremap <Space>t :Denite grep -input=TODO: -mode="normal"<CR>
-nnoremap <Space>G :Denite -resume -buffer-name=search-buffer-denite<CR>
-nnoremap <Space>] :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
-nnoremap <Space>[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
-nnoremap <Space>o :Denite file/rec<CR>
-nnoremap <Space><Space> :Denite<Space>
-call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-      \ [ '.git/', '.ropeproject/', '__pycache__/',
-      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/',
-      \   '*.aux', '*.bbl', '*.blg', '*.dvi', '*.fdb_latexmk', '*.fls', '*.synctex.gz', '*.toc',
-      \   '*.out', '*.snm', '*.nav',
-      \   '*.pdf', '*.eps', '*.svg',
-      \   '*.png',
-      \   'searchindex.js',
-      \   '*.ipynb',
-      \   ])
-call denite#custom#source('grep',
-  \ 'matchers', ['converter/abbr_word', 'matcher_fuzzy', 'matcher/ignore_globs'],
-  \ )
-call denite#custom#source('file/rec',
-  \ 'matchers', ['matcher_fuzzy', 'matcher/ignore_globs'])
-call denite#custom#var('buffer', 'date_format', '')
-call denite#custom#source('buffer', 'matchers', ['converter/abbr_word', 'matcher/substring'])
+source ~/.config/nvim/plugins/denite.vim
 """
 
 
