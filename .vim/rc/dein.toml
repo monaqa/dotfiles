@@ -20,18 +20,16 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 repo = 'vim-airline/vim-airline-themes'
 
 [[plugins]]
-repo = 'yuttie/comfortable-motion.vim'
+# repo = 'yuttie/comfortable-motion.vim'
+repo = 'mogassy/smooth-scroll.vim'
 hook_add = """
-let g:comfortable_motion_scroll_down_key = "j"
-let g:comfortable_motion_scroll_up_key = "k"
-let g:comfortable_motion_friction =  200.0
-let g:comfortable_motion_air_drag = 1.8
-let g:comfortable_motion_no_default_key_mappings = 1
-let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
-nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
-nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
-nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
-nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
+let g:smooth_scroll_no_default_key_mappings = 1
+let g:smooth_scroll_interval = 1000.0 / 100
+let g:smooth_scroll_scrollkind = "cubic"
+nnoremap <silent> <C-d> :call smooth_scroll#flick(winheight(0) / 2, 20,  1)<CR>
+nnoremap <silent> <C-u> :call smooth_scroll#flick(winheight(0) / 2, 20, -1)<CR>
+nnoremap <silent> <C-f> :call smooth_scroll#flick(winheight(0), winheight(0) / 2,  1)<CR>
+nnoremap <silent> <C-b> :call smooth_scroll#flick(winheight(0), winheight(0) / 2, -1)<CR>
 """
 
 [[plugins]]
