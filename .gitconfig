@@ -1,0 +1,9 @@
+[user]
+	email = mogassy@yahoo.co.jp
+	name = mogassy
+
+[tig "color"] cursor = yellow red bold
+[commit]
+	template = /Users/shinichi/.commit_template
+[core]
+	editor = nvim
