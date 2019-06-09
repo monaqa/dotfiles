@@ -1,7 +1,7 @@
-nnoremap <silent> <Space>z :Defx
+nnoremap <silent> sz :Defx
   \ -columns=git:indent:icons:filename
   \ -toggle -split=vertical -winwidth=30 -direction=topleft<CR>
-nnoremap <silent> <Space><S-z> :Defx
+nnoremap <silent> s<S-z> :Defx
   \ -columns=git:indent:icons:filename:type:size:time
   \ -toggle -split=horizontal -winheight=20 -direction=botright<CR>
 autocmd FileType defx call s:defx_my_settings()

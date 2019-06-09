@@ -8,6 +8,7 @@
 " Syntax, mouse などの有効化{{{2
 syntax on
 set mouse=a
+set shell=/bin/bash\ --login
 
 if has('persistent_undo')
   set undodir=~/.vim/undo
@@ -124,6 +125,8 @@ vnoremap <S-CR> "sy:set hlsearch<CR>/\V<C-R><C-R>=substitute(
 " f 移動をさらに便利に
 noremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, '')<CR>
 noremap <silent> F✠ :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, 'b')<CR>
+vnoremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, '')<CR>v`'o
+vnoremap <silent> F✠ :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, 'b')<CR>v`'o
 
 function! MgmNumSearchLine(ptn, num, opt)
   for i in range(a:num)
@@ -182,8 +185,8 @@ nnoremap sH <C-w>H
 " 各ウィンドウの大きさ変更
 " submode も参照
 nnoremap s= <C-w>=
-nnoremap so <C-w>_<C-w>|
-nnoremap sO <C-w>=
+" nnoremap so <C-w>_<C-w>|
+" nnoremap sO <C-w>=
 " タブページ
 nnoremap st :<C-u>tabnew<CR>
 nnoremap sN gt

@@ -1,12 +1,10 @@
-nnoremap <Space>b :Denite buffer -sorters=sorter/word<CR>
-nnoremap <Space>r :Denite register<CR>
-nnoremap <Space>g :Denite grep -buffer-name=search-buffer-denite<CR>
-nnoremap <Space>t :Denite grep -input=TODO:<CR>
-nnoremap <Space>G :Denite -resume -buffer-name=search-buffer-denite<CR>
-nnoremap <Space>] :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
-nnoremap <Space>[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
-nnoremap <Space>o :Denite file/rec<CR>
-nnoremap <Space><Space> :Denite<Space>
+nnoremap sb :Denite buffer -sorters=sorter/word<CR>
+nnoremap sr :Denite register<CR>
+nnoremap sg :Denite grep -buffer-name=search-buffer-denite<CR>
+nnoremap sG :Denite -resume -buffer-name=search-buffer-denite<CR>
+nnoremap s] :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
+nnoremap s[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
+nnoremap so :Denite file/rec<CR>
 
 let s:ignore_globs = [ '.git/', '.ropeproject/', '__pycache__/',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/',
@@ -56,7 +54,7 @@ autocmd FileType denite call s:denite_my_settings()
 function! s:denite_my_settings() abort
   nnoremap <silent><buffer><expr> <CR>
   \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
+  nnoremap <silent><nowait><buffer><expr> d
   \ denite#do_map('do_action', 'delete')
   nnoremap <silent><buffer><expr> p
   \ denite#do_map('do_action', 'preview')
@@ -64,6 +62,8 @@ function! s:denite_my_settings() abort
   \ denite#do_map('quit')
   nnoremap <silent><buffer><expr> i
   \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
+  nnoremap <silent><nowait><buffer><expr> t
+  \ denite#do_map('toggle_select')
+  nnoremap <silent><nowait><buffer><expr> <Space>
+  \ denite#do_map('toggle_select') . "j"
 endfunction
