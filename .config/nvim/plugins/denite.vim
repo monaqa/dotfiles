@@ -1,10 +1,10 @@
 nnoremap sb :Denite buffer -sorters=sorter/word<CR>
-nnoremap sr :Denite register<CR>
 nnoremap sg :Denite grep -buffer-name=search-buffer-denite<CR>
 nnoremap sG :Denite -resume -buffer-name=search-buffer-denite<CR>
 nnoremap s] :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
 nnoremap s[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
-nnoremap so :Denite file/rec<CR>
+nnoremap so :Denite file/rec -buffer-name=search-file-denite<CR>
+nnoremap sO :Denite file/rec -resume -buffer-name=search-file-denite<CR>
 
 let s:ignore_globs = [ '.git/', '.ropeproject/', '__pycache__/',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/',

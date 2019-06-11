@@ -228,8 +228,8 @@ noremap <Space>y "+y
 noremap <Space>p "+p
 
 " nmap <silent> R :set opfunc=MgmReplace<CR>g@
-nmap <silent> R :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplace<CR>g@
-nmap <silent> RR :<C-u>let w:replace_buffer = v:register <Bar> call MgmReplaceALine(v:count1)<CR>
+nmap <silent> <Space>r :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplace<CR>g@
+nmap <silent> <Space>rr :<C-u>let w:replace_buffer = v:register <Bar> call MgmReplaceALine(v:count1)<CR>
 
 function MgmReplace(type)
   let sel_save = &selection
