@@ -24,6 +24,9 @@ call lexima#add_rule({'char': '<', 'at': '\\\%#', 'filetype': ['satysfi']})
 call lexima#add_rule({'char': '>', 'leave': 1, 'at': '\%#>', 'filetype': ['satysfi']})
 call lexima#add_rule({'char': '<BS>', 'at': '<\%#>', 'delete': 1, 'filetype': ['satysfi']})
 call lexima#add_rule({'char': '``', 'input_after': '``', 'filetype': ['rst']})
+" call lexima#add_rule({'char': "（", 'input_after': "）"})
+" call lexima#add_rule({'char': "）", 'at': "\%#）", 'leave': 1})
+" call lexima#add_rule({'char': '<BS>', 'at': '（\%#）', 'delete': 1})
 """
 
 [[plugins]]
@@ -45,35 +48,6 @@ on_i = 1
 
 
 # only in python
-
-# [[plugins]]
-# repo = 'w0rp/ale'
-# on_ft = ['python']
-# hook_source = """
-# let g:ale_set_loclist = 0
-# let g:ale_set_quickfix = 1
-# let g:ale_sign_column_always = 1
-# let g:ale_linters = {
-#   \ 'python': ['pyls', 'mypy'],
-#   \ 'tex': [],
-#   \ 'plaintex': [],
-#   \ }
-# let g:ale_python_mypy_options = '--ignore-missing-imports'
-# nmap <silent> <Space>j <Plug>(ale_previous_wrap)
-# nmap <silent> <Space>k <Plug>(ale_next_wrap)
-# """
-
-# [[plugins]]
-# repo = 'davidhalter/jedi-vim'
-# on_ft = ['python']
-# hook_post_source = """
-# " autocmd FileType python setlocal omnifunc=jedi#completions
-# let g:jedi#popup_on_dot = 0
-# let g:jedi#popup_select_first = 0
-# " 補完は deoplete-jedi に任せる
-# let g:jedi#completions_enabled = 0
-# autocmd FileType python setlocal completeopt-=preview
-# """
 
 [[plugins]]
 repo = 'Vimjas/vim-python-pep8-indent'
@@ -112,16 +86,6 @@ let g:riv_ignored_nmaps = ">,<"
 let g:riv_ignored_maps = "<CR>,<S-CR>"
 """
 
-
-# [[plugins]]
-# repo = 'autozimu/LanguageClient-neovim'
-# rev = 'next'
-# on_ft = ['java']
-# # on_ft = ['python', 'py', 'java']
-# build = 'bash install.sh'
-# hook_add = '''
-# source ~/.config/nvim/plugins/languageclient-neovim.rc.vim
-# '''
 
 # only in Julia
 [[plugins]]

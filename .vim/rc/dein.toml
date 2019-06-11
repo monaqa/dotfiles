@@ -20,7 +20,6 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 repo = 'vim-airline/vim-airline-themes'
 
 [[plugins]]
-# repo = 'yuttie/comfortable-motion.vim'
 repo = 'mogassy/smooth-scroll.vim'
 hook_add = """
 let g:smooth_scroll_no_default_key_mappings = 1
@@ -38,26 +37,6 @@ repo = 'morhetz/gruvbox'
 [[plugins]]
 repo = 'kana/vim-submode'
 
-# [[plugins]]
-# repo = 'scrooloose/nerdtree'
-# hook_add = """
-# nnoremap <Space>z :NERDTreeToggle<CR>
-# " let g:NERDTreeDirArrows = 0
-# " let g:NERDTreeDirArrowExpandable  = '>'
-# " let g:NERDTreeDirArrowCollapsible = 'V'
-# " if !has('gui_running')
-# "   autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-# "   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-# " endif
-# let g:NERDTreeIgnore=[
-#   \ '\.aux$', '\.bbl$', '\.blg$', '\.dvi$', '\.fdb_latexmk$', '\.fls$', '\.synctex\.gz$', '\.toc$',
-#   \ '\.pdf$', '\.eps$',
-#   \ '\.png$',
-#   \ '\.ipynb$',
-#   \ '^\.git$[[dir]]',
-#   \ ]
-# """
-
 [[plugins]]
 repo = 'Shougo/defx.nvim'
 depends = ['kristijanhusak/defx-git']
@@ -70,10 +49,6 @@ repo = 'kristijanhusak/defx-git'
 
 [[plugins]]
 repo = 'kristijanhusak/defx-icons'
-
-# [[plugins]]
-# repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
-
 
 [[plugins]]
 repo = 'tyru/caw.vim'
@@ -145,34 +120,6 @@ call textobj#user#plugin('jbraces', {
 """
 
 # [[plugins]]
-# repo = 'LeafCage/foldCC'
-# hook_add = """
-# " set foldtext=FoldCCtext()
-# " set foldcolumn=3
-# " set fillchars=vert:\|
-# " let g:foldCCtext_tail = 'printf("   %s[%4d lines  Lv%-2d]%s",
-# " \ v:folddashes, v:foldend-v:foldstart+1, v:foldlevel, v:folddashes)'
-# "
-# " hi Folded gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey30 guifg=Grey80
-# " hi FoldColumn gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
-# """
-
-# [[plugins]]
-# repo = 'tweekmonster/braceless.vim'
-# hook_add = """
-# autocmd FileType python,yaml BracelessEnable +fold
-# """
-
-# [[plugins]]
-# repo = 'lervag/vimtex'
-
-# [[plugins]]
-# repo = 'Rykka/riv.vim'
-
-# [[plugins]]
-# repo = 'davidhalter/jedi-vim'
-
-# [[plugins]]
 # repo = 'jsfaint/gen_tags.vim'
 # hook_add = """
 # let g:gen_tags#ctags_auto_gen = 1
@@ -241,9 +188,8 @@ let g:LanguageClient_serverCommands = {
 \   'julia': ['/Applications/Julia-1.1.app/Contents/Resources/julia/bin/julia']}
 """
 
-
-[[plugins]]
-repo = 'leafgarland/typescript-vim'
+# [[plugins]]
+# repo = 'leafgarland/typescript-vim'
 
 [[plugins]]
 # repo = 'dag/vim-fish'  # 重すぎる
