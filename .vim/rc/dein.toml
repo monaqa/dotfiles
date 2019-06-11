@@ -87,54 +87,11 @@ nmap <Space>cc gcc$
 repo = 'glts/vim-textobj-comment'
 depends = ['kana/vim-textobj-user']
 
-# [[plugins]]
-# repo = 'scrooloose/nerdcommenter'
-# hook_add = """
-# let g:NERDSpaceDelims = 1  " コメント時に挿入するスペース
-# let g:NERDCommentEmptyLines = 1 " 空行のコメントを許す
-# """
-
 [[plugins]]
-repo = 'tpope/vim-surround'
-# char2nr 関数を使えば文字に対応する数字を知ることができる
+repo = 'machakann/vim-sandwich'
 hook_add = """
-nmap sa ys
-vmap sa S
-let g:surround_{char2nr("P")} = "（\r）"
-let g:surround_{char2nr("B")} = "「\r」"
-let g:surround_{char2nr("D")} = "『\r』"
-let g:surround_{char2nr("m")} = "{{{\r}}}"
-" 例えば saiwB とすることで \{word\} などとできる
-autocmd FileType tex let b:surround_{char2nr("B")} = "\\\\{\r\\\\}"
+source ~/.config/nvim/plugins/sandwich.vim
 """
-
-
-[[plugins]]
-repo = 'rhysd/vim-operator-surround'
-depends = ['kana/vim-operator-user']
-# " map sa <Plug>(operator-surround-append)
-# " map sd <Plug>(operator-surround-delete)a
-# map sr <Plug>(operator-surround-replace)a
-# map sa ys
-# let g:operator#surround#blocks = {}
-hook_add = """
-" let g:operator#surround#blocks['tex'] = [
-"     \   { 'block' : ['\{', '\}'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
-"     \ ]
-nmap dsP <Plug>(operator-surround-delete)aP
-nmap dsB <Plug>(operator-surround-delete)aB
-nmap dsD <Plug>(operator-surround-delete)aD
-nmap csP <Plug>(operator-surround-replace)aP
-nmap csB <Plug>(operator-surround-replace)aB
-nmap csD <Plug>(operator-surround-replace)aD
-let g:operator#surround#blocks = {}
-let g:operator#surround#blocks['-'] = [
-    \   { 'block' : ['（', '）'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['P'] },
-    \   { 'block' : ['「', '」'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['B'] },
-    \   { 'block' : ['『', '』'], 'motionwise' : ['char', 'line', 'block'], 'keys' : ['D'] },
-    \ ]
-"""
-
 
 [[plugins]]
 repo = 'kana/vim-operator-user'
