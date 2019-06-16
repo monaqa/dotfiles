@@ -1,9 +1,23 @@
-nnoremap <silent> sz :Defx
-  \ -columns=git:indent:icons:filename
-  \ -toggle -split=vertical -winwidth=30 -direction=topleft<CR>
-nnoremap <silent> s<S-z> :Defx
-  \ -columns=git:indent:icons:filename:type:size:time
-  \ -toggle -split=horizontal -winheight=20 -direction=botright<CR>
+" もし作成してなかったら ~/.defxsessions を作成する
+" そして defx を開く際にセッションファイルを指定する
+"
+let g:defx_sessions_file = $HOME . '/.defxsessions'
+
+if getftype(g:defx_sessions_file) != "file"
+  call writefile(["{}"], g:defx_sessions_file)
+  echo "Created .defxsessions file to home directory."
+endif
+
+nnoremap <expr><silent> sz ":Defx " . "-columns=git:indent:icons:filename "
+  \ . "-session-file=" . g:defx_sessions_file . " "
+  \ . "-show-ignored-files "
+  \ . "-toggle -split=vertical -winwidth=30 -direction=topleft<CR>"
+
+nnoremap <expr><silent> sZ ":Defx " . "-columns=git:indent:icons:filename:type:size:time "
+  \ . "-session-file=" . g:defx_sessions_file . " "
+  \ . "-show-ignored-files "
+  \ . "-toggle -split=horizontal -winheight=20 -direction=botright<CR>"
+
 autocmd FileType defx call s:defx_my_settings()
 autocmd FileType defx set nonumber
 autocmd FileType defx set signcolumn=no
@@ -21,6 +35,10 @@ function! s:defx_my_settings() abort
   \ defx#do_action('drop')
   nnoremap <silent><buffer><expr> t
   \ defx#do_action('open_or_close_tree')
+  nnoremap <silent><buffer><expr> T
+  \ defx#do_action('open_tree_recursive')
+  nnoremap <silent><buffer><expr> w
+  \ defx#do_action('add_session')
   nnoremap <silent><buffer><expr> E
   \ defx#do_action('open', 'vsplit')
   nnoremap <silent><buffer><expr> P
