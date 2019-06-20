@@ -223,17 +223,17 @@ map Y y$
 nnoremap x "_x
 
 " set clipboard+=unnamed
-set clipboard=unnamedplus
+set clipboard=
 " noremap <Space>y "+y
-" noremap <Space>p "+p
-" クリップボードとシームレスにレジスタを使いたいものの，
-" delete/cut 時にクリップボードレジスタを上書きしたくない
-noremap d ""d
-nnoremap dd ""dd
-nnoremap D ""D
-noremap c ""c
-nnoremap cc ""cc
-nnoremap C ""C
+noremap <Space>p "+p
+autocmd TextYankPost * call MgmCopyUnnamedToPlus(v:event.operator)
+
+function MgmCopyUnnamedToPlus(opr)
+  " yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
+  if a:opr == "y"
+    let @+ = @"
+  endif
+endfunction
 
 " nmap <silent> R :set opfunc=MgmReplace<CR>g@
 nmap <silent> <Space>r :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplace<CR>g@
