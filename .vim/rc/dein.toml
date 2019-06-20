@@ -202,6 +202,9 @@ repo = 'vim-scripts/fish-syntax'
 repo = 'tpope/vim-fugitive'
 hook_add = "source ~/.config/nvim/plugins/fugitive.vim"
 
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
+
 
 # hook_post_update = 'call hook#post_update#language_client_neovim#load()'
 # hook_add = 'call hook#add#language_client_neovim#load()'
