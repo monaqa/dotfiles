@@ -7,3 +7,15 @@
 	template = /Users/shinichi/.commit_template
 [core]
 	editor = nvim
+[alias]
+	cm = checkout master
+	rbm = rebase master
+	co = checkout
+	commend = commit --amend --no-edit
+	it = !git init && git commit -m “root” --allow-empty
+	stsh = stash --keep-index
+	staash = stash --include-untracked
+	staaash = stash --all
+	shorty = status --short --branch
+	grog = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
+
