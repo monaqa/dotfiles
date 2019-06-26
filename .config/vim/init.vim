@@ -108,6 +108,7 @@ set smartcase
 set incsearch
 set wrapscan
 set hlsearch
+set inccommand=split
 
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
@@ -226,7 +227,10 @@ nnoremap x "_x
 set clipboard=
 " noremap <Space>y "+y
 noremap <Space>p "+p
-autocmd TextYankPost * call MgmCopyUnnamedToPlus(v:event.operator)
+noremap <Space>y "+y
+if exists('##TextYankPost')
+  autocmd TextYankPost *   call MgmCopyUnnamedToPlus(v:event.operator)
+endif
 
 function MgmCopyUnnamedToPlus(opr)
   " yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
