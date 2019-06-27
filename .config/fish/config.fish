@@ -94,10 +94,13 @@ alias jlb='jupyter lab'
 # vim
 # balias v 'env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim'
 function v --wraps nvim
-  nvim $argv
+  $HOME/nvim/nvim-osx64/bin/nvim $argv
 end
 function vtex --wraps nvim
   env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim $argv
+end
+function nv --wraps nvim
+  nvim $argv
 end
 
 # SATySFi

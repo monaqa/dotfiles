@@ -6,6 +6,19 @@ nnoremap s[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -i
 nnoremap so :Denite file/rec -buffer-name=search-file-denite<CR>
 nnoremap sO :Denite file/rec -resume -buffer-name=search-file-denite<CR>
 
+" floating window の設定
+let s:denite_win_width_percent = 0.85
+let s:denite_win_height_percent = 0.7
+
+" Change denite default options
+call denite#custom#option('_', {
+    \ 'split': 'floating',
+    \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
+    \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
+    \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
+    \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
+    \ })
+
 let s:ignore_globs = [ '.git/', '.ropeproject/', '__pycache__/',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/',
       \   '*.aux', '*.bbl', '*.blg', '*.dvi', '*.fdb_latexmk', '*.fls', '*.synctex.gz', '*.toc',
@@ -27,6 +40,8 @@ call denite#custom#var('file/rec', 'command', [
       \ '-g',
       \ ''
       \ ])
+
+" call denite#custom#var('buffer', 'exclude_unlisted', '0')
 
 call denite#custom#var('grep', 'command', ['ag'])
 call denite#custom#var('grep', 'default_opts',

@@ -87,20 +87,3 @@ let g:riv_ignored_maps = "<CR>,<S-CR>"
 """
 
 
-# only in Julia
-[[plugins]]
-repo = 'JuliaEditorSupport/julia-vim'
-on_ft = ["jl", "julia"]
-hook_add = """
-"""
-
-
-# only in dein.vim config file (this file or others)
-# [[plugins]]
-# repo = 'osyo-manga/vim-precious'
-# depends = ['Shougo/context_filetype.vim']
-# on_ft = ['conf']
-# 
-# [[plugins]]
-# repo = 'Shougo/context_filetype.vim'
-# on_ft = ['conf']

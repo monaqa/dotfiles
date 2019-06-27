@@ -1,17 +1,6 @@
-" 高速化に大きな寄与を与える
-" https://github.com/neovim/neovim/issues/7237
-" let g:clipboard = {
-          " \   'name': 'xclip-custom',
-          " \   'copy': {
-          " \      '+': 'xclip -quiet -i -selection clipboard',
-          " \      '*': 'xclip -quiet -i -selection primary',
-          " \    },
-          " \   'paste': {
-          " \      '+': 'xclip -o -selection clipboard',
-          " \      '*': 'xclip -o -selection primary',
-          " \   },
-          " \ }
-
+if &shell =~# 'fish$'
+    set shell=sh
+endif
 
 " Mac では以下のようにしないと pbcopy が使えないっぽい
 " https://github.com/neovim/neovim/issues/8631

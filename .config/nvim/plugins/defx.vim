@@ -3,36 +3,69 @@
 "
 let g:defx_sessions_file = $HOME . '/.defxsessions'
 
+" floating window の設定
+let s:denite_win_width_percent = 0.7
+let s:denite_win_height_percent = 0.7
+
+" Change denite default options
+call defx#custom#option('_', {
+    \ 'split': 'floating',
+    \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
+    \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
+    \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
+    \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
+    \ })
+
+call defx#custom#column('filename', {
+      \ 'min_width': float2nr(&columns * s:denite_win_width_percent - 30),
+      \ 'max_width': float2nr(&columns * s:denite_win_width_percent - 30),
+      \ })
+
+nnoremap <expr><silent> sz ":Defx " . "-columns=git:indent:icons:filename "
+  \ . "-buffer-name=leftw "
+  \ . "-session-file=" . g:defx_sessions_file . " "
+  \ . "-show-ignored-files "
+  \ . "-toggle -split=vertical -winwidth=30 -direction=topleft<CR>"
+
+nnoremap <expr><silent> ss ":Defx " . "-columns=git:indent:icons:filename:type:size:time "
+  \ . "-buffer-name=float "
+  \ . "-session-file=" . g:defx_sessions_file . " "
+  \ . "-show-ignored-files "
+  \ . "-toggle <CR>"
+
 if getftype(g:defx_sessions_file) != "file"
   call writefile(["{}"], g:defx_sessions_file)
   echo "Created .defxsessions file to home directory."
 endif
 
-nnoremap <expr><silent> sz ":Defx " . "-columns=git:indent:icons:filename "
-  \ . "-session-file=" . g:defx_sessions_file . " "
-  \ . "-show-ignored-files "
-  \ . "-toggle -split=vertical -winwidth=30 -direction=topleft<CR>"
-
-nnoremap <expr><silent> sZ ":Defx " . "-columns=git:indent:icons:filename:type:size:time "
-  \ . "-session-file=" . g:defx_sessions_file . " "
-  \ . "-show-ignored-files "
-  \ . "-toggle -split=horizontal -winheight=20 -direction=botright<CR>"
-
 autocmd FileType defx call s:defx_my_settings()
 autocmd FileType defx set nonumber
 autocmd FileType defx set signcolumn=no
 function! s:defx_my_settings() abort
+
+  let bufkind = strpart(bufname(""), 7, 5)
+
+  echo bufkind
+
+  if (bufkind == "float")
+    nnoremap <silent><buffer><expr> <CR>
+    \ defx#do_action('multi', ['drop', 'quit'])
+    nnoremap <silent><buffer><expr> l
+    \ defx#do_action('multi', ['drop', 'quit'])
+  else
+    nnoremap <silent><buffer><expr> <CR>
+    \ defx#do_action('drop')
+    nnoremap <silent><buffer><expr> l
+    \ defx#do_action('drop')
+  endif
+
   " Define mappings
-  " nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
-  nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
   nnoremap <silent><buffer><expr> cc
   \ defx#do_action('copy')
   nnoremap <silent><buffer><expr> m
   \ defx#do_action('move')
   nnoremap <silent><buffer><expr> p
   \ defx#do_action('paste')
-  nnoremap <silent><buffer><expr> l
-  \ defx#do_action('drop')
   nnoremap <silent><buffer><expr> t
   \ defx#do_action('open_or_close_tree')
   nnoremap <silent><buffer><expr> T

@@ -8,7 +8,8 @@
 " Syntax, mouse などの有効化{{{2
 syntax on
 set mouse=a
-set shell=/bin/bash\ --login
+" set shell=/bin/bash\ --login
+" set shell=/usr/local/bin/fish
 
 if has('persistent_undo')
   set undodir=~/.vim/undo
@@ -164,7 +165,8 @@ noremap <silent> F. :<C-u>call MgmNumSearchLine('[．。.]', v:count1, 'b')<CR>
 " https://qiita.com/tekkoc/items/98adcadfa4bdc8b5a6ca
 nnoremap s <Nop>
 " バッファ作成と削除
-nnoremap ss :<C-u>sp<CR>
+nnoremap s_ :<C-u>sp<CR>
+nnoremap s<Bar> :<C-u>vs<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap sn :<C-u>bn<CR>
 nnoremap sp :<C-u>bp<CR>
