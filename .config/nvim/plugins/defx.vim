@@ -45,8 +45,6 @@ function! s:defx_my_settings() abort
 
   let bufkind = strpart(bufname(""), 7, 5)
 
-  echo bufkind
-
   if (bufkind == "float")
     nnoremap <silent><buffer><expr> <CR>
     \ defx#do_action('multi', ['drop', 'quit'])

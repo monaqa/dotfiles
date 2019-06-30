@@ -113,9 +113,6 @@ function s3load-output
   aws s3 sync s3://aspy-data/output/info ~/Documents/git/research/aspy-exp/output/info
 end
 
-# Julia
-ln -fs "/Users/shinichi/Documents/git/others/julia/julia" /usr/local/bin/julia
-
 # # OPAM configuration
 # . /Users/shinichi/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
@@ -133,12 +130,6 @@ alias wps='python /Users/shinichi/Documents/git/hobby/wrike_personal/wrike_perso
 source /Users/shinichi/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
 set fish_theme default
-
-# Julia
-
-function julia
-  exec '/Applications/Julia-1.1.app/Contents/Resources/julia/bin/julia'
-end
 
 # date
 function mdate
