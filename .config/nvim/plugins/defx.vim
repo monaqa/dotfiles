@@ -85,8 +85,8 @@ function! s:defx_my_settings() abort
   \                'mark:filename:type:size:time')
   nnoremap <silent><buffer><expr> S
   \ defx#do_action('toggle_sort', 'time')
-  " nnoremap <silent><buffer><expr> dd
-  " \ defx#do_action('remove_trash')
+  nnoremap <silent><buffer><expr> dd
+  \ defx#do_action('remove')
   nnoremap <silent><buffer><expr> r
   \ defx#do_action('rename')
   nnoremap <silent><buffer><expr> !
@@ -105,7 +105,7 @@ function! s:defx_my_settings() abort
   \ defx#do_action('cd')
   nnoremap <silent><buffer><expr> q
   \ defx#do_action('quit')
-  nnoremap <silent><buffer><expr> <Space>
+  nnoremap <silent><nowait><buffer><expr> <Space>
   \ defx#do_action('toggle_select') . 'j'
   nnoremap <silent><buffer><expr> *
   \ defx#do_action('toggle_select_all')
