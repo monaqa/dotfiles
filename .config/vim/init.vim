@@ -137,6 +137,9 @@ function! MgmNumSearchLine(ptn, num, opt)
 endfunction
 " }}}
 
+" Terminal 機能 {{{2
+tnoremap <Esc> <C-\><C-n>
+" }}}
 " }}}
 
 
@@ -491,4 +494,15 @@ autocmd filetype satysfi let b:caw_oneline_comment = "%"
 
 " }}}
 
+" Julia {{{2
+
+" Julia の REPL を起動
+command! MgmOpenJuliaTerminal
+      \ vsplit<Bar>edit term://fish<Bar>
+      \ call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")<Bar>
+      \ let g:slime_default_config = {"jobid": b:terminal_job_id}
+
+autocmd BufRead,BufNewFile */julia setlocal shiftwidth=4
+
+" }}}
 " }}}
