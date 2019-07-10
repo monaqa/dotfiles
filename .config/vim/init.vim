@@ -43,7 +43,7 @@ set noerrorbells
 " set showmatch " 対応カッコを表示
 set laststatus=2 " ステータスラインを常に表示
 set scrolloff=10
-set ambiwidth=double  "全角文字幅
+set ambiwidth=single  "全角文字幅
 set showcmd
 
 set modeline
