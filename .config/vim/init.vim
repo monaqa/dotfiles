@@ -502,7 +502,7 @@ command! MgmOpenJuliaTerminal
       \ call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")<Bar>
       \ let g:slime_default_config = {"jobid": b:terminal_job_id}
 
-autocmd BufRead,BufNewFile */julia setlocal shiftwidth=4
+autocmd filetype julia set shiftwidth=4
 
 " }}}
 " }}}
