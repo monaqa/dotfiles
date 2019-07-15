@@ -27,9 +27,9 @@ set SPACEFISH_DIR_TRUNC 0
 set SPACEFISH_DIR_TRUNC_REPO true
 # git
 set SPACEFISH_GIT_PREFIX '┅ '
-set SPACEFISH_GIT_STATUS_PREFIX ' ┅ '
+set SPACEFISH_GIT_STATUS_PREFIX ' ┅ status: '
 set SPACEFISH_GIT_STATUS_SUFFIX ''
-set SPACEFISH_GIT_STATUS_UNTRACKED 'Ⓤ '
+set SPACEFISH_GIT_STATUS_UNTRACKED \uF128
 set SPACEFISH_GIT_STATUS_MODIFIED ' '
 set SPACEFISH_GIT_STATUS_ADDED ' '
 set SPACEFISH_GIT_STATUS_DELETED ' '
@@ -52,7 +52,7 @@ set SPACEFISH_CHAR_SYMBOL 'λ→'
 set -gx PATH '/Users/shinichi/.pyenv/shims' $PATH
 set -gx PYENV_SHELL fish
 # source '/usr/local/Cellar/pyenv/1.1.5/libexec/../completions/pyenv.fish'
-command pyenv rehash 2>/dev/null
+# command pyenv rehash 2>/dev/null
 function pyenv
   set command $argv[1]
   set -e argv[1]
@@ -141,7 +141,7 @@ alias wps='python /Users/shinichi/Documents/git/hobby/wrike_personal/wrike_perso
 
 
 # opam configuration
-source /Users/shinichi/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+# source /Users/shinichi/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
 set fish_theme default
 

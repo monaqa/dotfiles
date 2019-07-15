@@ -503,6 +503,7 @@ command! MgmOpenJuliaTerminal
       \ let g:slime_default_config = {"jobid": b:terminal_job_id}
 
 autocmd filetype julia set shiftwidth=4
+autocmd filetype julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
 
 " }}}
 " }}}
