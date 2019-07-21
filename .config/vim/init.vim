@@ -139,6 +139,20 @@ endfunction
 
 " Terminal 機能 {{{2
 tnoremap <Esc> <C-\><C-n>
+
+function! MgmOpenTerminal()
+    let ft = &filetype
+    vsplit
+    edit term://fish
+    if (ft == "python")
+        call chansend(b:terminal_job_id, "ipython\n%autoindent\n")
+    elseif (ft == "julia")
+        call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")
+    endif
+    let g:slime_default_config = {"jobid": b:terminal_job_id}
+endfunction
+
+nnoremap <Space>t :call MgmOpenTerminal()<CR>
 " }}}
 " }}}
 
@@ -310,7 +324,6 @@ imap <C-Space> <Space>
 
 noremap <Space>h ^
 noremap <Space>l $
-noremap <Space>m %
 " }}}
 
 " 縦方向 f 移動 {{{2
@@ -482,8 +495,8 @@ let g:netrw_winsize = 85
 command! MgmSatyCompile !satysfi %
 command! MgmSatyShowPDF silent !open %:r.pdf
 
-nnoremap sc :MgmSatyCompile<CR>
-nnoremap sC :MgmSatyShowPDF<CR>
+nnoremap <Space>m :MgmSatyCompile<CR>
+nnoremap <Space>M :MgmSatyShowPDF<CR>
 
 autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages
 autocmd filetype satysfi set suffixesadd+=.saty,.satyh,.satyg
@@ -496,14 +509,9 @@ autocmd filetype satysfi let b:caw_oneline_comment = "%"
 
 " Julia {{{2
 
-" Julia の REPL を起動
-command! MgmOpenJuliaTerminal
-      \ vsplit<Bar>edit term://fish<Bar>
-      \ call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")<Bar>
-      \ let g:slime_default_config = {"jobid": b:terminal_job_id}
-
 autocmd filetype julia set shiftwidth=4
 autocmd filetype julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
 
 " }}}
+
 " }}}
