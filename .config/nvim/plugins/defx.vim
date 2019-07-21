@@ -44,11 +44,12 @@ autocmd FileType defx set signcolumn=no
 function! s:defx_my_settings() abort
 
   let bufkind = strpart(bufname(""), 7, 5)
-
   if (bufkind == "float")
     nnoremap <silent><buffer><expr> <CR>
+    \ defx#is_directory()? defx#do_action('drop') :
     \ defx#do_action('multi', ['drop', 'quit'])
     nnoremap <silent><buffer><expr> l
+    \ defx#is_directory()? defx#do_action('drop') :
     \ defx#do_action('multi', ['drop', 'quit'])
   else
     nnoremap <silent><buffer><expr> <CR>
