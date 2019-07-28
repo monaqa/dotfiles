@@ -110,6 +110,7 @@ set incsearch
 set wrapscan
 set hlsearch
 set inccommand=split
+nnoremap / /\v
 
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
@@ -140,6 +141,26 @@ endfunction
 " Terminal 機能 {{{2
 tnoremap <Esc> <C-\><C-n>
 
+function! s:bufnew()
+   " 幸いにも 'buftype' は設定されているのでそれを基準とする
+    if &buftype == "terminal" && &filetype == ""
+        set filetype=terminal
+    endif
+endfunction
+
+function! s:terminal_init()
+   " ここに :terminal のバッファ固有の設定を記述する
+   nnoremap <buffer> a i<Up><CR><C-\><C-n>
+   nnoremap <buffer> q :bd!<CR>
+endfunction
+
+augroup my-terminal
+    autocmd!
+   " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
+    autocmd BufNew * call timer_start(0, { -> s:bufnew() })
+    autocmd FileType terminal call s:terminal_init()
+augroup END
+
 function! MgmOpenTerminal()
     let ft = &filetype
     vsplit
@@ -150,6 +171,7 @@ function! MgmOpenTerminal()
         call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")
     endif
     let g:slime_default_config = {"jobid": b:terminal_job_id}
+    let g:active_terminal_id = b:terminal_job_id
 endfunction
 
 nnoremap <Space>t :call MgmOpenTerminal()<CR>
@@ -251,7 +273,7 @@ if exists('##TextYankPost')
   autocmd TextYankPost *   call MgmCopyUnnamedToPlus(v:event.operator)
 endif
 
-function MgmCopyUnnamedToPlus(opr)
+function! MgmCopyUnnamedToPlus(opr)
   " yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
   if a:opr == "y"
     let @+ = @"
@@ -262,7 +284,7 @@ endfunction
 nmap <silent> <Space>r :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplace<CR>g@
 nmap <silent> <Space>rr :<C-u>let w:replace_buffer = v:register <Bar> call MgmReplaceALine(v:count1)<CR>
 
-function MgmReplace(type)
+function! MgmReplace(type)
   let sel_save = &selection
   let &selection = "inclusive"
   " let m_reg = @m
@@ -280,7 +302,7 @@ function MgmReplace(type)
   " let @m=m_reg
 endfunction
 
-function MgmReplaceALine(nline)
+function! MgmReplaceALine(nline)
   let sel_save = &selection
   let &selection = "inclusive"
   " let m_reg = @m
@@ -303,7 +325,6 @@ endfunction
 
 " vimrc を即座に反映{{{2
 nnoremap <Space>V :<C-u>tabedit $MYVIMRC<CR>
-nnoremap <Space>v :<C-u>source $MYVIMRC<CR>
 nnoremap <Space><C-V> :<C-u>tabedit ~/.config/vim/init.vim<CR>
 " }}}
 
@@ -348,7 +369,7 @@ call submode#map('vertjmp', 'n', '', ';', ':MgmLineSameSearch<CR>')
 call submode#map('vertjmp', 'n', '', ',', ':MgmLineBackSameSearch<CR>')
 call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
-function MgmVertSearch(opt)
+function! MgmVertSearch(opt)
   let posnow = getcurpos()
   let lspaces = posnow[2] - 1
   let @m = nr2char(getchar())
@@ -356,7 +377,7 @@ function MgmVertSearch(opt)
   call cursor(pos)
 endfunction
 
-function MgmVisualVertSearch(opt)
+function! MgmVisualVertSearch(opt)
   let posnow = getpos("'>")
   let lspaces = posnow[2] - 1
   let @m = nr2char(getchar())
@@ -492,7 +513,7 @@ let g:netrw_winsize = 85
 
 " satysfi{{{2
 
-command! MgmSatyCompile !satysfi %
+command! MgmSatyCompile :call chansend(g:active_terminal_id, "satysfi " . expand("%") . "\n")
 command! MgmSatyShowPDF silent !open %:r.pdf
 
 nnoremap <Space>m :MgmSatyCompile<CR>
