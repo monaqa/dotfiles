@@ -71,7 +71,6 @@ augroup END
 " Theme {{{2
 " augroup の設定の後に読み込む必要がある
 let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_vert_split = 'fg0'
 set background=dark
 colorscheme gruvbox
 
@@ -82,6 +81,7 @@ hi! ColorColumn ctermbg=238
 hi! CursorColumn ctermbg=236
 hi! CursorLine ctermbg=236
 hi! link Folded GruvboxPurpleBold
+hi! link VertSplit GruvboxFg1
 " }}}
 
 " }}}
@@ -152,12 +152,13 @@ function! s:terminal_init()
    " ここに :terminal のバッファ固有の設定を記述する
    nnoremap <buffer> a i<Up><CR><C-\><C-n>
    nnoremap <buffer> q :bd!<CR>
+   nnoremap <buffer> t :let g:active_terminal_id = b:terminal_job_id<Bar>let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
 endfunction
 
 augroup my-terminal
     autocmd!
    " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
-    autocmd BufNew * call timer_start(0, { -> s:bufnew() })
+    autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
     autocmd FileType terminal call s:terminal_init()
 augroup END
 

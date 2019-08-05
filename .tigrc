@@ -1,5 +1,26 @@
 set git-colors = no
 set ignore-case = true
 set mouse = true
+
 bind generic <Ctrl-f> move-page-down
 bind generic <Ctrl-b> move-page-up
+
+
+# https://qiita.com/vivid_muimui/items/7e7a740e6537749de0c0
+set main-view = id date author commit-title:graph=yes,refs=yes
+
+# checkout -b
+bind branch B ?git checkout -b "%(prompt Enter new branch name:)" %(branch)
+bind main   B ?git checkout -b "%(prompt Enter new branch name: )"
+
+# reset hard
+bind status <Ctrl-r> ?git reset --hard HEAD
+
+# commitハッシュをコピー
+bind generic y @sh -c "echo %(commit) | pbcopy"
+
+# rebase
+bind main <Ctrl-r> ?git rebase -i %(commit)
+
+# リポジトリのGitHubを表示
+bind generic ^ @hub browse
