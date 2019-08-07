@@ -170,3 +170,13 @@ repo = 'previm/previm'
 hook_add = """
 let g:previm_open_cmd = "open -a 'Google Chrome'"
 """
+
+[[plugins]]
+repo = 'machakann/vim-swap'
+hook_add = """
+omap i, <Plug>(swap-textobject-i)
+xmap i, <Plug>(swap-textobject-i)
+omap a, <Plug>(swap-textobject-a)
+xmap a, <Plug>(swap-textobject-a)
+"""
+
