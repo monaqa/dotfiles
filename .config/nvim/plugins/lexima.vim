@@ -5,7 +5,7 @@ call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': ['late
 call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': '\{', 'input_after': '\}', 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': '}', 'at': '\\\%#}', 'leave': 1, 'filetype': ['latex', 'tex']})
-call lexima#add_rule({'char': '<BS>', 'at': '\\\{\%#\\\}', 'input': '<BS><BS><DEL><DEL>', 'filetype': ['latex', 'tex']})
+" call lexima#add_rule({'char': '<BS>', 'at': '\\\{\%#\\\}', 'input': '<BS><BS><DEL><DEL>', 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex', 'satysfi']})
 call lexima#add_rule({'input_after': '>', 'char': '<', 'filetype': ['satysfi']})
 call lexima#add_rule({'char': '<', 'at': '\\\%#', 'filetype': ['satysfi']})

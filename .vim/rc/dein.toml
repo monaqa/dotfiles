@@ -180,3 +180,6 @@ omap a, <Plug>(swap-textobject-a)
 xmap a, <Plug>(swap-textobject-a)
 """
 
+
+[[plugins]]
+repo = 'tyru/capture.vim'

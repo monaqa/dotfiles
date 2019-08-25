@@ -64,9 +64,9 @@ on_ft = ['rst', 'restructuredtext']
 hook_source = """
 let g:riv_fold_level = 1
 let g:riv_fold_info_pos = 'left'
-let g:riv_ignored_imaps = "<Tab>"
+let g:riv_ignored_imaps = "<Tab>,<Enter>,<KEnter>"
 let g:riv_ignored_nmaps = ">,<"
-let g:riv_ignored_maps = "<CR>,<S-CR>"
+let g:riv_ignored_maps = "<CR>,<S-CR>,<Enter>,<KEnter>"
 """
 
 

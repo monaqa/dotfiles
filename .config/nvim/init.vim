@@ -65,7 +65,6 @@ set clipboard+=unnamedplus
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 
-set ambiwidth=double
 
 " めっさ遅い
 " if has('mac')
@@ -81,4 +80,3 @@ let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSuppor
 let g:vimtex_view_general_options = '@line @pdf @tex'
 
 source ~/.config/vim/init.vim
-

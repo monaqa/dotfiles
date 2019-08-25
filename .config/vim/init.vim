@@ -1,7 +1,6 @@
 " vim:foldmethod=marker:
 " common settings
 
-
 " エディタ全般の設定{{{1
 """"""""""""""""""""""""
 
@@ -150,9 +149,15 @@ endfunction
 
 function! s:terminal_init()
    " ここに :terminal のバッファ固有の設定を記述する
-   nnoremap <buffer> a i<Up><CR><C-\><C-n>
+   " nnoremap <buffer> a i<Up><CR><C-\><C-n>
+   nnoremap <buffer> <CR> i<CR><C-\><C-n>
+   nnoremap <expr><buffer> a "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
+   nnoremap <expr><buffer> A "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
+   nnoremap <buffer> o i<Esc>
    nnoremap <buffer> q :bd!<CR>
    nnoremap <buffer> t :let g:active_terminal_id = b:terminal_job_id<Bar>let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
+   nnoremap <buffer> c i<C-u>
+   nnoremap <buffer> dd i<C-u><C-\><C-n>
 endfunction
 
 augroup my-terminal
@@ -176,6 +181,7 @@ function! MgmOpenTerminal()
 endfunction
 
 nnoremap <Space>t :call MgmOpenTerminal()<CR>
+nnoremap <Space>b<CR> :call chansend(g:active_terminal_id, "\n")<CR>
 " }}}
 " }}}
 
