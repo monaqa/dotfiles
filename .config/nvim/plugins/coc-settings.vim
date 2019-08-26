@@ -4,6 +4,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <Space>n <Plug>(coc-rename)
 nmap <silent> gh :call CocAction('doHover')<CR>
+nmap <Space><Space>p :CocList -A --normal yank<CR>
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -24,3 +25,11 @@ let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_
 
 " let g:LanguageClient_serverCommands = {
 "\   'julia': ['/Applications/Julia-0.6.app/Contents/Resources/julia/bin/julia']}
+
+autocmd Filetype java nnoremap <Space>i :CocCommand java.action.organizeImports<CR>
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-l>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-h>'

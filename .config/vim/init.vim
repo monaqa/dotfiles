@@ -81,6 +81,8 @@ hi! CursorColumn ctermbg=236
 hi! CursorLine ctermbg=236
 hi! link Folded GruvboxPurpleBold
 hi! link VertSplit GruvboxFg1
+hi! link HighlightedyankRegion DiffChange
+autocmd filetype help hi! Ignore ctermfg=66
 " }}}
 
 " }}}
