@@ -183,3 +183,9 @@ xmap a, <Plug>(swap-textobject-a)
 
 [[plugins]]
 repo = 'tyru/capture.vim'
+
+[[plugins]]
+repo = "tpope/vim-speeddating"
+
+[[plugins]]
+repo = "monaqa/todome.nvim"

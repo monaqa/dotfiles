@@ -141,7 +141,7 @@ alias wps='python /Users/shinichi/Documents/git/hobby/wrike_personal/wrike_perso
 
 
 # opam configuration
-# source /Users/shinichi/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+source /Users/shinichi/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
 set fish_theme default
 
