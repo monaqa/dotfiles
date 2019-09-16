@@ -4,3 +4,5 @@
 Icon
 
 .vimsessions/
+
+.vimrc.local
