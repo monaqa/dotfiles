@@ -287,6 +287,11 @@ map Y y$
 " x の結果をいちいちバッファに入れたくない
 nnoremap x "_x
 
+" よく使うレジスタは挿入モードでも挿入しやすく
+inoremap <C-r><C-r> <C-r>"
+inoremap <C-r><CR> <C-r>0
+inoremap <C-r><Space> <C-r>+
+
 " set clipboard+=unnamed
 set clipboard=
 " noremap <Space>y "+y
