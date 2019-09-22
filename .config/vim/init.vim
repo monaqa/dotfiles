@@ -155,6 +155,7 @@ endfunction
 
 " Terminal 機能 {{{2
 tnoremap <Esc> <C-\><C-n>
+nnoremap <F2> <Esc>
 
 function! s:bufnew()
    " 幸いにも 'buftype' は設定されているのでそれを基準とする
@@ -169,11 +170,12 @@ function! s:terminal_init()
    nnoremap <buffer> <CR> i<CR><C-\><C-n>
    nnoremap <expr><buffer> a "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
    nnoremap <expr><buffer> A "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
-   nnoremap <buffer> o i<Esc>
    nnoremap <buffer> q :bd!<CR>
    nnoremap <buffer> t :let g:active_terminal_id = b:terminal_job_id<Bar>let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
    nnoremap <buffer> c i<C-u>
    nnoremap <buffer> dd i<C-u><C-\><C-n>
+   nnoremap <buffer> o :set scrolloff=0<CR>
+   nnoremap <buffer> O :set scrolloff=10<CR>
 endfunction
 
 augroup my-terminal
@@ -181,6 +183,8 @@ augroup my-terminal
    " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
     autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
     autocmd FileType terminal call s:terminal_init()
+    autocmd FileType terminal set nonumber
+    autocmd FileType terminal set signcolumn=no
 augroup END
 
 function! MgmOpenTerminal()
@@ -234,7 +238,7 @@ nnoremap sn :<C-u>bn<CR>
 nnoremap sp :<C-u>bp<CR>
 " nnoremap sq :<C-u>bd<CR>
 " https://github.com/scrooloose/nerdtree/issues/400
-nnoremap sq :<C-u>bp<CR>:bd #<CR>
+nnoremap sq :<C-u>bp<CR>:bw #<CR>
 nnoremap sw :<C-u>q<CR>
 " バッファ間移動
 nnoremap sj <C-w>j
