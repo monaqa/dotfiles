@@ -189,3 +189,7 @@ repo = "tpope/vim-speeddating"
 
 [[plugins]]
 repo = "monaqa/todome.nvim"
+
+[[plugins]]
+repo = "raghur/vim-ghost"
+# build = ":GhostInstall"
