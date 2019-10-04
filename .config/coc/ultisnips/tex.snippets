@@ -1,0 +1,221 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+
+snippet \doc "\documentclass command" b
+\documentclass[${1:dvipdfmx,a4paper}]{${2:bxjsarticle}}
+${0}
+endsnippet
+
+snippet \beg "environment" b
+\begin{${1}}
+	${0}
+\end{$1}
+endsnippet
+
+snippet \bdoc "document environment" b
+\begin{document}
+${0}
+\end{document}
+endsnippet
+
+
+# section command
+# ===============
+
+snippet \part "part" b
+\part{${1}}
+${0}
+endsnippet
+
+snippet \chp "chapter" b
+\chapter{${1}}
+${0}
+endsnippet
+
+snippet \sec "section" b
+\section{${1}}
+${0}
+endsnippet
+
+snippet \sse "subsection" b
+\subsection{${1}}
+${0}
+endsnippet
+
+snippet \sss "subsubsection" b
+\subsubsection{${1}}
+${0}
+endsnippet
+
+snippet \p "paragraph" b
+\paragraph{${1}}
+${0}
+endsnippet
+
+
+# typesetting
+# ===========
+
+snippet \bce "center environment" b
+\begin{center}
+	${0}
+\end{center}
+endsnippet
+
+
+# fonts
+# =====
+
+snippet \bf "\textbf" w
+\textbf{${1}}
+endsnippet
+
+snippet \bfs "\bfseries" w
+\bfseries ${0}
+endsnippet
+
+snippet \it "\textit" w
+\textit{${1}}
+endsnippet
+
+snippet \its "\itshape" w
+\itshape ${0}
+endsnippet
+
+snippet \tt "\texttt" w
+\textit{${1}}
+endsnippet
+
+snippet \ttf "\ttfamily" w
+\itshape ${0}
+endsnippet
+
+# list environments
+# =================
+
+snippet \bite "itemize environment" b
+\begin{itemize}
+	\item ${0}
+\end{itemize}
+endsnippet
+
+snippet \ben "enumerate environment" b
+\begin{enumerate}
+	\item ${0}
+\end{enumerate}
+endsnippet
+
+snippet \bdes "description environment" b
+\begin{description}
+	\item[${1}] ${0}
+\end{description}
+endsnippet
+
+
+# float environments
+# ==================
+
+snippet \btabl "table environment" b
+\begin{table}[${1:tp}]
+	${0}
+\end{table}
+endsnippet
+
+snippet \bfig "figure environment" b
+\begin{figure}[${1:tp}]
+	\centering
+	\includegraphics[${2:width=340pt}]{fig/${3:path}}
+\end{figure}
+endsnippet
+
+snippet \bmin "minipage environment" b
+\begin{minipage}{${1:100pt}}
+	\centering
+	\includegraphics[$1]{fig/${3:path}}
+\end{figure}
+endsnippet
+
+snippet \btab "tabular environment" b
+\begin{tabular}[${1:rcl}]
+	\toprule
+	${0}&\\
+	\midrule
+	&\\
+	\bottomrule
+\end{tabular}
+endsnippet
+
+snippet \ig "\includegraphics command" b
+\includegraphics[${1:width=340pt}]{fig/${2:path}}
+endsnippet
+
+
+# math environments & commands
+# ============================
+
+snippet \bga "gather environment" b
+\begin{gather}
+	${0}
+\end{gather}
+endsnippet
+
+snippet \bal "align environment" b
+\begin{align}
+	${0}
+\end{align}
+endsnippet
+
+snippet \bmat "matrix environment" b
+\begin{${1:b}matrix}
+	${0}
+\end{$1matrix}
+endsnippet
+
+snippet \dfrac "large \dfrac command" b
+\dfrac{
+	${1}
+	}{
+	${2}
+}
+endsnippet
+
+# beamer
+# ======
+
+snippet \bfr "frame environment" b
+\begin{frame}${1:[t]}
+\frametitle{${2}}
+${0}
+\end{frame}
+endsnippet
+
+snippet \bbl "block environments" b
+\begin{${1}block}
+	${0}
+\end{$1block}
+endsnippet
+

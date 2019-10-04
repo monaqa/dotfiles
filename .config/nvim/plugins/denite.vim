@@ -17,6 +17,7 @@ call denite#custom#option('_', {
     \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
     \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
     \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
+    \ 'prompt': "❯"
     \ })
 
 let s:ignore_globs = [ '.git/', '.ropeproject/', '__pycache__/',
@@ -31,7 +32,7 @@ let s:ignore_globs = [ '.git/', '.ropeproject/', '__pycache__/',
 
 " そもそも ag のレベルで検索対象からはずす
 call denite#custom#var('file/rec', 'command', [
-      \ 'ag',
+      \ 'pt',
       \ '--follow',
       \ ] + map(deepcopy(s:ignore_globs), { k, v -> '--ignore=' . v }) + [
       \ '--nocolor',
@@ -43,9 +44,9 @@ call denite#custom#var('file/rec', 'command', [
 
 " call denite#custom#var('buffer', 'exclude_unlisted', '0')
 
-call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'command', ['pt'])
 call denite#custom#var('grep', 'default_opts',
-    \ ['-i', '--vimgrep'])
+    \ ['-i', '--nogroup', '--nocolor', '--smart-case'])
 call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])

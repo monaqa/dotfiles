@@ -1,4 +1,6 @@
-# dein.vim config file
+# vim:fdm=marker
+
+# Lookings, UI, colorscheme {{{
 
 [[plugins]]
 repo = 'vim-airline/vim-airline'
@@ -35,7 +37,72 @@ nnoremap <silent> <C-b> :<C-u>call smooth_scroll#flick(v:count1 * winheight(0)  
 repo = 'morhetz/gruvbox'
 
 [[plugins]]
+repo = "yasukotelin/shirotelin"
+# }}}
+
+# Submode {{{
+
+[[plugins]]
 repo = 'kana/vim-submode'
+
+# }}}
+
+# Operator/text object extension {{{
+
+[[plugins]]
+repo = 'kana/vim-operator-user'
+
+[[plugins]]
+repo = 'tyru/caw.vim'
+hook_add = """
+let g:caw_operator_keymappings = 1
+map <Space>c gcc
+nmap <Space>cc gcc$
+"""
+
+[[plugins]]
+repo = 'machakann/vim-sandwich'
+hook_add = """
+source ~/.config/nvim/plugins/sandwich.vim
+"""
+
+[[plugins]]
+repo = 'machakann/vim-swap'
+hook_add = """
+omap i, <Plug>(swap-textobject-i)
+xmap i, <Plug>(swap-textobject-i)
+omap a, <Plug>(swap-textobject-a)
+xmap a, <Plug>(swap-textobject-a)
+"""
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+hook_add = "source ~/.config/nvim/plugins/vim-textobj-user.vim"
+
+[[plugins]]
+repo = 'glts/vim-textobj-comment'
+depends = ['kana/vim-textobj-user']
+
+# }}}
+
+# Dark power {{{
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+merge = 0
+build = './install.sh nightly'
+# build = 'yarn install --frozen-lockfile'
+hook_add = """
+source ~/.config/nvim/plugins/coc-settings.vim
+"""
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+hook_add = """
+source ~/.config/nvim/plugins/denite.vim
+"""
+
+# defx (file explorer) {{{
 
 [[plugins]]
 repo = 'Shougo/defx.nvim'
@@ -50,57 +117,49 @@ repo = 'kristijanhusak/defx-git'
 [[plugins]]
 repo = 'kristijanhusak/defx-icons'
 
+# }}}
+
+# }}}
+
+# Syntax highlighting {{{
+
 [[plugins]]
-repo = 'tyru/caw.vim'
+repo = 'sheerun/vim-polyglot'
 hook_add = """
-let g:caw_operator_keymappings = 1
-map <Space>c gcc
-nmap <Space>cc gcc$
+let g:polyglot_disabled = ['tex', 'latex']
+let g:rst_fold_enabled = 1
+"""
+
+# }}}
+
+# Linking external functions {{{
+
+[[plugins]]
+repo = 'jpalardy/vim-slime'
+hook_add = """
+let g:slime_target = "neovim"
+let g:slime_no_mappings = 1
+let g:slime_dont_ask_default = 1
+xmap <Space>b <Plug>SlimeRegionSend
+nmap <Space>b <Plug>SlimeMotionSend
+nmap <Space>bp <Plug>SlimeParagraphSend
+nmap <Space>bb <Plug>SlimeLineSend
 """
 
 [[plugins]]
-repo = 'glts/vim-textobj-comment'
-depends = ['kana/vim-textobj-user']
-
-[[plugins]]
-repo = 'machakann/vim-sandwich'
+repo = 'previm/previm'
 hook_add = """
-source ~/.config/nvim/plugins/sandwich.vim
+let g:previm_open_cmd = "open -a 'Google Chrome'"
+let g:previm_custom_css_path = "~/.config/nvim/plugins/markdown.css"
 """
 
-[[plugins]]
-repo = 'kana/vim-operator-user'
+# }}}
+
+# Others {{{
 
 [[plugins]]
-repo = 'kana/vim-textobj-user'
-hook_add = "source ~/.config/nvim/plugins/vim-textobj-user.vim"
-
-# [[plugins]]
-# repo = 'jsfaint/gen_tags.vim'
-# hook_add = """
-# let g:gen_tags#ctags_auto_gen = 1
-# let g:gen_tags#gtags_auto_gen = 1
-# """
-
-[[plugins]]
-repo = 'kshenoy/vim-signature'
-hook_add = """
-let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXYZ'
-"""
-
-# [[plugins]]
-# repo = 'terryma/vim-multiple-cursors'
-
-[[plugins]]
-repo = 'Konfekt/FastFold'
-
-
-[[plugins]]
-repo = 'Shougo/denite.nvim'
-hook_add = """
-source ~/.config/nvim/plugins/denite.vim
-"""
-
+repo = 'tpope/vim-fugitive'
+hook_add = "source ~/.config/nvim/plugins/fugitive.vim"
 
 [[plugins]]
 repo = 'xolox/vim-session'
@@ -124,62 +183,17 @@ endif
 unlet s:local_session_directory
 """
 
-
-[[plugins]]
+[[plugins]]  # vim-session を使うために必要
 repo = 'xolox/vim-misc'
 
-
 [[plugins]]
-repo = 'qnighy/satysfi.vim'
-
-
-[[plugins]]
-repo = 'neoclide/coc.nvim'
-merge = 0
-# build = './install.sh nightly'
-build = 'yarn install --frozen-lockfile'
+repo = 'kshenoy/vim-signature'
 hook_add = """
-source ~/.config/nvim/plugins/coc-settings.vim
-let g:LanguageClient_serverCommands = {
-\   'julia': ['/Applications/Julia-1.1.app/Contents/Resources/julia/bin/julia']}
+let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXYZ'
 """
 
 [[plugins]]
-repo = 'tpope/vim-fugitive'
-hook_add = "source ~/.config/nvim/plugins/fugitive.vim"
-
-[[plugins]]
-repo = 'sheerun/vim-polyglot'
-hook_add = """
-let g:polyglot_disabled = ['tex', 'latex']
-"""
-
-[[plugins]]
-repo = 'jpalardy/vim-slime'
-hook_add = """
-let g:slime_target = "neovim"
-let g:slime_no_mappings = 1
-xmap <Space>b <Plug>SlimeRegionSend
-nmap <Space>b <Plug>SlimeMotionSend
-nmap <Space>bp <Plug>SlimeParagraphSend
-nmap <Space>bb <Plug>SlimeLineSend
-"""
-
-[[plugins]]
-repo = 'previm/previm'
-hook_add = """
-let g:previm_open_cmd = "open -a 'Google Chrome'"
-"""
-
-[[plugins]]
-repo = 'machakann/vim-swap'
-hook_add = """
-omap i, <Plug>(swap-textobject-i)
-xmap i, <Plug>(swap-textobject-i)
-omap a, <Plug>(swap-textobject-a)
-xmap a, <Plug>(swap-textobject-a)
-"""
-
+repo = 'Konfekt/FastFold'
 
 [[plugins]]
 repo = 'tyru/capture.vim'
@@ -187,9 +201,4 @@ repo = 'tyru/capture.vim'
 [[plugins]]
 repo = "tpope/vim-speeddating"
 
-[[plugins]]
-repo = "monaqa/todome.nvim"
-
-[[plugins]]
-repo = "raghur/vim-ghost"
-# build = ":GhostInstall"
+# }}}
