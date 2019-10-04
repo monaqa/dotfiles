@@ -136,7 +136,9 @@ set incsearch
 set wrapscan
 set hlsearch
 set inccommand=split
-nnoremap / /\v
+nnoremap g/ /\v
+nnoremap * *N
+nnoremap g* g*N
 
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 

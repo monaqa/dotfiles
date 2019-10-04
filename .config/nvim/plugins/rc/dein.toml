@@ -34,7 +34,7 @@ nnoremap <silent> <C-b> :<C-u>call smooth_scroll#flick(v:count1 * winheight(0)  
 """
 
 [[plugins]]
-repo = 'morhetz/gruvbox'
+repo = 'gruvbox-community/gruvbox'
 
 [[plugins]]
 repo = "yasukotelin/shirotelin"
