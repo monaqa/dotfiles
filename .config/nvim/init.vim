@@ -190,7 +190,11 @@ augroup END
 
 function! MgmOpenTerminal()
     let ft = &filetype
+  if (winwidth(".") >= 125)
     vsplit
+  else
+    split
+  endif
     edit term://fish
     if (ft == "python")
         call chansend(b:terminal_job_id, "ipython\n%autoindent\n")
@@ -204,7 +208,14 @@ endfunction
 nnoremap sT :call MgmOpenTerminal()<CR>
 nnoremap <Space>b<CR> :call chansend(g:active_terminal_id, "\n")<CR>
 
-nnoremap st :sb term<CR>
+nnoremap st :call MgmOpenTermWindow()<CR>
+
+function! MgmOpenTermWindow()
+  sbuffer term
+  if (winwidth(".") >= 125)
+    normal sL
+  endif
+endfunction
 
 " }}}
 " }}}

@@ -24,7 +24,7 @@ alias jlb='jupyter lab'
 
 # vim
 function v --wraps nvim
-  $HOME/nvim/nvim-osx64/bin/nvim $argv
+  nvim $argv
 end
 function vtex --wraps nvim
   env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim $argv
