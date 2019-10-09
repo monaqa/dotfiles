@@ -4,7 +4,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <Space>n <Plug>(coc-rename)
 nmap <silent> gh :call CocAction('doHover')<CR>
-nmap <Space><Space>p :CocList -A --normal yank<CR>
+" nmap <Space><Space>p :CocList -A --normal yank<CR>
 imap <C-s> <Plug>(coc-snippets-expand)
 
 inoremap <silent><expr> <TAB>

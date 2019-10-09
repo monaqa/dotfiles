@@ -15,5 +15,8 @@
   "python.linting.mypyEnabled": true,
   "python.linting.flake8CategorySeverity.E": "Warning",
   "python.linting.flake8CategorySeverity.F": "Warning",
-  "python.linting.pep8CategorySeverity.E": "Warning"
+  "python.linting.pep8CategorySeverity.E": "Warning",
+
+  "yank.highlight.duration": 250,
+  "yank.enableCompletion": false
 }
