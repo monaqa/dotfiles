@@ -17,6 +17,15 @@
   "python.linting.flake8CategorySeverity.F": "Warning",
   "python.linting.pep8CategorySeverity.E": "Warning",
 
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "args": [],
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    }
+  },
+
   "yank.highlight.duration": 250,
   "yank.enableCompletion": false
 }

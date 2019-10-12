@@ -31,9 +31,14 @@ endif
 
 " タブ文字/不可視文字/インデントの設定{{{
 set expandtab
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set breakindent
+
+" indent 幅のデフォルト
+autocmd filetype vim set shiftwidth=2
+autocmd filetype xml,html set shiftwidth=2
+autocmd filetype tex set shiftwidth=2
 " }}}
 " }}}
 
@@ -59,8 +64,7 @@ set modeline
 set modelines=3
 
 set list
-set listchars=tab:\▸\-,trail:･
-
+set listchars=tab:▸▹┊,trail:⌑
 set lazyredraw
 set ttyfast
 
@@ -87,7 +91,7 @@ set background=dark
 colorscheme gruvbox
 
 hi! link SpecialKey GruvboxBg4
-hi! link NonText GruvboxPurple
+hi! NonText ctermfg=103
 hi! MatchParen ctermbg=0
 hi! ColorColumn ctermbg=238
 hi! CursorColumn ctermbg=236
@@ -620,6 +624,18 @@ function! s:todome_my_settings() abort
   nnoremap <buffer><nowait> <Space>d :call TodomeAddPriority('D')<CR>
   nnoremap <buffer><nowait> <Space>e :call TodomeAddPriority('E')<CR>
   nnoremap <buffer><nowait> <Space>s :TodomeSort done priority due_date projects<CR>:TodomeFilter<Space>
+endfunction
+
+" }}}
+
+" go {{{
+
+autocmd FileType go call s:go_my_settings()
+function! s:go_my_settings() abort
+  noremap <buffer> s] :cnext<CR>
+  noremap <buffer> s[ :cprev<CR>
+  noremap <buffer> <Space>bb :GoBuild<CR>
+  noremap <buffer> <Space>br :GoRun<CR>
 endfunction
 
 " }}}

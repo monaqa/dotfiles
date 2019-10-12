@@ -69,3 +69,11 @@ on_ft = ["todo"]
 
 # }}}
 
+
+# Only in go {{{
+
+[[plugins]]
+repo = "fatih/vim-go"
+on_ft = ["go"]
+
+# }}}
