@@ -15,6 +15,7 @@ function! s:go_my_settings() abort
   noremap <buffer> <CR>t :GoTest<CR>
   noremap <buffer> <CR>f :GoTestFunc<CR>
   noremap <buffer> <CR>g :GoFmt<CR>
+  noremap <buffer> <CR>i :GoImports<CR>
   nmap <CR>c <Plug>(go-coverage-toggle):set list!<CR>
   nnoremap <CR>d :Denite decls<CR>
 endfunction
