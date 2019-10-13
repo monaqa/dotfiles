@@ -29,3 +29,4 @@ mksymblink $dir/.tigrc ~/.tigrc
 mksymblink $dir/.latexmkrc ~/.latexmkrc
 mksymblink $dir/.commit_template ~/.commit_template
 mksymblink $dir/.gitconfig ~/.gitconfig
+mksymblink $dir/.config/starship.toml ~/.config/starship.toml
