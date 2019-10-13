@@ -46,6 +46,9 @@ export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi
 # opam configuration
 source /Users/shinichi/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
+# gopath
+set -x PATH '/Users/shinichi/go/bin' $PATH
+
 # }}}
 
 

@@ -628,16 +628,4 @@ endfunction
 
 " }}}
 
-" go {{{
-
-autocmd FileType go call s:go_my_settings()
-function! s:go_my_settings() abort
-  noremap <buffer> s] :cnext<CR>
-  noremap <buffer> s[ :cprev<CR>
-  noremap <buffer> <Space>bb :GoBuild<CR>
-  noremap <buffer> <Space>br :GoRun<CR>
-endfunction
-
-" }}}
-
 " }}}
