@@ -23,7 +23,12 @@
       "args": [],
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"]
-    }
+    },
+    "julia": {
+      "command": "/usr/local/bin/julia",
+      "args" : ["--startup-file=no", "--history-file=no", "/Users/shinichi/.config/nvim/plugins/startlsp-julia.jl" ],
+      "filetypes": ["julia"]
+     }
   },
 
   "yank.highlight.duration": 250,

@@ -17,7 +17,8 @@ function! s:go_my_settings() abort
   noremap <buffer> <CR>g :GoFmt<CR>
   noremap <buffer> <CR>i :GoImports<CR>
   nmap <CR>c <Plug>(go-coverage-toggle):set list!<CR>
-  nnoremap <CR>d :Denite decls<CR>
+  " nnoremap <CR>d :Denite decls<CR>
+  nnoremap <CR>d :GoDebugStart<CR>
 endfunction
 
 " run :GoBuild or :GoTestCompile based on the go file

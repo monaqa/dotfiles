@@ -39,6 +39,8 @@ set breakindent
 autocmd filetype vim set shiftwidth=2
 autocmd filetype xml,html set shiftwidth=2
 autocmd filetype tex set shiftwidth=2
+autocmd filetype satysfi set shiftwidth=2
+autocmd filetype markdown,rst set shiftwidth=2
 " }}}
 " }}}
 
@@ -161,6 +163,10 @@ vnoremap <S-CR> "sy:set hlsearch<CR>/\V<C-R><C-R>=substitute(
 
 " Terminal 機能 {{{
 tnoremap <Esc><Esc> <C-\><C-n>
+tnoremap <expr> <C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+tnoremap <C-r><C-r> <C-\><C-N>""pi
+tnoremap <C-r><CR> <C-\><C-N>"0pi
+tnoremap <C-r><Space> <C-\><C-N>"+pi
 
 function! s:bufnew()
    " 幸いにも 'buftype' は設定されているのでそれを基準とする
@@ -188,8 +194,8 @@ augroup my-terminal
    " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
     autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
     autocmd FileType terminal call s:terminal_init()
-    autocmd FileType terminal set nonumber
-    autocmd FileType terminal set signcolumn=no
+    autocmd FileType terminal setlocal nonumber
+    autocmd FileType terminal setlocal signcolumn=no
 augroup END
 
 function! MgmOpenTerminal()
@@ -214,7 +220,7 @@ nnoremap <Space>b<CR> :call chansend(g:active_terminal_id, "\n")<CR>
 
 nnoremap st :call MgmOpenTermWindow()<CR>
 
-function! MgmOpenTermWindow()
+function! MgmOpenTermWindow() abort
   sbuffer term
   if (winwidth(".") >= 125)
     normal sL
@@ -395,7 +401,7 @@ inoremap <C-l> <Right>
 " 上記移動を行っていると <C-Space> で <C-@> が動作してしまうのが不便．
 " imap <Nul> <Nop>
 " としてもうまくいかないので，苦肉の策で <C-@> を潰す
-imap <C-Space> <Space>
+inoremap <C-Space> <Space>
 
 noremap <Space>h ^
 noremap <Space>l $

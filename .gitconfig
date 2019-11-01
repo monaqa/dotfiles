@@ -1,6 +1,8 @@
 [user]
 	email = mogassy@yahoo.co.jp
 	name = monaqa
+[github]
+	user = monaqa
 
 [tig "color"] cursor = yellow red bold
 [commit]
