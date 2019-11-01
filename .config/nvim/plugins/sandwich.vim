@@ -36,24 +36,30 @@ let g:sandwich#recipes += [
 " 日本語のカッコ
 let g:sandwich#recipes += [
 \   {'buns': ['（', '）'], 'nesting': 1, 'match_syntax': 1,
-\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['P']},
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['j(', 'j)', 'jp']},
 \
 \   {'buns': ['「', '」'], 'nesting': 1, 'match_syntax': 1,
-\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['B']},
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['j[', 'j]', 'jb']},
+\
+\   {'buns': ['【', '】'], 'nesting': 1, 'match_syntax': 1,
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['j{', 'j}', 'jB']},
 \
 \   {'buns': ['『', '』'], 'nesting': 1, 'match_syntax': 1,
-\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['D']},
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['jd']},
 \
 \   {'buns': ['（', '）'],   'nesting': 1, 'regex': 1,
 \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-\    'action': ['delete'], 'input': ['P']},
+\    'action': ['delete'], 'input': ['j(', 'j)', 'jp']},
 \
 \   {'buns': ['「', '」'],   'nesting': 1, 'regex': 1,
 \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-\    'action': ['delete'], 'input': ['B']},
+\    'action': ['delete'], 'input': ['j[', 'j]', 'jb']},
+\
+\   {'buns': ['【', '】'],   'nesting': 1, 'regex': 1,
+\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+\    'action': ['delete'], 'input': ['j{', 'j}', 'jB']},
 \
 \   {'buns': ['『', '』'],   'nesting': 1, 'regex': 1,
 \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-\    'action': ['delete'], 'input': ['D']},
+\    'action': ['delete'], 'input': ['jd']},
 \ ]
-

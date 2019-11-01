@@ -54,6 +54,7 @@ set -x PATH '/Users/shinichi/go/bin' $PATH
 
 set -U PIPENV_SKIP_LOCK true
 
+
 eval (starship init fish)
 
 # vim:fdm=marker

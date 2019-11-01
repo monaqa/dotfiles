@@ -46,7 +46,7 @@ call denite#custom#var('file/rec', 'command', [
 
 call denite#custom#var('grep', 'command', ['pt'])
 call denite#custom#var('grep', 'default_opts',
-    \ ['-i', '--nogroup', '--nocolor', '--smart-case'])
+    \ ['-i', '--nogroup', '--nocolor', '--smart-case', '--hidden'])
 call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])

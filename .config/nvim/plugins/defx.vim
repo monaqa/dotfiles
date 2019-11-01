@@ -122,9 +122,14 @@ function! s:defx_my_settings() abort
   \ defx#do_action('print')
   nnoremap <silent><buffer><expr> cd
   \ defx#do_action('change_vim_cwd')
+
+  nnoremap <nowait><buffer> f :MgmDefxLineSearch<Space>
+  nnoremap <nowait><buffer> F :MgmDefxLineBackSearch<Space>
 endfunction
 call defx#custom#column('mark', {
       \ 'readonly_icon': '✗',
       \ 'selected_icon': '✓',
       \ })
 
+command! -nargs=1 MgmDefxLineSearch let @m=escape(<q-args>, '/\') | call search('\v^✹?\s*\S (\*|\|){1,2}\V\zs'. @m)
+command! -nargs=1 MgmDefxLineBackSearch let @m=escape(<q-args>, '/\') | call search('\v^✹?\s*\S (\*|\|){1,2}\V\zs'. @m, 'b')
