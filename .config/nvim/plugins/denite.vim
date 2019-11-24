@@ -10,15 +10,18 @@ nnoremap sO :Denite file/rec -resume -buffer-name=search-file-denite<CR>
 let s:denite_win_width_percent = 0.85
 let s:denite_win_height_percent = 0.7
 
-" Change denite default options
-call denite#custom#option('_', {
-    \ 'split': 'floating',
-    \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
-    \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
-    \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
-    \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
-    \ 'prompt': "❯"
-    \ })
+function! MgmResizeDeniteFloatingWindow()
+  call denite#custom#option('_', {
+        \ 'split': 'floating',
+        \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
+        \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
+        \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
+        \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
+        \ 'prompt': "❯"
+        \ })
+endfunction
+
+call MgmResizeDeniteFloatingWindow()
 
 let s:ignore_globs = [ '.git/', '.ropeproject/', '__pycache__/',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/',

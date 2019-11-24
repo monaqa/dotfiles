@@ -147,7 +147,17 @@ nnoremap g/ /\v
 nnoremap * *N
 nnoremap g* g*N
 
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+" redraw 時にハイライトを消したり floating window サイズを調整したりする
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>:call MgmResizeFloatingWindow()<CR>
+
+function MgmResizeFloatingWindow()
+  if exists("*MgmResizeDefxFloatingWindow")
+    call MgmResizeDefxFloatingWindow()
+  endif
+  if exists("*MgmResizeDeniteFloatingWindow")
+    call MgmResizeDeniteFloatingWindow()
+  endif
+endfunction
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
@@ -168,6 +178,8 @@ tnoremap <expr> <C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 tnoremap <C-r><C-r> <C-\><C-N>""pi
 tnoremap <C-r><CR> <C-\><C-N>"0pi
 tnoremap <C-r><Space> <C-\><C-N>"+pi
+" 苦肉の策
+tnoremap <C-r><Esc> <C-r>
 
 function! s:bufnew()
    " 幸いにも 'buftype' は設定されているのでそれを基準とする
@@ -232,6 +244,19 @@ function! MgmOpenTermWindow() abort
     buffer term
   endif
 endfunction
+
+" }}}
+
+" Command-line window {{{
+
+autocmd CmdwinEnter : setlocal nonumber
+autocmd CmdwinEnter : setlocal signcolumn=no
+autocmd CmdwinEnter : g/^qa\?!\?/d
+autocmd CmdwinEnter : g/^wq\?a\?!\?/d
+
+" ヘルプ履歴
+nnoremap <silent> s? q::v/\v^h%[elp] /d<CR>:set nohlsearch<CR>
+nnoremap <silent> s/ q::v/\v^(\%<Bar>('[0-9a-z\<]<Bar>\d+),('[0-9a-z\>]<Bar>\d+))?s\//d<CR>:set nohlsearch<CR>
 
 " }}}
 " }}}

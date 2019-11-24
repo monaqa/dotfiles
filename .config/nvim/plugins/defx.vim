@@ -8,6 +8,8 @@ let s:denite_win_width_percent = 0.7
 let s:denite_win_height_percent = 0.7
 
 " Change denite default options
+
+function! MgmResizeDefxFloatingWindow()
 call defx#custom#option('_', {
     \ 'split': 'floating',
     \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
@@ -15,6 +17,9 @@ call defx#custom#option('_', {
     \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
     \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
     \ })
+endfunction
+
+call MgmResizeDefxFloatingWindow()
 
 call defx#custom#column('filename', {
       \ 'min_width': float2nr(&columns * s:denite_win_width_percent - 30),
