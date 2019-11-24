@@ -3,6 +3,8 @@
 
 Icon
 
+.vim/
 .vimsessions/
-
 .vimrc.local
+
+.mypy_cache/

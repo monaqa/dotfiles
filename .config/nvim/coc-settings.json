@@ -4,8 +4,8 @@
   "diagnostic.messageTarget": "float",
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": " ",
-  "diagnostic.warningSign": "⚠",
-  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "🐤",
+  "diagnostic.errorSign": "🚨",
   "codeLens.enable": true,
 
   "python.jediEnabled": true,

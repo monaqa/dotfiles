@@ -67,7 +67,7 @@ function! s:defx_my_settings() abort
   \ defx#do_action('move')
   nnoremap <silent><buffer><expr> p
   \ defx#do_action('paste')
-  nnoremap <silent><buffer><expr> t
+  nnoremap <silent><nowait><buffer><expr> t
   \ defx#do_action('open_or_close_tree')
   nnoremap <silent><buffer><expr> T
   \ defx#do_action('open_tree_recursive')

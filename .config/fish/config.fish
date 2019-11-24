@@ -18,6 +18,9 @@ function tiga --wraps tig
   tig --all $argv
 end
 
+alias mkvs='mkdir .vimsessions'
+alias rmvs='rm .vimsessions/*'
+
 # jupyter
 alias jnb='jupyter notebook'
 alias jlb='jupyter lab'
@@ -54,6 +57,8 @@ set -x PATH '/Users/shinichi/go/bin' $PATH
 
 set -U PIPENV_SKIP_LOCK true
 
+eval (pyenv init - | source)
+set -x PATH /usr/local/opt/gettext/bin $PATH
 
 eval (starship init fish)
 

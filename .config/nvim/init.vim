@@ -34,6 +34,7 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set breakindent
+set smartindent
 
 " indent 幅のデフォルト
 autocmd filetype vim set shiftwidth=2
