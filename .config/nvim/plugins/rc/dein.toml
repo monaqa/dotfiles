@@ -34,6 +34,12 @@ nnoremap <silent> <C-b> :<C-u>call smooth_scroll#flick(v:count1 * winheight(0)  
 """
 
 [[plugins]]
+repo = "thinca/vim-splash"
+hook_add = """
+let g:splash#path = "/Users/shinichi/.config/nvim/plugins/monaqa.txt"
+"""
+
+[[plugins]]
 repo = 'gruvbox-community/gruvbox'
 
 [[plugins]]
