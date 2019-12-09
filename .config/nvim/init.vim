@@ -16,7 +16,7 @@ if &shell =~# 'fish$'
     set shell=sh
 endif
 
-let g:python3_host_prog = '/Users/shinichi/.local/share/virtualenvs/nvim-mnzZ7QHz/bin/python'
+let g:python3_host_prog = '/Users/shinichi/.pyenv/versions/3.7.4/bin/python'
 
 if has('persistent_undo')
   set undodir=~/.vim/undo
@@ -54,7 +54,6 @@ set number
 set cursorline
 set cursorcolumn
 set colorcolumn=80
-set virtualedit=onemore  " 行末の1文字先までカーソルを移動したい
 set visualbell
 set noerrorbells
 " set showmatch " 対応カッコを表示
@@ -194,7 +193,7 @@ function! s:terminal_init()
    nnoremap <buffer> <CR> i<CR><C-\><C-n>
    nnoremap <expr><buffer> a "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
    nnoremap <expr><buffer> A "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
-   nnoremap <buffer> q :bd!<CR>
+   nnoremap <buffer> sq :bd!<CR>
    nnoremap <buffer> t :let g:active_terminal_id = b:terminal_job_id<Bar>let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
    nnoremap <buffer> c i<C-u>
    nnoremap <buffer> dd i<C-u><C-\><C-n>
@@ -249,14 +248,18 @@ endfunction
 
 " Command-line window {{{
 
-autocmd CmdwinEnter : setlocal nonumber
-autocmd CmdwinEnter : setlocal signcolumn=no
-autocmd CmdwinEnter : g/^qa\?!\?/d
-autocmd CmdwinEnter : g/^wq\?a\?!\?/d
+autocmd CmdwinEnter [:/\?=] setlocal nonumber
+autocmd CmdwinEnter [:/\?=] setlocal signcolumn=no
+autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-f> <C-f>
+autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-u> <C-u>
+autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-b> <C-b>
+autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-d> <C-d>
+autocmd CmdwinEnter : g/^qa\?!\?$/d
+autocmd CmdwinEnter : g/^wq\?a\?!\?$/d
 
 " ヘルプ履歴
-nnoremap <silent> s? q::v/\v^h%[elp] /d<CR>:set nohlsearch<CR>
-nnoremap <silent> s/ q::v/\v^(\%<Bar>('[0-9a-z\<]<Bar>\d+),('[0-9a-z\>]<Bar>\d+))?s\//d<CR>:set nohlsearch<CR>
+nnoremap <silent> s? q::v/\v^h%[elp] /d<CR>:nohlsearch<CR>
+nnoremap <silent> s/ q::v/\v^(\%<Bar>('[0-9a-z\<]<Bar>\d+),('[0-9a-z\>]<Bar>\d+))?s\//d<CR>:nohlsearch<CR>
 
 " }}}
 " }}}
@@ -343,7 +346,8 @@ nnoremap s= <C-w>=
 " タブページ
 nnoremap sN gt
 nnoremap sP gT
-" Scroll bind
+" Command-line window
+nnoremap s: q:G
 
 nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 
@@ -395,7 +399,7 @@ cnoremap <C-r><Space> <C-r>+
 " set clipboard+=unnamed
 set clipboard=
 " noremap <Space>y "+y
-noremap <Space>p "+p
+noremap <Space>p "+]p
 noremap <Space>y "+y
 if exists('##TextYankPost')
   autocmd TextYankPost *   call MgmCopyUnnamedToPlus(v:event.operator)
@@ -595,7 +599,7 @@ inoremap <F12> <Nop>
 " }}}
 
 " 行の操作/空行追加 {{{
-"
+
 inoremap <S-CR> <End><CR>
 inoremap <C-S-CR> <Up><End><CR>
 nnoremap <S-CR> mzo<ESC>`z
@@ -655,12 +659,6 @@ autocmd Filetype tex set iskeyword+=92
 " }}}
 
 " SATySFi {{{
-
-command! MgmSatyCompile :call chansend(g:active_terminal_id, "satysfi " . expand("%") . "\n")
-command! MgmSatyShowPDF silent !open %:r.pdf
-
-autocmd filetype satysfi nnoremap <Space>m :MgmSatyCompile<CR>
-autocmd filetype satysfi nnoremap <Space>M :MgmSatyShowPDF<CR>
 
 autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages
 autocmd filetype satysfi set suffixesadd+=.saty,.satyh,.satyg
