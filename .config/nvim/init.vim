@@ -51,6 +51,7 @@ autocmd filetype markdown,rst set shiftwidth=2
 
 " 表示設定 {{{
 set number
+set relativenumber
 set cursorline
 set cursorcolumn
 set colorcolumn=80
@@ -146,17 +147,8 @@ nnoremap g/ /\v
 nnoremap * *N
 nnoremap g* g*N
 
-" redraw 時にハイライトを消したり floating window サイズを調整したりする
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>:call MgmResizeFloatingWindow()<CR>
-
-function MgmResizeFloatingWindow()
-  if exists("*MgmResizeDefxFloatingWindow")
-    call MgmResizeDefxFloatingWindow()
-  endif
-  if exists("*MgmResizeDeniteFloatingWindow")
-    call MgmResizeDeniteFloatingWindow()
-  endif
-endfunction
+" redraw 時にハイライトを消す
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
@@ -207,6 +199,7 @@ augroup my-terminal
     autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
     autocmd FileType terminal call s:terminal_init()
     autocmd FileType terminal setlocal nonumber
+    autocmd FileType terminal setlocal norelativenumber
     autocmd FileType terminal setlocal signcolumn=no
 augroup END
 
@@ -249,6 +242,7 @@ endfunction
 " Command-line window {{{
 
 autocmd CmdwinEnter [:/\?=] setlocal nonumber
+autocmd CmdwinEnter [:/\?=] setlocal norelativenumber
 autocmd CmdwinEnter [:/\?=] setlocal signcolumn=no
 autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-f> <C-f>
 autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-u> <C-u>
@@ -268,7 +262,7 @@ nnoremap <silent> s/ q::v/\v^(\%<Bar>('[0-9a-z\<]<Bar>\d+),('[0-9a-z\>]<Bar>\d+)
 " 日本語に関する設定{{{
 """"""""""""""""""""""""
 
-set matchpairs+=「:」,（:）,【:】,『:』
+set matchpairs+=（:）,「:」,『:』,【:】
 
 " Japanese Characters
 " 記号追加時のヒント：追加したい記号の上で ga と押せば...
@@ -278,8 +272,10 @@ digraphs j( 65288  " （
 digraphs j) 65289  " ）
 digraphs j[ 12300  " 「
 digraphs j] 12301  " 」
-digraphs j{ 12304  " 【
-digraphs j} 12305  " 】
+digraphs j{ 12302  " 『
+digraphs j} 12303  " 』
+digraphs j< 12304  " 【
+digraphs j> 12305  " 】
 
 " 句読点
 digraphs j, 65292  " ，
@@ -370,6 +366,17 @@ function! MgmIsWideWindow(nr)
     return 1
   else
     return 0
+  endif
+endfunction
+
+autocmd VimResized * call MgmResizeFloatingWindow()
+
+function MgmResizeFloatingWindow()
+  if exists("*MgmResizeDefxFloatingWindow")
+    call MgmResizeDefxFloatingWindow()
+  endif
+  if exists("*MgmResizeDeniteFloatingWindow")
+    call MgmResizeDeniteFloatingWindow()
   endif
 endfunction
 
@@ -473,14 +480,12 @@ endfunction
 " Motion {{{
 """"""""""""
 
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
+" nnoremap j gj
+" nnoremap k gk
+" nnoremap gj j
+" nnoremap gk k
 
 inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
 inoremap <C-l> <Right>
 " 上記移動を行っていると <C-Space> で <C-@> が動作してしまうのが不便．
 " imap <Nul> <Nop>

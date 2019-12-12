@@ -28,19 +28,23 @@ function! CurrentLineI()
 endfunction
 
 call textobj#user#plugin('jbraces', {
-    \   'parens': {
-    \       'pattern': ['（', '）'],
-    \       'select-a': 'aP', 'select-i': 'iP'
-    \  },
-    \   'braces': {
-    \       'pattern': ['「', '」'],
-    \       'select-a': 'aB', 'select-i': 'iB'
-    \  },
-    \  'double-braces': {
-    \       'pattern': ['『', '』'],
-    \       'select-a': 'aD', 'select-i': 'iD'
-    \  },
-    \})
+      \   'parens': {
+      \       'pattern': ['（', '）'],
+      \       'select-a': 'aj)', 'select-i': 'ij)'
+      \  },
+      \   'braces': {
+      \       'pattern': ['「', '」'],
+      \       'select-a': 'aj[', 'select-i': 'ij]'
+      \  },
+      \  'double-braces': {
+      \       'pattern': ['『', '』'],
+      \       'select-a': 'aj{', 'select-i': 'ij}'
+      \  },
+      \  'lenticular-bracket': {
+      \       'pattern': ['【', '】'],
+      \       'select-a': 'aj<', 'select-i': 'ij>'
+      \  },
+      \})
 
 autocmd filetype tex call textobj#user#plugin('texquote', {
       \   'signle': {
