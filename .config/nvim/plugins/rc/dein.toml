@@ -142,6 +142,7 @@ let g:rst_fold_enabled = 1
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
+hook_add = "source ~/.config/nvim/plugins/quickrun.vim"
 
 [[plugins]]
 repo = 'Shougo/vimproc.vim'

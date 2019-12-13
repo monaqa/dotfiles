@@ -63,3 +63,20 @@ let g:sandwich#recipes += [
       \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
       \    'action': ['delete'], 'input': ['j<', 'j>', 'jk']},
       \ ]
+
+" Escaped parens
+let g:sandwich#recipes += [
+\   {'buns': ['\{', '\}'], 'nesting': 1, 'match_syntax': 1,
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['\{', '\}']},
+\
+\   {'buns': ['\(', '\)'], 'nesting': 1, 'match_syntax': 1,
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['\(', '\)']},
+\
+\   {'buns': ['\{', '\}'],   'nesting': 1, 'regex': 1,
+\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+\    'action': ['delete'], 'input': ['\{', '\}']},
+\
+\   {'buns': ['\(', '\)'],   'nesting': 1, 'regex': 1,
+\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+\    'action': ['delete'], 'input': ['\(', '\)']},
+\ ]

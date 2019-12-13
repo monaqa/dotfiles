@@ -62,4 +62,7 @@ set -x PATH /usr/local/opt/gettext/bin $PATH
 
 eval (starship init fish)
 
+# ls
+set -x LSCOLORS gxfxcxdxbxegedabagacad
+
 # vim:fdm=marker

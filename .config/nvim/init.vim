@@ -60,6 +60,7 @@ set noerrorbells
 " set showmatch " 対応カッコを表示
 set laststatus=2 " ステータスラインを常に表示
 set scrolloff=10
+set sidescrolloff=10
 set ambiwidth=single  "全角文字幅
 set showcmd
 
@@ -67,7 +68,9 @@ set modeline
 set modelines=3
 
 set list
-set listchars=tab:▸▹┊,trail:⌑
+set listchars=tab:▸▹┊,trail:⌑,extends:>,precedes:<
+set nowrap
+
 set lazyredraw
 set ttyfast
 
@@ -198,6 +201,7 @@ augroup my-terminal
    " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
     autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
     autocmd FileType terminal call s:terminal_init()
+    autocmd FileType terminal setlocal wrap
     autocmd FileType terminal setlocal nonumber
     autocmd FileType terminal setlocal norelativenumber
     autocmd FileType terminal setlocal signcolumn=no
