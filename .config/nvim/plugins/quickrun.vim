@@ -15,4 +15,13 @@ let quickrun_config['satysfi'] = {
       \ 'outputter/error/error': 'buffer',
       \ }
 
+let quickrun_config['satysfi-debug'] = {
+      \ 'command': 'satysfi',
+      \ 'exec': '%c %s %o',
+      \ 'cmdopt': '--debug-show-bbox --debug-show-space --debug-show-block-bbox --debug-show-block-space',
+      \ 'outputter/error/success': 'null',
+      \ 'outputter/error/error': 'buffer',
+      \ }
+
 autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>q :QuickRun satysfi<CR>
+autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>Q :QuickRun satysfi-debug<CR>

@@ -132,12 +132,15 @@ set nobackup
 set noswapfile
 set autoread
 set hidden
+set confirm
 
 set spelllang=en,cjk
 
 set virtualedit=block
 set backspace=indent,eol,start
 set history=10000
+" set formatoptions=jcrqlnB
+autocmd FileType * set formatoptions-=o formatoptions+=nB
 
 " 検索機能{{{
 set ignorecase
@@ -192,8 +195,6 @@ function! s:terminal_init()
    nnoremap <buffer> t :let g:active_terminal_id = b:terminal_job_id<Bar>let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
    nnoremap <buffer> c i<C-u>
    nnoremap <buffer> dd i<C-u><C-\><C-n>
-   nnoremap <buffer> o :set scrolloff=0<CR>
-   nnoremap <buffer> O :set scrolloff=10<CR>
 endfunction
 
 augroup my-terminal
@@ -206,6 +207,9 @@ augroup my-terminal
     autocmd FileType terminal setlocal norelativenumber
     autocmd FileType terminal setlocal signcolumn=no
 augroup END
+
+autocmd TermOpen,TermEnter * set scrolloff=0
+autocmd TermLeave * set scrolloff=10
 
 function! MgmOpenTerminal()
     let ft = &filetype
@@ -252,12 +256,8 @@ autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-f> <C-f>
 autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-u> <C-u>
 autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-b> <C-b>
 autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-d> <C-d>
-autocmd CmdwinEnter : g/^qa\?!\?$/d
-autocmd CmdwinEnter : g/^wq\?a\?!\?$/d
-
-" ヘルプ履歴
-nnoremap <silent> s? q::v/\v^h%[elp] /d<CR>:nohlsearch<CR>
-nnoremap <silent> s/ q::v/\v^(\%<Bar>('[0-9a-z\<]<Bar>\d+),('[0-9a-z\>]<Bar>\d+))?s\//d<CR>:nohlsearch<CR>
+autocmd CmdwinEnter : g/^qa\?!\?$/d _
+autocmd CmdwinEnter : g/^wq\?a\?!\?$/d _
 
 " }}}
 " }}}
@@ -348,6 +348,9 @@ nnoremap sN gt
 nnoremap sP gT
 " Command-line window
 nnoremap s: q:G
+nnoremap s? q?G
+nnoremap s/ q/G
+
 
 nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 
@@ -631,6 +634,14 @@ endif
 nnoremap <silent> <Space><CR> a<CR><Esc>
 
 " }}}
+
+" マクロの活用{{{
+nnoremap q qq<Esc>
+nnoremap Q q
+nnoremap , @q
+nnoremap + ,
+" }}}
+
 " }}}
 
 
@@ -673,7 +684,7 @@ autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/
 autocmd filetype satysfi set suffixesadd+=.saty,.satyh,.satyg
 autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
 autocmd filetype satysfi let b:caw_oneline_comment = "%"
-
+autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>p :!open %:r.pdf<CR>
 " autocmd filetype satysfi set foldmethod=
 
 " }}}
