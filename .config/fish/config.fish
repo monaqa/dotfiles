@@ -4,37 +4,43 @@ fish_vi_key_bindings
 
 set -g fish_ambiguous_width 1
 
-# alias {{{
+# abbr {{{
 
-alias ll='ls -laFh'
-
+abbr -a .    "cd ../"
+abbr -a ..   "cd ../../"
+abbr -a ...  "cd ../../../"
+abbr -a cdo  "cd ~/Documents/git/sys/dotfiles"
+abbr -a vdo  "cd ~/Documents/git/sys/dotfiles && nvim"
+abbr -a hgr  "history | grep"
+abbr -a mk   "mkdir"
+abbr -a j "ls -Fhla"
+# abbr -a rr "rm -r"
 # git
-
-function g --wraps git
-  git $argv
-end
-
-function tiga --wraps tig
-  tig --all $argv
-end
-
-alias mkvs='mkdir .vimsessions'
-alias rmvs='rm .vimsessions/*'
-
+abbr -a g    "git"
+abbr -a gb   "git branch"
+abbr -a gc   "git checkout"
+abbr -a gcm  "git checkout master"
+abbr -a gcb  "git checkout -b"
+abbr -a gpl  "git pull"
+abbr -a gps  "git push"
+abbr -a grb  "git rebase"
+abbr -a grbm "git rebase master"
+abbr -a grbc "git rebase --continue"
+abbr -a gs   "git stash"
+abbr -a gsp  "git stash pop"
+# abbr -a gsd "git stash drop"
+# tig
+abbr -a t    "tig --all"
 # jupyter
-alias jnb='jupyter notebook'
-alias jlb='jupyter lab'
-
+abbr -a jnb  "jupyter notebook"
+abbr -a jlb  "jupyter lab"
 # vim
-function v --wraps nvim
-  nvim $argv
-end
-function vtex --wraps nvim
-  env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim $argv
-end
-function nv --wraps nvim
-  nvim $argv
-end
+abbr -a v    "nvim"
+abbr -a vtex "env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim"
+abbr -a mkvs "mkdir .vimsessions"
+abbr -a rmvs "rm .vimsessions/*"
+# ssh
+abbr -a s    "ssh"
 
 # }}}
 
