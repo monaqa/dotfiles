@@ -215,4 +215,7 @@ repo = 'tyru/capture.vim'
 [[plugins]]
 repo = "tpope/vim-speeddating"
 
+[[plugins]]
+repo = "deris/vim-duzzle"
+
 # }}}

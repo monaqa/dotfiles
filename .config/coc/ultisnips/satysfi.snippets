@@ -80,3 +80,16 @@ snippet blst "listing" b
 	* ${1}
 }
 endsnippet
+
+snippet example "Example" b
++code(\`\`\`
+${1}
+\`\`\`);
++math(${
+$1
+});
+endsnippet
+
+snippet link "Link" b
+\link?:({${1}})(\`$1\`);
+endsnippet
