@@ -4,6 +4,8 @@
 """"""""""""""""""""""""
 
 " まず最初に dein.vim でプラグインを読み込む
+set encoding=utf-8
+scriptencoding utf-8
 source ~/.config/nvim/plugins/dein.vim
 
 " Syntax, mouse などの有効化{{{
@@ -192,7 +194,7 @@ function! s:terminal_init()
    nnoremap <expr><buffer> a "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
    nnoremap <expr><buffer> A "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
    nnoremap <buffer> sq :bd!<CR>
-   nnoremap <buffer> t :let g:active_terminal_id = b:terminal_job_id<Bar>let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
+   nnoremap <buffer> t :let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
    nnoremap <buffer> c i<C-u>
    nnoremap <buffer> dd i<C-u><C-\><C-n>
 endfunction
@@ -212,24 +214,22 @@ autocmd TermOpen,TermEnter * set scrolloff=0
 autocmd TermLeave * set scrolloff=10
 
 function! MgmOpenTerminal()
-    let ft = &filetype
+  let ft = &filetype
   if (MgmIsWideWindow("."))
     vsplit
   else
     split
   endif
-    edit term://fish
-    if (ft == "python")
-        call chansend(b:terminal_job_id, "ipython\n%autoindent\n")
-    elseif (ft == "julia")
-        call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")
-    endif
-    let g:slime_default_config = {"jobid": b:terminal_job_id}
-    let g:active_terminal_id = b:terminal_job_id
+  edit term://fish
+  if (ft == "python")
+    call chansend(b:terminal_job_id, "ipython\n%autoindent\n")
+  elseif (ft == "julia")
+    call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")
+  endif
+  let g:slime_default_config = {"jobid": b:terminal_job_id}
 endfunction
 
 nnoremap sT :call MgmOpenTerminal()<CR>
-nnoremap <Space>b<CR> :call chansend(g:active_terminal_id, "\n")<CR>
 
 nnoremap st :call MgmOpenTermWindow()<CR>
 

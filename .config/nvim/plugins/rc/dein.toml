@@ -154,10 +154,10 @@ hook_add = """
 let g:slime_target = "neovim"
 let g:slime_no_mappings = 1
 let g:slime_dont_ask_default = 1
-xmap <Space>b <Plug>SlimeRegionSend
-nmap <Space>b <Plug>SlimeMotionSend
-nmap <Space>bp <Plug>SlimeParagraphSend
-nmap <Space>bb <Plug>SlimeLineSend
+xmap <CR>t <Plug>SlimeRegionSend
+nmap <CR>t <Plug>SlimeMotionSend
+nmap <CR>tp <Plug>SlimeParagraphSend
+nmap <CR>tt <Plug>SlimeLineSend
 """
 
 [[plugins]]

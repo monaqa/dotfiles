@@ -10,9 +10,6 @@
 [core]
 	editor = nvim
 [alias]
-	cm = checkout master
-	rbm = rebase master
-	co = checkout
 	commend = commit --amend --no-edit
 	it = !git init && git commit -m “root” --allow-empty
 	stsh = stash --keep-index

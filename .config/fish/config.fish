@@ -1,6 +1,6 @@
 export EDITOR=nvim
 
-fish_vi_key_bindings
+fish_default_key_bindings
 
 set -g fish_ambiguous_width 1
 
@@ -15,6 +15,7 @@ abbr -a hgr  "history | grep"
 abbr -a mk   "mkdir"
 abbr -a j "ls -Fhla"
 # abbr -a rr "rm -r"
+
 # git
 abbr -a g    "git"
 abbr -a gb   "git branch"
@@ -26,19 +27,24 @@ abbr -a gps  "git push"
 abbr -a grb  "git rebase"
 abbr -a grbm "git rebase master"
 abbr -a grbc "git rebase --continue"
-abbr -a gs   "git stash"
+abbr -a gss  "git stash save"
+abbr -a gsl  "git stash list"
 abbr -a gsp  "git stash pop"
 # abbr -a gsd "git stash drop"
+
 # tig
 abbr -a t    "tig --all"
+
 # jupyter
 abbr -a jnb  "jupyter notebook"
 abbr -a jlb  "jupyter lab"
+
 # vim
 abbr -a v    "nvim"
 abbr -a vtex "env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim"
 abbr -a mkvs "mkdir .vimsessions"
 abbr -a rmvs "rm .vimsessions/*"
+
 # ssh
 abbr -a s    "ssh"
 
