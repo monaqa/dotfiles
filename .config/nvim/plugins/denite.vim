@@ -71,7 +71,7 @@ call denite#custom#source('buffer', 'matchers', ['converter/abbr_word', 'matcher
 
 autocmd FileType denite call s:denite_my_settings()
 function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
+  nnoremap <nowait><silent><buffer><expr> <CR>
   \ denite#do_map('do_action')
   nnoremap <silent><nowait><buffer><expr> d
   \ denite#do_map('do_action', 'delete')

@@ -160,15 +160,11 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
-vnoremap <CR> "my/\V<C-R><C-R>=substitute(
+vnoremap , "my/\V<C-R><C-R>=substitute(
   \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>N
-vnoremap <S-CR> "sy:set hlsearch<CR>/\V<C-R><C-R>=substitute(
-  \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \:,$s/\V<C-R><C-R>=substitute(
-  \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR>
-  \/<C-R><C-R>=escape(@s, '/\&~')<CR>
-  \/gce<Bar>1,''-&&<CR>
-
+vnoremap . mz"my:set hlsearch<CR>
+  \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
+  \/gce<Bar>1,''-&&<Bar>'z<CR>
 " }}}
 
 " Terminal 機能 {{{
@@ -351,6 +347,10 @@ nnoremap s: q:G
 nnoremap s? q?G
 nnoremap s/ q/G
 
+" Sandwich.vim のデフォルトキーバインドを上書きする
+nnoremap <nowait> srb <Nop>
+nnoremap <nowait> sr <C-^>
+
 
 nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 
@@ -426,60 +426,60 @@ function! MgmCopyUnnamedToPlus(opr)
   endif
 endfunction
 
-" 指定 text object/motion を指定レジスタの中身に入れ替える
-" （要は delete と put を同時にやる）
-nmap <silent> <Space>r :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplace<CR>g@
-nmap <silent> <Space>rr :<C-u>let w:replace_buffer = v:register <Bar> call MgmReplaceALine(v:count1)<CR>
-nmap <silent> <Space>rx :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplaceX<CR>g@
-
-function! MgmReplace(type)
-  let sel_save = &selection
-  let &selection = "inclusive"
-  let m_reg = @m
-  exe "let @m = @" . w:replace_buffer
-
-  if a:type == 'line'
-    exe "normal! '[V']d"
-  else
-    exe "normal! `[v`]d"
-  endif
-
-  exe "normal! " . '"' . "mP"
-
-  let &selection = sel_save
-  let @m=m_reg
-endfunction
-
-function! MgmReplaceX(type)
-  let sel_save = &selection
-  let &selection = "inclusive"
-  let m_reg = @m
-  exe "let @m = @" . w:replace_buffer
-
-  if a:type == 'line'
-    exe "normal! '[V']" . '"_d'
-  else
-    exe "normal! `[v`]" . '"_d'
-  endif
-
-  exe "normal! " . '"' . "mP"
-
-  let &selection = sel_save
-  let @m=m_reg
-endfunction
-
-function! MgmReplaceALine(nline)
-  let sel_save = &selection
-  let &selection = "inclusive"
-  " let m_reg = @m
-  exe "let @m = @" . w:replace_buffer
-
-  exe "normal! " . a:nline . "dd"
-  exe "normal! " . '"' . "mP"
-
-  let &selection = sel_save
-  " let @m=m_reg
-endfunction
+" " 指定 text object/motion を指定レジスタの中身に入れ替える
+" " （要は delete と put を同時にやる）
+" nmap <silent> <Space>r :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplace<CR>g@
+" nmap <silent> <Space>rr :<C-u>let w:replace_buffer = v:register <Bar> call MgmReplaceALine(v:count1)<CR>
+" nmap <silent> <Space>rx :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplaceX<CR>g@
+"
+" function! MgmReplace(type)
+"   let sel_save = &selection
+"   let &selection = "inclusive"
+"   let m_reg = @m
+"   exe "let @m = @" . w:replace_buffer
+"
+"   if a:type == 'line'
+"     exe "normal! '[V']d"
+"   else
+"     exe "normal! `[v`]d"
+"   endif
+"
+"   exe "normal! " . '"' . "mP"
+"
+"   let &selection = sel_save
+"   let @m=m_reg
+" endfunction
+"
+" function! MgmReplaceX(type)
+"   let sel_save = &selection
+"   let &selection = "inclusive"
+"   let m_reg = @m
+"   exe "let @m = @" . w:replace_buffer
+"
+"   if a:type == 'line'
+"     exe "normal! '[V']" . '"_d'
+"   else
+"     exe "normal! `[v`]" . '"_d'
+"   endif
+"
+"   exe "normal! " . '"' . "mP"
+"
+"   let &selection = sel_save
+"   let @m=m_reg
+" endfunction
+"
+" function! MgmReplaceALine(nline)
+"   let sel_save = &selection
+"   let &selection = "inclusive"
+"   " let m_reg = @m
+"   exe "let @m = @" . w:replace_buffer
+"
+"   exe "normal! " . a:nline . "dd"
+"   exe "normal! " . '"' . "mP"
+"
+"   let &selection = sel_save
+"   " let @m=m_reg
+" endfunction
 
 " }}}
 
