@@ -734,4 +734,10 @@ endfunction
 
 " }}}
 
+" tmux conf {{{
+
+autocmd FileType tmux  nnoremap <buffer> <CR>s :!tmux source ~/.tmux.conf<CR>
+
+" }}}
+
 " }}}

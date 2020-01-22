@@ -26,6 +26,7 @@ mksymblink $dir/.config/nvim/plugins ~/.config/nvim/plugins
 
 mksymblink $dir/.vimrc ~/.vimrc
 mksymblink $dir/.tigrc ~/.tigrc
+mksymblink $dir/.tmux.conf ~/.tmux.conf
 mksymblink $dir/.latexmkrc ~/.latexmkrc
 mksymblink $dir/.commit_template ~/.commit_template
 mksymblink $dir/.gitconfig ~/.gitconfig

@@ -33,7 +33,12 @@ abbr -a gsp  "git stash pop"
 # abbr -a gsd "git stash drop"
 
 # tig
-abbr -a t    "tig --all"
+abbr -a ta   "tig --all"
+
+# tmux
+
+abbr -a tf   "tmux a -t full || tmux new -s full"
+abbr -a th   "tmux a -t half || tmux new -s half"
 
 # jupyter
 abbr -a jnb  "jupyter notebook"
