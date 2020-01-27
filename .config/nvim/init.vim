@@ -162,9 +162,9 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
 vnoremap , "my/\V<C-R><C-R>=substitute(
   \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>N
-vnoremap . mz"my:set hlsearch<CR>
+vnoremap . "my:set hlsearch<CR>
   \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
-  \/gce<Bar>1,''-&&<Bar>'z<CR>
+  \/gce<Bar>1,''-&&<CR>
 " }}}
 
 " Terminal 機能 {{{
@@ -377,6 +377,7 @@ function! MgmIsWideWindow(nr)
 endfunction
 
 autocmd VimResized * call MgmResizeFloatingWindow()
+autocmd VimResized * exe "normal \<c-w>="
 
 function MgmResizeFloatingWindow()
   if exists("*MgmResizeDefxFloatingWindow")
@@ -686,6 +687,7 @@ autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
 autocmd filetype satysfi let b:caw_oneline_comment = "%"
 autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>p :!open %:r.pdf<CR>
 " autocmd filetype satysfi set foldmethod=
+autocmd BufRead,BufNewFile Satyristes setlocal filetype=lisp
 
 " }}}
 

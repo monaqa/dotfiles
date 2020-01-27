@@ -23,5 +23,14 @@ let quickrun_config['satysfi-debug'] = {
       \ 'outputter/error/error': 'buffer',
       \ }
 
+" example; :QuickRun rsync -args /Users/mogami/work/path-of-project remote:work/sync-mac
+let g:quickrun_config['rsync'] = {
+    \ 'command': 'rsync',
+    \ 'cmdopt': '-C --filter=":- .gitignore" --exclude ".git" -acvz --delete -e ssh',
+    \ 'exec': '%c %o %a',
+    \ 'outputter/error/success': 'null',
+\ }
+
+
 autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>q :QuickRun satysfi -args %{expand("%")}<CR>
 autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>Q :QuickRun satysfi-debug -args %{expand("%")}<CR>
