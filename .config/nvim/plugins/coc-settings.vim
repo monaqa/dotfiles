@@ -27,7 +27,10 @@ let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_
 " let g:LanguageClient_serverCommands = {
 "\   'julia': ['/Applications/Julia-0.6.app/Contents/Resources/julia/bin/julia']}
 
-autocmd Filetype java nnoremap <Space>i :CocCommand java.action.organizeImports<CR>
+augroup rc_coc
+  autocmd!
+  autocmd Filetype java nnoremap <Space>i :CocCommand java.action.organizeImports<CR>
+augroup END
 
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
 let g:coc_snippet_next = '<c-l>'

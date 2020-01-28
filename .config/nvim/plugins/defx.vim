@@ -45,9 +45,13 @@ if getftype(g:defx_sessions_file) != "file"
   echo "Created .defxsessions file to home directory."
 endif
 
-autocmd FileType defx call s:defx_my_settings()
-autocmd FileType defx set nonumber
-autocmd FileType defx set signcolumn=no
+augroup rc_defx
+  autocmd!
+  autocmd FileType defx call s:defx_my_settings()
+  autocmd FileType defx set nonumber
+  autocmd FileType defx set signcolumn=no
+augroup END
+
 function! s:defx_my_settings() abort
 
   let bufkind = strpart(bufname(""), 7, 5)
@@ -131,6 +135,7 @@ function! s:defx_my_settings() abort
   nnoremap <nowait><buffer> f :MgmDefxLineSearch<Space>
   nnoremap <nowait><buffer> F :MgmDefxLineBackSearch<Space>
 endfunction
+
 call defx#custom#column('mark', {
       \ 'readonly_icon': '✗',
       \ 'selected_icon': '✓',

@@ -6,7 +6,11 @@ let g:go_doc_popup_window = 1
 " let g:go_auto_type_info = 1
 " let g:go_auto_sameids = 1
 
-autocmd FileType go call s:go_my_settings()
+augroup rc_go
+  autocmd!
+  autocmd FileType go call s:go_my_settings()
+augroup END
+
 function! s:go_my_settings() abort
   noremap <buffer> s] :cnext<CR>
   noremap <buffer> s[ :cprev<CR>

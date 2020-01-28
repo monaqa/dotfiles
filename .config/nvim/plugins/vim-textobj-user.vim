@@ -46,13 +46,16 @@ call textobj#user#plugin('jbraces', {
       \  },
       \})
 
-autocmd filetype tex call textobj#user#plugin('texquote', {
-      \   'signle': {
-      \     'pattern': ['`', "'"],
-      \     'select-a': 'aq', 'select-i': 'iq'
-      \   },
-      \   'double': {
-      \     'pattern': ['``', "''"],
-      \     'select-a': 'aQ', 'select-i': 'iQ'
-      \   },
-      \ })
+augroup rc_textobj_user
+  autocmd!
+  autocmd filetype tex call textobj#user#plugin('texquote', {
+        \   'signle': {
+        \     'pattern': ['`', "'"],
+        \     'select-a': 'aq', 'select-i': 'iq'
+        \   },
+        \   'double': {
+        \     'pattern': ['``', "''"],
+        \     'select-a': 'aQ', 'select-i': 'iQ'
+        \   },
+        \ })
+augroup END

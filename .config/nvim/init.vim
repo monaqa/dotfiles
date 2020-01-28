@@ -1,17 +1,17 @@
 " vim:foldmethod=marker:
 
+set encoding=utf-8
+scriptencoding utf-8
+
 " エディタ全般の設定{{{
 """"""""""""""""""""""""
 
 " まず最初に dein.vim でプラグインを読み込む
-set encoding=utf-8
-scriptencoding utf-8
 source ~/.config/nvim/plugins/dein.vim
 
 " Syntax, mouse などの有効化{{{
 filetype plugin indent on
 syntax enable
-
 
 set mouse=a
 if &shell =~# 'fish$'
@@ -29,6 +29,11 @@ endif
 " set runtimepath^=~/.vim runtimepath+=~/.vim/after
 " let &packpath = &runtimepath
 
+augroup vimrc_general
+  autocmd!
+  " 他のどの augroup にも入れられそうにない余り物の autocmd を入れる augroup
+augroup END
+
 " }}}
 
 " タブ文字/不可視文字/インデントの設定{{{
@@ -39,11 +44,13 @@ set breakindent
 set smartindent
 
 " indent 幅のデフォルト
-autocmd filetype vim set shiftwidth=2
-autocmd filetype xml,html set shiftwidth=2
-autocmd filetype tex set shiftwidth=2
-autocmd filetype satysfi set shiftwidth=2
-autocmd filetype markdown,rst set shiftwidth=2
+augroup vimrc_indent
+  autocmd filetype vim set shiftwidth=2
+  autocmd filetype xml,html set shiftwidth=2
+  autocmd filetype tex set shiftwidth=2
+  autocmd filetype satysfi set shiftwidth=2
+  autocmd filetype markdown,rst set shiftwidth=2
+augroup END
 " }}}
 " }}}
 
@@ -82,14 +89,14 @@ set signcolumn=yes
 
 " 全角スペース強調 {{{
 " https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776
-augroup MyVimrc
-    autocmd!
+
+augroup vimrc_color
+  autocmd!
+  autocmd ColorScheme * highlight link UnicodeSpaces Error
+  autocmd VimEnter,WinEnter * match UnicodeSpaces
+        \ /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
 augroup END
 
-augroup MyVimrc
-    autocmd ColorScheme * highlight link UnicodeSpaces Error
-    autocmd VimEnter,WinEnter * match UnicodeSpaces /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
-augroup END
 " }}}
 
 " Theme {{{
@@ -107,11 +114,11 @@ hi! CursorLine ctermbg=236
 hi! link Folded GruvboxPurpleBold
 hi! link VertSplit GruvboxFg1
 hi! link HighlightedyankRegion DiffChange
-autocmd filetype help hi! Ignore ctermfg=66
+autocmd vimrc_color FileType help hi! Ignore ctermfg=66
 " }}}
 
 " .vimrc.local {{{
-augroup vimrc-local
+augroup vimrc_local
   autocmd!
   autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
 augroup END
@@ -142,7 +149,7 @@ set virtualedit=block
 set backspace=indent,eol,start
 set history=10000
 " set formatoptions=jcrqlnB
-autocmd FileType * set formatoptions-=o formatoptions+=nB
+autocmd vimrc_general FileType * set formatoptions-=o formatoptions+=nB
 
 " 検索機能{{{
 set ignorecase
@@ -161,10 +168,10 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
 vnoremap , "my/\V<C-R><C-R>=substitute(
-  \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>N
+      \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>N
 vnoremap . "my:set hlsearch<CR>
-  \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
-  \/gce<Bar>1,''-&&<CR>
+      \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
+      \/gce<Bar>1,''-&&<CR>
 " }}}
 
 " Terminal 機能 {{{
@@ -177,37 +184,38 @@ tnoremap <C-r><Space> <C-\><C-N>"+pi
 tnoremap <C-r><Esc> <C-r>
 
 function! s:bufnew()
-   " 幸いにも 'buftype' は設定されているのでそれを基準とする
-    if &buftype == "terminal" && &filetype == ""
-        set filetype=terminal
-    endif
+  " 幸いにも 'buftype' は設定されているのでそれを基準とする
+  if &buftype == "terminal" && &filetype == ""
+    set filetype=terminal
+  endif
 endfunction
 
 function! s:terminal_init()
-   " ここに :terminal のバッファ固有の設定を記述する
-   " nnoremap <buffer> a i<Up><CR><C-\><C-n>
-   nnoremap <buffer> <CR> i<CR><C-\><C-n>
-   nnoremap <expr><buffer> a "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
-   nnoremap <expr><buffer> A "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
-   nnoremap <buffer> sq :bd!<CR>
-   nnoremap <buffer> t :let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
-   nnoremap <buffer> c i<C-u>
-   nnoremap <buffer> dd i<C-u><C-\><C-n>
+  " ここに :terminal のバッファ固有の設定を記述する
+  " nnoremap <buffer> a i<Up><CR><C-\><C-n>
+  nnoremap <buffer> <CR> i<CR><C-\><C-n>
+  nnoremap <expr><buffer> a "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
+  nnoremap <expr><buffer> A "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
+  nnoremap <buffer> sq :bd!<CR>
+  nnoremap <buffer> t :let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
+  nnoremap <buffer> c i<C-u>
+  nnoremap <buffer> dd i<C-u><C-\><C-n>
 endfunction
 
-augroup my-terminal
-    autocmd!
-   " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
-    autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
-    autocmd FileType terminal call s:terminal_init()
-    autocmd FileType terminal setlocal wrap
-    autocmd FileType terminal setlocal nonumber
-    autocmd FileType terminal setlocal norelativenumber
-    autocmd FileType terminal setlocal signcolumn=no
+augroup vimrc_terminal
+  autocmd!
+  " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
+  autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
+  autocmd FileType terminal call s:terminal_init()
+  autocmd FileType terminal setlocal wrap
+  autocmd FileType terminal setlocal nonumber
+  autocmd FileType terminal setlocal norelativenumber
+  autocmd FileType terminal setlocal signcolumn=no
+
+  autocmd TermOpen,TermEnter * set scrolloff=0
+  autocmd TermLeave * set scrolloff=10
 augroup END
 
-autocmd TermOpen,TermEnter * set scrolloff=0
-autocmd TermLeave * set scrolloff=10
 
 function! MgmOpenTerminal()
   let ft = &filetype
@@ -244,19 +252,21 @@ endfunction
 " }}}
 
 " Command-line window {{{
-
-autocmd CmdwinEnter [:/\?=] setlocal nonumber
-autocmd CmdwinEnter [:/\?=] setlocal norelativenumber
-autocmd CmdwinEnter [:/\?=] setlocal signcolumn=no
-autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-f> <C-f>
-autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-u> <C-u>
-autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-b> <C-b>
-autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-d> <C-d>
-autocmd CmdwinEnter [:/\?=] nnoremap <buffer><nowait> <CR> <CR>
-autocmd CmdwinEnter : g/^qa\?!\?$/d _
-autocmd CmdwinEnter : g/^wq\?a\?!\?$/d _
-
+augroup vimrc_cmdwin
+  autocmd!
+  autocmd CmdwinEnter [:/\?=] setlocal nonumber
+  autocmd CmdwinEnter [:/\?=] setlocal norelativenumber
+  autocmd CmdwinEnter [:/\?=] setlocal signcolumn=no
+  autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-f> <C-f>
+  autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-u> <C-u>
+  autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-b> <C-b>
+  autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-d> <C-d>
+  autocmd CmdwinEnter [:/\?=] nnoremap <buffer><nowait> <CR> <CR>
+  autocmd CmdwinEnter : g/^qa\?!\?$/d _
+  autocmd CmdwinEnter : g/^wq\?a\?!\?$/d _
+augroup END
 " }}}
+
 " }}}
 
 
@@ -377,8 +387,11 @@ function! MgmIsWideWindow(nr)
   endif
 endfunction
 
-autocmd VimResized * call MgmResizeFloatingWindow()
-autocmd VimResized * exe "normal \<c-w>="
+augroup vimrc_resized
+  autocmd!
+  autocmd VimResized * call MgmResizeFloatingWindow()
+  autocmd VimResized * exe "normal \<c-w>="
+augroup END
 
 function MgmResizeFloatingWindow()
   if exists("*MgmResizeDefxFloatingWindow")
@@ -417,9 +430,13 @@ set clipboard=
 " noremap <Space>y "+y
 noremap <Space>p "+]p
 noremap <Space>y "+y
-if exists('##TextYankPost')
-  autocmd TextYankPost *   call MgmCopyUnnamedToPlus(v:event.operator)
-endif
+
+augroup vimrc_yank
+  autocmd!
+  if exists('##TextYankPost')
+    autocmd TextYankPost * call MgmCopyUnnamedToPlus(v:event.operator)
+  endif
+augroup END
 
 function! MgmCopyUnnamedToPlus(opr)
   " yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
@@ -650,14 +667,14 @@ nnoremap + ,
 " 特定の種類のファイルに対する設定{{{
 
 " netrw {{{
-augroup netrw_mapping
-    autocmd!
-    autocmd filetype netrw call NetrwMapping()
+augroup vimrc_netrw
+  autocmd!
+  autocmd filetype netrw call NetrwMapping()
 augroup END
 
 function! NetrwMapping()
-    noremap <buffer> i h
-    noremap <buffer> s <Nop>
+  noremap <buffer> i h
+  noremap <buffer> s <Nop>
 endfunction
 
 " https://www.tomcky.net/entry/2018/03/18/005927
@@ -677,54 +694,72 @@ let g:vimtex_view_general_options = '@line @pdf @tex'
 
 let g:tex_flavor = 'latex'
 " \cs を一単語に
-autocmd Filetype tex set iskeyword+=92
+augroup vimrc_tex
+  autocmd!
+  autocmd Filetype tex set iskeyword+=92
+augroup END
 " }}}
 
 " SATySFi {{{
 
-autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages
-autocmd filetype satysfi set suffixesadd+=.saty,.satyh,.satyg
-autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
-autocmd filetype satysfi let b:caw_oneline_comment = "%"
-autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>p :!open %:r.pdf<CR>
-" autocmd filetype satysfi set foldmethod=
-autocmd BufRead,BufNewFile Satyristes setlocal filetype=lisp
+augroup vimrc_satysfi
+  autocmd!
+  autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages
+  autocmd filetype satysfi set suffixesadd+=.saty,.satyh,.satyg
+  autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
+  autocmd filetype satysfi let b:caw_oneline_comment = "%"
+  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>p :!open %:r.pdf<CR>
+  autocmd filetype satysfi set foldmethod=marker
+  autocmd BufRead,BufNewFile Satyristes setlocal filetype=lisp
+augroup END
 
 " }}}
 
 " reST {{{
-autocmd filetype rst set suffixesadd+=.rst
+
 function! MgmReSTTitle(punc)
   let line = getline(".")
   sil! exe row 'foldopen!'
   call append(".", repeat(a:punc, strdisplaywidth(line)))
 endfunction
-autocmd filetype rst nnoremap <Space>s0 :call MgmReSTTitle("#")<CR>jo<Esc>
-autocmd filetype rst nnoremap <Space>s1 :call MgmReSTTitle("=")<CR>jo<Esc>
-autocmd filetype rst nnoremap <Space>s2 :call MgmReSTTitle("-")<CR>jo<Esc>
-autocmd filetype rst nnoremap <Space>s3 :call MgmReSTTitle("~")<CR>jo<Esc>
-autocmd filetype rst nnoremap <Space>s4 :call MgmReSTTitle('"')<CR>jo<Esc>
-autocmd filetype rst nnoremap <Space>s5 :call MgmReSTTitle("'")<CR>jo<Esc>
+augroup vimrc_rst
+  autocmd!
+  autocmd filetype rst set suffixesadd+=.rst
+  autocmd filetype rst nnoremap <Space>s0 :call MgmReSTTitle("#")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s1 :call MgmReSTTitle("=")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s2 :call MgmReSTTitle("-")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s3 :call MgmReSTTitle("~")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s4 :call MgmReSTTitle('"')<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s5 :call MgmReSTTitle("'")<CR>jo<Esc>
+augroup END
+
 " }}}
 
 " HTML/XML {{{
-  augroup MyXML
-    autocmd!
-    autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
-    autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
-  augroup END
+augroup vimrc_xml
+  autocmd!
+  autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
+augroup END
 " }}}
 
 " Julia {{{
 "
-autocmd filetype julia set shiftwidth=4
-autocmd filetype julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
+augroup vimrc_julia
+  autocmd!
+  autocmd filetype julia set shiftwidth=4
+  autocmd filetype julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
+augroup END
 
 " }}}
 
 " todome {{{
 "
-autocmd fileType todo call s:todome_my_settings()
+augroup vimrc_todome
+  autocmd!
+  autocmd fileType todo call s:todome_my_settings()
+augroup END
+
 function! s:todome_my_settings() abort
   nnoremap <buffer><nowait> <Space>x :call TodomeToggleDone()<CR>
   nnoremap <buffer><nowait> <Space>a :call TodomeAddPriority('A')<CR>
@@ -739,7 +774,10 @@ endfunction
 
 " tmux conf {{{
 
-autocmd FileType tmux  nnoremap <buffer> <CR>s :!tmux source ~/.tmux.conf<CR>
+augroup vimrc_tmux
+  autocmd!
+  autocmd FileType tmux  nnoremap <buffer> <CR>s :!tmux source ~/.tmux.conf<CR>
+augroup END
 
 " }}}
 

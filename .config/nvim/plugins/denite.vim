@@ -69,7 +69,10 @@ call denite#custom#source('file/rec',
 call denite#custom#var('buffer', 'date_format', '')
 call denite#custom#source('buffer', 'matchers', ['converter/abbr_word', 'matcher/substring'])
 
-autocmd FileType denite call s:denite_my_settings()
+augroup rc_denite
+  autocmd!
+  autocmd FileType denite call s:denite_my_settings()
+augroup END
 function! s:denite_my_settings() abort
   nnoremap <nowait><silent><buffer><expr> <CR>
   \ denite#do_map('do_action')
