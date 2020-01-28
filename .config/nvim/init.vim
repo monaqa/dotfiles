@@ -252,6 +252,7 @@ autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-f> <C-f>
 autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-u> <C-u>
 autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-b> <C-b>
 autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-d> <C-d>
+autocmd CmdwinEnter [:/\?=] nnoremap <buffer><nowait> <CR> <CR>
 autocmd CmdwinEnter : g/^qa\?!\?$/d _
 autocmd CmdwinEnter : g/^wq\?a\?!\?$/d _
 

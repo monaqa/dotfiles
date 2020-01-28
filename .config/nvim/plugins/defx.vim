@@ -33,7 +33,7 @@ nnoremap <expr><silent> sz ":Defx " . "-columns=git:indent:icons:filename "
   \ . "-resume "
   \ . "-toggle -split=vertical -winwidth=30 -direction=topleft<CR>"
 
-nnoremap <expr><silent> ss ":Defx " . "-columns=git:indent:icons:filename:type:size:time "
+nnoremap <expr><silent> sf ":Defx " . "-columns=git:indent:icons:filename:type:size:time "
   \ . "-buffer-name=float "
   \ . "-session-file=" . g:defx_sessions_file . " "
   \ . "-show-ignored-files "

@@ -6,16 +6,7 @@
 repo = 'vim-airline/vim-airline'
 depends = ['vim-airline-themes']
 hook_add = """
-" let g:airline_theme = 'gruvbox'
-" let g:airline_theme = 'dracula'
-let g:airline_theme = 'sol'
-" nmap <C-p> <Plug>AirlineSelectPrevTab
-" nmap <C-n> <Plug>AirlineSelectNextTab
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#buffer_idx_mode = 1
-" let g:airline#extensions#whitespace#mixed_indent_algo = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+source ~/.config/nvim/plugins/airline.vim
 """
 
 [[plugins]]
@@ -201,21 +192,15 @@ unlet s:local_session_directory
 repo = 'xolox/vim-misc'
 
 [[plugins]]
-repo = 'kshenoy/vim-signature'
-hook_add = """
-let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXYZ'
-"""
-
-[[plugins]]
 repo = 'Konfekt/FastFold'
 
-[[plugins]]
-repo = 'tyru/capture.vim'
+# [[plugins]]
+# repo = 'tyru/capture.vim'
 
-[[plugins]]
-repo = "tpope/vim-speeddating"
+# [[plugins]]
+# repo = "tpope/vim-speeddating"
 
-[[plugins]]
-repo = "deris/vim-duzzle"
+# [[plugins]]
+# repo = "deris/vim-duzzle"
 
 # }}}
