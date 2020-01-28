@@ -18,7 +18,7 @@ if &shell =~# 'fish$'
     set shell=sh
 endif
 
-let g:python3_host_prog = '/Users/shinichi/.pyenv/versions/3.7.4/bin/python'
+let g:python3_host_prog = $HOME . '/.pyenv/versions/neovim/bin/python'
 
 if has('persistent_undo')
   set undodir=~/.vim/undo
@@ -185,7 +185,7 @@ tnoremap <C-r><Esc> <C-r>
 
 function! s:bufnew()
   " 幸いにも 'buftype' は設定されているのでそれを基準とする
-  if &buftype == "terminal" && &filetype == ""
+  if &buftype ==# 'terminal' && &filetype ==# ''
     set filetype=terminal
   endif
 endfunction
@@ -219,18 +219,18 @@ augroup END
 
 function! MgmOpenTerminal()
   let ft = &filetype
-  if (MgmIsWideWindow("."))
+  if (MgmIsWideWindow('.'))
     vsplit
   else
     split
   endif
   edit term://fish
-  if (ft == "python")
+  if (ft ==# 'python')
     call chansend(b:terminal_job_id, "ipython\n%autoindent\n")
-  elseif (ft == "julia")
+  elseif (ft ==# 'julia')
     call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")
   endif
-  let g:slime_default_config = {"jobid": b:terminal_job_id}
+  let g:slime_default_config = {'jobid': b:terminal_job_id}
 endfunction
 
 nnoremap sT :call MgmOpenTerminal()<CR>
@@ -238,9 +238,9 @@ nnoremap sT :call MgmOpenTerminal()<CR>
 nnoremap st :call MgmOpenTermWindow()<CR>
 
 function! MgmOpenTermWindow() abort
-  if (bufname("term") == "")
+  if (bufname('term') ==# '')
     call MgmOpenTerminal()
-  elseif (MgmIsWideWindow("."))
+  elseif (MgmIsWideWindow('.'))
     vsplit
     buffer term
   else
@@ -394,10 +394,10 @@ augroup vimrc_resized
 augroup END
 
 function MgmResizeFloatingWindow()
-  if exists("*MgmResizeDefxFloatingWindow")
+  if exists('*MgmResizeDefxFloatingWindow')
     call MgmResizeDefxFloatingWindow()
   endif
-  if exists("*MgmResizeDeniteFloatingWindow")
+  if exists('*MgmResizeDeniteFloatingWindow')
     call MgmResizeDeniteFloatingWindow()
   endif
 endfunction
@@ -440,65 +440,10 @@ augroup END
 
 function! MgmCopyUnnamedToPlus(opr)
   " yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
-  if a:opr == "y"
+  if a:opr ==# 'y'
     let @+ = @"
   endif
 endfunction
-
-" " 指定 text object/motion を指定レジスタの中身に入れ替える
-" " （要は delete と put を同時にやる）
-" nmap <silent> <Space>r :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplace<CR>g@
-" nmap <silent> <Space>rr :<C-u>let w:replace_buffer = v:register <Bar> call MgmReplaceALine(v:count1)<CR>
-" nmap <silent> <Space>rx :<C-u>let w:replace_buffer = v:register <Bar> set opfunc=MgmReplaceX<CR>g@
-"
-" function! MgmReplace(type)
-"   let sel_save = &selection
-"   let &selection = "inclusive"
-"   let m_reg = @m
-"   exe "let @m = @" . w:replace_buffer
-"
-"   if a:type == 'line'
-"     exe "normal! '[V']d"
-"   else
-"     exe "normal! `[v`]d"
-"   endif
-"
-"   exe "normal! " . '"' . "mP"
-"
-"   let &selection = sel_save
-"   let @m=m_reg
-" endfunction
-"
-" function! MgmReplaceX(type)
-"   let sel_save = &selection
-"   let &selection = "inclusive"
-"   let m_reg = @m
-"   exe "let @m = @" . w:replace_buffer
-"
-"   if a:type == 'line'
-"     exe "normal! '[V']" . '"_d'
-"   else
-"     exe "normal! `[v`]" . '"_d'
-"   endif
-"
-"   exe "normal! " . '"' . "mP"
-"
-"   let &selection = sel_save
-"   let @m=m_reg
-" endfunction
-"
-" function! MgmReplaceALine(nline)
-"   let sel_save = &selection
-"   let &selection = "inclusive"
-"   " let m_reg = @m
-"   exe "let @m = @" . w:replace_buffer
-"
-"   exe "normal! " . a:nline . "dd"
-"   exe "normal! " . '"' . "mP"
-"
-"   let &selection = sel_save
-"   " let @m=m_reg
-" endfunction
 
 " }}}
 
@@ -531,7 +476,7 @@ vnoremap <silent> F✠ :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, 'b')<CR>v`
 
 function! MgmNumSearchLine(ptn, num, opt)
   for i in range(a:num)
-    call search(a:ptn, a:opt, line("."))
+    call search(a:ptn, a:opt, line('.'))
   endfor
 endfunction
 
@@ -581,31 +526,6 @@ call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':MgmLineBackSameSearch<
 call submode#map('vertjmp', 'n', '', ';', ':MgmLineSameSearch<CR>')
 call submode#map('vertjmp', 'n', '', ',', ':MgmLineBackSameSearch<CR>')
 call submode#leave_with('vertjmp', 'n', '', '<Space>')
-
-" function! MgmVertSearch(opt)
-"   let posnow = getcurpos()
-"   let lspaces = posnow[2] - 1
-"   let @m = nr2char(getchar())
-"   let pos = searchpos('^.\{' . lspaces . '}\zs' . @m, a:opt)
-"   call cursor(pos)
-" endfunction
-
-" function! MgmVisualVertSearch(opt)
-"   let posnow = getpos("'>")
-"   let lspaces = posnow[2] - 1
-"   let @m = nr2char(getchar())
-"   let pos = searchpos('^.\{' . lspaces . '}\zs' . @m, a:opt)
-"   call cursor(pos)
-"   normal v`'o
-" endfunction
-
-" 改訂版縦方向 f 移動（だけど使いにくい）
-" nnoremap <silent> <Space>f :<C-u>call MgmVertSearch('')<CR>
-" nnoremap <silent> <Space>F :<C-u>call MgmVertSearch('b')<CR>
-" onoremap <silent> <Space>f :<C-u>call MgmVertSearch('')<CR>
-" onoremap <silent> <Space>F :<C-u>call MgmVertSearch('b')<CR>
-" vnoremap <silent> <Space>f :<C-u>call MgmVisualVertSearch('s')<CR>
-" vnoremap <silent> <Space>F :<C-u>call MgmVisualVertSearch('bs')<CR>
 
 " }}}
 " }}}
@@ -718,9 +638,9 @@ augroup END
 " reST {{{
 
 function! MgmReSTTitle(punc)
-  let line = getline(".")
+  let line = getline('.')
   sil! exe row 'foldopen!'
-  call append(".", repeat(a:punc, strdisplaywidth(line)))
+  call append('.', repeat(a:punc, strdisplaywidth(line)))
 endfunction
 augroup vimrc_rst
   autocmd!
