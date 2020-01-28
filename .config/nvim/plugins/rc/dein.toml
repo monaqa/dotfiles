@@ -105,7 +105,7 @@ source ~/.config/nvim/plugins/denite.vim
 repo = 'Shougo/defx.nvim'
 depends = ['kristijanhusak/defx-git']
 hook_add = """
-source ~/.config/nvim/plugins/defx.vim
+source ~/.config/nvim/plugins/de_file_xpl.vim
 """
 
 [[plugins]]

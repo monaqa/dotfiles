@@ -69,7 +69,7 @@ set noerrorbells
 " set showmatch " 対応カッコを表示
 set laststatus=2 " ステータスラインを常に表示
 set scrolloff=10
-set sidescrolloff=10
+" set sidescrolloff=10
 set ambiwidth=single  "全角文字幅
 set showcmd
 
@@ -211,11 +211,13 @@ augroup vimrc_terminal
   autocmd FileType terminal setlocal nonumber
   autocmd FileType terminal setlocal norelativenumber
   autocmd FileType terminal setlocal signcolumn=no
-
-  autocmd TermOpen,TermEnter * set scrolloff=0
-  autocmd TermLeave * set scrolloff=10
 augroup END
 
+" なぜか augroup の中に入れると動かない
+" （Terminal から別バッファに移動しても scrolloff が戻らない）ので
+" 外に出しておく
+autocmd TermOpen,TermEnter * set scrolloff=0
+autocmd TermLeave,TermClose * set scrolloff=10
 
 function! MgmOpenTerminal()
   let ft = &filetype
@@ -333,10 +335,9 @@ nnoremap s <Nop>
 nnoremap s_ :<C-u>sp<CR>
 nnoremap s<Bar> :<C-u>vs<CR>
 nnoremap sv :<C-u>vs<CR>
-nnoremap sn :<C-u>bn<CR>
-nnoremap sp :<C-u>bp<CR>
 nnoremap sq :<C-u>bd<CR>
 nnoremap sw :<C-u>q<CR>
+" nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 " バッファ間移動
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
@@ -361,9 +362,6 @@ nnoremap s/ q/G
 " Sandwich.vim のデフォルトキーバインドを上書きする
 nnoremap <nowait> srb <Nop>
 nnoremap <nowait> sr <C-^>
-
-
-nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 
 call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
 call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
