@@ -463,8 +463,37 @@ inoremap <C-Space> <Space>
 
 noremap <Space>h ^
 noremap <Space>l $
-noremap <C-j> }
-noremap <C-k> {
+
+noremap  <silent> <C-j> :<C-u>call MgmMovePerVerticalWordNtimes("",  -1, v:count1)<CR>
+noremap  <silent> <C-k> :<C-u>call MgmMovePerVerticalWordNtimes("b",  1, v:count1)<CR>
+noremap  <silent> <C-n> :<C-u>call MgmMovePerVerticalWordNtimes("",   1, v:count1)<CR>
+noremap  <silent> <C-p> :<C-u>call MgmMovePerVerticalWordNtimes("b", -1, v:count1)<CR>
+vnoremap <silent> <C-j> <Esc>:call MgmMovePerVerticalWord("",  -1)<CR>mzgv`z
+vnoremap <silent> <C-k> <Esc>:call MgmMovePerVerticalWord("b",  1)<CR>mzgv`z
+vnoremap <silent> <C-n> <Esc>:call MgmMovePerVerticalWord("",   1)<CR>mzgv`z
+vnoremap <silent> <C-p> <Esc>:call MgmMovePerVerticalWord("b", -1)<CR>mzgv`z
+
+" 空行で区切られた行の塊を vertical WORD とみなし，vertical WORD の頭や最後に移動する．
+" ただし，列はできる限り保持する．
+function! MgmMovePerVerticalWord(flg, numoff)
+  let curpos = getcurpos()
+  echo curpos
+  let lnum = search("^$", "nW" . a:flg)
+  if lnum - curpos[1] == -1  " もし検索結果が今の1行下だったら
+    call cursor(lnum - 1, curpos[2])
+    let lnum = search("^$", "nW" . a:flg)
+  endif
+  if lnum - curpos[1] == 1  " もし検索結果が今の1行下だったら
+    call cursor(lnum + 1, curpos[2])
+    let lnum = search("^$", "nW" . a:flg)
+  endif
+  call cursor(lnum + a:numoff, curpos[2])
+endfunction
+function! MgmMovePerVerticalWordNtimes(flg, numoff, count)
+  for i in range(a:count)
+    call MgmMovePerVerticalWord(a:flg, a:numoff)
+  endfor
+endfunction
 
 " f 移動をさらに便利に
 noremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, '')<CR>
