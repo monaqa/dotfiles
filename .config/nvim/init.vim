@@ -464,34 +464,56 @@ inoremap <C-Space> <Space>
 noremap <Space>h ^
 noremap <Space>l $
 
-noremap  <silent> <C-j> :<C-u>call MgmMovePerVerticalWordNtimes("",  -1, v:count1)<CR>
-noremap  <silent> <C-k> :<C-u>call MgmMovePerVerticalWordNtimes("b",  1, v:count1)<CR>
-noremap  <silent> <C-n> :<C-u>call MgmMovePerVerticalWordNtimes("",   1, v:count1)<CR>
-noremap  <silent> <C-p> :<C-u>call MgmMovePerVerticalWordNtimes("b", -1, v:count1)<CR>
-vnoremap <silent> <C-j> <Esc>:call MgmMovePerVerticalWord("",  -1)<CR>mzgv`z
-vnoremap <silent> <C-k> <Esc>:call MgmMovePerVerticalWord("b",  1)<CR>mzgv`z
-vnoremap <silent> <C-n> <Esc>:call MgmMovePerVerticalWord("",   1)<CR>mzgv`z
-vnoremap <silent> <C-p> <Esc>:call MgmMovePerVerticalWord("b", -1)<CR>mzgv`z
+" Vertical WORD (vWORD) 単位での移動
+" <C-j>: 水平方向の  E 移動を鉛直方向にしたものに相当
+" <C-k>: 水平方向の  B 移動を鉛直方向にしたものに相当
+" <C-j>: 水平方向の  W 移動を鉛直方向にしたものに相当
+" <C-j>: 水平方向の gE 移動を鉛直方向にしたものに相当
+nnoremap <silent> <C-j> :<C-u>call MgmMovePerVerticalWord("",  -1, v:count1)<CR>
+nnoremap <silent> <C-k> :<C-u>call MgmMovePerVerticalWord("b",  1, v:count1)<CR>
+nnoremap <silent> <C-n> :<C-u>call MgmMovePerVerticalWord("",   1, v:count1)<CR>
+nnoremap <silent> <C-p> :<C-u>call MgmMovePerVerticalWord("b", -1, v:count1)<CR>
+" omap のときは， inclusive な挙動が求められているときは
+" いい感じに inclusive っぽくなるようにする．
+" たとえば d<C-j> とするとその vWORD の最後まで消える
+" （その下の空行は消えない）．
+" TODO: visual モード中に v:count をとってモーションを繰り返したい
+onoremap <silent> <C-j> :<C-u>call MgmMovePerVerticalWord("",   0, v:count1)<CR>
+onoremap <silent> <C-k> :<C-u>call MgmMovePerVerticalWord("b",  1, v:count1)<CR>
+onoremap <silent> <C-n> :<C-u>call MgmMovePerVerticalWord("",   1, v:count1)<CR>
+onoremap <silent> <C-p> :<C-u>call MgmMovePerVerticalWord("b",  0, v:count1)<CR>
+vnoremap <silent> <C-j> <Esc>:call MgmMovePerVerticalWord("",  -1, 1)<CR>mzgv`z
+vnoremap <silent> <C-k> <Esc>:call MgmMovePerVerticalWord("b",  1, 1)<CR>mzgv`z
+vnoremap <silent> <C-n> <Esc>:call MgmMovePerVerticalWord("",   1, 1)<CR>mzgv`z
+vnoremap <silent> <C-p> <Esc>:call MgmMovePerVerticalWord("b", -1, 1)<CR>mzgv`z
 
-" 空行で区切られた行の塊を vertical WORD とみなし，vertical WORD の頭や最後に移動する．
-" ただし，列はできる限り保持する．
-function! MgmMovePerVerticalWord(flg, numoff)
+" 上の map の挙動の実装．
+" 空行で区切られた行の塊を vWORD とみなし，vWORD の頭や最後に移動する．
+" ただし，カーソルが何列目にあるかの情報はできる限り保持する．
+" V-BLOCK で動くときにこの挙動があるのとないのとでは天と地の差がある．
+" TODO: lnum が 0 だったときの処理を特別扱い
+" （現在だとファイルの頭，末尾で挙動が変になる）
+function! s:movePerVerticalWord(flg, numoff)
   let curpos = getcurpos()
-  echo curpos
   let lnum = search("^$", "nW" . a:flg)
-  if lnum - curpos[1] == -1  " もし検索結果が今の1行下だったら
+  " e や b を複数回繰り返したときに止まってしまうのを防ぐ
+  if lnum - curpos[1] == -1
+    " もし検索結果が今の1行上だったらカーソルを上にずらし再度検索し直す
     call cursor(lnum - 1, curpos[2])
     let lnum = search("^$", "nW" . a:flg)
   endif
-  if lnum - curpos[1] == 1  " もし検索結果が今の1行下だったら
+  if lnum - curpos[1] == 1
+    " もし検索結果が今の1行下だったらカーソルを下にずらし再度検索し直す
     call cursor(lnum + 1, curpos[2])
     let lnum = search("^$", "nW" . a:flg)
   endif
   call cursor(lnum + a:numoff, curpos[2])
 endfunction
-function! MgmMovePerVerticalWordNtimes(flg, numoff, count)
+
+" 単純に s:movePerVerticalWord を n 回繰り返す． count に対応するため
+function! MgmMovePerVerticalWord(flg, numoff, count)
   for i in range(a:count)
-    call MgmMovePerVerticalWord(a:flg, a:numoff)
+    call s:movePerVerticalWord(a:flg, a:numoff)
   endfor
 endfunction
 
