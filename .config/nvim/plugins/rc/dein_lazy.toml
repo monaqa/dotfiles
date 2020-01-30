@@ -56,7 +56,7 @@ let g:vimtex_imaps_leader = "@"
 # Only in satysfi {{{
 
 [[plugins]]
-repo = 'qnighy/satysfi.vim'
+repo = 'monaqa/satysfi.vim'
 on_ft = ["satysfi"]
 
 # }}}
