@@ -120,7 +120,7 @@ autocmd vimrc_color FileType help hi! Ignore ctermfg=66
 " .vimrc.local {{{
 augroup vimrc_local
   autocmd!
-  autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
+  autocmd VimEnter * call s:vimrc_local(expand('<afile>:p:h'))
 augroup END
 
 function! s:vimrc_local(loc)
