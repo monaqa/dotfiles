@@ -516,14 +516,10 @@ function! s:movePerVerticalWord(direction, whichend, numoff)
   let lnum = search(regexp, flag)
 
   " e や b を複数回繰り返したときに止まってしまうのを防ぐ
-  if lnum - curpos[1] == -1
-    " もし検索結果が今の1行上だったらカーソルを上にずらし再度検索し直す
-    call cursor(lnum - 1, curpos[2])
-    let lnum = search(regexp, flag)
-  endif
-  if lnum - curpos[1] == 1
-    " もし検索結果が今の1行下だったらカーソルを下にずらし再度検索し直す
-    call cursor(lnum + 1, curpos[2])
+  if (a:whichend is 0 && lnum - curpos[1] is 1) || (a:whichend is 1 && lnum - curpos[1] is -1)
+    " もし検索結果が今の1行上だったらカーソルを上にずらし再度検索し直す．
+    " もし検索結果が今の1行下だったらカーソルを下にずらし再度検索し直す，
+    call cursor(lnum, curpos[2])
     let lnum = search(regexp, flag)
   endif
 
