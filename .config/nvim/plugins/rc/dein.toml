@@ -44,7 +44,7 @@ repo = 'kana/vim-submode'
 
 # }}}
 
-# Operator/text object extension {{{
+# Operator/motion/text-object extension {{{
 
 [[plugins]]
 repo = 'kana/vim-operator-user'
@@ -79,6 +79,13 @@ hook_add = "source ~/.config/nvim/plugins/vim-textobj-user.vim"
 [[plugins]]
 repo = 'glts/vim-textobj-comment'
 depends = ['kana/vim-textobj-user']
+
+[[plugins]]
+repo = 'monaqa/vim-edgemotion'
+hook_add = """
+map <C-j> <Plug>(edgemotion-j)
+map <C-k> <Plug>(edgemotion-k)
+"""
 
 # }}}
 
