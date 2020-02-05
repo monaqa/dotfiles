@@ -464,82 +464,7 @@ inoremap <C-Space> <Space>
 noremap <Space>h ^
 noremap <Space>l $
 
-" Vertical WORD (vWORD) 単位での移動
-" <C-j>: 水平方向の  E 移動を鉛直方向にしたものに相当
-" <C-k>: 水平方向の  B 移動を鉛直方向にしたものに相当
-" <C-n>: 水平方向の  W 移動を鉛直方向にしたものに相当
-" <C-p>: 水平方向の gE 移動を鉛直方向にしたものに相当
-nnoremap <silent> <C-j> :<C-u>call MgmMovePerVerticalWord(1, 0, -1, v:count1)<CR>
-nnoremap <silent> <C-k> :<C-u>call MgmMovePerVerticalWord(0, 1,  1, v:count1)<CR>
-nnoremap <silent> <C-n> :<C-u>call MgmMovePerVerticalWord(1, 1,  1, v:count1)<CR>
-nnoremap <silent> <C-p> :<C-u>call MgmMovePerVerticalWord(0, 0, -1, v:count1)<CR>
 
-" omap では， inclusive な挙動が求められているとき
-" <C-j> 及び <C-p> でいい感じに inclusive っぽくなるようにする．
-" たとえば d<C-j> とするとその vWORD の最後まで消える
-" （その下の空行は消えない）．
-onoremap <silent> <C-j> :<C-u>call MgmMovePerVerticalWord(1, 0,  0, v:count1)<CR>
-onoremap <silent> <C-k> :<C-u>call MgmMovePerVerticalWord(0, 1,  1, v:count1)<CR>
-onoremap <silent> <C-n> :<C-u>call MgmMovePerVerticalWord(1, 1,  1, v:count1)<CR>
-onoremap <silent> <C-p> :<C-u>call MgmMovePerVerticalWord(0, 0,  0, v:count1)<CR>
-
-" 矩形選択のときなどに有用
-" TODO: visual モード中に v:count をとってモーションを繰り返したい
-vnoremap <silent> <C-j> <Esc>:call MgmMovePerVerticalWord(1, 0, -1, 1)<CR>mzgv`z
-vnoremap <silent> <C-k> <Esc>:call MgmMovePerVerticalWord(0, 1,  1, 1)<CR>mzgv`z
-vnoremap <silent> <C-n> <Esc>:call MgmMovePerVerticalWord(1, 1,  1, 1)<CR>mzgv`z
-vnoremap <silent> <C-p> <Esc>:call MgmMovePerVerticalWord(0, 0, -1, 1)<CR>mzgv`z
-
-" 上の map の挙動の実装．
-" 空行で区切られた行の塊を vWORD とみなし，vWORD の頭や最後に移動する．
-" ただし，カーソルが何列目にあるかの情報はできる限り保持する．
-" V-BLOCK で動くときにこの挙動があるのとないのとでは天と地の差がある．
-" function! s:movePerVerticalWord(direction, whichend, offset)
-"   direction: 進行方向 (0: backward, 1: forward)
-"   whichend: 空行に移動するとき「どちらの端」を基準に飛ぶか
-"             (0: 最初の行, 1: 最後の行 + 1)
-"   offset: whichend で指定した行を基準にずらす行数 (int)
-function! s:movePerVerticalWord(direction, whichend, numoff)
-  let curpos = getcurpos()
-  if a:direction is 0
-    let flag = 'nWb'
-  else
-    let flag = 'nW'
-  endif
-  if a:whichend is 0
-    " 1つ以上連続する空行の，最初の行にのみマッチ
-    let regexp = '^.\+$\n^\zs$'
-  else
-    " 1つ以上連続する空行の，最後の行にのみマッチ
-    let regexp = '^\zs\ze$\n^.\+$'
-  endif
-  let lnum = search(regexp, flag)
-
-  " e や b を複数回繰り返したときに止まってしまうのを防ぐ
-  if (a:whichend is 0 && lnum - curpos[1] is 1) || (a:whichend is 1 && lnum - curpos[1] is -1)
-    " もし検索結果が今の1行上だったらカーソルを上にずらし再度検索し直す．
-    " もし検索結果が今の1行下だったらカーソルを下にずらし再度検索し直す，
-    call cursor(lnum, curpos[2])
-    let lnum = search(regexp, flag)
-  endif
-
-  if a:direction is 1 && a:numoff is -1 && lnum is getpos('$')[1]
-    " <C-j> で最終行に飛べるようにする
-    let lnum = lnum + 1
-  endif
-  if a:direction is 1 && a:numoff is 1 && lnum is 0
-    return
-  endif
-
-  call cursor(lnum + a:numoff, curpos[2])
-endfunction
-
-" 単純に s:movePerVerticalWord を n 回繰り返す． count に対応するため
-function! MgmMovePerVerticalWord(direction, whichend, numoff, count)
-  for i in range(a:count)
-    call s:movePerVerticalWord(a:direction, a:whichend, a:numoff)
-  endfor
-endfunction
 
 " f 移動をさらに便利に
 noremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, '')<CR>
@@ -652,6 +577,54 @@ nnoremap q qq<Esc>
 nnoremap Q q
 nnoremap , @q
 nnoremap + ,
+" }}}
+
+" Transform with Lambda function {{{
+
+" 選択した数値を任意の関数で変換する．
+" たとえば 300pt の 300 を選択して <Space>s とし，
+" x -> x * 3/2 と指定すれば 450pt になる．
+" 計算式は g:mgm_lambda_func に格納されるので <Space>r で使い回せる．
+" 小数のインクリメントや css での長さ調整等に便利？マクロと組み合わせてもいい．
+" 中で eval を用いているので悪用厳禁．基本的に数値にのみ用いるようにする
+vnoremap <Space>s :<C-u>call MgmApplyLambdaToSelectedArea()<CR>
+vnoremap <Space>r :<C-u>call MgmRepeatLambdaToSelectedArea()<CR>
+
+let g:mgm_lambda_func = 'x'
+
+function MgmApplyLambdaToSelectedArea() abort
+  let tmp = @@
+  silent normal gvy
+  let visual_area = @@
+
+  let lambda_body = input('Lambda: x -> ', g:mgm_lambda_func)
+  let g:mgm_lambda_func = lambda_body
+  let lambda_expr = '{ x -> ' . lambda_body . ' }'
+  let Lambda = eval(lambda_expr)
+  let retval = Lambda(eval(visual_area))
+  let return_str = string(retval)
+
+  let @@ = return_str
+  silent normal gvp
+  let @@ = tmp
+endfunction
+
+function MgmRepeatLambdaToSelectedArea() abort
+  let tmp = @@
+  silent normal gvy
+  let visual_area = @@
+
+  let lambda_body = g:mgm_lambda_func
+  let lambda_expr = '{ x -> ' . lambda_body . ' }'
+  let Lambda = eval(lambda_expr)
+  let retval = Lambda(eval(visual_area))
+  let return_str = string(retval)
+
+  let @@ = return_str
+  silent normal gvp
+  let @@ = tmp
+endfunction
+
 " }}}
 
 " }}}
