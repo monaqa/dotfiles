@@ -1,5 +1,4 @@
-nnoremap <Space>gb :Gblame<CR>
-nnoremap <Space><Space> :G<CR>
+nnoremap <Space>g :G<CR>
 
 let g:nremap = {'s': '<Nop>'}
 

@@ -11,35 +11,35 @@ let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 
 " 開きカッコを指定したときの挙動を自分好みに
 let g:sandwich#recipes += [
-      \   {'buns': [' {', '} '], 'nesting': 1, 'match_syntax': 1,
-      \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
-      \
-      \   {'buns': [' [', '] '], 'nesting': 1, 'match_syntax': 1,
-      \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
-      \
-      \   {'buns': [' (', ') '], 'nesting': 1, 'match_syntax': 1,
-      \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
-      \
-      \   {'buns': ['\s*{', '}\s*'],   'nesting': 1, 'regex': 1,
-      \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-      \    'action': ['delete'], 'input': ['{']},
-      \
-      \   {'buns': ['\s*\[', '\]\s*'], 'nesting': 1, 'regex': 1,
-      \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-      \    'action': ['delete'], 'input': ['[']},
-      \
-      \   {'buns': ['\s*(', ')\s*'],   'nesting': 1, 'regex': 1,
-      \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-      \    'action': ['delete'], 'input': ['(']},
-      \ ]
+\   {'buns': [' {', '} '], 'nesting': 1, 'match_syntax': 1,
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
+\
+\   {'buns': [' [', '] '], 'nesting': 1, 'match_syntax': 1,
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
+\
+\   {'buns': [' (', ') '], 'nesting': 1, 'match_syntax': 1,
+\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
+\
+\   {'buns': ['\s*{', '}\s*'],   'nesting': 1, 'regex': 1,
+\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+\    'action': ['delete'], 'input': ['{']},
+\
+\   {'buns': ['\s*\[', '\]\s*'], 'nesting': 1, 'regex': 1,
+\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+\    'action': ['delete'], 'input': ['[']},
+\
+\   {'buns': ['\s*(', ')\s*'],   'nesting': 1, 'regex': 1,
+\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+\    'action': ['delete'], 'input': ['(']},
+\ ]
 
 " 日本語のカッコ
 let g:sandwich#recipes += [
-      \   {'buns': ['（', '）'], 'nesting': 1, 'input': ['j(', 'j)', 'jp']},
-      \   {'buns': ['「', '」'], 'nesting': 1, 'input': ['j[', 'j]', 'jb']},
-      \   {'buns': ['『', '』'], 'nesting': 1, 'input': ['j{', 'j}', 'jB']},
-      \   {'buns': ['【', '】'], 'nesting': 1, 'input': ['j<', 'j>', 'jk']},
-      \ ]
+\   {'buns': ['（', '）'], 'nesting': 1, 'input': ['j(', 'j)', 'jp']},
+\   {'buns': ['「', '」'], 'nesting': 1, 'input': ['j[', 'j]', 'jb']},
+\   {'buns': ['『', '』'], 'nesting': 1, 'input': ['j{', 'j}', 'jB']},
+\   {'buns': ['【', '】'], 'nesting': 1, 'input': ['j<', 'j>', 'jk']},
+\ ]
 
 " Escaped parens
 let g:sandwich#recipes += [
@@ -48,3 +48,7 @@ let g:sandwich#recipes += [
 \   {'buns': ['\[', '\]'], 'nesting': 1, 'input': ['\[', '\]']},
 \ ]
 
+let g:sandwich#recipes += [
+\   {'buns': ['`', ' <>`_'], 'nesting': 0, 'input': ['l'], 'filetype': ['rst']},
+\   {'buns': ['` <', '>`_'], 'nesting': 0, 'input': ['L'], 'filetype': ['rst']},
+\ ]

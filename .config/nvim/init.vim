@@ -15,7 +15,7 @@ syntax enable
 
 set mouse=a
 if &shell =~# 'fish$'
-    set shell=sh
+  set shell=sh
 endif
 
 let g:python3_host_prog = $HOME . '/.pyenv/versions/neovim/bin/python'
@@ -94,7 +94,7 @@ augroup vimrc_color
   autocmd!
   autocmd ColorScheme * highlight link UnicodeSpaces Error
   autocmd VimEnter,WinEnter * match UnicodeSpaces
-        \ /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
+  \ /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
 augroup END
 
 " }}}
@@ -164,14 +164,15 @@ nnoremap g* g*N
 
 " redraw 時にハイライトを消す
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+nnoremap <silent> <Space><Space> :<C-u>nohlsearch<CR><C-l>ze
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
-vnoremap , "my/\V<C-R><C-R>=substitute(
-      \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>N
-vnoremap . "my:set hlsearch<CR>
-      \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
-      \/gce<Bar>1,''-&&<CR>
+vnoremap * "my/\V<C-R><C-R>=substitute(
+\escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>N
+vnoremap S "my:set hlsearch<CR>
+\:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
+\/gce<Bar>1,''-&&<CR>
 " }}}
 
 " Terminal 機能 {{{
@@ -194,12 +195,21 @@ function! s:terminal_init()
   " ここに :terminal のバッファ固有の設定を記述する
   " nnoremap <buffer> a i<Up><CR><C-\><C-n>
   nnoremap <buffer> <CR> i<CR><C-\><C-n>
-  nnoremap <expr><buffer> a "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
-  nnoremap <expr><buffer> A "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
+  nnoremap <expr><buffer> u "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
+  nnoremap <expr><buffer> <C-r> "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
   nnoremap <buffer> sq :bd!<CR>
   nnoremap <buffer> t :let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
-  nnoremap <buffer> c i<C-u>
   nnoremap <buffer> dd i<C-u><C-\><C-n>
+  " nnoremap <buffer> I i<C-a>
+  nnoremap <buffer> A i<C-e>
+  nnoremap <buffer><expr> I "i\<C-a>" . repeat("\<Right>", MgmCalcCursorRightNum())
+endfunction
+
+function! MgmCalcCursorRightNum() abort
+  " normal "my0
+  " let strlen = strchars(@m)
+  let cpos = getcurpos()
+  return cpos[2] - 5
 endfunction
 
 augroup vimrc_terminal
@@ -219,9 +229,9 @@ augroup END
 autocmd TermOpen,TermEnter * set scrolloff=0
 autocmd TermLeave,TermClose * set scrolloff=10
 
-function! MgmOpenTerminal()
+function! s:openTerminal()
   let ft = &filetype
-  if (MgmIsWideWindow('.'))
+  if (s:isWideWindow('.'))
     vsplit
   else
     split
@@ -235,14 +245,14 @@ function! MgmOpenTerminal()
   let g:slime_default_config = {'jobid': b:terminal_job_id}
 endfunction
 
-nnoremap <silent> sT :call MgmOpenTerminal()<CR>
+nnoremap <silent> sT :call <SID>openTerminal()<CR>
 
-nnoremap <silent> st :call MgmOpenTermWindow()<CR>
+nnoremap <silent> st :call <SID>openTermWindow()<CR>
 
-function! MgmOpenTermWindow() abort
+function! s:openTermWindow() abort
   if (bufname('term') ==# '')
-    call MgmOpenTerminal()
-  elseif (MgmIsWideWindow('.'))
+    call s:openTerminal()
+  elseif (s:isWideWindow('.'))
     vsplit
     buffer term
   else
@@ -375,7 +385,7 @@ call submode#map('bufmove', 'n', '', '-', '<C-w>-')
 set splitbelow
 set splitright
 
-function! MgmIsWideWindow(nr)
+function! s:isWideWindow(nr)
   let wd = winwidth(a:nr)
   let ht = winheight(a:nr)
   if (wd > 2.2 * ht)
@@ -387,11 +397,11 @@ endfunction
 
 augroup vimrc_resized
   autocmd!
-  autocmd VimResized * call MgmResizeFloatingWindow()
+  autocmd VimResized * call <SID>resizeFloatingWindow()
   autocmd VimResized * exe "normal \<c-w>="
 augroup END
 
-function MgmResizeFloatingWindow()
+function s:resizeFloatingWindow()
   if exists('*MgmResizeDefxFloatingWindow')
     call MgmResizeDefxFloatingWindow()
   endif
@@ -432,11 +442,11 @@ noremap <Space>y "+y
 augroup vimrc_yank
   autocmd!
   if exists('##TextYankPost')
-    autocmd TextYankPost * call MgmCopyUnnamedToPlus(v:event.operator)
+    autocmd TextYankPost * call <SID>copyUnnamedToPlus(v:event.operator)
   endif
 augroup END
 
-function! MgmCopyUnnamedToPlus(opr)
+function! s:copyUnnamedToPlus(opr)
   " yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
   if a:opr ==# 'y'
     let @+ = @"
@@ -446,8 +456,8 @@ endfunction
 " }}}
 
 
-" Motion {{{
-""""""""""""
+" Motion/text object {{{
+""""""""""""""""""""""""
 
 " nnoremap j gj
 " nnoremap k gk
@@ -464,15 +474,13 @@ inoremap <C-Space> <Space>
 noremap <Space>h ^
 noremap <Space>l $
 
-
-
 " f 移動をさらに便利に
-noremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, '')<CR>
-noremap <silent> F✠ :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, 'b')<CR>
-vnoremap <silent> f<CR> :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, '')<CR>v`'o
-vnoremap <silent> F✠ :<C-u>call MgmNumSearchLine('[A-Z]', v:count1, 'b')<CR>v`'o
+noremap <silent> f<CR> :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, '')<CR>
+noremap <silent> F✠ :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, 'b')<CR>
+vnoremap <silent> f<CR> :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, '')<CR>v`'o
+vnoremap <silent> F✠ :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, 'b')<CR>v`'o
 
-function! MgmNumSearchLine(ptn, num, opt)
+function! s:numSearchLine(ptn, num, opt)
   for i in range(a:num)
     call search(a:ptn, a:opt, line('.'))
   endfor
@@ -480,26 +488,113 @@ endfunction
 
 " 整合性のとれた括弧に移動するための motion {{{
 
-vnoremap m) mzi)o`zo
-vnoremap m( mzi)`zo
-vnoremap m] mzi]o`zo
-vnoremap m[ mzi]`zo
-vnoremap m} mzi}o`zo
-vnoremap m{ mzi}`zo
+" 一部標準で用意されているキーマップもあるが，
+" そうでないものは頑張って実装．
 
-nnoremap dm) vmzi)o`zod
-nnoremap dm( vmzi)`zod
-nnoremap dm] vmzi]o`zod
-nnoremap dm[ vmzi]`zod
-nnoremap dm} vmzi}o`zod
-nnoremap dm{ vmzi}`zod
+noremap m) ])
+noremap m} ]}
 
-nnoremap cm) vmzi)o`zoc
-nnoremap cm( vmzi)`zoc
-nnoremap cm] vmzi]o`zoc
-nnoremap cm[ vmzi]`zoc
-nnoremap cm} vmzi}o`zoc
-nnoremap cm{ vmzi}`zoc
+vnoremap m] mzi]o`z
+vnoremap m( mzi)`z
+vnoremap m{ mzi}`z
+vnoremap m[ mzi]`z
+
+nnoremap dm] mzvi]o`zod
+nnoremap dm( mzvi)`zod
+nnoremap dm{ mzvi}`zod
+nnoremap dm[ mzvi]`zod
+
+nnoremap cm] mzvi]o`zoc
+nnoremap cm( mzvi)`zoc
+nnoremap cm{ mzvi}`zoc
+nnoremap cm[ mzvi]`zoc
+
+" }}}
+
+" クオート系テキストオブジェクトを自分好みに {{{
+vnoremap a' 2i'
+vnoremap a" 2i"
+vnoremap a` 2i`
+onoremap a' 2i'
+onoremap a" 2i"
+onoremap a` 2i`
+vnoremap m' a'
+vnoremap m" a"
+vnoremap m` a`
+onoremap m' a'
+onoremap m" a"
+onoremap m` a`
+" }}}
+
+" Vertical WORD (vWORD) 単位での移動 {{{
+
+" <C-n>: 水平方向の  E 移動を鉛直方向にしたものに相当
+" <C-p>: 水平方向の  B 移動を鉛直方向にしたものに相当
+nnoremap <silent> <C-n> :<C-u>call <SID>movePerVerticalWordNcount(1, 0, -1, v:count1)<CR>
+nnoremap <silent> <C-p> :<C-u>call <SID>movePerVerticalWordNcount(0, 1,  1, v:count1)<CR>
+
+" omap では， inclusive な挙動が求められているとき
+" <C-n> でいい感じに inclusive っぽくなるようにする．
+" たとえば d<C-n> とするとその vWORD の最後まで消える
+" （その下の空行は消えない）．
+onoremap <silent> <C-n> :<C-u>call <SID>movePerVerticalWordNcount(1, 0,  0, v:count1)<CR>
+onoremap <silent> <C-p> :<C-u>call <SID>movePerVerticalWordNcount(0, 1,  1, v:count1)<CR>
+
+" 矩形選択のときなどに有用
+" TODO: visual モード中に v:count をとってモーションを繰り返したい
+vnoremap <silent> <C-n> <Esc>:call <SID>movePerVerticalWordNcount(1, 0, -1, 1)<CR>mzgv`z
+vnoremap <silent> <C-p> <Esc>:call <SID>movePerVerticalWordNcount(0, 1,  1, 1)<CR>mzgv`z
+
+" 上の map の挙動の実装．
+" 空行で区切られた行の塊を vWORD とみなし，vWORD の頭や最後に移動する．
+" ただし，カーソルが何列目にあるかの情報はできる限り保持する．
+" V-BLOCK で動くときにこの挙動があるのとないのとでは天と地の差がある．
+" function! s:movePerVerticalWord(direction, whichend, offset)
+"   direction: 進行方向 (0: backward, 1: forward)
+"   whichend: 空行に移動するとき「どちらの端」を基準に飛ぶか
+"             (0: 最初の行, 1: 最後の行 + 1)
+"   offset: whichend で指定した行を基準にずらす行数 (int)
+function! s:movePerVerticalWord(direction, whichend, numoff)
+  let curpos = getcurpos()
+  if a:direction is 0
+    let flag = 'nWb'
+  else
+    let flag = 'nW'
+  endif
+  if a:whichend is 0
+    " 1つ以上連続する空行の，最初の行にのみマッチ
+    let regexp = '^.\+$\n^\zs$'
+  else
+    " 1つ以上連続する空行の，最後の行にのみマッチ
+    let regexp = '^\zs\ze$\n^.\+$'
+  endif
+  let lnum = search(regexp, flag)
+
+  " e や b を複数回繰り返したときに止まってしまうのを防ぐ
+  if (a:whichend is 0 && lnum - curpos[1] is 1) || (a:whichend is 1 && lnum - curpos[1] is -1)
+    " もし検索結果が今の1行上だったらカーソルを上にずらし再度検索し直す．
+    " もし検索結果が今の1行下だったらカーソルを下にずらし再度検索し直す，
+    call cursor(lnum, curpos[2])
+    let lnum = search(regexp, flag)
+  endif
+
+  if a:direction is 1 && a:numoff is -1 && lnum is getpos('$')[1]
+    " <C-n> で最終行に飛べるようにする
+    let lnum = lnum + 1
+  endif
+  if a:direction is 1 && a:numoff is 1 && lnum is 0
+    return
+  endif
+
+  call cursor(lnum + a:numoff, curpos[2])
+endfunction
+
+" 単純に s:movePerVerticalWord を n 回繰り返す． count に対応するため
+function! s:movePerVerticalWordNcount(direction, whichend, numoff, count)
+  for i in range(a:count)
+    call s:movePerVerticalWord(a:direction, a:whichend, a:numoff)
+  endfor
+endfunction
 
 " }}}
 
@@ -532,7 +627,7 @@ call submode#leave_with('vertjmp', 'n', '', '<Space>')
 " その他の特殊キーマップ{{{
 """"""""""""""""""""""""""""
 
-" function key 無効化 {{{
+" 無効化 {{{
 nnoremap <F1>  <Nop>
 inoremap <F1>  <Nop>
 inoremap <F2>  <Nop>
@@ -545,6 +640,10 @@ inoremap <F8>  <Nop>
 inoremap <F9>  <Nop>
 inoremap <F10> <Nop>
 inoremap <F12> <Nop>
+
+" prefix とするため
+noremap <Space> <Nop>
+noremap <CR> <Nop>
 " }}}
 
 " 行の操作/空行追加 {{{
@@ -572,10 +671,11 @@ nnoremap <silent> <Space><CR> a<CR><Esc>
 
 " }}}
 
-" マクロの活用{{{
+" マクロの活用 {{{
 nnoremap q qq<Esc>
 nnoremap Q q
 nnoremap , @q
+" JIS キーボードなので
 nnoremap + ,
 " }}}
 
@@ -587,12 +687,12 @@ nnoremap + ,
 " 計算式は g:mgm_lambda_func に格納されるので <Space>r で使い回せる．
 " 小数のインクリメントや css での長さ調整等に便利？マクロと組み合わせてもいい．
 " 中で eval を用いているので悪用厳禁．基本的に数値にのみ用いるようにする
-vnoremap <Space>s :<C-u>call MgmApplyLambdaToSelectedArea()<CR>
-vnoremap <Space>r :<C-u>call MgmRepeatLambdaToSelectedArea()<CR>
+vnoremap <Space>s :<C-u>call <SID>applyLambdaToSelectedArea()<CR>
+vnoremap <Space>r :<C-u>call <SID>repeatLambdaToSelectedArea()<CR>
 
 let g:mgm_lambda_func = 'x'
 
-function MgmApplyLambdaToSelectedArea() abort
+function s:applyLambdaToSelectedArea() abort
   let tmp = @@
   silent normal gvy
   let visual_area = @@
@@ -609,7 +709,7 @@ function MgmApplyLambdaToSelectedArea() abort
   let @@ = tmp
 endfunction
 
-function MgmRepeatLambdaToSelectedArea() abort
+function s:repeatLambdaToSelectedArea() abort
   let tmp = @@
   silent normal gvy
   let visual_area = @@
@@ -631,6 +731,10 @@ endfunction
 
 
 " 特定の種類のファイルに対する設定{{{
+
+" Vimscript {{{
+let g:vim_indent_cont = 0
+" }}}
 
 " netrw {{{
 augroup vimrc_netrw
@@ -683,7 +787,7 @@ augroup END
 
 " reST {{{
 
-function! MgmReSTTitle(punc)
+function! s:reSTTitle(punc)
   let line = getline('.')
   sil! exe row 'foldopen!'
   call append('.', repeat(a:punc, strdisplaywidth(line)))
@@ -691,12 +795,12 @@ endfunction
 augroup vimrc_rst
   autocmd!
   autocmd filetype rst set suffixesadd+=.rst
-  autocmd filetype rst nnoremap <Space>s0 :call MgmReSTTitle("#")<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s1 :call MgmReSTTitle("=")<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s2 :call MgmReSTTitle("-")<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s3 :call MgmReSTTitle("~")<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s4 :call MgmReSTTitle('"')<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s5 :call MgmReSTTitle("'")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s0 :call <SID>reSTTitle("#")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s1 :call <SID>reSTTitle("=")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s2 :call <SID>reSTTitle("-")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s3 :call <SID>reSTTitle("~")<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s4 :call <SID>reSTTitle('"')<CR>jo<Esc>
+  autocmd filetype rst nnoremap <Space>s5 :call <SID>reSTTitle("'")<CR>jo<Esc>
 augroup END
 
 " }}}
