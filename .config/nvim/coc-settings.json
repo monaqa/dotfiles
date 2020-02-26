@@ -28,7 +28,13 @@
       "args": [],
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"]
+    },
+    "efm": {
+      "command": "efm-langserver",
+      "args": [],
+      "filetypes": ["satysfi"]
     }
+
   },
 
   "yank.highlight.duration": 250,

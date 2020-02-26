@@ -727,6 +727,13 @@ endfunction
 
 " }}}
 
+" jumplist {{{
+" 連打しやすいマップにしてみる
+nnoremap <C-h> g;
+nnoremap <C-g> g,
+
+" }}}
+
 " }}}
 
 
@@ -774,7 +781,7 @@ augroup END
 
 augroup vimrc_satysfi
   autocmd!
-  autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages
+  autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages,$HOME/.satysfi/local/packages
   autocmd filetype satysfi set suffixesadd+=.saty,.satyh,.satyg
   autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
   autocmd filetype satysfi let b:caw_oneline_comment = "%"

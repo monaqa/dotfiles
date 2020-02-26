@@ -59,22 +59,19 @@ abbr -a s    "ssh"
 
 # environment variables {{{ 
 # bin at home directory
-# set -x PATH '~/bin' $PATH
-set -U fish_user_paths ~/bin $fish_user_paths
+set -x PATH "$HOME/.cargo/bin" $PATH
 
 # SATySFi
 export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi
 
 # opam configuration
-source /Users/shinichi/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
 # gopath
-set -x PATH '/Users/shinichi/go/bin' $PATH
+set -x PATH $HOME/go/bin $PATH
 
 # }}}
 
-
-set -U PIPENV_SKIP_LOCK true
 
 eval (pyenv init - | source)
 set -x PATH /usr/local/opt/gettext/bin $PATH
