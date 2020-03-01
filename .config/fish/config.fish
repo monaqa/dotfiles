@@ -6,15 +6,16 @@ set -g fish_ambiguous_width 1
 
 # abbr {{{
 
-abbr -a .    "cd ../"
-abbr -a ..   "cd ../../"
-abbr -a ...  "cd ../../../"
-abbr -a cdo  "cd ~/Documents/git/sys/dotfiles"
-abbr -a vdo  "cd ~/Documents/git/sys/dotfiles && nvim"
-abbr -a hgr  "history | grep"
-abbr -a mk   "mkdir"
-abbr -a j "ls -Fhla"
-# abbr -a rr "rm -r"
+abbr -a cdd   "cd ../"
+abbr -a cddd  "cd ../../"
+abbr -a cd2   "cd ../../"
+abbr -a cd3   "cd ../../../"
+abbr -a cdo   "cd ~/Documents/git/sys/dotfiles"
+abbr -a vdo   "cd ~/Documents/git/sys/dotfiles && nvim"
+abbr -a hgr   "history | grep"
+abbr -a mk    "mkdir"
+abbr -a j     "ls -Fhla"
+# abbr -a rr  "rm -r"
 
 # git
 abbr -a g    "git"
