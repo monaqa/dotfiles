@@ -426,12 +426,9 @@ nnoremap dx "_d
 nnoremap cx "_c
 
 " よく使うレジスタは挿入モードでも挿入しやすく
-inoremap <C-r><C-r> <C-r>"
-cnoremap <C-r><C-r> <C-r>"
-inoremap <C-r><CR> <C-r>0
-cnoremap <C-r><CR> <C-r>0
-inoremap <C-r><Space> <C-r>+
-cnoremap <C-r><Space> <C-r>+
+noremap! <C-r><C-r> <C-r>"
+noremap! <C-r><CR> <C-r>0
+noremap! <C-r><Space> <C-r>+
 
 " set clipboard+=unnamed
 set clipboard=
@@ -451,6 +448,57 @@ function! s:copyUnnamedToPlus(opr)
   if a:opr ==# 'y'
     let @+ = @"
   endif
+endfunction
+
+" INSERT モードの <C-y> をオペレータっぽく扱う．
+" a<Bs> を最初に入れるのは，直後の <Esc> 時に
+" インデントが消えてしまわないようにするため（もっといい方法がありそう）
+inoremap <expr> <C-y> "a<Bs>\<Esc>k" . (getcurpos()[2] == 1 ? '' : 'l') . ":set opfunc=<SID>control_y\<CR>g@"
+inoremap <expr> <C-e> "a<Bs>\<Esc>j" . (getcurpos()[2] == 1 ? '' : 'l') . ":set opfunc=<SID>control_e\<CR>g@"
+inoremap <expr> <C-y><C-y> "a<Bs>\<Esc>k" . (getcurpos()[2] == 1 ? '' : 'l') . ":set opfunc=<SID>control_y\<CR>g@$"
+inoremap <expr> <C-e><C-e> "a<Bs>\<Esc>j" . (getcurpos()[2] == 1 ? '' : 'l') . ":set opfunc=<SID>control_e\<CR>g@$"
+
+function! s:control_y(type)
+  " 設定，レジスタの保存
+  let sel_save = &selection
+  let m_reg = @m
+
+  let &selection = "inclusive"
+  normal! `[v`]"my
+
+  if getpos(".")[2] > len(getline(line(".") + 1))
+    " 今いるところが次の行の末端よりも長いかどうか．
+    " 行末だったら p（末尾に append）
+    normal! j"mp
+    startinsert!
+  else
+    " それ以外は P（途中から insert）
+    normal! j"mPl
+    startinsert
+  endif
+
+  " 設定，レジスタの復元
+  let &selection = sel_save
+  let @m=m_reg
+endfunction
+
+function! s:control_e(type)
+  let sel_save = &selection
+  let m_reg = @m
+
+  let &selection = "inclusive"
+  normal! `[v`]"my
+
+  if getpos(".")[2] > len(getline(line(".") - 1))
+    normal! k"mp
+    startinsert!
+  else
+    normal! k"mPl
+    startinsert
+  endif
+
+  let &selection = sel_save
+  let @m=m_reg
 endfunction
 
 " }}}

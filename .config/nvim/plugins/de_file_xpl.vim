@@ -72,7 +72,7 @@ function! s:defx_my_settings() abort
   " Define mappings
   nnoremap <silent><buffer><expr> cc
   \ defx#do_action('copy')
-  nnoremap <silent><buffer><expr> m
+  nnoremap <silent><nowait><buffer><expr> m
   \ defx#do_action('move')
   nnoremap <silent><buffer><expr> p
   \ defx#do_action('paste')
