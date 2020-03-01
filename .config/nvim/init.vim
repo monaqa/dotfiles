@@ -150,6 +150,17 @@ set backspace=indent,eol,start
 set history=10000
 " set formatoptions=jcrqlnB
 autocmd vimrc_general FileType * set formatoptions-=o formatoptions+=nB
+autocmd vimrc_general InsertLeave * set nopaste
+
+" 文字コード指定 {{{
+" フォーマット変えて開き直す系
+" thanks to cohama
+command! Utf8 edit ++enc=utf-8 %
+command! Cp932 edit ++enc=cp932 %
+command! Unix edit ++ff=unix %
+command! Dos edit ++ff=dos %
+command! AsUtf8 set fenc=utf-8|w
+" }}}
 
 " 検索機能{{{
 set ignorecase
@@ -277,6 +288,22 @@ augroup vimrc_cmdwin
   autocmd CmdwinEnter : g/^qa\?!\?$/d _
   autocmd CmdwinEnter : g/^wq\?a\?!\?$/d _
 augroup END
+" }}}
+
+" diff {{{
+" thanks to cohama
+function! DiffThese()
+  let win_count = winnr('$')
+  if win_count == 2
+    diffthis
+    wincmd w
+    diffthis
+    wincmd w
+  else
+    echomsg "Too many windows."
+  endif
+endfunction
+command! -nargs=0 DiffThese call DiffThese()
 " }}}
 
 " }}}
@@ -450,7 +477,7 @@ function! s:copyUnnamedToPlus(opr)
   endif
 endfunction
 
-" INSERT モードの <C-y> をオペレータっぽく扱う．
+" INSERT モードの <C-y> をオペレータっぽく扱う．{{{
 " a<Bs> を最初に入れるのは，直後の <Esc> 時に
 " インデントが消えてしまわないようにするため（もっといい方法がありそう）
 inoremap <expr> <C-y> "a<Bs>\<Esc>k" . (getcurpos()[2] == 1 ? '' : 'l') . ":set opfunc=<SID>control_y\<CR>g@"
@@ -500,6 +527,7 @@ function! s:control_e(type)
   let &selection = sel_save
   let @m=m_reg
 endfunction
+" }}}
 
 " }}}
 
@@ -507,11 +535,14 @@ endfunction
 " Motion/text object {{{
 """"""""""""""""""""""""
 
-" nnoremap j gj
-" nnoremap k gk
-" nnoremap gj j
-" nnoremap gk k
+" smart j/k
+" thanks to tyru
+nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+xnoremap <expr> j (v:count == 0 && mode() !=# 'V') ? 'gj' : 'j'
+nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+xnoremap <expr> k (v:count == 0 && mode() !=# 'V') ? 'gk' : 'k'
 
+" 多少の犠牲はやむを得ない
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 " 上記移動を行っていると <C-Space> で <C-@> が動作してしまうのが不便．
@@ -519,8 +550,22 @@ inoremap <C-l> <Right>
 " としてもうまくいかないので，苦肉の策で <C-@> を潰す
 inoremap <C-Space> <Space>
 
-noremap <Space>h ^
-noremap <Space>l $
+" かしこい Home
+" thanks to Shougo
+function! SmartHome()
+  let str_before_cursor = strpart(getline('.'), 0, col('.') - 1)
+  let wrap_prefix = &wrap ? 'g' : ''
+  if str_before_cursor !~ '^\s*$'
+    return wrap_prefix . '^ze'
+  else
+    return wrap_prefix . '0'
+  endif
+endfunction
+noremap <expr> <Space>h SmartHome()
+" かしこい End
+nnoremap <expr> <Space>l &wrap ? 'g$' : '$'
+onoremap <expr> <Space>l &wrap ? 'g$' : '$'
+xnoremap <expr> <Space>l &wrap ? 'g$h' : '$h'
 
 " f 移動をさらに便利に
 noremap <silent> f<CR> :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, '')<CR>
@@ -669,6 +714,15 @@ call submode#map('vertjmp', 'n', '', ',', ':MgmLineBackSameSearch<CR>')
 call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
 " }}}
+
+" Command mode mapping {{{
+cnoremap <C-a> <Home>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+" }}}
+
 " }}}
 
 
@@ -696,10 +750,10 @@ noremap <CR> <Nop>
 
 " 行の操作/空行追加 {{{
 
-inoremap <S-CR> <End><CR>
-inoremap <C-S-CR> <Up><End><CR>
-nnoremap <S-CR> mzo<ESC>`z
-nnoremap <C-S-CR> mzO<ESC>`z
+" 改行だけを入力する
+" thanks to cohama
+nnoremap <expr> go "mz" . v:count . "o\<Esc>`z"
+nnoremap <expr> gO "mz" . v:count . "O\<Esc>`z"
 
 if !has('gui_running')
   " CUIで入力された<S-CR>,<C-S-CR>が拾えないので
@@ -712,6 +766,10 @@ if !has('gui_running')
   map ➿ <C-CR>
   imap ➿ <C-CR>
 endif
+" 将来何かに割り当てようっと
+nnoremap <S-CR> <Nop>
+nnoremap <C-S-CR> <Nop>
+nnoremap <C-CR> <Nop>
 
 " 長い文の改行をノーマルモードから楽に行う
 " try: f.<Space><CR> or f,<Space><CR>
@@ -775,11 +833,60 @@ endfunction
 
 " }}}
 
-" jumplist {{{
-" 連打しやすいマップにしてみる
+" jump with changed list {{{
+" 便利なので連打しやすいマップにしてみる
 nnoremap <C-h> g;
 nnoremap <C-g> g,
 
+" }}}
+
+" rename/delete current file {{{
+" thanks to cohama
+
+" 今開いているファイルを削除
+function! DeleteMe(force)
+  if a:force || !&modified
+    let filename = expand('%')
+    bdelete!
+    call delete(filename)
+  else
+    echomsg 'File modified'
+  endif
+endfunction
+command! -bang -nargs=0 DeleteMe call DeleteMe(<bang>0)
+
+" 今開いているファイルをリネーム
+function! RenameMe(newFileName)
+  let currentFileName = expand('%')
+  execute 'saveas ' . a:newFileName
+  bdelete! #
+  call delete(currentFileName)
+endfunction
+command! -nargs=1 RenameMe call RenameMe(<q-args>)
+
+" }}}
+
+" 行末の空白とか最終行の空行を削除
+function! RemoveUnwantedSpaces()
+  let pos_save = getpos('.')
+  try
+    keeppatterns %s/\s\+$//e
+    while 1
+      let lastline = getline('$')
+      if lastline =~ '^\s*$' && line('$') != 1
+        $delete
+      else
+        break
+      endif
+    endwhile
+  finally
+    call setpos('.', pos_save)
+  endtry
+endfunction
+command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
+
+" folding {{{
+nnoremap <Space>z zMzv
 " }}}
 
 " }}}
@@ -789,6 +896,10 @@ nnoremap <C-g> g,
 
 " Vimscript {{{
 let g:vim_indent_cont = 0
+augroup vimrc_vim
+  autocmd!
+  autocmd vimrc_vim filetype vim set keywordprg=:help
+augroup END
 " }}}
 
 " netrw {{{
