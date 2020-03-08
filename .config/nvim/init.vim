@@ -78,7 +78,7 @@ set modelines=3
 
 set list
 set listchars=tab:▸▹┊,trail:⌑,extends:>,precedes:<
-set nowrap
+set wrap
 
 set lazyredraw
 set ttyfast
@@ -444,7 +444,7 @@ endfunction
 """"""""""""""
 
 " D や C との一貫性
-map Y y$
+nnoremap Y y$
 
 " x の結果はバッファに入れない．dx でも同様に扱う
 nnoremap x "_x
@@ -565,7 +565,7 @@ noremap <expr> <Space>h SmartHome()
 " かしこい End
 nnoremap <expr> <Space>l &wrap ? 'g$' : '$'
 onoremap <expr> <Space>l &wrap ? 'g$' : '$'
-xnoremap <expr> <Space>l &wrap ? 'g$h' : '$h'
+xnoremap <expr> <Space>l visualmode() ==# "v" ? '$h' : '$'
 
 " f 移動をさらに便利に
 noremap <silent> f<CR> :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, '')<CR>
@@ -592,15 +592,15 @@ vnoremap m( mzi)`z
 vnoremap m{ mzi}`z
 vnoremap m[ mzi]`z
 
-nnoremap dm] mzvi]o`zod
-nnoremap dm( mzvi)`zod
-nnoremap dm{ mzvi}`zod
-nnoremap dm[ mzvi]`zod
+nnoremap dm] mzvi]o`zd
+nnoremap dm( mzvi)`zd
+nnoremap dm{ mzvi}`zd
+nnoremap dm[ mzvi]`zd
 
-nnoremap cm] mzvi]o`zoc
-nnoremap cm( mzvi)`zoc
-nnoremap cm{ mzvi}`zoc
-nnoremap cm[ mzvi]`zoc
+nnoremap cm] mzvi]o`zc
+nnoremap cm( mzvi)`zc
+nnoremap cm{ mzvi}`zc
+nnoremap cm[ mzvi]`zc
 
 " }}}
 
@@ -716,9 +716,10 @@ call submode#leave_with('vertjmp', 'n', '', '<Space>')
 " }}}
 
 " Command mode mapping {{{
+" 多少の犠牲はやむを得ない
 cnoremap <C-a> <Home>
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
+cnoremap <C-h> <Left>
+cnoremap <C-l> <Right>
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 " }}}
@@ -752,8 +753,8 @@ noremap <CR> <Nop>
 
 " 改行だけを入力する
 " thanks to cohama
-nnoremap <expr> go "mz" . v:count . "o\<Esc>`z"
-nnoremap <expr> gO "mz" . v:count . "O\<Esc>`z"
+nnoremap <expr> <Space>o "mz" . v:count . "o\<Esc>`z"
+nnoremap <expr> <Space>O "mz" . v:count . "O\<Esc>`z"
 
 if !has('gui_running')
   " CUIで入力された<S-CR>,<C-S-CR>が拾えないので
