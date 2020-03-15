@@ -1,3 +1,4 @@
+# vim: fdm=marker noet sw=4
 # A valid snippet should starts with:
 #
 #		snippet trigger_word [ "description" [ options ] ]
@@ -24,72 +25,321 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
-snippet chp "chapter" b
+# primitives {{{
+
+# frequently used {{{
+
+snippet module "module" b
+module ${1:Example} : sig
+	$2
+end = struct
+	$0
+end
+endsnippet
+
+snippet let-inline "let-inline" b
+let-inline ${1:ctx }\\${2:cmd} ${3:arg }= $0
+endsnippet
+
+snippet let-math "let-math" b
+let-math \\${1:cmd} ${2:arg }= $0
+endsnippet
+
+snippet let-block "let-block" b
+let-block ${1:ctx }+${2:cmd} ${3:arg }= $0
+endsnippet
+
+snippet letin "let ... in" b
+let ${1:cmd} = ${2:expr} in
+endsnippet
+
+snippet direct\ "direct signature (inline-cmd)" b
+direct \\${1:cmd} : [$2] inline-cmd
+endsnippet
+
+snippet direct+ "direct signature (block-cmd)" b
+direct +${1:cmd} : [$2] block-cmd
+endsnippet
+
+snippet match "match with" w
+match ${1:arg} with
+	| ${2:Some($1)} -> ${3}
+	| ${4:None} -> ${5}
+endsnippet
+
+# }}}
+
+# complicated {{{
+
+snippet read-inline "primitive: read-inline" w
+read-inline ${1:ctx} ${2:it}
+endsnippet
+
+snippet read-block "primitive: read-block" w
+read-block ${1:ctx} ${2:bt}
+endsnippet
+
+snippet line-break "primitive: line-break" w
+line-break ${1:true} ${2:true} ${3:ctx} ${4:ib}
+endsnippet
+
+snippet line-read "line-break and read-inline" w
+line-break ${1:true} ${2:true} ${3:ctx} (read-inline $3 ${4:it})
+endsnippet
+
+snippet page-break "primitive: page-break" b
+page-break ${1:paper} ${2:pagecontf} ${3:pagepartsf} ${4:bb}
+endsnippet
+
+snippet inline-graphics "primitive: inline-graphics" w
+inline-graphics ${1:wid} ${2:ht} ${3:dp} ${4:(fun (x, y) -> [])}
+endsnippet
+
+snippet fill "fill" w
+fill ${1:Color.black} ${2:path}
+endsnippet
+
+snippet map "list module: map" w
+${1:lst} |> List.map ${2:func}
+endsnippet
+
+snippet display-message "primitive: display-message" w
+let () = display-message \`${1}\` in
+endsnippet
+
+# }}}
+
+# }}}
+
+# commands {{{
+
+# section {{{
+
+snippet +chp "chapter" b
 +chapter{${1}}<
 	${0}
 >
 endsnippet
 
-snippet sec "section" b
+snippet +sec "section" b
 +section{${1}}<
 	${0}
 >
 endsnippet
 
-snippet sse "subsection" b
+snippet +sse "subsection" b
 +subsection{${1}}<
 	${0}
 >
 endsnippet
 
-snippet sss "subsubsection" b
+snippet +sss "subsubsection" b
 +subsubsection{${1}}<
 	${0}
 >
 endsnippet
 
-snippet p "paragraph" b
+snippet +p "paragraph" b
 +p{
 	${0}
 }
 endsnippet
 
-snippet bf "textbf" w
+# }}}
+
+# inline markup {{{
+
+snippet \em "emphasize" w
+\\emph{${1}}
+endsnippet
+
+snippet \bf "textbf" w
 \\textbf{${1}}
 endsnippet
 
-snippet ico "inline code" i
+snippet \co "inline code" i
 \\code(\`${1:string}\`);$0
 endsnippet
 
-snippet bco "block code" b
+snippet \link "Link" b
+\link?:({${1}})(\`$1\`);
+endsnippet
+
+# }}}
+
+# block command/block-embedding command {{{
+
+snippet +co "code block" b
 +code(\`\`\`
 	${1:string}
 \`\`\`);
 $0
 endsnippet
 
-snippet ilst "listing" b
+snippet \list "listing (inline)" b
 \\listing{
 	* ${1}
 }
 endsnippet
 
-snippet blst "listing" b
+snippet +list "listing (block)" b
 +listing{
 	* ${1}
 }
 endsnippet
 
-snippet example "Example" b
-+code(\`\`\`
-${1}
-\`\`\`);
-+math(${
-$1
-});
+snippet \enum "enumerate (inline)" b
+\\enumerate{
+	* ${1}
+}
 endsnippet
 
-snippet link "Link" b
-\link?:({${1}})(\`$1\`);
+snippet +enum "enumerate (block)" b
++enumerate{
+	* ${1}
+}
 endsnippet
+
+snippet \desc "description (inline)" b
+\\description{
+	* ${1}
+		** ${2}
+}
+endsnippet
+
+snippet +desc "description (block)" b
++description{
+	* ${1}
+		** ${2}
+}
+endsnippet
+
+snippet \eqn "equation" b
+\eqn(${
+	$1
+	});
+endsnippet
+
+snippet +ma "math block" b
++math(${
+	$1
+	});
+endsnippet
+
+snippet +ga "gather" b
++eqn-gather(${
+	| ${1}
+	| ${2}
+	|});
+$0
+endsnippet
+
+snippet +al "align" b
++eqn-align(${
+	| ${1} | ${2}
+	| ${3} | ${4}
+	|});
+$0
+endsnippet
+
+# }}}
+
+# math command {{{
+
+snippet \p "paren" w
+\\p{$1}$0
+endsnippet
+
+snippet \b "brace" w
+\\pb{$1}$0
+endsnippet
+
+snippet \B "bracket" w
+\\pB{$1}$0
+endsnippet
+
+snippet \pabs "abs" b
+\\pabs{$1}$0
+endsnippet
+
+snippet \pangle "paren (angle)" b
+\\pangle{$1}$0
+endsnippet
+
+snippet \hat "hat" b
+\\hat{$1}$0
+endsnippet
+
+snippet \bm "bm" b
+\\bm{$1}$0
+endsnippet
+
+#}}}
+
+# minimal template {{{
+
+snippet minimal "minimal template" b
+% begin template
+
+% essential command
+
+let-inline ctx \math m = script-guard Latin (embed-math ctx m)
+
+let-block ctx +p it = line-break true true ctx (read-inline ctx it ++ inline-fil)
+
+let document bt =
+	let ctx =
+		get-initial-context 440pt (command \math)
+			|> set-dominant-narrow-script Latin
+			|> set-dominant-wide-script Kana
+			|> set-language Kana Japanese
+			|> set-language HanIdeographic Japanese
+			|> set-language Latin English
+			|> set-hyphen-penalty 100
+	in
+	let bb = read-block ctx bt in
+	page-break A4Paper
+		(fun _ -> (| text-origin = (80pt, 100pt); text-height = 630pt; |))
+			(fun _ -> (|
+				header-origin = (0pt, 0pt);
+				header-content = block-nil;
+				footer-origin = (0pt, 0pt);
+				footer-content = block-nil;
+			|))
+				bb
+
+% text template
+
+let-inline \pang = {The quick brown fox jumps over the lazy dog.}
+
+let-inline \lipsum = {
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+	Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+	Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+	Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+}
+
+let-inline \jugem = {
+寿限無，寿限無，五劫のすりきれ，
+海砂利水魚の水行末・雲来末・風来末，
+食う寝るところに住むところ，
+やぶら小路のぶら小路，
+パイポパイポ，パイポのシューリンガン，
+シューリンガンのグーリンダイ，
+グーリンダイのポンポコピーのポンポコナーの長久命の長助．
+}
+
+% end
+
+in
+
+document'<
+	+p{\pang;}
+	+p{\lipsum;}
+	+p{\jugem;}
+>
+endsnippet
+
+# }}}
+
+# }}}

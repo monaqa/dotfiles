@@ -45,11 +45,11 @@ set smartindent
 
 " indent 幅のデフォルト
 augroup vimrc_indent
-  autocmd filetype vim set shiftwidth=2
-  autocmd filetype xml,html set shiftwidth=2
-  autocmd filetype tex set shiftwidth=2
-  autocmd filetype satysfi set shiftwidth=2
-  autocmd filetype markdown,rst set shiftwidth=2
+  autocmd FileType vim set shiftwidth=2
+  autocmd FileType xml,html set shiftwidth=2
+  autocmd FileType tex set shiftwidth=2
+  autocmd FileType satysfi set shiftwidth=2
+  autocmd FileType markdown,rst set shiftwidth=2
 augroup END
 " }}}
 " }}}
@@ -899,14 +899,14 @@ nnoremap <Space>z zMzv
 let g:vim_indent_cont = 0
 augroup vimrc_vim
   autocmd!
-  autocmd vimrc_vim filetype vim set keywordprg=:help
+  autocmd vimrc_vim FileType vim set keywordprg=:help
 augroup END
 " }}}
 
 " netrw {{{
 augroup vimrc_netrw
   autocmd!
-  autocmd filetype netrw call NetrwMapping()
+  autocmd FileType netrw call NetrwMapping()
 augroup END
 
 function! NetrwMapping()
@@ -933,7 +933,7 @@ let g:tex_flavor = 'latex'
 " \cs を一単語に
 augroup vimrc_tex
   autocmd!
-  autocmd Filetype tex set iskeyword+=92
+  autocmd FileType tex set iskeyword+=92
 augroup END
 " }}}
 
@@ -941,13 +941,15 @@ augroup END
 
 augroup vimrc_satysfi
   autocmd!
-  autocmd filetype satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages,$HOME/.satysfi/local/packages
-  autocmd filetype satysfi set suffixesadd+=.saty,.satyh,.satyg
   autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
-  autocmd filetype satysfi let b:caw_oneline_comment = "%"
-  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>p :!open %:r.pdf<CR>
-  autocmd filetype satysfi set foldmethod=marker
   autocmd BufRead,BufNewFile Satyristes setlocal filetype=lisp
+  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>p :!open %:r.pdf<CR>
+  autocmd FileType satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages,$HOME/.satysfi/local/packages
+  autocmd FileType satysfi set suffixesadd+=.saty,.satyh,.satyg
+  " iskeyword で +,\,@ の3文字を単語に含める
+  autocmd FileType satysfi set iskeyword+=43,92,@-@
+  autocmd FileType satysfi let b:caw_oneline_comment = "%"
+  autocmd FileType satysfi set foldmethod=marker
 augroup END
 
 " }}}
@@ -961,13 +963,13 @@ function! s:reSTTitle(punc)
 endfunction
 augroup vimrc_rst
   autocmd!
-  autocmd filetype rst set suffixesadd+=.rst
-  autocmd filetype rst nnoremap <Space>s0 :call <SID>reSTTitle("#")<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s1 :call <SID>reSTTitle("=")<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s2 :call <SID>reSTTitle("-")<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s3 :call <SID>reSTTitle("~")<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s4 :call <SID>reSTTitle('"')<CR>jo<Esc>
-  autocmd filetype rst nnoremap <Space>s5 :call <SID>reSTTitle("'")<CR>jo<Esc>
+  autocmd FileType rst set suffixesadd+=.rst
+  autocmd FileType rst nnoremap <Space>s0 :call <SID>reSTTitle("#")<CR>jo<Esc>
+  autocmd FileType rst nnoremap <Space>s1 :call <SID>reSTTitle("=")<CR>jo<Esc>
+  autocmd FileType rst nnoremap <Space>s2 :call <SID>reSTTitle("-")<CR>jo<Esc>
+  autocmd FileType rst nnoremap <Space>s3 :call <SID>reSTTitle("~")<CR>jo<Esc>
+  autocmd FileType rst nnoremap <Space>s4 :call <SID>reSTTitle('"')<CR>jo<Esc>
+  autocmd FileType rst nnoremap <Space>s5 :call <SID>reSTTitle("'")<CR>jo<Esc>
 augroup END
 
 " }}}
@@ -975,8 +977,8 @@ augroup END
 " HTML/XML {{{
 augroup vimrc_xml
   autocmd!
-  autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
-  autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType xml inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType html inoremap <buffer> </ </<C-x><C-o>
 augroup END
 " }}}
 
@@ -984,8 +986,8 @@ augroup END
 "
 augroup vimrc_julia
   autocmd!
-  autocmd filetype julia set shiftwidth=4
-  autocmd filetype julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
+  autocmd FileType julia set shiftwidth=4
+  autocmd FileType julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
 augroup END
 
 " }}}
@@ -994,7 +996,7 @@ augroup END
 "
 augroup vimrc_todome
   autocmd!
-  autocmd fileType todo call s:todome_my_settings()
+  autocmd FileType todo call s:todome_my_settings()
 augroup END
 
 function! s:todome_my_settings() abort
