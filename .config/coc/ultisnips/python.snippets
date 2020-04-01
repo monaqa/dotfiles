@@ -33,3 +33,18 @@ snippet fold "fold block" b
 $0
 # }}}
 endsnippet
+
+snippet sep "separator" b
+# %%
+$0
+endsnippet
+
+snippet md "markdown block" b
+# %% [markdown]
+"""
+$1
+"""
+
+# %%
+$0
+endsnippet

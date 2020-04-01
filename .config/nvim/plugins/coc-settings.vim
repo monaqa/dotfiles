@@ -37,3 +37,5 @@ let g:coc_snippet_next = '<c-l>'
 
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
 let g:coc_snippet_prev = '<c-h>'
+
+imap <C-q> <Plug>(coc-snippets-expand)

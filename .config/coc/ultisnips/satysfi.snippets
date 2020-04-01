@@ -107,6 +107,10 @@ snippet display-message "primitive: display-message" w
 let () = display-message \`${1}\` in
 endsnippet
 
+snippet draw-text "primitive: draw-text" w
+draw-text ${1:(x, y)} ${2:ib}
+endsnippet
+
 # }}}
 
 # }}}
@@ -278,7 +282,7 @@ endsnippet
 
 # minimal template {{{
 
-snippet minimal "minimal template" b
+snippet template "minimal template" b
 % begin template
 
 % essential command

@@ -60,7 +60,6 @@ augroup END
 
 " 表示設定 {{{
 set number
-set relativenumber
 set cursorline
 set cursorcolumn
 set colorcolumn=80
@@ -85,6 +84,14 @@ set ttyfast
 
 set statusline^=%{coc#status()}
 set signcolumn=yes
+
+augroup vimrc_numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * if &filetype !=# 'terminal'
+  autocmd BufEnter,FocusGained,InsertLeave *   set relativenumber
+  autocmd BufEnter,FocusGained,InsertLeave * endif
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 " }}}
 
 " 全角スペース強調 {{{
@@ -115,6 +122,11 @@ hi! link Folded GruvboxPurpleBold
 hi! link VertSplit GruvboxFg1
 hi! link HighlightedyankRegion DiffChange
 autocmd vimrc_color FileType help hi! Ignore ctermfg=66
+
+" VimShowHlGroup: Show highlight group name under a cursor
+command! VimShowHlGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
+" VimShowHlItem: Show highlight item name under a cursor
+command! VimShowHlItem echo synIDattr(synID(line("."), col("."), 1), "name")
 " }}}
 
 " .vimrc.local {{{
@@ -447,8 +459,9 @@ endfunction
 nnoremap Y y$
 
 " x の結果はバッファに入れない．dx でも同様に扱う
-nnoremap x "_x
-nnoremap X "_X
+" いや，別にバッファに入れてもいい気がしてきた．一旦コメントアウトしておこう
+" nnoremap x "_x
+" nnoremap X "_X
 nnoremap dx "_d
 nnoremap cx "_c
 
@@ -900,6 +913,13 @@ let g:vim_indent_cont = 0
 augroup vimrc_vim
   autocmd!
   autocmd vimrc_vim FileType vim set keywordprg=:help
+augroup END
+" }}}
+
+" Python {{{
+augroup vimrc_python
+  autocmd!
+  autocmd FileType python set nosmartindent
 augroup END
 " }}}
 
