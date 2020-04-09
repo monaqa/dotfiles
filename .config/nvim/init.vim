@@ -67,8 +67,6 @@ set visualbell
 set noerrorbells
 " set showmatch " 対応カッコを表示
 set laststatus=2 " ステータスラインを常に表示
-set scrolloff=10
-" set sidescrolloff=10
 set ambiwidth=single  "全角文字幅
 set showcmd
 
@@ -76,7 +74,7 @@ set modeline
 set modelines=3
 
 set list
-set listchars=tab:▸▹┊,trail:⌑,extends:>,precedes:<
+set listchars=tab:▸▹┊,trail:⌑,extends:❯,precedes:❮
 set wrap
 
 set lazyredraw
@@ -85,12 +83,14 @@ set ttyfast
 set statusline^=%{coc#status()}
 set signcolumn=yes
 
-augroup vimrc_numbertoggle
+augroup vimrc_buftypetoggle
   autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * if &filetype !=# 'terminal'
+  autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
   autocmd BufEnter,FocusGained,InsertLeave *   set relativenumber
+  autocmd BufEnter,FocusGained,InsertLeave *   set scrolloff=10
   autocmd BufEnter,FocusGained,InsertLeave * endif
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set scrolloff=0
 augroup END
 " }}}
 
@@ -242,7 +242,6 @@ augroup vimrc_terminal
   autocmd FileType terminal call s:terminal_init()
   autocmd FileType terminal setlocal wrap
   autocmd FileType terminal setlocal nonumber
-  autocmd FileType terminal setlocal norelativenumber
   autocmd FileType terminal setlocal signcolumn=no
 augroup END
 

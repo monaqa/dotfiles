@@ -1,0 +1,77 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+snippet getone "macro: get_one" b
+macro_rules! get_one {
+	($t:ty) => {{
+		let mut line: String = String::new();
+		std::io::stdin().read_line(&mut line).unwrap();
+		line.trim().parse::<$t>().unwrap()
+	}};
+
+	($t:ty; $n:expr) => {
+		(0..$n).map(|_| get_one!($t)).collect::<Vec<_>>()
+	};
+}
+endsnippet
+
+snippet gettuple "macro: get_tuple" b
+macro_rules! get_tuple {
+	($($t:ty),*) => {
+		{
+			let mut line: String = String::new();
+			std::io::stdin().read_line(&mut line).unwrap();
+			let mut iter = line.split_whitespace();
+			(
+				$(iter.next().unwrap().parse::<$t>().unwrap(),)*
+			)
+		}
+	};
+
+	($($t:ty),*; $n:expr) => {
+		(0..$n).map(|_|
+			get!($($t),*)
+		).collect::<Vec<_>>()
+	};
+}
+endsnippet
+
+snippet getvec "macro: get_vec" b
+macro_rules! get_vec {
+	($t:ty) => {
+		{
+			let mut line: String = String::new();
+			std::io::stdin().read_line(&mut line).unwrap();
+			line.split_whitespace()
+				.map(|t| t.parse::<$t>().unwrap())
+				.collect::<Vec<_>>()
+		}
+	};
+	($t:ty; $n:expr) => {
+		(0..$n).map(|_| get!($t ;;)).collect::<Vec<_>>()
+	};
+}
+endsnippet
