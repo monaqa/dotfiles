@@ -3,9 +3,8 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <Space>n <Plug>(coc-rename)
-nmap <silent> gh :call CocAction('doHover')<CR>
+nmap <silent> K :call CocAction('doHover')<CR>
 " nmap <Space><Space>p :CocList -A --normal yank<CR>
-imap <C-s> <Plug>(coc-snippets-expand)
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -33,9 +32,9 @@ augroup rc_coc
 augroup END
 
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-l>'
+let g:coc_snippet_next = '<c-q>'
 
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-h>'
+let g:coc_snippet_prev = '<c-s-q>'
 
 imap <C-q> <Plug>(coc-snippets-expand)
