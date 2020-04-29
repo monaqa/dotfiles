@@ -69,7 +69,7 @@ endsnippet
 
 # }}}
 
-# complicated {{{
+# complicated primitives {{{
 
 snippet read-inline "primitive: read-inline" w
 read-inline ${1:ctx} ${2:it}
@@ -111,6 +111,13 @@ snippet draw-text "primitive: draw-text" w
 draw-text ${1:(x, y)} ${2:ib}
 endsnippet
 
+snippet embed-block-top "-> inline-boxes" w
+embed-block-top ${1:ctx} ${2:wid} ${3:(fun ctx -> read-block ctx bt)}
+endsnippet
+
+snippet discretionary "-> inline-boxes" b
+discretionary ${1:-100} ${2:inline-nil} ${3:inline-fil} ${4:inline-nil}
+endsnippet
 # }}}
 
 # }}}
@@ -280,6 +287,8 @@ endsnippet
 
 #}}}
 
+# }}}
+
 # minimal template {{{
 
 snippet template "minimal template" b
@@ -354,4 +363,3 @@ snippet +frame "SLyDIFi frame" b
 endsnippet
 # }}}
 
-# }}}

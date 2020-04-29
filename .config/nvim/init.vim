@@ -245,11 +245,6 @@ augroup vimrc_terminal
   autocmd FileType terminal setlocal signcolumn=no
 augroup END
 
-" なぜか augroup の中に入れると動かない
-" （Terminal から別バッファに移動しても scrolloff が戻らない）ので
-" 外に出しておく
-autocmd TermOpen,TermEnter * set scrolloff=0
-autocmd TermLeave,TermClose * set scrolloff=10
 
 function! s:openTerminal()
   let ft = &filetype
@@ -409,7 +404,6 @@ nnoremap s/ q/G
 
 " Sandwich.vim のデフォルトキーバインドを上書きする
 nnoremap <nowait> srb <Nop>
-nnoremap <nowait> sr <C-^>
 
 call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
 call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
@@ -472,7 +466,7 @@ noremap! <C-r><Space> <C-r>+
 " set clipboard+=unnamed
 set clipboard=
 " noremap <Space>y "+y
-noremap <Space>p "+]p
+noremap <Space>p "+p
 noremap <Space>y "+y
 
 augroup vimrc_yank

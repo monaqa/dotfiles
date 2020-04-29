@@ -6,6 +6,8 @@ nnoremap s[ :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -i
 nnoremap so :Denite file/rec -buffer-name=search-file-denite<CR>
 nnoremap sO :Denite file/rec -resume -buffer-name=search-file-denite<CR>
 
+autocmd FileType rust nnoremap <buffer> sr :Denite rust/doc<CR>
+
 " floating window の設定
 let s:denite_win_width_percent = 0.85
 let s:denite_win_height_percent = 0.7
@@ -88,4 +90,7 @@ function! s:denite_my_settings() abort
   \ denite#do_map('toggle_select')
   nnoremap <silent><nowait><buffer><expr> <Space>
   \ denite#do_map('toggle_select') . "j"
+  nnoremap <silent><nowait><buffer><expr> yy
+  \ denite#do_map('do_action', 'yank')
 endfunction
+
