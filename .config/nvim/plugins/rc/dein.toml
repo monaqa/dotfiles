@@ -109,7 +109,7 @@ source ~/.config/nvim/plugins/denite.vim
 [[plugins]]
 repo = 'rhysd/rust-doc.vim'
 hook_add = """
-g:rust_doc#define_map_K = 0
+let g:rust_doc#define_map_K = 0
 """
 
 # defx (file explorer) {{{

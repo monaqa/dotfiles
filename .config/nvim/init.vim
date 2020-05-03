@@ -220,7 +220,7 @@ function! s:terminal_init()
   nnoremap <buffer> <CR> i<CR><C-\><C-n>
   nnoremap <expr><buffer> u "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
   nnoremap <expr><buffer> <C-r> "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
-  nnoremap <buffer> sq :bd!<CR>
+  nnoremap <buffer> sw :bd!<CR>
   nnoremap <buffer> t :let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
   nnoremap <buffer> dd i<C-u><C-\><C-n>
   " nnoremap <buffer> I i<C-a>
@@ -378,8 +378,8 @@ nnoremap s <Nop>
 nnoremap s_ :<C-u>sp<CR>
 nnoremap s<Bar> :<C-u>vs<CR>
 nnoremap sv :<C-u>vs<CR>
-nnoremap sq :<C-u>bd<CR>
-nnoremap sw :<C-u>q<CR>
+nnoremap sq :<C-u>q<CR>
+nnoremap sw :<C-u>bd<CR>
 " nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 " バッファ間移動
 nnoremap sj <C-w>j

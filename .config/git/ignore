@@ -8,3 +8,5 @@ Icon
 .vimrc.local
 
 .mypy_cache/
+
+.todo6
