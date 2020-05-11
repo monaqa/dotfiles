@@ -152,17 +152,17 @@ hook_add = "source ~/.config/nvim/plugins/quickrun.vim"
 repo = 'Shougo/vimproc.vim'
 build = 'make'
 
-[[plugins]]
-repo = 'jpalardy/vim-slime'
-hook_add = """
-let g:slime_target = "neovim"
-let g:slime_no_mappings = 1
-let g:slime_dont_ask_default = 1
-xmap <CR>t <Plug>SlimeRegionSend
-nmap <CR>t <Plug>SlimeMotionSend
-nmap <CR>tp <Plug>SlimeParagraphSend
-nmap <CR>tt <Plug>SlimeLineSend
-"""
+# [[plugins]]
+# repo = 'jpalardy/vim-slime'
+# hook_add = """
+# let g:slime_target = "neovim"
+# let g:slime_no_mappings = 1
+# let g:slime_dont_ask_default = 1
+# xmap <CR>t <Plug>SlimeRegionSend
+# nmap <CR>t <Plug>SlimeMotionSend
+# nmap <CR>tp <Plug>SlimeParagraphSend
+# nmap <CR>tt <Plug>SlimeLineSend
+# """
 
 [[plugins]]
 repo = 'previm/previm'
@@ -216,4 +216,6 @@ repo = 'Konfekt/FastFold'
 # [[plugins]]
 # repo = "deris/vim-duzzle"
 
+[[plugins]]
+repo = 'syusui-s/scrapbox-vim'
 # }}}

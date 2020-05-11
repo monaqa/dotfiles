@@ -23,7 +23,6 @@ abbr -a gb   "git branch"
 abbr -a gc   "git checkout"
 abbr -a gcm  "git checkout master"
 abbr -a gcb  "git checkout -b"
-abbr -a gcl  "git clone"
 abbr -a gpl  "git pull"
 abbr -a gps  "git push"
 abbr -a grm  "git remote"
@@ -56,6 +55,12 @@ abbr -a rmvs "rm .vimsessions/*"
 # ssh
 abbr -a s    "ssh"
 
+# cargo
+abbr -a cb   "cargo build"
+abbr -a cn   "cargo new"
+abbr -a cr   "cargo run"
+abbr -a ct   "cargo test"
+
 # }}}
 
 # environment variables {{{ 
@@ -83,3 +88,16 @@ eval (starship init fish)
 set -x LSCOLORS gxfxcxdxbxegedabagacad
 
 # vim:fdm=marker
+
+if type -q sk
+    abbr -a gj "cd (ghq list -p | sk)"
+end
+
+# function gsk
+#   set selected_repository (ghq list -p | sk --query "$LBUFFER")
+#   if [ -n "$selected_repository" ]
+#     cd $selected_repository
+#     echo " $selected_repository "
+#     commandline -f repaint
+#   end
+# end

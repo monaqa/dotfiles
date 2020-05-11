@@ -221,7 +221,7 @@ function! s:terminal_init()
   nnoremap <expr><buffer> u "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
   nnoremap <expr><buffer> <C-r> "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
   nnoremap <buffer> sw :bd!<CR>
-  nnoremap <buffer> t :let g:slime_default_config = {"jobid": b:terminal_job_id}<CR>
+  nnoremap <buffer> t :let g:current_terminal_job_id = b:terminal_job_id<CR>
   nnoremap <buffer> dd i<C-u><C-\><C-n>
   " nnoremap <buffer> I i<C-a>
   nnoremap <buffer> A i<C-e>
@@ -259,11 +259,10 @@ function! s:openTerminal()
   elseif (ft ==# 'julia')
     call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")
   endif
-  let g:slime_default_config = {'jobid': b:terminal_job_id}
+  let g:current_terminal_job_id = b:terminal_job_id
 endfunction
 
 nnoremap <silent> sT :call <SID>openTerminal()<CR>
-
 nnoremap <silent> st :call <SID>openTermWindow()<CR>
 
 function! s:openTermWindow() abort
@@ -276,6 +275,51 @@ function! s:openTermWindow() abort
     split
     buffer term
   endif
+endfunction
+
+nnoremap <CR>t :<C-u>set opfunc=<SID>op_send_terminal<CR>g@
+nnoremap <nowait> <CR>tt :<C-u>call <SID>send_terminal_line(v:count1)<CR>
+vnoremap <CR>t <Esc>:<C-u>call <SID>send_terminal_visual_range()<CR>
+
+function! s:op_send_terminal(type)
+  let sel_save = &selection
+  let &selection = "inclusive"
+  let m_reg = @m
+
+  if a:type == 'line'
+    let visual_range = "'[V']"
+  else
+    let visual_range = '`[v`]'
+  endif
+  exe "normal! " . visual_range . '"my'
+  call chansend(g:current_terminal_job_id, @m)
+
+  let &selection = sel_save
+  let @m=m_reg
+endfunction
+
+function! s:send_terminal_line(n_line)
+  let sel_save = &selection
+  let &selection = "inclusive"
+  let m_reg = @m
+
+  exe "normal! " . '"m' . a:n_line . 'yy'
+  call chansend(g:current_terminal_job_id, @m)
+
+  let &selection = sel_save
+  let @m=m_reg
+endfunction
+
+function! s:send_terminal_visual_range()
+  let sel_save = &selection
+  let &selection = "inclusive"
+  let m_reg = @m
+
+  exe "normal! gv" . '"my'
+  call chansend(g:current_terminal_job_id, @m)
+
+  let &selection = sel_save
+  let @m=m_reg
 endfunction
 
 " }}}
@@ -956,7 +1000,7 @@ augroup vimrc_satysfi
   autocmd!
   autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
   autocmd BufRead,BufNewFile Satyristes setlocal filetype=lisp
-  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>p :!open %:r.pdf<CR>
+  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>o :!open %:r.pdf<CR>
   autocmd FileType satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages,$HOME/.satysfi/local/packages
   autocmd FileType satysfi set suffixesadd+=.saty,.satyh,.satyg
   " iskeyword で +,\,@ の3文字を単語に含める
@@ -1031,6 +1075,23 @@ augroup vimrc_tmux
   autocmd FileType tmux  nnoremap <buffer> <CR>s :!tmux source ~/.tmux.conf<CR>
 augroup END
 
+" }}}
+
+" ToDo6 {{{
+
+augroup vimrc_todo6
+  autocmd!
+  autocmd BufRead,BufNewFile .todo6,*.td6 setlocal filetype=todo6
+  autocmd FileType todo6 set noexpandtab
+  autocmd FileType todo6 set shiftwidth=4
+  autocmd FileType todo6 set tabstop=4
+augroup END
+
+" }}}
+
+" Scrapbox {{{
+autocmd FileType scrapbox set tabstop=1
+autocmd FileType scrapbox set shiftwidth=1
 " }}}
 
 " }}}
