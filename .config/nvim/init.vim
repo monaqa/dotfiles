@@ -511,6 +511,9 @@ noremap! <C-r><Space> <C-r>+
 set clipboard=
 " noremap <Space>y "+y
 noremap <Space>p "+p
+noremap <Space>P "+P
+noremap <CR>p :put +<CR>
+noremap <CR>P :put! +<CR>
 noremap <Space>y "+y
 
 augroup vimrc_yank
