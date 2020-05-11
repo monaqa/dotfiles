@@ -29,7 +29,7 @@ endif
 " set runtimepath^=~/.vim runtimepath+=~/.vim/after
 " let &packpath = &runtimepath
 
-augroup vimrc_general
+augroup vimrc
   autocmd!
   " 他のどの augroup にも入れられそうにない余り物の autocmd を入れる augroup
 augroup END
@@ -44,7 +44,7 @@ set breakindent
 set smartindent
 
 " indent 幅のデフォルト
-augroup vimrc_indent
+augroup vimrc
   autocmd FileType vim set shiftwidth=2
   autocmd FileType xml,html set shiftwidth=2
   autocmd FileType tex set shiftwidth=2
@@ -83,8 +83,7 @@ set ttyfast
 set statusline^=%{coc#status()}
 set signcolumn=yes
 
-augroup vimrc_buftypetoggle
-  autocmd!
+augroup vimrc
   autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
   autocmd BufEnter,FocusGained,InsertLeave *   set relativenumber
   autocmd BufEnter,FocusGained,InsertLeave *   set scrolloff=10
@@ -97,8 +96,7 @@ augroup END
 " 全角スペース強調 {{{
 " https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776
 
-augroup vimrc_color
-  autocmd!
+augroup vimrc
   autocmd ColorScheme * highlight link UnicodeSpaces Error
   autocmd VimEnter,WinEnter * match UnicodeSpaces
   \ /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
@@ -121,7 +119,7 @@ hi! CursorLine ctermbg=236
 hi! link Folded GruvboxPurpleBold
 hi! link VertSplit GruvboxFg1
 hi! link HighlightedyankRegion DiffChange
-autocmd vimrc_color FileType help hi! Ignore ctermfg=66
+autocmd vimrc FileType help hi! Ignore ctermfg=66
 
 " VimShowHlGroup: Show highlight group name under a cursor
 command! VimShowHlGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
@@ -130,8 +128,7 @@ command! VimShowHlItem echo synIDattr(synID(line("."), col("."), 1), "name")
 " }}}
 
 " .vimrc.local {{{
-augroup vimrc_local
-  autocmd!
+augroup vimrc
   autocmd VimEnter * call s:vimrc_local(expand('<afile>:p:h'))
 augroup END
 
@@ -161,8 +158,8 @@ set virtualedit=block
 set backspace=indent,eol,start
 set history=10000
 " set formatoptions=jcrqlnB
-autocmd vimrc_general FileType * set formatoptions-=o formatoptions+=nB
-autocmd vimrc_general InsertLeave * set nopaste
+autocmd vimrc FileType * set formatoptions-=o formatoptions+=nB
+autocmd vimrc InsertLeave * set nopaste
 
 " 文字コード指定 {{{
 " フォーマット変えて開き直す系
@@ -235,8 +232,7 @@ function! MgmCalcCursorRightNum() abort
   return cpos[2] - 5
 endfunction
 
-augroup vimrc_terminal
-  autocmd!
+augroup vimrc
   " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
   autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
   autocmd FileType terminal call s:terminal_init()
@@ -325,8 +321,7 @@ endfunction
 " }}}
 
 " Command-line window {{{
-augroup vimrc_cmdwin
-  autocmd!
+augroup vimrc
   autocmd CmdwinEnter [:/\?=] setlocal nonumber
   autocmd CmdwinEnter [:/\?=] setlocal norelativenumber
   autocmd CmdwinEnter [:/\?=] setlocal signcolumn=no
@@ -471,8 +466,7 @@ function! s:isWideWindow(nr)
   endif
 endfunction
 
-augroup vimrc_resized
-  autocmd!
+augroup vimrc
   autocmd VimResized * call <SID>resizeFloatingWindow()
   autocmd VimResized * exe "normal \<c-w>="
 augroup END
@@ -516,8 +510,7 @@ noremap <CR>p :put +<CR>
 noremap <CR>P :put! +<CR>
 noremap <Space>y "+y
 
-augroup vimrc_yank
-  autocmd!
+augroup vimrc
   if exists('##TextYankPost')
     autocmd TextYankPost * call <SID>copyUnnamedToPlus(v:event.operator)
   endif
@@ -950,22 +943,19 @@ nnoremap <Space>z zMzv
 
 " Vimscript {{{
 let g:vim_indent_cont = 0
-augroup vimrc_vim
-  autocmd!
-  autocmd vimrc_vim FileType vim set keywordprg=:help
+augroup vimrc
+  autocmd FileType vim set keywordprg=:help
 augroup END
 " }}}
 
 " Python {{{
-augroup vimrc_python
-  autocmd!
+augroup vimrc
   autocmd FileType python set nosmartindent
 augroup END
 " }}}
 
 " netrw {{{
-augroup vimrc_netrw
-  autocmd!
+augroup vimrc
   autocmd FileType netrw call NetrwMapping()
 augroup END
 
@@ -991,16 +981,14 @@ let g:vimtex_view_general_options = '@line @pdf @tex'
 
 let g:tex_flavor = 'latex'
 " \cs を一単語に
-augroup vimrc_tex
-  autocmd!
+augroup vimrc
   autocmd FileType tex set iskeyword+=92
 augroup END
 " }}}
 
 " SATySFi {{{
 
-augroup vimrc_satysfi
-  autocmd!
+augroup vimrc
   autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
   autocmd BufRead,BufNewFile Satyristes setlocal filetype=lisp
   autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>o :!open %:r.pdf<CR>
@@ -1021,8 +1009,7 @@ function! s:reSTTitle(punc)
   sil! exe row 'foldopen!'
   call append('.', repeat(a:punc, strdisplaywidth(line)))
 endfunction
-augroup vimrc_rst
-  autocmd!
+augroup vimrc
   autocmd FileType rst set suffixesadd+=.rst
   autocmd FileType rst nnoremap <Space>s0 :call <SID>reSTTitle("#")<CR>jo<Esc>
   autocmd FileType rst nnoremap <Space>s1 :call <SID>reSTTitle("=")<CR>jo<Esc>
@@ -1035,8 +1022,7 @@ augroup END
 " }}}
 
 " HTML/XML {{{
-augroup vimrc_xml
-  autocmd!
+augroup vimrc
   autocmd FileType xml inoremap <buffer> </ </<C-x><C-o>
   autocmd FileType html inoremap <buffer> </ </<C-x><C-o>
 augroup END
@@ -1044,8 +1030,7 @@ augroup END
 
 " Julia {{{
 "
-augroup vimrc_julia
-  autocmd!
+augroup vimrc
   autocmd FileType julia set shiftwidth=4
   autocmd FileType julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
 augroup END
@@ -1054,8 +1039,7 @@ augroup END
 
 " todome {{{
 "
-augroup vimrc_todome
-  autocmd!
+augroup vimrc
   autocmd FileType todo call s:todome_my_settings()
 augroup END
 
@@ -1073,8 +1057,7 @@ endfunction
 
 " tmux conf {{{
 
-augroup vimrc_tmux
-  autocmd!
+augroup vimrc
   autocmd FileType tmux  nnoremap <buffer> <CR>s :!tmux source ~/.tmux.conf<CR>
 augroup END
 
@@ -1082,8 +1065,7 @@ augroup END
 
 " ToDo6 {{{
 
-augroup vimrc_todo6
-  autocmd!
+augroup vimrc
   autocmd BufRead,BufNewFile .todo6,*.td6 setlocal filetype=todo6
   autocmd FileType todo6 set noexpandtab
   autocmd FileType todo6 set shiftwidth=4
