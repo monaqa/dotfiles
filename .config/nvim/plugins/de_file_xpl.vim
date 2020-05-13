@@ -2,6 +2,7 @@
 " そして defx を開く際にセッションファイルを指定する
 "
 let g:defx_sessions_file = $HOME . '/.defxsessions'
+let g:defx_ignored_files = '.git,__pycache__,.mypy_cache'
 
 " floating window の設定
 let s:denite_win_width_percent = 0.7
@@ -29,14 +30,14 @@ call defx#custom#column('filename', {
 nnoremap <expr><silent> sz ":Defx " . "-columns=git:indent:icons:filename "
   \ . "-buffer-name=leftw "
   \ . "-session-file=" . g:defx_sessions_file . " "
-  \ . "-show-ignored-files "
+  \ . "-ignored-files=" . g:defx_ignored_files . " "
   \ . "-resume "
   \ . "-toggle -split=vertical -winwidth=30 -direction=topleft<CR>"
 
 nnoremap <expr><silent> sf ":Defx " . "-columns=git:indent:icons:filename:type:size:time "
   \ . "-buffer-name=float "
   \ . "-session-file=" . g:defx_sessions_file . " "
-  \ . "-show-ignored-files "
+  \ . "-ignored-files=" . g:defx_ignored_files . " "
   \ . "-resume "
   \ . "-toggle <CR>"
 

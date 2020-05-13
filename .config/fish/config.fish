@@ -14,7 +14,11 @@ abbr -a cdo   "cd ~/Documents/git/sys/dotfiles"
 abbr -a vdo   "cd ~/Documents/git/sys/dotfiles && nvim"
 abbr -a hgr   "history | grep"
 abbr -a mk    "mkdir"
-abbr -a j     "ls -Fhla"
+if type -q exa
+  abbr -a j "exa -a --icons --group-directories-first --long --time-style=long-iso"
+else
+  abbr -a j "ls -Fhla"
+end
 # abbr -a rr  "rm -r"
 
 # git
@@ -39,8 +43,7 @@ abbr -a ta   "tig --all"
 
 # tmux
 
-abbr -a tf   "tmux a -t full || tmux new -s full"
-abbr -a th   "tmux a -t half || tmux new -s half"
+abbr -a tn   "tmux new-session -A -s"
 
 # jupyter
 abbr -a jnb  "jupyter notebook"
@@ -87,17 +90,10 @@ eval (starship init fish)
 # ls
 set -x LSCOLORS gxfxcxdxbxegedabagacad
 
-# vim:fdm=marker
-
 if type -q sk
     abbr -a gj "cd (ghq list -p | sk)"
+else if type -q fzf
+    abbr -a gj "cd (ghq list -p | fzf)"
 end
 
-# function gsk
-#   set selected_repository (ghq list -p | sk --query "$LBUFFER")
-#   if [ -n "$selected_repository" ]
-#     cd $selected_repository
-#     echo " $selected_repository "
-#     commandline -f repaint
-#   end
-# end
+# vim:fdm=marker

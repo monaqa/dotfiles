@@ -23,6 +23,7 @@ mksymblink $dir/.config/git/ignore ~/.config/git/ignore
 mksymblink $dir/.config/nvim/init.vim ~/.config/nvim/init.vim
 mksymblink $dir/.config/nvim/coc-settings.json ~/.config/nvim/coc-settings.json
 mksymblink $dir/.config/nvim/plugins ~/.config/nvim/plugins
+mksymblink $dir/.config/nvim/syntax ~/.config/nvim/syntax
 
 mksymblink $dir/.vimrc ~/.vimrc
 mksymblink $dir/.tigrc ~/.tigrc
