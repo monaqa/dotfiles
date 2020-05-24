@@ -917,6 +917,19 @@ cnoreabbrev <expr> RenameMe "RenameMe " . expand('%')
 
 " }}}
 
+" 文字コードのインクリメント {{{
+nnoremap <Space>a :<C-u>call <SID>increment_char(v:count1)<CR>
+nnoremap <Space>x :<C-u>call <SID>increment_char(v:count1 * -1)<CR>
+
+function! s:increment_char(count)
+  normal v"my
+  let char = @m
+  let num = char2nr(char)
+  let @m = nr2char(num + a:count)
+  normal gv"mp
+endfunction
+" }}}
+
 " auto-format {{{
 " 行末の空白とか最終行の空行を削除
 function! RemoveUnwantedSpaces()
@@ -1078,6 +1091,7 @@ augroup vimrc
   autocmd FileType todo6 setlocal noexpandtab
   autocmd FileType todo6 setlocal shiftwidth=4
   autocmd FileType todo6 setlocal tabstop=4
+  autocmd FileType todo6 setlocal foldmethod=indent
 augroup END
 
 " }}}

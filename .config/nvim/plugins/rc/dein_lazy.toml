@@ -20,6 +20,9 @@ hook_post_source = "source ~/.config/nvim/plugins/lexima.vim"
 [[plugins]]
 repo = 'tpope/vim-capslock'
 on_i = 1
+hook_add = """
+inoremap <C-l> <Nop>
+"""
 
 # }}}
 

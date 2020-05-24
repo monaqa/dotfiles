@@ -2,7 +2,7 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gr <Plug>(coc-references)
-nmap <silent> <Space>n <Plug>(coc-rename)
+nmap <silent> <Space>r <Plug>(coc-rename)
 nmap <silent> K :call CocAction('doHover')<CR>
 " nmap <Space><Space>p :CocList -A --normal yank<CR>
 

@@ -4,21 +4,39 @@ fish_default_key_bindings
 
 set -g fish_ambiguous_width 1
 
+# environment variables {{{ 
+# bin at home directory
+set -x PATH "$HOME/.cargo/bin" $PATH
+
+# SATySFi
+export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi
+
+# opam configuration
+source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+
+# gopath
+set -x PATH $HOME/go/bin $PATH
+
+# }}}
+
+eval (pyenv init - | source)
+set -x PATH /usr/local/opt/gettext/bin $PATH
+
+eval (starship init fish)
+
+# ls
+set -x LSCOLORS gxfxcxdxbxegedabagacad
+
 # abbr {{{
+# abbr は universal 変数として格納される．
+# リセットしたい場合は以下のコマンドを実行
+# for a in (abbr --list); abbr --erase $a; end
 
 abbr -a cdd   "cd ../"
 abbr -a cddd  "cd ../../"
 abbr -a cd2   "cd ../../"
 abbr -a cd3   "cd ../../../"
-abbr -a cdo   "cd ~/Documents/git/sys/dotfiles"
-abbr -a vdo   "cd ~/Documents/git/sys/dotfiles && nvim"
-abbr -a hgr   "history | grep"
 abbr -a mk    "mkdir"
-if type -q exa
-  abbr -a j "exa -a --icons --group-directories-first --long --time-style=long-iso"
-else
-  abbr -a j "ls -Fhla"
-end
 # abbr -a rr  "rm -r"
 
 # git
@@ -66,37 +84,26 @@ abbr -a ct   "cargo test"
 
 # }}}
 
-# environment variables {{{ 
-# bin at home directory
-set -x PATH "$HOME/.cargo/bin" $PATH
+# modern commands {{{
 
-# SATySFi
-export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi
-
-# opam configuration
-source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
-
-# gopath
-set -x PATH $HOME/go/bin $PATH
-
-# }}}
-
-
-eval (pyenv init - | source)
-set -x PATH /usr/local/opt/gettext/bin $PATH
-
-eval (starship init fish)
-
-# ls
-set -x LSCOLORS gxfxcxdxbxegedabagacad
-
-if type -q sk
-  abbr -a gj "cd (ghq list -p | sk)"
-  abbr -a tl "tmux a -t (tmux list-sessions | sk | cut -d : -f 1)"
-else if type -q fzf
-  abbr -a gj "cd (ghq list -p | fzf)"
-  abbr -a tl "tmux a -t (tmux list-sessions | fzf | cut -d : -f 1)"
+if type -q exa
+  abbr -a j "exa -a --icons --group-directories-first --long --time-style=long-iso"
+else
+  abbr -a j "ls -Fhla"
 end
 
+if type -q sk
+  abbr -a gg "cd (ghq list -p | sk)"
+  abbr -a tg "tmux a -t (tmux list-sessions | sk | cut -d : -f 1)"
+  # mercurial とかぶっていることに注意
+  abbr -a hg "history | sk"
+else if type -q fzf
+  abbr -a gg "cd (ghq list -p | fzf)"
+  abbr -a tg "tmux a -t (tmux list-sessions | fzf | cut -d : -f 1)"
+  # mercurial とかぶっていることに注意
+  abbr -a hg "history | fzf"
+end
+
+# }}}
 
 # vim:fdm=marker
