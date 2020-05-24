@@ -81,7 +81,8 @@ set lazyredraw
 set ttyfast
 
 set statusline^=%{coc#status()}
-set signcolumn=yes
+set foldcolumn=4
+set signcolumn=no
 
 augroup vimrc
   autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
@@ -116,6 +117,8 @@ hi! MatchParen ctermbg=66 ctermfg=223
 hi! ColorColumn ctermbg=238
 hi! CursorColumn ctermbg=236
 hi! CursorLine ctermbg=236
+hi! FoldColumn ctermbg=236
+hi! SignColumn ctermbg=238
 hi! link Folded GruvboxPurpleBold
 hi! link VertSplit GruvboxFg1
 hi! link HighlightedyankRegion DiffChange
@@ -239,6 +242,7 @@ augroup vimrc
   autocmd FileType terminal setlocal wrap
   autocmd FileType terminal setlocal nonumber
   autocmd FileType terminal setlocal signcolumn=no
+  autocmd FileType terminal setlocal foldcolumn=0
 augroup END
 
 
@@ -325,6 +329,7 @@ augroup vimrc
   autocmd CmdwinEnter [:/\?=] setlocal nonumber
   autocmd CmdwinEnter [:/\?=] setlocal norelativenumber
   autocmd CmdwinEnter [:/\?=] setlocal signcolumn=no
+  autocmd CmdwinEnter [:/\?=] setlocal foldcolumn=0
   autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-f> <C-f>
   autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-u> <C-u>
   autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-b> <C-b>
@@ -911,6 +916,8 @@ function! RenameMe(newFileName)
 endfunction
 command! -nargs=1 RenameMe call RenameMe(<q-args>)
 
+cnoreabbrev <expr> RenameMe "RenameMe " . expand('%')
+
 " }}}
 
 " 行末の空白とか最終行の空行を削除
@@ -934,6 +941,20 @@ command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
 
 " folding {{{
 nnoremap <Space>z zMzv
+
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
+
+function! s:toggle_column() abort
+  if &signcolumn ==# 'yes' && &foldcolumn == 2
+    setlocal signcolumn=no
+    setlocal foldcolumn=4
+  else
+    setlocal signcolumn=yes
+    setlocal foldcolumn=2
+  endif
+endfunction
 " }}}
 
 " }}}
@@ -997,7 +1018,9 @@ augroup vimrc
   " iskeyword で +,\,@ の3文字を単語に含める
   autocmd FileType satysfi set iskeyword+=43,92,@-@
   autocmd FileType satysfi let b:caw_oneline_comment = "%"
-  autocmd FileType satysfi set foldmethod=marker
+  autocmd FileType satysfi setlocal foldmethod=indent
+  autocmd FileType satysfi setlocal foldnestmax=4
+  autocmd FileType satysfi setlocal foldminlines=5
 augroup END
 
 " }}}
@@ -1034,24 +1057,6 @@ augroup vimrc
   autocmd FileType julia set shiftwidth=4
   autocmd FileType julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
 augroup END
-
-" }}}
-
-" todome {{{
-"
-augroup vimrc
-  autocmd FileType todo call s:todome_my_settings()
-augroup END
-
-function! s:todome_my_settings() abort
-  nnoremap <buffer><nowait> <Space>x :call TodomeToggleDone()<CR>
-  nnoremap <buffer><nowait> <Space>a :call TodomeAddPriority('A')<CR>
-  nnoremap <buffer><nowait> <Space>b :call TodomeAddPriority('B')<CR>
-  nnoremap <buffer><nowait> <Space>c :call TodomeAddPriority('C')<CR>
-  nnoremap <buffer><nowait> <Space>d :call TodomeAddPriority('D')<CR>
-  nnoremap <buffer><nowait> <Space>e :call TodomeAddPriority('E')<CR>
-  nnoremap <buffer><nowait> <Space>s :TodomeSort done priority due_date projects<CR>:TodomeFilter<Space>
-endfunction
 
 " }}}
 
