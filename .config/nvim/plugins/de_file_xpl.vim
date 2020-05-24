@@ -10,7 +10,7 @@ let s:denite_win_height_percent = 0.7
 
 " Change denite default options
 
-function! MgmResizeDefxFloatingWindow()
+function! ResizeDefxFloatingWindow()
 call defx#custom#option('_', {
     \ 'split': 'floating',
     \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
@@ -20,7 +20,7 @@ call defx#custom#option('_', {
     \ })
 endfunction
 
-call MgmResizeDefxFloatingWindow()
+call ResizeDefxFloatingWindow()
 
 call defx#custom#column('filename', {
       \ 'min_width': float2nr(&columns * s:denite_win_width_percent - 30),
@@ -133,8 +133,8 @@ function! s:defx_my_settings() abort
   nnoremap <silent><buffer><expr> cd
   \ defx#do_action('change_vim_cwd')
 
-  nnoremap <nowait><buffer> f :MgmDefxLineSearch<Space>
-  nnoremap <nowait><buffer> F :MgmDefxLineBackSearch<Space>
+  nnoremap <nowait><buffer> f :DefxLineSearch<Space>
+  nnoremap <nowait><buffer> F :DefxLineBackSearch<Space>
 endfunction
 
 call defx#custom#column('mark', {
@@ -142,5 +142,5 @@ call defx#custom#column('mark', {
       \ 'selected_icon': '✓',
       \ })
 
-command! -nargs=1 MgmDefxLineSearch let @m=escape(<q-args>, '/\') | call search('\v^✹?\s*\S (\*|\|){1,2}\V\zs'. @m)
-command! -nargs=1 MgmDefxLineBackSearch let @m=escape(<q-args>, '/\') | call search('\v^✹?\s*\S (\*|\|){1,2}\V\zs'. @m, 'b')
+command! -nargs=1 DefxLineSearch let @m=escape(<q-args>, '/\') | call search('\v^✹?\s*\S (\*|\|){1,2}\V\zs'. @m)
+command! -nargs=1 DefxLineBackSearch let @m=escape(<q-args>, '/\') | call search('\v^✹?\s*\S (\*|\|){1,2}\V\zs'. @m, 'b')

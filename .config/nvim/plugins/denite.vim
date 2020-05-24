@@ -12,7 +12,7 @@ autocmd FileType rust nnoremap <buffer> sr :Denite rust/doc<CR>
 let s:denite_win_width_percent = 0.85
 let s:denite_win_height_percent = 0.7
 
-function! MgmResizeDeniteFloatingWindow()
+function! ResizeDeniteFloatingWindow()
   call denite#custom#option('_', {
         \ 'split': 'floating',
         \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
@@ -23,7 +23,7 @@ function! MgmResizeDeniteFloatingWindow()
         \ })
 endfunction
 
-call MgmResizeDeniteFloatingWindow()
+call ResizeDeniteFloatingWindow()
 
 let s:ignore_globs = [ '.git/', '.ropeproject/', '__pycache__/',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/',

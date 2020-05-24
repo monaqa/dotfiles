@@ -1,4 +1,4 @@
-" vim:foldmethod=marker:
+" vim:fdm=marker:
 
 set encoding=utf-8
 scriptencoding utf-8
@@ -25,13 +25,8 @@ if has('persistent_undo')
   set undofile
 endif
 
-" Path 関連？不要？
-" set runtimepath^=~/.vim runtimepath+=~/.vim/after
-" let &packpath = &runtimepath
-
 augroup vimrc
   autocmd!
-  " 他のどの augroup にも入れられそうにない余り物の autocmd を入れる augroup
 augroup END
 
 " }}}
@@ -85,10 +80,12 @@ set foldcolumn=4
 set signcolumn=no
 
 augroup vimrc
+  " 現在編集中のバッファは relativenumber + scrolloff あり
   autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
   autocmd BufEnter,FocusGained,InsertLeave *   set relativenumber
   autocmd BufEnter,FocusGained,InsertLeave *   set scrolloff=10
   autocmd BufEnter,FocusGained,InsertLeave * endif
+  " 編集中でないバッファは norelativenumber + scrolloff なし
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
   autocmd BufLeave,FocusLost,InsertEnter   * set scrolloff=0
 augroup END
@@ -148,7 +145,6 @@ endfunction
 " エディタの機能に関する設定 {{{
 """""""""""""""""""""""""""""""""
 
-set backupskip=/tmp/*,/private/tmp/*
 set nobackup
 set noswapfile
 set autoread
@@ -163,6 +159,24 @@ set history=10000
 " set formatoptions=jcrqlnB
 autocmd vimrc FileType * set formatoptions-=o formatoptions+=nB
 autocmd vimrc InsertLeave * set nopaste
+
+" folding {{{
+nnoremap <Space>z zMzv
+
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
+
+function! s:toggle_column() abort
+  if &signcolumn ==# 'yes' && &foldcolumn == 2
+    setlocal signcolumn=no
+    setlocal foldcolumn=4
+  else
+    setlocal signcolumn=yes
+    setlocal foldcolumn=2
+  endif
+endfunction
+" }}}
 
 " 文字コード指定 {{{
 " フォーマット変えて開き直す系
@@ -225,10 +239,10 @@ function! s:terminal_init()
   nnoremap <buffer> dd i<C-u><C-\><C-n>
   " nnoremap <buffer> I i<C-a>
   nnoremap <buffer> A i<C-e>
-  nnoremap <buffer><expr> I "i\<C-a>" . repeat("\<Right>", MgmCalcCursorRightNum())
+  nnoremap <buffer><expr> I "i\<C-a>" . repeat("\<Right>", <SID>calc_cursor_right_num())
 endfunction
 
-function! MgmCalcCursorRightNum() abort
+function! s:calc_cursor_right_num() abort
   " normal "my0
   " let strlen = strchars(@m)
   let cpos = getcurpos()
@@ -245,6 +259,8 @@ augroup vimrc
   autocmd FileType terminal setlocal foldcolumn=0
 augroup END
 
+nnoremap <silent> sT :call <SID>openTerminal()<CR>
+nnoremap <silent> st :call <SID>openTermWindow()<CR>
 
 function! s:openTerminal()
   let ft = &filetype
@@ -255,15 +271,10 @@ function! s:openTerminal()
   endif
   edit term://fish
   if (ft ==# 'python')
-    call chansend(b:terminal_job_id, "ipython\n%autoindent\n")
-  elseif (ft ==# 'julia')
-    call chansend(b:terminal_job_id, "julia\nBase.active_repl.options.auto_indent = false\n")
+    call chansend(b:terminal_job_id, "ipython -c '%autoindent' -i\n")
   endif
   let g:current_terminal_job_id = b:terminal_job_id
 endfunction
-
-nnoremap <silent> sT :call <SID>openTerminal()<CR>
-nnoremap <silent> st :call <SID>openTermWindow()<CR>
 
 function! s:openTermWindow() abort
   if (bufname('term') ==# '')
@@ -278,6 +289,7 @@ function! s:openTermWindow() abort
 endfunction
 
 nnoremap <CR>t :<C-u>set opfunc=<SID>op_send_terminal<CR>g@
+nnoremap <CR>tp :<C-u>set opfunc=<SID>op_send_terminal<CR>g@ap
 nnoremap <nowait> <CR>tt :<C-u>call <SID>send_terminal_line(v:count1)<CR>
 vnoremap <CR>t <Esc>:<C-u>call <SID>send_terminal_visual_range()<CR>
 
@@ -343,7 +355,8 @@ augroup END
 
 " diff {{{
 " thanks to cohama
-function! DiffThese()
+command! -nargs=0 DiffThese call s:diff_these()
+function! s:diff_these()
   let win_count = winnr('$')
   if win_count == 2
     diffthis
@@ -354,7 +367,6 @@ function! DiffThese()
     echomsg "Too many windows."
   endif
 endfunction
-command! -nargs=0 DiffThese call DiffThese()
 " }}}
 
 " }}}
@@ -384,18 +396,6 @@ digraphs j. 65294  " ．
 digraphs j! 65281  " ！
 digraphs j? 65311  " ？
 digraphs j: 65306  " ：
-
-" 数字
-digraphs j0 65296  " ０
-digraphs j1 65297  " １
-digraphs j2 65298  " ２
-digraphs j3 65299  " ３
-digraphs j4 65300  " ４
-digraphs j5 65301  " ５
-digraphs j6 65302  " ６
-digraphs j7 65303  " ７
-digraphs j8 65304  " ８
-digraphs j9 65305  " ９
 
 " その他の記号
 digraphs j~ 12316  " 〜
@@ -478,11 +478,11 @@ augroup vimrc
 augroup END
 
 function s:resizeFloatingWindow()
-  if exists('*MgmResizeDefxFloatingWindow')
-    call MgmResizeDefxFloatingWindow()
+  if exists('*ResizeDefxFloatingWindow')
+    call ResizeDefxFloatingWindow()
   endif
-  if exists('*MgmResizeDeniteFloatingWindow')
-    call MgmResizeDeniteFloatingWindow()
+  if exists('*ResizeDeniteFloatingWindow')
+    call ResizeDeniteFloatingWindow()
   endif
 endfunction
 
@@ -741,25 +741,25 @@ endfunction
 " }}}
 
 " Vertical f-motion {{{
-command! -nargs=1 MgmLineSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m)
-command! -nargs=1 MgmVisualLineSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 's') | normal v`'o
-command! MgmLineSameSearch call search('^\s*\V'. @m)
-command! -nargs=1 MgmLineBackSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 'b')
-command! -nargs=1 MgmVisualLineBackSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 'bs') | normal v`'o
-command! MgmLineBackSameSearch call search('^\s*\V'. @m, 'b')
-nnoremap <Space>f :MgmLineSearch<Space>
-nnoremap <Space>F :MgmLineBackSearch<Space>
-onoremap <Space>f :MgmLineSearch<Space>
-onoremap <Space>F :MgmLineBackSearch<Space>
-vnoremap <Space>f :<C-u>MgmVisualLineSearch<Space>
-vnoremap <Space>F :<C-u>MgmVisualLineBackSearch<Space>
-nnoremap <Space>; :MgmLineSameSearch<CR>
-nnoremap <Space>, :MgmLineBackSameSearch<CR>
+command! -nargs=1 LineSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m)
+command! -nargs=1 VisualLineSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 's') | normal v`'o
+command! LineSameSearch call search('^\s*\V'. @m)
+command! -nargs=1 LineBackSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 'b')
+command! -nargs=1 VisualLineBackSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 'bs') | normal v`'o
+command! LineBackSameSearch call search('^\s*\V'. @m, 'b')
+nnoremap <Space>f :LineSearch<Space>
+nnoremap <Space>F :LineBackSearch<Space>
+onoremap <Space>f :LineSearch<Space>
+onoremap <Space>F :LineBackSearch<Space>
+vnoremap <Space>f :<C-u>VisualLineSearch<Space>
+vnoremap <Space>F :<C-u>VisualLineBackSearch<Space>
+nnoremap <Space>; :LineSameSearch<CR>
+nnoremap <Space>, :LineBackSameSearch<CR>
 
-call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':MgmLineSameSearch<CR>')
-call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':MgmLineBackSameSearch<CR>')
-call submode#map('vertjmp', 'n', '', ';', ':MgmLineSameSearch<CR>')
-call submode#map('vertjmp', 'n', '', ',', ':MgmLineBackSameSearch<CR>')
+call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':LineSameSearch<CR>')
+call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':LineBackSameSearch<CR>')
+call submode#map('vertjmp', 'n', '', ';', ':LineSameSearch<CR>')
+call submode#map('vertjmp', 'n', '', ',', ':LineBackSameSearch<CR>')
 call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
 " }}}
@@ -830,7 +830,7 @@ nnoremap <silent> <Space><CR> a<CR><Esc>
 nnoremap q qq<Esc>
 nnoremap Q q
 nnoremap , @q
-" JIS キーボードなので
+" JIS キーボードなので <S-;> が + と同じ
 nnoremap + ,
 " }}}
 
@@ -839,21 +839,21 @@ nnoremap + ,
 " 選択した数値を任意の関数で変換する．
 " たとえば 300pt の 300 を選択して <Space>s とし，
 " x -> x * 3/2 と指定すれば 450pt になる．
-" 計算式は g:mgm_lambda_func に格納されるので <Space>r で使い回せる．
+" 計算式は g:monaqa_lambda_func に格納されるので <Space>r で使い回せる．
 " 小数のインクリメントや css での長さ調整等に便利？マクロと組み合わせてもいい．
 " 中で eval を用いているので悪用厳禁．基本的に数値にのみ用いるようにする
 vnoremap <Space>s :<C-u>call <SID>applyLambdaToSelectedArea()<CR>
 vnoremap <Space>r :<C-u>call <SID>repeatLambdaToSelectedArea()<CR>
 
-let g:mgm_lambda_func = 'x'
+let g:monaqa_lambda_func = 'x'
 
 function s:applyLambdaToSelectedArea() abort
   let tmp = @@
   silent normal gvy
   let visual_area = @@
 
-  let lambda_body = input('Lambda: x -> ', g:mgm_lambda_func)
-  let g:mgm_lambda_func = lambda_body
+  let lambda_body = input('Lambda: x -> ', g:monaqa_lambda_func)
+  let g:monaqa_lambda_func = lambda_body
   let lambda_expr = '{ x -> ' . lambda_body . ' }'
   let Lambda = eval(lambda_expr)
   let retval = Lambda(eval(visual_area))
@@ -869,7 +869,7 @@ function s:repeatLambdaToSelectedArea() abort
   silent normal gvy
   let visual_area = @@
 
-  let lambda_body = g:mgm_lambda_func
+  let lambda_body = g:monaqa_lambda_func
   let lambda_expr = '{ x -> ' . lambda_body . ' }'
   let Lambda = eval(lambda_expr)
   let retval = Lambda(eval(visual_area))
@@ -917,6 +917,7 @@ cnoreabbrev <expr> RenameMe "RenameMe " . expand('%')
 
 " }}}
 
+" auto-format {{{
 " 行末の空白とか最終行の空行を削除
 function! RemoveUnwantedSpaces()
   let pos_save = getpos('.')
@@ -935,23 +936,6 @@ function! RemoveUnwantedSpaces()
   endtry
 endfunction
 command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
-
-" folding {{{
-nnoremap <Space>z zMzv
-
-nnoremap ZZ <Nop>
-nnoremap ZQ <Nop>
-nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
-
-function! s:toggle_column() abort
-  if &signcolumn ==# 'yes' && &foldcolumn == 2
-    setlocal signcolumn=no
-    setlocal foldcolumn=4
-  else
-    setlocal signcolumn=yes
-    setlocal foldcolumn=2
-  endif
-endfunction
 " }}}
 
 " }}}
@@ -959,16 +943,13 @@ endfunction
 
 " 特定の種類のファイルに対する設定{{{
 
+" Vim {{{
+
 " Vimscript {{{
 let g:vim_indent_cont = 0
 augroup vimrc
-  autocmd FileType vim set keywordprg=:help
-augroup END
-" }}}
-
-" Python {{{
-augroup vimrc
-  autocmd FileType python set nosmartindent
+  autocmd FileType vim nnoremap <buffer> K K
+  autocmd FileType vim setlocal keywordprg=:help
 augroup END
 " }}}
 
@@ -993,6 +974,36 @@ let g:netrw_altv = 1
 let g:netrw_winsize = 85
 " }}}
 
+" }}}
+
+" Programming Language {{{
+
+" Rust {{{
+let g:rust_fold = 2
+augroup vimrc
+  autocmd FileType rust setlocal foldlevel=1
+augroup END
+" }}}
+
+" Python {{{
+augroup vimrc
+  autocmd FileType python setlocal nosmartindent
+augroup END
+" }}}
+
+" Julia {{{
+
+augroup vimrc
+  autocmd FileType julia setlocal shiftwidth=4
+  autocmd FileType julia setlocal path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
+augroup END
+
+" }}}
+
+" }}}
+
+" Markup Language {{{
+
 " TeX/LaTeX {{{
 let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '@line @pdf @tex'
@@ -1000,7 +1011,7 @@ let g:vimtex_view_general_options = '@line @pdf @tex'
 let g:tex_flavor = 'latex'
 " \cs を一単語に
 augroup vimrc
-  autocmd FileType tex set iskeyword+=92
+  autocmd FileType tex setlocal iskeyword+=92
 augroup END
 " }}}
 
@@ -1010,10 +1021,10 @@ augroup vimrc
   autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
   autocmd BufRead,BufNewFile Satyristes setlocal filetype=lisp
   autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>o :!open %:r.pdf<CR>
-  autocmd FileType satysfi set path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages,$HOME/.satysfi/local/packages
-  autocmd FileType satysfi set suffixesadd+=.saty,.satyh,.satyg
+  autocmd FileType satysfi setlocal path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages,$HOME/.satysfi/local/packages
+  autocmd FileType satysfi setlocal suffixesadd+=.saty,.satyh,.satyg
   " iskeyword で +,\,@ の3文字を単語に含める
-  autocmd FileType satysfi set iskeyword+=43,92,@-@
+  autocmd FileType satysfi setlocal iskeyword+=43,92,@-@
   autocmd FileType satysfi let b:caw_oneline_comment = "%"
   autocmd FileType satysfi setlocal foldmethod=indent
   autocmd FileType satysfi setlocal foldnestmax=4
@@ -1030,13 +1041,13 @@ function! s:reSTTitle(punc)
   call append('.', repeat(a:punc, strdisplaywidth(line)))
 endfunction
 augroup vimrc
-  autocmd FileType rst set suffixesadd+=.rst
-  autocmd FileType rst nnoremap <Space>s0 :call <SID>reSTTitle("#")<CR>jo<Esc>
-  autocmd FileType rst nnoremap <Space>s1 :call <SID>reSTTitle("=")<CR>jo<Esc>
-  autocmd FileType rst nnoremap <Space>s2 :call <SID>reSTTitle("-")<CR>jo<Esc>
-  autocmd FileType rst nnoremap <Space>s3 :call <SID>reSTTitle("~")<CR>jo<Esc>
-  autocmd FileType rst nnoremap <Space>s4 :call <SID>reSTTitle('"')<CR>jo<Esc>
-  autocmd FileType rst nnoremap <Space>s5 :call <SID>reSTTitle("'")<CR>jo<Esc>
+  autocmd FileType rst setlocal suffixesadd+=.rst
+  autocmd FileType rst nnoremap <buffer> <Space>s0 :call <SID>reSTTitle("#")<CR>jo<Esc>
+  autocmd FileType rst nnoremap <buffer> <Space>s1 :call <SID>reSTTitle("=")<CR>jo<Esc>
+  autocmd FileType rst nnoremap <buffer> <Space>s2 :call <SID>reSTTitle("-")<CR>jo<Esc>
+  autocmd FileType rst nnoremap <buffer> <Space>s3 :call <SID>reSTTitle("~")<CR>jo<Esc>
+  autocmd FileType rst nnoremap <buffer> <Space>s4 :call <SID>reSTTitle('"')<CR>jo<Esc>
+  autocmd FileType rst nnoremap <buffer> <Space>s5 :call <SID>reSTTitle("'")<CR>jo<Esc>
 augroup END
 
 " }}}
@@ -1048,14 +1059,9 @@ augroup vimrc
 augroup END
 " }}}
 
-" Julia {{{
-"
-augroup vimrc
-  autocmd FileType julia set shiftwidth=4
-  autocmd FileType julia set path+=/Applications/Julia-1.1.app/Contents/Resources/julia/share/julia/base
-augroup END
-
 " }}}
+
+" misc {{{
 
 " tmux conf {{{
 
@@ -1069,16 +1075,18 @@ augroup END
 
 augroup vimrc
   autocmd BufRead,BufNewFile .todo6,*.td6 setlocal filetype=todo6
-  autocmd FileType todo6 set noexpandtab
-  autocmd FileType todo6 set shiftwidth=4
-  autocmd FileType todo6 set tabstop=4
+  autocmd FileType todo6 setlocal noexpandtab
+  autocmd FileType todo6 setlocal shiftwidth=4
+  autocmd FileType todo6 setlocal tabstop=4
 augroup END
 
 " }}}
 
 " Scrapbox {{{
-autocmd FileType scrapbox set tabstop=1
-autocmd FileType scrapbox set shiftwidth=1
+autocmd FileType scrapbox setlocal tabstop=1
+autocmd FileType scrapbox setlocal shiftwidth=1
+" }}}
+
 " }}}
 
 " }}}

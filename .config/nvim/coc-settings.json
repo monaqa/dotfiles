@@ -6,7 +6,7 @@
   "diagnostic.virtualTextPrefix": " ",
   "diagnostic.warningSign": "🐤",
   "diagnostic.errorSign": "🚨",
-  "codeLens.enable": true,
+  "codeLens.enable": false,
   "coc.preferences.hoverTarget": "float",
 
   "list.insertMappings": {
