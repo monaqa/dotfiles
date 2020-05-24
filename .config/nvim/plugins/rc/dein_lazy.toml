@@ -61,14 +61,6 @@ on_ft = ["satysfi"]
 
 # }}}
 
-# Only in todo.txt {{{
-
-[[plugins]]
-repo = "monaqa/todome.nvim"
-on_ft = ["todo"]
-
-# }}}
-
 # Only in go {{{
 
 [[plugins]]

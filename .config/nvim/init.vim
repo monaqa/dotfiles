@@ -325,6 +325,7 @@ endfunction
 " }}}
 
 " Command-line window {{{
+exe "set cedit=\<C-C>"
 augroup vimrc
   autocmd CmdwinEnter [:/\?=] setlocal nonumber
   autocmd CmdwinEnter [:/\?=] setlocal norelativenumber
@@ -593,9 +594,8 @@ xnoremap <expr> j (v:count == 0 && mode() !=# 'V') ? 'gj' : 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
 xnoremap <expr> k (v:count == 0 && mode() !=# 'V') ? 'gk' : 'k'
 
-" 多少の犠牲はやむを得ない
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
 " 上記移動を行っていると <C-Space> で <C-@> が動作してしまうのが不便．
 " imap <Nul> <Nop>
 " としてもうまくいかないので，苦肉の策で <C-@> を潰す
@@ -618,11 +618,9 @@ nnoremap <expr> <Space>l &wrap ? 'g$' : '$'
 onoremap <expr> <Space>l &wrap ? 'g$' : '$'
 xnoremap <expr> <Space>l visualmode() ==# "v" ? '$h' : '$'
 
-" f 移動をさらに便利に
-noremap <silent> f<CR> :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, '')<CR>
-noremap <silent> F✠ :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, 'b')<CR>
-vnoremap <silent> f<CR> :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, '')<CR>v`'o
-vnoremap <silent> F✠ :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, 'b')<CR>v`'o
+" word-in-word motion
+onoremap u t_
+onoremap U :<C-u>call <SID>numSearchLine('[A-Z]', v:count1, '')<CR>
 
 function! s:numSearchLine(ptn, num, opt)
   for i in range(a:num)
@@ -767,10 +765,9 @@ call submode#leave_with('vertjmp', 'n', '', '<Space>')
 " }}}
 
 " Command mode mapping {{{
-" 多少の犠牲はやむを得ない
 cnoremap <C-a> <Home>
-cnoremap <C-h> <Left>
-cnoremap <C-l> <Right>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 " }}}

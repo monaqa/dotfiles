@@ -91,9 +91,12 @@ eval (starship init fish)
 set -x LSCOLORS gxfxcxdxbxegedabagacad
 
 if type -q sk
-    abbr -a gj "cd (ghq list -p | sk)"
+  abbr -a gj "cd (ghq list -p | sk)"
+  abbr -a tl "tmux a -t (tmux list-sessions | sk | cut -d : -f 1)"
 else if type -q fzf
-    abbr -a gj "cd (ghq list -p | fzf)"
+  abbr -a gj "cd (ghq list -p | fzf)"
+  abbr -a tl "tmux a -t (tmux list-sessions | fzf | cut -d : -f 1)"
 end
+
 
 # vim:fdm=marker

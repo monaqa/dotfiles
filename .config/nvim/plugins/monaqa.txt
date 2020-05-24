@@ -7,7 +7,7 @@
    YYYYYYY/      | ̶ ̶ ̶ ̶/      |
   YYYYYYY/       |Y̶ ̶ ̶/       |
  YYYYYYY/        |Y̶Y̶/        | ̶
-YYYYYYY/         |/          | ̶ ̶       
+YYYYYYY/         |/          | ̶ ̶         
  YYYY/     /|          /|    | ̶
   YY/     /Y|        / ̶ ̶|    |
    /     /YY|       / ̶ ̶ ̶|    |

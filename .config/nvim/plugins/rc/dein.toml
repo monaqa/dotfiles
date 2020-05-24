@@ -207,15 +207,6 @@ repo = 'xolox/vim-misc'
 [[plugins]]
 repo = 'Konfekt/FastFold'
 
-# [[plugins]]
-# repo = 'tyru/capture.vim'
-
-# [[plugins]]
-# repo = "tpope/vim-speeddating"
-
-# [[plugins]]
-# repo = "deris/vim-duzzle"
-
 [[plugins]]
 repo = 'syusui-s/scrapbox-vim'
 # }}}
