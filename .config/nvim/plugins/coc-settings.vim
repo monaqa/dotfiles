@@ -5,6 +5,8 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <Space>r <Plug>(coc-rename)
 nmap <silent> K :call CocAction('doHover')<CR>
 " nmap <Space><Space>p :CocList -A --normal yank<CR>
+nmap <silent> <Space>j :call CocAction('diagnosticNext')<CR>
+nmap <silent> <Space>k :call CocAction('diagnosticPrevious')<CR>
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -37,4 +39,4 @@ let g:coc_snippet_next = '<c-q>'
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
 let g:coc_snippet_prev = '<c-s-q>'
 
-imap <C-q> <Plug>(coc-snippets-expand)
+" imap <C-q> <Plug>(coc-snippets-expand)

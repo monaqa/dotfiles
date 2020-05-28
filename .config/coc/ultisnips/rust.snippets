@@ -82,3 +82,18 @@ fn ${1:it_works}() {
 	$0
 }
 endsnippet
+
+snippet modtest "mod tests" b
+#[cfg(test)]
+mod ${1:tests} {
+
+	use super::*;
+
+	#[test]
+	fn ${2:it_works}() {
+		$0
+	}
+
+}
+
+endsnippet

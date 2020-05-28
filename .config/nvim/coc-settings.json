@@ -3,6 +3,7 @@
   "suggest.acceptSuggestionOnCommitCharacter": false,
   "diagnostic.messageTarget": "float",
   "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
   "diagnostic.virtualTextPrefix": " ",
   "diagnostic.warningSign": "🐤",
   "diagnostic.errorSign": "🚨",

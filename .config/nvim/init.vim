@@ -669,23 +669,25 @@ onoremap m` a`
 " }}}
 
 " Vertical WORD (vWORD) 単位での移動 {{{
+noremap <C-j> }
+noremap <C-k> {
 
 " <C-n>: 水平方向の  E 移動を鉛直方向にしたものに相当
 " <C-p>: 水平方向の  B 移動を鉛直方向にしたものに相当
-nnoremap <silent> <C-n> :<C-u>call <SID>movePerVerticalWordNcount(1, 0, -1, v:count1)<CR>
-nnoremap <silent> <C-p> :<C-u>call <SID>movePerVerticalWordNcount(0, 1,  1, v:count1)<CR>
+" nnoremap <silent> <C-n> :<C-u>call <SID>movePerVerticalWordNcount(1, 0, -1, v:count1)<CR>
+" nnoremap <silent> <C-p> :<C-u>call <SID>movePerVerticalWordNcount(0, 1,  1, v:count1)<CR>
 
 " omap では， inclusive な挙動が求められているとき
 " <C-n> でいい感じに inclusive っぽくなるようにする．
 " たとえば d<C-n> とするとその vWORD の最後まで消える
 " （その下の空行は消えない）．
-onoremap <silent> <C-n> :<C-u>call <SID>movePerVerticalWordNcount(1, 0,  0, v:count1)<CR>
-onoremap <silent> <C-p> :<C-u>call <SID>movePerVerticalWordNcount(0, 1,  1, v:count1)<CR>
+" onoremap <silent> <C-n> :<C-u>call <SID>movePerVerticalWordNcount(1, 0,  0, v:count1)<CR>
+" onoremap <silent> <C-p> :<C-u>call <SID>movePerVerticalWordNcount(0, 1,  1, v:count1)<CR>
 
 " 矩形選択のときなどに有用
 " TODO: visual モード中に v:count をとってモーションを繰り返したい
-vnoremap <silent> <C-n> <Esc>:call <SID>movePerVerticalWordNcount(1, 0, -1, 1)<CR>mzgv`z
-vnoremap <silent> <C-p> <Esc>:call <SID>movePerVerticalWordNcount(0, 1,  1, 1)<CR>mzgv`z
+" vnoremap <silent> <C-n> <Esc>:call <SID>movePerVerticalWordNcount(1, 0, -1, 1)<CR>mzgv`z
+" vnoremap <silent> <C-p> <Esc>:call <SID>movePerVerticalWordNcount(0, 1,  1, 1)<CR>mzgv`z
 
 " 上の map の挙動の実装．
 " 空行で区切られた行の塊を vWORD とみなし，vWORD の頭や最後に移動する．
@@ -1103,4 +1105,19 @@ autocmd FileType scrapbox setlocal shiftwidth=1
 
 " }}}
 
+" firenvim buffer {{{
+let g:firenvim_config = {
+\     'globalSettings': {
+\         'alt': 'all',
+\      },
+\     'localSettings': {
+\         '.*': {
+\             'cmdline': 'neovim',
+\             'priority': 0,
+\             'selector': 'textarea',
+\             'takeover': 'never',
+\         },
+\     }
+\ }
+" }}}
 " }}}
