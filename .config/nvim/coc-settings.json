@@ -7,7 +7,7 @@
   "diagnostic.virtualTextPrefix": " ",
   "diagnostic.warningSign": "🐤",
   "diagnostic.errorSign": "🚨",
-  "codeLens.enable": false,
+  "codeLens.enable": true,
   "coc.preferences.hoverTarget": "float",
 
   "list.insertMappings": {
@@ -40,5 +40,6 @@
   },
 
   "yank.highlight.duration": 250,
-  "yank.enableCompletion": false
+  "yank.enableCompletion": false,
+  "rust-analyzer.lens.enable": false
 }

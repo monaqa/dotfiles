@@ -34,9 +34,8 @@ augroup rc_coc
 augroup END
 
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-q>'
-
+let g:coc_snippet_next = '<C-j>'
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-s-q>'
+let g:coc_snippet_prev = '<C-k>'
 
-" imap <C-q> <Plug>(coc-snippets-expand)
+imap <C-q> <Plug>(coc-snippets-expand)

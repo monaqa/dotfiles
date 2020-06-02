@@ -138,6 +138,9 @@ repo = 'kristijanhusak/defx-icons'
 
 # }}}
 
+[[plugins]]
+repo = 'lambdalisue/fern.vim'
+
 # }}}
 
 # Syntax highlighting {{{
@@ -185,8 +188,12 @@ let g:previm_custom_css_path = "~/.config/nvim/plugins/markdown.css"
 # Others {{{
 
 [[plugins]]
-repo = 'tpope/vim-fugitive'
-hook_add = "source ~/.config/nvim/plugins/fugitive.vim"
+repo = 'lambdalisue/gina.vim'
+
+
+# [[plugins]]
+# repo = 'tpope/vim-fugitive'
+# hook_add = "source ~/.config/nvim/plugins/fugitive.vim"
 
 [[plugins]]
 repo = 'xolox/vim-session'

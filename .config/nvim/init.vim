@@ -442,6 +442,7 @@ nnoremap s= <C-w>=
 " タブページ
 nnoremap sN gt
 nnoremap sP gT
+nnoremap sQ :<C-u>tabc<CR>
 " Command-line window
 nnoremap s: q:G
 nnoremap s? q?G
@@ -781,18 +782,19 @@ cnoremap <C-n> <Down>
 """"""""""""""""""""""""""""
 
 " 無効化 {{{
-nnoremap <F1>  <Nop>
-inoremap <F1>  <Nop>
-inoremap <F2>  <Nop>
-inoremap <F3>  <Nop>
-inoremap <F4>  <Nop>
-inoremap <F5>  <Nop>
-inoremap <F6>  <Nop>
-inoremap <F7>  <Nop>
-inoremap <F8>  <Nop>
-inoremap <F9>  <Nop>
-inoremap <F10> <Nop>
-inoremap <F12> <Nop>
+nnoremap <F1>   <Nop>
+nnoremap <M-F1> <Nop>
+inoremap <F1>   <Nop>
+inoremap <F2>   <Nop>
+inoremap <F3>   <Nop>
+inoremap <F4>   <Nop>
+inoremap <F5>   <Nop>
+inoremap <F6>   <Nop>
+inoremap <F7>   <Nop>
+inoremap <F8>   <Nop>
+inoremap <F9>   <Nop>
+inoremap <F10>  <Nop>
+inoremap <F12>  <Nop>
 
 " prefix とするため
 noremap <Space> <Nop>
