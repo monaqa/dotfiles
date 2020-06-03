@@ -6,8 +6,13 @@ scriptencoding utf-8
 " エディタ全般の設定{{{
 """"""""""""""""""""""""
 
-" まず最初に dein.vim でプラグインを読み込む
-source ~/.config/nvim/plugins/dein.vim
+" dein.vim でプラグインを読み込む
+if exists('g:started_by_firenvim')
+  source ~/.config/nvim/plugins/dein-firenvim.vim
+else
+  source ~/.config/nvim/plugins/dein.vim
+endif
+
 
 " Syntax, mouse などの有効化{{{
 filetype plugin indent on
@@ -54,17 +59,11 @@ augroup END
 """""""""""""""""""""""""""""""""
 
 " 表示設定 {{{
-set number
-set cursorline
-set cursorcolumn
-set colorcolumn=80
 set visualbell
 set noerrorbells
 " set showmatch " 対応カッコを表示
-set laststatus=2 " ステータスラインを常に表示
 set ambiwidth=single  "全角文字幅
 set showcmd
-
 set modeline
 set modelines=3
 
@@ -75,20 +74,52 @@ set wrap
 set lazyredraw
 set ttyfast
 
-set statusline^=%{coc#status()}
-set foldcolumn=4
-set signcolumn=no
+if exists('g:started_by_firenvim')
+  " firenvim のときは簡素な表示にする
+  set nonumber
+  set norelativenumber
+  set nocursorline
+  set nocursorcolumn
+  set colorcolumn=""
+  set laststatus=0
+  set foldcolumn=0
+  set signcolumn=no
+else
+  set number
+  set cursorline
+  set cursorcolumn
+  set colorcolumn=80
+  set laststatus=2 " ステータスラインを常に表示
+  set statusline^=%{coc#status()}
+  set foldcolumn=4
+  set signcolumn=no
 
-augroup vimrc
-  " 現在編集中のバッファは relativenumber + scrolloff あり
-  autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
-  autocmd BufEnter,FocusGained,InsertLeave *   set relativenumber
-  autocmd BufEnter,FocusGained,InsertLeave *   set scrolloff=10
-  autocmd BufEnter,FocusGained,InsertLeave * endif
-  " 編集中でないバッファは norelativenumber + scrolloff なし
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set scrolloff=0
-augroup END
+  augroup vimrc
+    " 現在編集中のバッファは relativenumber + scrolloff あり
+    autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
+    autocmd BufEnter,FocusGained,InsertLeave *   set relativenumber
+    autocmd BufEnter,FocusGained,InsertLeave *   set scrolloff=10
+    autocmd BufEnter,FocusGained,InsertLeave * endif
+    " 編集中でないバッファは norelativenumber + scrolloff なし
+    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+    autocmd BufLeave,FocusLost,InsertEnter   * set scrolloff=0
+  augroup END
+
+  nnoremap ZZ <Nop>
+  nnoremap ZQ <Nop>
+  nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
+endif
+
+function! s:toggle_column() abort
+  if &signcolumn ==# 'yes' && &foldcolumn == 2
+    setlocal signcolumn=no
+    setlocal foldcolumn=4
+  else
+    setlocal signcolumn=yes
+    setlocal foldcolumn=2
+  endif
+endfunction
+
 " }}}
 
 " 全角スペース強調 {{{
@@ -104,22 +135,26 @@ augroup END
 
 " Theme {{{
 " augroup の設定の後に読み込む必要がある
-let g:gruvbox_contrast_dark = 'hard'
-set background=dark
-colorscheme gruvbox
+if exists('g:started_by_firenvim')
+  colorscheme shirotelin
+else
+  let g:gruvbox_contrast_dark = 'hard'
+  set background=dark
+  colorscheme gruvbox
 
-hi! link SpecialKey GruvboxBg4
-hi! NonText ctermfg=103
-hi! MatchParen ctermbg=66 ctermfg=223
-hi! ColorColumn ctermbg=238
-hi! CursorColumn ctermbg=236
-hi! CursorLine ctermbg=236
-hi! FoldColumn ctermbg=236
-hi! SignColumn ctermbg=238
-hi! link Folded GruvboxPurpleBold
-hi! link VertSplit GruvboxFg1
-hi! link HighlightedyankRegion DiffChange
-autocmd vimrc FileType help hi! Ignore ctermfg=66
+  hi! link SpecialKey GruvboxBg4
+  hi! NonText ctermfg=103
+  hi! MatchParen ctermbg=66 ctermfg=223
+  hi! ColorColumn ctermbg=238
+  hi! CursorColumn ctermbg=236
+  hi! CursorLine ctermbg=236
+  hi! FoldColumn ctermbg=236
+  hi! SignColumn ctermbg=238
+  hi! link Folded GruvboxPurpleBold
+  hi! link VertSplit GruvboxFg1
+  hi! link HighlightedyankRegion DiffChange
+  autocmd vimrc FileType help hi! Ignore ctermfg=66
+endif
 
 " VimShowHlGroup: Show highlight group name under a cursor
 command! VimShowHlGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
@@ -162,20 +197,6 @@ autocmd vimrc InsertLeave * set nopaste
 
 " folding {{{
 nnoremap <Space>z zMzv
-
-nnoremap ZZ <Nop>
-nnoremap ZQ <Nop>
-nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
-
-function! s:toggle_column() abort
-  if &signcolumn ==# 'yes' && &foldcolumn == 2
-    setlocal signcolumn=no
-    setlocal foldcolumn=4
-  else
-    setlocal signcolumn=yes
-    setlocal foldcolumn=2
-  endif
-endfunction
 " }}}
 
 " 文字コード指定 {{{
@@ -1107,19 +1128,5 @@ autocmd FileType scrapbox setlocal shiftwidth=1
 
 " }}}
 
-" firenvim buffer {{{
-let g:firenvim_config = {
-\     'globalSettings': {
-\         'alt': 'all',
-\      },
-\     'localSettings': {
-\         '.*': {
-\             'cmdline': 'neovim',
-\             'priority': 0,
-\             'selector': 'textarea',
-\             'takeover': 'never',
-\         },
-\     }
-\ }
 " }}}
 " }}}
