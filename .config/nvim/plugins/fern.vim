@@ -19,8 +19,8 @@ function s:fern_settings()
   nmap <buffer> <BS> <Plug>(fern-action-leave)
 
   " expand/collapse tree
-  nmap <buffer> t <Plug>(fern-action-expand)
-  nmap <buffer> T <Plug>(fern-action-collapse)
+  nmap <nowait><buffer> t <Plug>(fern-action-expand)
+  nmap <nowait><buffer> T <Plug>(fern-action-collapse)
 
   " move, remove, copy...
   nmap <buffer> dd <Plug>(fern-action-trash)
