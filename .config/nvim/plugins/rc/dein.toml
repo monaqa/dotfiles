@@ -150,6 +150,7 @@ repo = 'kristijanhusak/defx-icons'
 
 [[plugins]]
 repo = 'lambdalisue/fern.vim'
+hook_add = "source ~/.config/nvim/plugins/fern.vim"
 
 # }}}
 
@@ -199,7 +200,7 @@ let g:previm_custom_css_path = "~/.config/nvim/plugins/markdown.css"
 
 [[plugins]]
 repo = 'lambdalisue/gina.vim'
-
+hook_add = "source ~/.config/nvim/plugins/gina.vim"
 
 # [[plugins]]
 # repo = 'tpope/vim-fugitive'

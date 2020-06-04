@@ -652,26 +652,23 @@ endfunction
 
 " 整合性のとれた括弧に移動するための motion {{{
 
-" 一部標準で用意されているキーマップもあるが，
-" そうでないものは頑張って実装．
-
 noremap m) ])
 noremap m} ]}
 
-vnoremap m] mzi]o`z
-vnoremap m( mzi)`z
-vnoremap m{ mzi}`z
-vnoremap m[ mzi]`z
+vnoremap m] i]o``
+vnoremap m( i)``
+vnoremap m{ i}``
+vnoremap m[ i]``
 
-nnoremap dm] mzvi]o`zd
-nnoremap dm( mzvi)`zd
-nnoremap dm{ mzvi}`zd
-nnoremap dm[ mzvi]`zd
+nnoremap dm] vi]o``d
+nnoremap dm( vi)``d
+nnoremap dm{ vi}``d
+nnoremap dm[ vi]``d
 
-nnoremap cm] mzvi]o`zc
-nnoremap cm( mzvi)`zc
-nnoremap cm{ mzvi}`zc
-nnoremap cm[ mzvi]`zc
+nnoremap cm] vi]o``c
+nnoremap cm( vi)``c
+nnoremap cm{ vi}``c
+nnoremap cm[ vi]``c
 
 " }}}
 
