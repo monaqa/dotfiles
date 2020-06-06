@@ -280,7 +280,6 @@ augroup vimrc
   autocmd FileType terminal setlocal foldcolumn=0
 augroup END
 
-nnoremap <silent> sT :call <SID>openTerminal()<CR>
 nnoremap <silent> st :call <SID>openTermWindow()<CR>
 
 function! s:openTerminal()
@@ -461,6 +460,7 @@ nnoremap sH <C-w>H
 " submode も参照
 nnoremap s= <C-w>=
 " タブページ
+nnoremap <silent> sT :<C-u>tabnew %<CR>
 nnoremap sN gt
 nnoremap sP gT
 nnoremap sQ :<C-u>tabc<CR>
