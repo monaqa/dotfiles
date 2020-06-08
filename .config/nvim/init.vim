@@ -800,19 +800,20 @@ cnoremap <C-n> <Down>
 """"""""""""""""""""""""""""
 
 " 無効化 {{{
-nnoremap <F1>   <Nop>
-nnoremap <M-F1> <Nop>
-inoremap <F1>   <Nop>
-inoremap <F2>   <Nop>
-inoremap <F3>   <Nop>
-inoremap <F4>   <Nop>
-inoremap <F5>   <Nop>
-inoremap <F6>   <Nop>
-inoremap <F7>   <Nop>
-inoremap <F8>   <Nop>
-inoremap <F9>   <Nop>
-inoremap <F10>  <Nop>
-inoremap <F12>  <Nop>
+noremap <F1>   <Nop>
+noremap <M-F1> <Nop>
+noremap <F2>   <Nop>
+noremap <F3>   <Nop>
+noremap <F4>   <Nop>
+noremap <F5>   <Nop>
+noremap <F6>   <Nop>
+noremap <F7>   <Nop>
+noremap <F8>   <Nop>
+noremap <F9>   <Nop>
+noremap <F10>  <Nop>
+noremap <F12>  <Nop>
+noremap! <F1>   <Nop>
+noremap! <M-F1> <Nop>
 
 " prefix とするため
 noremap <Space> <Nop>
