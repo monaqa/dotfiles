@@ -127,27 +127,27 @@ endsnippet
 # section {{{
 
 snippet +chp "chapter" b
-+chapter{${1}}<
++chapter{${1}}<%
 	${0}
->
+>%
 endsnippet
 
 snippet +sec "section" b
-+section{${1}}<
++section{${1}}<%
 	${0}
->
+>%
 endsnippet
 
 snippet +sse "subsection" b
-+subsection{${1}}<
++subsection{${1}}<%
 	${0}
->
+>%
 endsnippet
 
 snippet +sss "subsubsection" b
-+subsubsection{${1}}<
++subsubsection{${1}}<%
 	${0}
->
+>%
 endsnippet
 
 snippet +p "paragraph" b
@@ -346,20 +346,20 @@ let-inline \jugem = {
 
 in
 
-document'<
+document'<%
 	+p{\pang;}
 	+p{\lipsum;}
 	+p{\jugem;}
->
+>%
 endsnippet
 
 # }}}
 
 # SLyDIFi {{{
 snippet +frame "SLyDIFi frame" b
-+frame{$1}<
++frame{$1}<%
 	$0
->
+>%
 endsnippet
 # }}}
 

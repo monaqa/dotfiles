@@ -39,7 +39,7 @@ function s:fern_settings()
   " move cwd, open file
   nmap <buffer> l <Plug>(fern-open-or-expand)
   nmap <buffer> <C-h> <Plug>(fern-action-leave)
-  nmap <nowait><buffer> <CR> <Plug>(fern-action-enter)
+  nmap <nowait><buffer> <CR> <Plug>(fern-open-or-enter)
   nmap <buffer> e <Plug>(fern-action-open)
   nmap <buffer> <BS> <Plug>(fern-action-leave)
 
@@ -52,12 +52,12 @@ function s:fern_settings()
   nmap <buffer> O <Plug>(fern-action-new-dir)
 
   " move, remove, copy...
-  nmap <buffer> d <Plug>(fern-action-trash)
-  nmap <buffer> r <Plug>(fern-action-rename)
-  nmap <buffer> c <Plug>(fern-action-copy)
-  nmap <buffer> m <Plug>(fern-action-move)
+  nmap <nowait><buffer> d <Plug>(fern-action-trash)
+  nmap <nowait><buffer> r <Plug>(fern-action-rename)
+  nmap <nowait><buffer> c <Plug>(fern-action-copy)
+  nmap <nowait><buffer> m <Plug>(fern-action-move)
 
   " other
-  nmap <buffer> ! <Plug>(fern-action-hidden-toggle)
+  nmap <nowait><buffer> ! <Plug>(fern-action-hidden-toggle)
   nmap <buffer> <C-l> <Plug>(fern-action-redraw)
 endfunction

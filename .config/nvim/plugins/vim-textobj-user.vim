@@ -58,4 +58,10 @@ augroup rc_textobj_user
         \     'select-a': 'aQ', 'select-i': 'iQ'
         \   },
         \ })
+  autocmd filetype satysfi call textobj#user#plugin('satyblock', {
+        \   'block': {
+        \     'pattern': ['<%', '>%'],
+        \     'select-a': 'a>', 'select-i': 'i>',
+        \   },
+        \ })
 augroup END

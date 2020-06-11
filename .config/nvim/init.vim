@@ -95,19 +95,18 @@ else
   set signcolumn=no
 
   augroup vimrc
-    " 現在編集中のバッファは relativenumber + scrolloff あり
+    " 現在編集中のバッファは scrolloff あり
     autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
-    autocmd BufEnter,FocusGained,InsertLeave *   set relativenumber
     autocmd BufEnter,FocusGained,InsertLeave *   set scrolloff=10
     autocmd BufEnter,FocusGained,InsertLeave * endif
-    " 編集中でないバッファは norelativenumber + scrolloff なし
-    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+    " 編集中でないバッファは scrolloff なし
     autocmd BufLeave,FocusLost,InsertEnter   * set scrolloff=0
   augroup END
 
   nnoremap ZZ <Nop>
   nnoremap ZQ <Nop>
   nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
+  nnoremap <silent><nowait> - :call <SID>temporal_relnum()<CR>
 endif
 
 function! s:toggle_column() abort
@@ -118,6 +117,14 @@ function! s:toggle_column() abort
     setlocal signcolumn=yes
     setlocal foldcolumn=2
   endif
+endfunction
+
+function! s:temporal_relnum() abort
+    set relativenumber
+    augroup deltaLine
+        autocmd!
+        autocmd CursorMoved * ++once set norelativenumber
+    augroup END
 endfunction
 
 " }}}
@@ -1062,6 +1069,8 @@ augroup vimrc
   " iskeyword で +,\,@ の3文字を単語に含める
   autocmd FileType satysfi setlocal iskeyword+=43,92,@-@
   autocmd FileType satysfi let b:caw_oneline_comment = "%"
+  autocmd FileType satysfi let b:match_words = '<%:>%'
+  autocmd FileType satysfi set matchpairs-=<:>
   autocmd FileType satysfi setlocal foldmethod=indent
   autocmd FileType satysfi setlocal foldnestmax=4
   autocmd FileType satysfi setlocal foldminlines=5
