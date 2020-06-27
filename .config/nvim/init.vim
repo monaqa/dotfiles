@@ -304,14 +304,14 @@ function! s:openTerminal()
 endfunction
 
 function! s:openTermWindow() abort
-  if (bufname('term') ==# '')
+  if (bufname('term://') ==# '')
     call s:openTerminal()
   elseif (s:isWideWindow('.'))
     vsplit
-    buffer term
+    buffer term://
   else
     split
-    buffer term
+    buffer term://
   endif
 endfunction
 
