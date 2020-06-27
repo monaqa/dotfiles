@@ -15,6 +15,7 @@
     "<C-k>": "normal:k"
   },
 
+  "python.pythonPath": "/Users/shinichi/.pyenv/versions/3.7.4/bin/python",
   "python.jediEnabled": true,
   "python.linting.mypyPath": "mypy",
   "python.linting.flake8Path": "flake8",
