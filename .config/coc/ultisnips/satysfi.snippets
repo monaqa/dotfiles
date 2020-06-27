@@ -115,8 +115,16 @@ snippet embed-block-top "-> inline-boxes" w
 embed-block-top ${1:ctx} ${2:wid} ${3:(fun ctx -> read-block ctx bt)}
 endsnippet
 
-snippet discretionary "-> inline-boxes" b
+snippet discretionary "-> inline-boxes" w
 discretionary ${1:-100} ${2:inline-nil} ${3:inline-fil} ${4:inline-nil}
+endsnippet
+
+snippet inline-frame-outer "-> inline-boxes" b
+inline-frame-outer (${1:0pt}, $1, $1, $1) ${2:deco} ${3:ib}
+endsnippet
+
+snippet block-frame-breakable "-> block-boxes" b
+block-frame-breakable (${1:0pt}, $1, $1, $1) (${2:deco}, $2, $2, $2) (fun ctx -> ${3:(read-block ctx bt)})
 endsnippet
 # }}}
 
