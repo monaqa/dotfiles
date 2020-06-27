@@ -152,6 +152,26 @@ repo = 'kristijanhusak/defx-icons'
 repo = 'lambdalisue/fern.vim'
 hook_add = "source ~/.config/nvim/plugins/fern.vim"
 
+[[plugins]]
+repo = 'tyru/eskk.vim'
+hook_add = """
+let g:eskk#directory = "~/.eskk"
+let g:eskk#dictionary = { 'path': "~/.skk-jisyo", 'sorted': 0, 'encoding': 'utf-8', }
+let g:eskk#large_dictionary = { 'path': "~/.eskk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'utf-8', }
+autocmd User eskk-initialize-pre call s:eskk_initial_pre()
+function! s:eskk_initial_pre()
+  let t = eskk#table#new('rom_to_hira*', 'rom_to_hira')
+  " ユーザはここで何か重たい初期化処理を実行することができる。
+  call t.add_map(',', '，')
+  call t.add_map('.', '．')
+  " "1." のように数字の後のドットはそのまま入力
+  for n in range(10)
+    call t.add_map(n . '.', n . '.')
+  endfor
+  call eskk#register_mode_table('hira', t)
+endfunction
+"""
+
 # }}}
 
 # Syntax highlighting {{{
@@ -236,4 +256,7 @@ repo = 'Konfekt/FastFold'
 
 [[plugins]]
 repo = 'syusui-s/scrapbox-vim'
+
+[[plugins]]
+repo = 'pest-parser/pest.vim'
 # }}}
