@@ -45,11 +45,11 @@ set smartindent
 
 " indent 幅のデフォルト
 augroup vimrc
-  autocmd FileType vim set shiftwidth=2
-  autocmd FileType xml,html set shiftwidth=2
-  autocmd FileType tex set shiftwidth=2
-  autocmd FileType satysfi set shiftwidth=2
-  autocmd FileType markdown,rst set shiftwidth=2
+  autocmd FileType vim setlocal shiftwidth=2
+  autocmd FileType xml,html setlocal shiftwidth=2
+  autocmd FileType tex setlocal shiftwidth=2
+  autocmd FileType satysfi setlocal shiftwidth=2
+  autocmd FileType markdown,rst setlocal shiftwidth=2
 augroup END
 " }}}
 " }}}
@@ -80,14 +80,12 @@ if exists('g:started_by_firenvim')
   set norelativenumber
   set nocursorline
   set nocursorcolumn
-  set colorcolumn=""
+  set colorcolumn=
   set laststatus=0
   set foldcolumn=0
   set signcolumn=no
 else
   set number
-  set cursorline
-  set cursorcolumn
   set colorcolumn=80
   set laststatus=2 " ステータスラインを常に表示
   set statusline^=%{coc#status()}
@@ -97,16 +95,16 @@ else
   augroup vimrc
     " 現在編集中のバッファは scrolloff あり
     autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
-    autocmd BufEnter,FocusGained,InsertLeave *   set scrolloff=10
+    autocmd BufEnter,FocusGained,InsertLeave *   setlocal scrolloff=10
     autocmd BufEnter,FocusGained,InsertLeave * endif
     " 編集中でないバッファは scrolloff なし
-    autocmd BufLeave,FocusLost,InsertEnter   * set scrolloff=0
+    autocmd BufLeave,FocusLost,InsertEnter   * setlocal scrolloff=0
   augroup END
 
   nnoremap ZZ <Nop>
   nnoremap ZQ <Nop>
   nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
-  nnoremap <silent><nowait> - :call <SID>temporal_relnum()<CR>
+  nnoremap <silent><nowait> <Space><Space> :call <SID>temporal_attention()<CR>
 endif
 
 function! s:toggle_column() abort
@@ -119,11 +117,15 @@ function! s:toggle_column() abort
   endif
 endfunction
 
-function! s:temporal_relnum() abort
+function! s:temporal_attention() abort
     set relativenumber
-    augroup deltaLine
+    set cursorline
+    set cursorcolumn
+    augroup temporal_attention
         autocmd!
         autocmd CursorMoved * ++once set norelativenumber
+        autocmd CursorMoved * ++once set nocursorline
+        autocmd CursorMoved * ++once set nocursorcolumn
     augroup END
 endfunction
 
@@ -229,7 +231,6 @@ nnoremap g* g*N
 
 " redraw 時にハイライトを消す
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
-nnoremap <silent> <Space><Space> :<C-u>nohlsearch<CR><C-l>ze
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
@@ -263,7 +264,7 @@ function! s:terminal_init()
   nnoremap <expr><buffer> u "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
   nnoremap <expr><buffer> <C-r> "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
   nnoremap <buffer> sw :<C-u>bd!<CR>
-  nnoremap <buffer> t :let g:current_terminal_job_id = b:terminal_job_id<CR>
+  nnoremap <buffer> t :<C-u>let g:current_terminal_job_id = b:terminal_job_id<CR>
   nnoremap <buffer> dd i<C-u><C-\><C-n>
   " nnoremap <buffer> I i<C-a>
   nnoremap <buffer> A i<C-e>
@@ -287,7 +288,7 @@ augroup vimrc
   autocmd FileType terminal setlocal foldcolumn=0
 augroup END
 
-nnoremap <silent> st :call <SID>openTermWindow()<CR>
+nnoremap <silent> st :<C-u>call <SID>openTermWindow()<CR>
 
 function! s:openTerminal()
   let ft = &filetype
@@ -364,7 +365,7 @@ endfunction
 " }}}
 
 " Command-line window {{{
-exe "set cedit=\<C-C>"
+let &cedit = "\<C-C>"
 augroup vimrc
   autocmd CmdwinEnter [:/\?=] setlocal nonumber
   autocmd CmdwinEnter [:/\?=] setlocal norelativenumber
@@ -375,8 +376,8 @@ augroup vimrc
   autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-b> <C-b>
   autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-d> <C-d>
   autocmd CmdwinEnter [:/\?=] nnoremap <buffer><nowait> <CR> <CR>
-  autocmd CmdwinEnter : g/^qa\?!\?$/d _
-  autocmd CmdwinEnter : g/^wq\?a\?!\?$/d _
+  autocmd CmdwinEnter : keeppatterns g/^qa\?!\?$/d _
+  autocmd CmdwinEnter : keeppatterns g/^wq\?a\?!\?$/d _
 augroup END
 " }}}
 
@@ -532,17 +533,20 @@ nnoremap dx "_d
 nnoremap cx "_c
 
 " よく使うレジスタは挿入モードでも挿入しやすく
-noremap! <C-r><C-r> <C-r>"
-noremap! <C-r><CR> <C-r>0
-noremap! <C-r><Space> <C-r>+
+inoremap <C-r><C-r> <C-g>u<C-r>"
+inoremap <C-r><CR> <C-g>u<C-r>0
+inoremap <C-r><Space> <C-g>u<C-r>+
+cnoremap <C-r><C-r> <C-r>"
+cnoremap <C-r><CR> <C-r>0
+cnoremap <C-r><Space> <C-r>+
 
 " set clipboard+=unnamed
 set clipboard=
 " noremap <Space>y "+y
 noremap <Space>p "+p
 noremap <Space>P "+P
-noremap <CR>p :put +<CR>
-noremap <CR>P :put! +<CR>
+noremap <CR>p :<C-u>put +<CR>
+noremap <CR>P :<C-u>put! +<CR>
 noremap <Space>y "+y
 
 augroup vimrc
@@ -623,8 +627,8 @@ xnoremap <expr> j (v:count == 0 && mode() !=# 'V') ? 'gj' : 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
 xnoremap <expr> k (v:count == 0 && mode() !=# 'V') ? 'gk' : 'k'
 
-inoremap <C-b> <Left>
-inoremap <C-f> <Right>
+inoremap <C-b> <C-g>U<Left>
+inoremap <C-f> <C-g>U<Right>
 " 上記移動を行っていると <C-Space> で <C-@> が動作してしまうのが不便．
 " imap <Nul> <Nop>
 " としてもうまくいかないので，苦肉の策で <C-@> を潰す
@@ -949,7 +953,7 @@ cnoreabbrev <expr> RenameMe "RenameMe " . expand('%')
 
 " 文字コードのインクリメント {{{
 nnoremap <Space>a :<C-u>call <SID>increment_char(v:count1)<CR>
-nnoremap <Space>x :<C-u>call <SID>increment_char(v:count1 * -1)<CR>
+nnoremap <Space>x :<C-u>call <SID>increment_char(-v:count1)<CR>
 
 function! s:increment_char(count)
   normal v"my
@@ -980,6 +984,8 @@ function! RemoveUnwantedSpaces()
 endfunction
 command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
 " }}}
+
+cnoreabbrev w] w
 
 " }}}
 
@@ -1070,7 +1076,7 @@ augroup vimrc
   autocmd FileType satysfi setlocal iskeyword+=43,92,@-@
   autocmd FileType satysfi let b:caw_oneline_comment = "%"
   autocmd FileType satysfi let b:match_words = '<%:>%'
-  autocmd FileType satysfi set matchpairs-=<:>
+  autocmd FileType satysfi setlocal matchpairs-=<:>
   autocmd FileType satysfi setlocal foldmethod=indent
   autocmd FileType satysfi setlocal foldnestmax=4
   autocmd FileType satysfi setlocal foldminlines=5

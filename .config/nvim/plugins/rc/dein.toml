@@ -259,4 +259,10 @@ repo = 'syusui-s/scrapbox-vim'
 
 [[plugins]]
 repo = 'pest-parser/pest.vim'
+
+[[plugins]]
+repo = 'kana/vim-altr'
+hook_add = """
+nmap <CR>^ <Plug>(altr-forward)
+"""
 # }}}
