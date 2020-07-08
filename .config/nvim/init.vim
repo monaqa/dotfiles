@@ -104,7 +104,10 @@ else
   nnoremap ZZ <Nop>
   nnoremap ZQ <Nop>
   nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
-  nnoremap <silent><nowait> <Space><Space> :call <SID>temporal_attention()<CR>
+  nnoremap <silent><nowait> <Space><Space> :call <SID>temporal_attention()<CR>:call <SID>temporal_relnum()<CR>
+  " 検索系は見失いやすいので
+  nnoremap <silent> n n:call <SID>temporal_attention()<CR>
+  nnoremap <silent> N N:call <SID>temporal_attention()<CR>
 endif
 
 function! s:toggle_column() abort
@@ -118,14 +121,19 @@ function! s:toggle_column() abort
 endfunction
 
 function! s:temporal_attention() abort
-    set relativenumber
     set cursorline
     set cursorcolumn
     augroup temporal_attention
         autocmd!
-        autocmd CursorMoved * ++once set norelativenumber
         autocmd CursorMoved * ++once set nocursorline
         autocmd CursorMoved * ++once set nocursorcolumn
+    augroup END
+endfunction
+function! s:temporal_relnum() abort
+    set relativenumber
+    augroup temporal_relnum
+        autocmd!
+        autocmd CursorMoved * ++once set norelativenumber
     augroup END
 endfunction
 
@@ -154,9 +162,9 @@ else
   hi! link SpecialKey GruvboxBg4
   hi! NonText ctermfg=103
   hi! MatchParen ctermbg=66 ctermfg=223
-  hi! ColorColumn ctermbg=238
-  hi! CursorColumn ctermbg=236
-  hi! CursorLine ctermbg=236
+  hi! ColorColumn ctermbg=236
+  hi! CursorColumn ctermbg=238
+  hi! CursorLine ctermbg=238
   hi! FoldColumn ctermbg=236
   hi! SignColumn ctermbg=238
   hi! link Folded GruvboxPurpleBold
@@ -239,6 +247,35 @@ vnoremap * "my/\V<C-R><C-R>=substitute(
 vnoremap S "my:set hlsearch<CR>
 \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
 \/gce<Bar>1,''-&&<CR>
+" }}}
+
+" Automatically create missing directories {{{
+" thanks to lambdalisue
+function! s:auto_mkdir(dir, force) abort
+  if empty(a:dir) || a:dir =~# '^\w\+://' || isdirectory(a:dir) || a:dir =~# '^suda:'
+      return
+  endif
+  if !a:force
+    echohl Question
+    call inputsave()
+    try
+      let result = input(
+            \ printf('"%s" does not exist. Create? [y/N]', a:dir),
+            \ '',
+            \)
+      if empty(result)
+        echohl WarningMsg
+        echo 'Canceled'
+        return
+      endif
+    finally
+      call inputrestore()
+      echohl None
+    endtry
+  endif
+  call mkdir(a:dir, 'p')
+endfunction
+autocmd vimrc BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 " }}}
 
 " Terminal 機能 {{{
@@ -361,7 +398,6 @@ function! s:send_terminal_visual_range()
   let &selection = sel_save
   let @m=m_reg
 endfunction
-
 " }}}
 
 " Command-line window {{{

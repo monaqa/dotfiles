@@ -124,7 +124,7 @@ inline-frame-outer (${1:0pt}, $1, $1, $1) ${2:deco} ${3:ib}
 endsnippet
 
 snippet block-frame-breakable "-> block-boxes" b
-block-frame-breakable (${1:0pt}, $1, $1, $1) (${2:deco}, $2, $2, $2) (fun ctx -> ${3:(read-block ctx bt)})
+block-frame-breakable ${1:ctx} (${2:0pt}, $2, $2, $2) (${3:deco}, $3, $3, $3) (fun ctx -> ${4:(read-block ctx bt)})
 endsnippet
 # }}}
 
@@ -180,8 +180,8 @@ snippet \co "inline code" i
 \\code(\`${1:string}\`);$0
 endsnippet
 
-snippet \link "Link" b
-\link?:({${1}})(\`$1\`);
+snippet \link "Link" w
+\link?:({${1}})(\`${2: }\`);
 endsnippet
 
 # }}}

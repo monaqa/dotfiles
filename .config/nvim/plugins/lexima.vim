@@ -16,6 +16,4 @@ call lexima#add_rule({'char': '``', 'input_after': '``', 'filetype': ['rst']})
 " call lexima#add_rule({'char': "）", 'at': "\%#）", 'leave': 1})
 " call lexima#add_rule({'char': '<BS>', 'at': '（\%#）', 'delete': 1})
 
-" coc-settings.vim から移動
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<CR>', 'i')
