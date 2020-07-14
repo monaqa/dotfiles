@@ -158,7 +158,6 @@ hook_add = """
 let g:eskk#directory = "~/.eskk"
 let g:eskk#dictionary = { 'path': "~/.skk-jisyo", 'sorted': 0, 'encoding': 'utf-8', }
 let g:eskk#large_dictionary = { 'path': "~/.eskk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'utf-8', }
-let g:eskk#enable_completion = 0
 autocmd User eskk-initialize-pre call s:eskk_initial_pre()
 function! s:eskk_initial_pre()
   let t = eskk#table#new('rom_to_hira*', 'rom_to_hira')
@@ -167,7 +166,6 @@ function! s:eskk_initial_pre()
   call t.add_map('.', '．')
   call t.add_map('(', '（')
   call t.add_map(')', '）')
-  " "1." のように数字の後のドットはそのまま入力
   call eskk#register_mode_table('hira', t)
   let t = eskk#table#new('rom_to_kata*', 'rom_to_kata')
   " ユーザはここで何か重たい初期化処理を実行することができる。
@@ -175,9 +173,10 @@ function! s:eskk_initial_pre()
   call t.add_map('.', '．')
   call t.add_map('(', '（')
   call t.add_map(')', '）')
-  " "1." のように数字の後のドットはそのまま入力
   call eskk#register_mode_table('kata', t)
 endfunction
+let g:eskk#enable_completion = 0
+let g:eskk#keep_state = 0
 """
 
 # }}}

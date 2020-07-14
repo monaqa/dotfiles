@@ -151,6 +151,8 @@ augroup END
 " }}}
 
 " Theme {{{
+
+set termguicolors
 " augroup の設定の後に読み込む必要がある
 if exists('g:started_by_firenvim')
   colorscheme shirotelin
@@ -160,17 +162,16 @@ else
   colorscheme gruvbox
 
   hi! link SpecialKey GruvboxBg4
-  hi! NonText ctermfg=103
-  hi! MatchParen ctermbg=66 ctermfg=223
-  hi! ColorColumn ctermbg=236
-  hi! CursorColumn ctermbg=238
-  hi! CursorLine ctermbg=238
-  hi! FoldColumn ctermbg=236
-  hi! SignColumn ctermbg=238
+  hi! NonText ctermfg=103 guifg=#8787af
+  hi! MatchParen ctermbg=66 ctermfg=223 guibg=#5f8787 guifg=#ffdfdf
+  hi! CursorColumn ctermbg=240 guibg=#585858
+  hi! CursorLine ctermbg=240 guibg=#585858
+  hi! FoldColumn ctermbg=236 guibg=#303030
+  hi! SignColumn ctermbg=238 guibg=#444444
   hi! link Folded GruvboxPurpleBold
   hi! link VertSplit GruvboxFg1
   hi! link HighlightedyankRegion DiffChange
-  autocmd vimrc FileType help hi! Ignore ctermfg=66
+  autocmd vimrc FileType help hi! Ignore ctermfg=66 guifg=#5f8787
 endif
 
 " VimShowHlGroup: Show highlight group name under a cursor
@@ -369,7 +370,7 @@ function! s:op_send_terminal(type)
     let visual_range = '`[v`]'
   endif
   exe "normal! " . visual_range . '"my'
-  call chansend(g:current_terminal_job_id, @m)
+  call chansend(g:current_terminal_job_id, s:reformat_cmdstring(@m))
 
   let &selection = sel_save
   let @m=m_reg
@@ -381,7 +382,7 @@ function! s:send_terminal_line(n_line)
   let m_reg = @m
 
   exe "normal! " . '"m' . a:n_line . 'yy'
-  call chansend(g:current_terminal_job_id, @m)
+  call chansend(g:current_terminal_job_id, s:reformat_cmdstring(@m))
 
   let &selection = sel_save
   let @m=m_reg
@@ -393,25 +394,36 @@ function! s:send_terminal_visual_range()
   let m_reg = @m
 
   exe "normal! gv" . '"my'
-  call chansend(g:current_terminal_job_id, @m)
+  call chansend(g:current_terminal_job_id, s:reformat_cmdstring(@m))
 
   let &selection = sel_save
   let @m=m_reg
 endfunction
+
+function! s:reformat_cmdstring(str)
+  " 空行の削除
+  let s = substitute(a:str, '\n\n', '\n', 'g')
+  " （なければ）最後に改行を付ける
+  if s !~# '\n$'
+    let s = s .. "\n"
+  endif
+  return s
+endfunction
+
 " }}}
 
 " Command-line window {{{
 let &cedit = "\<C-C>"
 augroup vimrc
-  autocmd CmdwinEnter [:/\?=] setlocal nonumber
-  autocmd CmdwinEnter [:/\?=] setlocal norelativenumber
-  autocmd CmdwinEnter [:/\?=] setlocal signcolumn=no
-  autocmd CmdwinEnter [:/\?=] setlocal foldcolumn=0
-  autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-f> <C-f>
-  autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-u> <C-u>
-  autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-b> <C-b>
-  autocmd CmdwinEnter [:/\?=] nnoremap <buffer> <C-d> <C-d>
-  autocmd CmdwinEnter [:/\?=] nnoremap <buffer><nowait> <CR> <CR>
+  autocmd CmdwinEnter * setlocal nonumber
+  autocmd CmdwinEnter * setlocal norelativenumber
+  autocmd CmdwinEnter * setlocal signcolumn=no
+  autocmd CmdwinEnter * setlocal foldcolumn=0
+  autocmd CmdwinEnter * nnoremap <buffer> <C-f> <C-f>
+  autocmd CmdwinEnter * nnoremap <buffer> <C-u> <C-u>
+  autocmd CmdwinEnter * nnoremap <buffer> <C-b> <C-b>
+  autocmd CmdwinEnter * nnoremap <buffer> <C-d> <C-d>
+  autocmd CmdwinEnter * nnoremap <buffer><nowait> <CR> <CR>
   autocmd CmdwinEnter : keeppatterns g/^qa\?!\?$/d _
   autocmd CmdwinEnter : keeppatterns g/^wq\?a\?!\?$/d _
 augroup END
@@ -487,6 +499,7 @@ nnoremap s <Nop>
 nnoremap s_ :<C-u>sp<CR>
 nnoremap s<Bar> :<C-u>vs<CR>
 nnoremap sv :<C-u>vs<CR>
+nnoremap <silent><expr> ss <SID>isWideWindow('.') ? ':<C-u>vs<CR>' : ':<C-u>sp<CR>'
 nnoremap sq :<C-u>q<CR>
 nnoremap <expr> sw &buftype ==# '' ? ":\<C-u>bp\<CR>:\<C-u>bd #\<CR>" : ":bd\<CR>"
 " nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
@@ -659,9 +672,9 @@ endfunction
 " smart j/k
 " thanks to tyru
 nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
-xnoremap <expr> j (v:count == 0 && mode() !=# 'V') ? 'gj' : 'j'
+xnoremap <expr> j (v:count == 0 && mode() ==# 'v') ? 'gj' : 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
-xnoremap <expr> k (v:count == 0 && mode() !=# 'V') ? 'gk' : 'k'
+xnoremap <expr> k (v:count == 0 && mode() ==# 'v') ? 'gk' : 'k'
 
 inoremap <C-b> <C-g>U<Left>
 inoremap <C-f> <C-g>U<Right>
@@ -838,6 +851,8 @@ cnoremap <C-b> <Left>
 cnoremap <C-f> <Right>
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
+cnoremap <Up> <C-p>
+cnoremap <Down> <C-n>
 " }}}
 
 " }}}
