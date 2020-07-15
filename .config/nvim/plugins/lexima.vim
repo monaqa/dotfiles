@@ -16,4 +16,4 @@ call lexima#add_rule({'char': '``', 'input_after': '``', 'filetype': ['rst']})
 " call lexima#add_rule({'char': "）", 'at': "\%#）", 'leave': 1})
 " call lexima#add_rule({'char': '<BS>', 'at': '（\%#）', 'delete': 1})
 
-inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<CR>', 'i')
+inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
