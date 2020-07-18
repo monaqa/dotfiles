@@ -6,13 +6,7 @@ scriptencoding utf-8
 " エディタ全般の設定{{{
 """"""""""""""""""""""""
 
-" dein.vim でプラグインを読み込む
-if exists('g:started_by_firenvim')
-  source ~/.config/nvim/plugins/dein-firenvim.vim
-else
-  source ~/.config/nvim/plugins/dein.vim
-endif
-
+source /Users/shinichi/ghq/github.com/monaqa/dotfiles/.config/nvim/minpac.vim
 
 " Syntax, mouse などの有効化{{{
 filetype plugin indent on
@@ -74,41 +68,29 @@ set wrap
 set lazyredraw
 set ttyfast
 
-if exists('g:started_by_firenvim')
-  " firenvim のときは簡素な表示にする
-  set nonumber
-  set norelativenumber
-  set nocursorline
-  set nocursorcolumn
-  set colorcolumn=
-  set laststatus=0
-  set foldcolumn=0
-  set signcolumn=no
-else
-  set number
-  set colorcolumn=80
-  set laststatus=2 " ステータスラインを常に表示
-  set statusline^=%{coc#status()}
-  set foldcolumn=4
-  set signcolumn=no
+set number
+set colorcolumn=80
+set laststatus=2 " ステータスラインを常に表示
+set statusline^=%{coc#status()}
+set foldcolumn=4
+set signcolumn=no
 
-  augroup vimrc
-    " 現在編集中のバッファは scrolloff あり
-    autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
-    autocmd BufEnter,FocusGained,InsertLeave *   setlocal scrolloff=10
-    autocmd BufEnter,FocusGained,InsertLeave * endif
-    " 編集中でないバッファは scrolloff なし
-    autocmd BufLeave,FocusLost,InsertEnter   * setlocal scrolloff=0
-  augroup END
+augroup vimrc
+  " 現在編集中のバッファは scrolloff あり
+  autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
+  autocmd BufEnter,FocusGained,InsertLeave *   setlocal scrolloff=10
+  autocmd BufEnter,FocusGained,InsertLeave * endif
+  " 編集中でないバッファは scrolloff なし
+  autocmd BufLeave,FocusLost,InsertEnter   * setlocal scrolloff=0
+augroup END
 
-  nnoremap ZZ <Nop>
-  nnoremap ZQ <Nop>
-  nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
-  nnoremap <silent><nowait> <Space><Space> :call <SID>temporal_attention()<CR>:call <SID>temporal_relnum()<CR>
-  " 検索系は見失いやすいので
-  nnoremap <silent> n n:call <SID>temporal_attention()<CR>
-  nnoremap <silent> N N:call <SID>temporal_attention()<CR>
-endif
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
+nnoremap <silent><nowait> <Space><Space> :call <SID>temporal_attention()<CR>:call <SID>temporal_relnum()<CR>
+" 検索系は見失いやすいので
+nnoremap <silent> n n:call <SID>temporal_attention()<CR>
+nnoremap <silent> N N:call <SID>temporal_attention()<CR>
 
 function! s:toggle_column() abort
   if &signcolumn ==# 'yes' && &foldcolumn == 2
@@ -154,25 +136,22 @@ augroup END
 
 set termguicolors
 " augroup の設定の後に読み込む必要がある
-if exists('g:started_by_firenvim')
-  colorscheme shirotelin
-else
-  let g:gruvbox_contrast_dark = 'hard'
-  set background=dark
-  colorscheme gruvbox
 
-  hi! link SpecialKey GruvboxBg4
-  hi! NonText ctermfg=103 guifg=#8787af
-  hi! MatchParen ctermbg=66 ctermfg=223 guibg=#5f8787 guifg=#ffdfdf
-  hi! CursorColumn ctermbg=240 guibg=#585858
-  hi! CursorLine ctermbg=240 guibg=#585858
-  hi! FoldColumn ctermbg=236 guibg=#303030
-  hi! SignColumn ctermbg=238 guibg=#444444
-  hi! link Folded GruvboxPurpleBold
-  hi! link VertSplit GruvboxFg1
-  hi! link HighlightedyankRegion DiffChange
-  autocmd vimrc FileType help hi! Ignore ctermfg=66 guifg=#5f8787
-endif
+let g:gruvbox_contrast_dark = 'hard'
+set background=dark
+colorscheme gruvbox
+
+hi! link SpecialKey GruvboxBg4
+hi! NonText ctermfg=103 guifg=#8787af
+hi! MatchParen ctermbg=66 ctermfg=223 guibg=#5f8787 guifg=#ffdfdf
+hi! CursorColumn ctermbg=240 guibg=#585858
+hi! CursorLine ctermbg=240 guibg=#585858
+hi! FoldColumn ctermbg=236 guibg=#303030
+hi! SignColumn ctermbg=238 guibg=#444444
+hi! link Folded GruvboxPurpleBold
+hi! link VertSplit GruvboxFg1
+hi! link HighlightedyankRegion DiffChange
+autocmd vimrc FileType help hi! Ignore ctermfg=66 guifg=#5f8787
 
 " VimShowHlGroup: Show highlight group name under a cursor
 command! VimShowHlGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')

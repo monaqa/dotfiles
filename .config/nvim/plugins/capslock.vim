@@ -1,0 +1,1 @@
+inoremap <C-l> <Nop>
