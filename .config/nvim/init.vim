@@ -6,12 +6,7 @@ scriptencoding utf-8
 " エディタ全般の設定{{{
 """"""""""""""""""""""""
 
-source /Users/shinichi/ghq/github.com/monaqa/dotfiles/.config/nvim/minpac.vim
-
-" Syntax, mouse などの有効化{{{
-filetype plugin indent on
-syntax enable
-
+" mouse などの有効化{{{
 set mouse=a
 if &shell =~# 'fish$'
   set shell=sh
@@ -136,22 +131,6 @@ augroup END
 
 set termguicolors
 " augroup の設定の後に読み込む必要がある
-
-let g:gruvbox_contrast_dark = 'hard'
-set background=dark
-colorscheme gruvbox
-
-hi! link SpecialKey GruvboxBg4
-hi! NonText ctermfg=103 guifg=#8787af
-hi! MatchParen ctermbg=66 ctermfg=223 guibg=#5f8787 guifg=#ffdfdf
-hi! CursorColumn ctermbg=240 guibg=#585858
-hi! CursorLine ctermbg=240 guibg=#585858
-hi! FoldColumn ctermbg=236 guibg=#303030
-hi! SignColumn ctermbg=238 guibg=#444444
-hi! link Folded GruvboxPurpleBold
-hi! link VertSplit GruvboxFg1
-hi! link HighlightedyankRegion DiffChange
-autocmd vimrc FileType help hi! Ignore ctermfg=66 guifg=#5f8787
 
 " VimShowHlGroup: Show highlight group name under a cursor
 command! VimShowHlGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
@@ -508,15 +487,6 @@ nnoremap s/ q/G
 " Sandwich.vim のデフォルトキーバインドを上書きする
 nnoremap <nowait> srb <Nop>
 
-call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
-call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
-call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
-call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
-call submode#map('bufmove', 'n', '', '>', '<C-w>>')
-call submode#map('bufmove', 'n', '', '<', '<C-w><')
-call submode#map('bufmove', 'n', '', '+', '<C-w>+')
-call submode#map('bufmove', 'n', '', '-', '<C-w>-')
-
 set splitbelow
 set splitright
 
@@ -815,12 +785,6 @@ vnoremap <Space>f :<C-u>VisualLineSearch<Space>
 vnoremap <Space>F :<C-u>VisualLineBackSearch<Space>
 nnoremap <Space>; :LineSameSearch<CR>
 nnoremap <Space>, :LineBackSameSearch<CR>
-
-call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':LineSameSearch<CR>')
-call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':LineBackSameSearch<CR>')
-call submode#map('vertjmp', 'n', '', ';', ':LineSameSearch<CR>')
-call submode#map('vertjmp', 'n', '', ',', ':LineBackSameSearch<CR>')
-call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
 " }}}
 
@@ -1172,4 +1136,11 @@ autocmd FileType scrapbox setlocal shiftwidth=1
 " }}}
 
 " }}}
+
+source ~/.config/nvim/minpac.vim
+filetype plugin indent on
+syntax enable
+
+
+
 " }}}

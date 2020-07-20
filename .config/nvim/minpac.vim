@@ -9,7 +9,6 @@ if exists('*minpac#init')
   call minpac#add('bps/vim-textobj-python')
   call minpac#add('cohama/lexima.vim')
   call minpac#add('glts/vim-textobj-comment')
-  call minpac#add('gruvbox-community/gruvbox')
   call minpac#add('kana/vim-altr')
   call minpac#add('kana/vim-operator-user')
   call minpac#add('kana/vim-textobj-user')
@@ -28,6 +27,7 @@ if exists('*minpac#init')
   call minpac#add('rhysd/rust-doc.vim')
   call minpac#add('sheerun/vim-polyglot')
   call minpac#add('thinca/vim-quickrun')
+  call minpac#add('Shougo/vimproc.vim')
   call minpac#add('thinca/vim-splash')
   call minpac#add('thinca/vim-submode')
   call minpac#add('thinca/vim-textobj-between')
@@ -38,15 +38,17 @@ if exists('*minpac#init')
   call minpac#add('xolox/vim-misc')
   call minpac#add('xolox/vim-session')
   call minpac#add('yuki-ycino/fzf-preview.vim', {'rev': 'release'})
-  call minpac#add('junegunn/fzf', {'build': './install --all'})
-  call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
+  call minpac#add('junegunn/fzf')
+  call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
 
+  call minpac#add('gruvbox-community/gruvbox')
+  call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
 endif
 packloadall
 
 " Load plugins/*.vim
 function! s:load_configurations() abort
-  for path in glob('/Users/shinichi/ghq/github.com/monaqa/dotfiles/.config/nvim/plugins/*.vim', 1, 1, 1)
+  for path in glob($HOME . '/.config/nvim/plugins/*.vim', 1, 1, 1)
     execute printf('source %s', fnameescape(path))
   endfor
 endfunction

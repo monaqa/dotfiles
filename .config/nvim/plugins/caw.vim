@@ -1,3 +1,3 @@
-let g:caw_operator_keymappings = 1
-map <Space>c gcc
-nmap <Space>cc gcc$
+nmap <Space>c <Plug>(caw:hatpos:toggle:operator)
+vmap <Space>c <Plug>(caw:hatpos:toggle)
+nmap <Space>cc <Plug>(caw:hatpos:toggle)

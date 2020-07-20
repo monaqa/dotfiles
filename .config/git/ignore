@@ -10,3 +10,5 @@ Icon
 .mypy_cache/
 
 .todo6
+
+.git/
