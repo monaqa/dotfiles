@@ -4,7 +4,7 @@ fish_default_key_bindings
 
 set -g fish_ambiguous_width 1
 
-# environment variables {{{ 
+# environment variables {{{
 # bin at home directory
 set -x PATH "$HOME/.cargo/bin" $PATH
 
@@ -18,9 +18,6 @@ source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 set -x PATH $HOME/go/bin $PATH
 
 # }}}
-
-eval (pyenv init - | source)
-set -x PATH /usr/local/opt/gettext/bin $PATH
 
 eval (starship init fish)
 
