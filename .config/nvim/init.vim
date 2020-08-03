@@ -6,6 +6,10 @@ scriptencoding utf-8
 " エディタ全般の設定{{{
 """"""""""""""""""""""""
 
+source ~/.config/nvim/minpac.vim
+filetype plugin indent on
+syntax enable
+
 " mouse などの有効化{{{
 set mouse=a
 if &shell =~# 'fish$'
@@ -121,6 +125,7 @@ endfunction
 
 augroup vimrc
   autocmd ColorScheme * highlight link UnicodeSpaces Error
+  autocmd VimEnter,WinEnter * highlight link UnicodeSpaces Error
   autocmd VimEnter,WinEnter * match UnicodeSpaces
   \ /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
 augroup END
@@ -804,6 +809,27 @@ cnoremap <Down> <C-n>
 " その他の特殊キーマップ{{{
 """"""""""""""""""""""""""""
 
+" 数字キー {{{
+inoremap 1 !
+inoremap 2 "
+inoremap 3 #
+inoremap 4 $
+inoremap 5 %
+inoremap 6 &
+inoremap 7 '
+inoremap 8 (
+inoremap 9 )
+inoremap ! 1
+inoremap " 2
+inoremap # 3
+inoremap $ 4
+inoremap % 5
+inoremap & 6
+inoremap ' 7
+inoremap ( 8
+inoremap ) 9
+" }}}
+
 " 無効化 {{{
 noremap <F1>   <Nop>
 noremap <M-F1> <Nop>
@@ -1026,6 +1052,7 @@ let g:rust_fold = 2
 augroup vimrc
   autocmd FileType rust setlocal foldlevel=1
 augroup END
+
 " }}}
 
 " Python {{{
@@ -1108,6 +1135,12 @@ augroup END
 
 " misc {{{
 
+" fish {{{
+augroup vimrc
+  autocmd BufRead,BufNewFile *.fish setlocal filetype=fish
+augroup END
+" }}}
+
 " tmux conf {{{
 
 augroup vimrc
@@ -1135,12 +1168,8 @@ autocmd FileType scrapbox setlocal shiftwidth=1
 
 " }}}
 
+
 " }}}
-
-source ~/.config/nvim/minpac.vim
-filetype plugin indent on
-syntax enable
-
 
 
 " }}}

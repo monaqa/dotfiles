@@ -1,12 +1,15 @@
 let g:fern#disable_default_mappings = 1
 let g:fern#default_hidden = 1
+
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 nnoremap sf :<C-u>Fern . -drawer -toggle<CR>
 
 augroup rc_fern
   autocmd!
-  autocmd FileType fern set nonumber
-  autocmd FileType fern set signcolumn=no
-  autocmd FileType fern set foldcolumn=0
+  autocmd FileType fern setlocal nonumber
+  autocmd FileType fern setlocal signcolumn=no
+  autocmd FileType fern setlocal foldcolumn=0
   autocmd FileType fern call s:fern_settings()
 augroup END
 
@@ -60,4 +63,18 @@ function s:fern_settings()
   " other
   nmap <nowait><buffer> ! <Plug>(fern-action-hidden-toggle)
   nmap <buffer> <C-l> <Plug>(fern-action-redraw)
+endfunction
+
+augroup my-fern-hijack
+  autocmd!
+  autocmd BufEnter * ++nested call s:hijack_directory()
+augroup END
+
+function! s:hijack_directory() abort
+  let path = expand('%:p')
+  if !isdirectory(path)
+    return
+  endif
+  bwipeout %
+  execute printf('Fern %s', fnameescape(path))
 endfunction
