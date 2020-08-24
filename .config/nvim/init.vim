@@ -253,12 +253,9 @@ tnoremap <C-r><Space> <C-\><C-N>"+pi
 " 苦肉の策
 tnoremap <C-r><Esc> <C-r>
 
-function! s:bufnew()
-  " 幸いにも 'buftype' は設定されているのでそれを基準とする
-  if &buftype ==# 'terminal' && &filetype ==# ''
-    set filetype=terminal
-  endif
-endfunction
+augroup vimrc
+  autocmd FileType fzf tnoremap <buffer><nowait> <Esc> <C-g>
+augroup END
 
 function! s:terminal_init()
   " ここに :terminal のバッファ固有の設定を記述する
@@ -275,6 +272,7 @@ function! s:terminal_init()
 endfunction
 
 function! s:calc_cursor_right_num() abort
+  " ad hoc!
   " normal "my0
   " let strlen = strchars(@m)
   let cpos = getcurpos()
@@ -282,14 +280,13 @@ function! s:calc_cursor_right_num() abort
 endfunction
 
 augroup vimrc
-  " BufNew の時点では 'buftype' が設定されていないので timer イベントでごまかすなど…
-  autocmd BufNew,BufEnter * call timer_start(0, { -> s:bufnew() })
-  autocmd FileType terminal call s:terminal_init()
-  autocmd FileType terminal setlocal wrap
-  autocmd FileType terminal setlocal nonumber
-  autocmd FileType terminal setlocal signcolumn=no
-  autocmd FileType terminal setlocal foldcolumn=0
+  autocmd TermOpen * call s:terminal_init()
+  autocmd TermOpen * setlocal wrap
+  autocmd TermOpen * setlocal nonumber
+  autocmd TermOpen * setlocal signcolumn=no
+  autocmd TermOpen * setlocal foldcolumn=0
 augroup END
+
 
 nnoremap <silent> st :<C-u>call <SID>openTermWindow()<CR>
 
