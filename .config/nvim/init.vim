@@ -73,8 +73,8 @@ set number
 set colorcolumn=80
 set laststatus=2 " ステータスラインを常に表示
 set statusline^=%{coc#status()}
-set foldcolumn=4
-set signcolumn=no
+set foldcolumn=0
+set signcolumn=yes:2
 
 augroup vimrc
   " 現在編集中のバッファは scrolloff あり
@@ -94,12 +94,12 @@ nnoremap <silent> n n:call <SID>temporal_attention()<CR>
 nnoremap <silent> N N:call <SID>temporal_attention()<CR>
 
 function! s:toggle_column() abort
-  if &signcolumn ==# 'yes' && &foldcolumn == 2
-    setlocal signcolumn=no
-    setlocal foldcolumn=4
+  if &signcolumn ==# 'yes:2' && &foldcolumn == 0
+    set foldcolumn=4
+    set signcolumn=no
   else
-    setlocal signcolumn=yes
-    setlocal foldcolumn=2
+    set foldcolumn=0
+    set signcolumn=yes:2
   endif
 endfunction
 

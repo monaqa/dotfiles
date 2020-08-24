@@ -9,8 +9,8 @@ function! s:setting_gruvbox() abort
   hi! link SpecialKey GruvboxBg4
   hi! NonText ctermfg=103 guifg=#8787af
   hi! MatchParen ctermbg=66 ctermfg=223 guibg=#5f8787 guifg=#ffdfdf
-  hi! CursorColumn ctermbg=240 guibg=#585858
-  hi! CursorLine ctermbg=240 guibg=#585858
+  hi! CursorColumn ctermbg=238 guibg=#444444
+  hi! CursorLine ctermbg=238 guibg=#444444
   hi! FoldColumn ctermbg=236 guibg=#303030
   hi! SignColumn ctermbg=238 guibg=#444444
   hi! link Folded GruvboxPurpleBold
