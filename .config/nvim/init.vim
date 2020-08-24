@@ -6,6 +6,8 @@ scriptencoding utf-8
 " エディタ全般の設定{{{
 """"""""""""""""""""""""
 
+let g:tex_flavor = "latex"
+
 source ~/.config/nvim/minpac.vim
 filetype plugin indent on
 syntax enable
@@ -808,27 +810,6 @@ cnoremap <Down> <C-n>
 
 " その他の特殊キーマップ{{{
 """"""""""""""""""""""""""""
-
-" 数字キー {{{
-inoremap 1 !
-inoremap 2 "
-inoremap 3 #
-inoremap 4 $
-inoremap 5 %
-inoremap 6 &
-inoremap 7 '
-inoremap 8 (
-inoremap 9 )
-inoremap ! 1
-inoremap " 2
-inoremap # 3
-inoremap $ 4
-inoremap % 5
-inoremap & 6
-inoremap ' 7
-inoremap ( 8
-inoremap ) 9
-" }}}
 
 " 無効化 {{{
 noremap <F1>   <Nop>

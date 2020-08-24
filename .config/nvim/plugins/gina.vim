@@ -14,3 +14,11 @@ let s:gina_custom_translation_patterns = [
 nnoremap <Space>gs :<C-u>Gina status -s --opener=split<CR>
 nnoremap <Space>gb :Gina browse --exact --yank :<CR>:let @+=@"<CR>:echo @+<CR>
 vnoremap <Space>gb :Gina browse --exact --yank :<CR>:let @+=@"<CR>:echo @+<CR>
+
+function! SetupCommandAbbrs(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+call SetupCommandAbbrs('Gc', 'Gina commit')
+call SetupCommandAbbrs('Gp', 'Gina push')

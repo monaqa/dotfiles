@@ -40,6 +40,7 @@ if exists('*minpac#init')
   call minpac#add('yuki-ycino/fzf-preview.vim', {'rev': 'release'})
   call minpac#add('junegunn/fzf')
   call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
+  call minpac#add('mhinz/vim-signify')
 
   call minpac#add('gruvbox-community/gruvbox')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
