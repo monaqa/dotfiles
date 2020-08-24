@@ -95,11 +95,11 @@ nnoremap <silent> N N:call <SID>temporal_attention()<CR>
 
 function! s:toggle_column() abort
   if &signcolumn ==# 'yes:2' && &foldcolumn == 0
-    set foldcolumn=4
-    set signcolumn=no
+    setlocal foldcolumn=4
+    setlocal signcolumn=no
   else
-    set foldcolumn=0
-    set signcolumn=yes:2
+    setlocal foldcolumn=0
+    setlocal signcolumn=yes:2
   endif
 endfunction
 
