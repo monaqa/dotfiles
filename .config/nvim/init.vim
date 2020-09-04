@@ -701,8 +701,12 @@ onoremap m` a`
 " }}}
 
 " Vertical WORD (vWORD) 単位での移動 {{{
-noremap <C-j> }
-noremap <C-k> {
+nnoremap <silent> <C-j> :<C-u>exe "keepjumps normal! " . v:count1 . "}"<CR>
+onoremap <C-j> }
+vnoremap <C-j> }
+nnoremap <silent> <C-k> :<C-u>exe "keepjumps normal! " . v:count1 . "{"<CR>
+onoremap <C-k> {
+vnoremap <C-k> {
 
 " <C-n>: 水平方向の  E 移動を鉛直方向にしたものに相当
 " <C-p>: 水平方向の  B 移動を鉛直方向にしたものに相当

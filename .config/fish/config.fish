@@ -39,9 +39,10 @@ abbr -a mk    "mkdir"
 # git
 abbr -a g    "git"
 abbr -a gb   "git branch"
-abbr -a gc   "git checkout"
 abbr -a gcm  "git checkout master"
 abbr -a gcb  "git checkout -b"
+abbr -a gm  "git merge"
+abbr -a gmm  "git merge master"
 abbr -a gpl  "git pull"
 abbr -a gps  "git push"
 abbr -a grm  "git remote"
@@ -90,17 +91,17 @@ else
 end
 
 if type -q sk
-  abbr -a gg "cd (ghq list -p | sk)"
-  abbr -a tg "tmux a -t (tmux list-sessions | sk | cut -d : -f 1)"
-  # mercurial とかぶっていることに注意
-  abbr -a hg "history | sk"
+  set FUZZY_FINDER sk
 else if type -q fzf
-  abbr -a gg "cd (ghq list -p | fzf)"
-  abbr -a tg "tmux a -t (tmux list-sessions | fzf | cut -d : -f 1)"
-  # mercurial とかぶっていることに注意
-  abbr -a hg "history | fzf"
+  set FUZZY_FINDER fzf
 end
-
+if test -n "$FUZZY_FINDER"
+  abbr -a gg "cd (ghq list -p | $FUZZY_FINDER || pwd)"
+  abbr -a tg "tmux a -t (tmux list-sessions | $FUZZY_FINDER | cut -d : -f 1)"
+  # mercurial とかぶっていることに注意
+  abbr -a hg "history | $FUZZY_FINDER"
+  abbr -a gc "git branch -a | $FUZZY_FINDER | xargs git checkout"
+end
 # }}}
 
 # vim:fdm=marker
