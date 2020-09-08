@@ -42,7 +42,7 @@ let g:quickrun_config['rsync'] = {
 
 augroup rc_quickrun
   autocmd!
-  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>q :QuickRun satysfi -args %{expand("%")}<CR>
-  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>Q :QuickRun satysfi-debug -args %{expand("%")}<CR>
+  " autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>q :QuickRun satysfi -args %{expand("%")}<CR>
+  " autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>Q :QuickRun satysfi-debug -args %{expand("%")}<CR>
   autocmd FileType python nnoremap <buffer> <CR>q :QuickRun jupytext -args %{expand("%")}<CR>
 augroup END

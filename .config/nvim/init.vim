@@ -1073,6 +1073,8 @@ augroup vimrc
   autocmd BufRead,BufNewFile *.satyg setlocal filetype=satysfi
   autocmd BufRead,BufNewFile Satyristes setlocal filetype=lisp
   autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>o :!open %:r.pdf<CR>
+  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>q :!satysfi %<CR>
+  autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>Q :!satysfi --debug-show-bbox --debug-show-space --debug-show-block-bbox --debug-show-block-space %<CR>
   autocmd FileType satysfi setlocal path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages,$HOME/.satysfi/local/packages
   autocmd FileType satysfi setlocal suffixesadd+=.saty,.satyh,.satyg
   " iskeyword で +,\,@ の3文字を単語に含める

@@ -1,14 +1,14 @@
 nnoremap m <Nop>
 " m を prefix にする
 nmap <silent> md <Plug>(coc-definition)
+nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> mi <Plug>(coc-implementation)
 nmap <silent> my <Plug>(coc-type-definition)
 nmap <silent> mr <Plug>(coc-references)
 nmap <silent> mn <Plug>(coc-rename)
-nmap <silent> K :call CocAction('doHover')<CR>
-" nmap <Space><Space>p :CocList -A --normal yank<CR>
-nmap <silent> <Space>j :call CocAction('diagnosticNext')<CR>
-nmap <silent> <Space>k :call CocAction('diagnosticPrevious')<CR>
+nnoremap <silent> K :call CocAction('doHover')<CR>
+nnoremap <silent> <Space>j :call CocAction('diagnosticNext')<CR>
+nnoremap <silent> <Space>k :call CocAction('diagnosticPrevious')<CR>
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -43,5 +43,5 @@ let g:coc_snippet_prev = '<C-g><C-k>'
 function! s:cocActionsOpenFromSelected(type) abort
   execute 'CocCommand actions.open ' . a:type
 endfunction
-xmap <silent> ma :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-nmap <silent> ma :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
+xnoremap <silent> ma :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+nnoremap <silent> ma :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@l
