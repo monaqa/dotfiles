@@ -33,4 +33,6 @@ endfunction
 function! s:setting_gruvbit() abort
   hi! FoldColumn ctermbg=236 guibg=#303030
   hi! NonText ctermfg=103 guifg=#87873f
+  hi! CocHintFloat ctermbg=238 guibg=#444444 ctermfg=12 guifg=#15aabf
+  hi! link CocRustChainingHint CocHintFloat
 endfunction
