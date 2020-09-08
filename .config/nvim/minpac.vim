@@ -41,6 +41,8 @@ if exists('*minpac#init')
   call minpac#add('junegunn/fzf')
   call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
   call minpac#add('mhinz/vim-signify')
+  call minpac#add('sainnhe/gruvbox-material')
+  call minpac#add('habamax/vim-gruvbit')
 
   call minpac#add('gruvbox-community/gruvbox')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
