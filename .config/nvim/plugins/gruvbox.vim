@@ -1,5 +1,6 @@
 let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_material_background = 'hard'
+let g:gruvbit_transp_bg = v:true
 set background=dark
 
 set termguicolors
@@ -7,12 +8,12 @@ colorscheme gruvbit
 
 augroup vimrc_colorscheme
   autocmd!
-  autocmd VimEnter,BufNew,BufRead * if g:colors_name ==# 'gruvbox'
-  autocmd VimEnter,BufNew,BufRead *   call s:setting_gruvbox()
-  autocmd VimEnter,BufNew,BufRead * end
-  autocmd VimEnter,BufNew,BufRead * if g:colors_name ==# 'gruvbit'
-  autocmd VimEnter,BufNew,BufRead *   call s:setting_gruvbit()
-  autocmd VimEnter,BufNew,BufRead * end
+  autocmd ColorScheme * if g:colors_name ==# 'gruvbox'
+  autocmd ColorScheme *   call s:setting_gruvbox()
+  autocmd ColorScheme * end
+  autocmd ColorScheme * if g:colors_name ==# 'gruvbit'
+  autocmd ColorScheme *   call s:setting_gruvbit()
+  autocmd ColorScheme * end
 augroup END
 
 function! s:setting_gruvbox() abort
@@ -31,4 +32,5 @@ endfunction
 
 function! s:setting_gruvbit() abort
   hi! FoldColumn ctermbg=236 guibg=#303030
+  hi! NonText ctermfg=103 guifg=#87873f
 endfunction
