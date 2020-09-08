@@ -24,8 +24,8 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
-snippet getone "macro: get_one" b
-macro_rules! get_one {
+snippet input_one "macro: input_one" b
+macro_rules! input_one {
 	($t:ty) => {{
 		let mut line: String = String::new();
 		std::io::stdin().read_line(&mut line).unwrap();
@@ -33,13 +33,13 @@ macro_rules! get_one {
 	}};
 
 	($t:ty; $n:expr) => {
-		(0..$n).map(|_| get_one!($t)).collect::<Vec<_>>()
+		(0..$n).map(|_| input_one!($t)).collect::<Vec<_>>()
 	};
 }
 endsnippet
 
-snippet gettuple "macro: get_tuple" b
-macro_rules! get_tuple {
+snippet input_tuple "macro: input_tuple" b
+macro_rules! input_tuple {
 	($($t:ty),*) => {
 		{
 			let mut line: String = String::new();
@@ -53,14 +53,14 @@ macro_rules! get_tuple {
 
 	($($t:ty),*; $n:expr) => {
 		(0..$n).map(|_|
-			get_tuple!($($t),*)
+			input_tuple!($($t),*)
 		).collect::<Vec<_>>()
 	};
 }
 endsnippet
 
-snippet getvec "macro: get_vec" b
-macro_rules! get_vec {
+snippet input_vec "macro: input_vec" b
+macro_rules! input_vec {
 	($t:ty) => {
 		{
 			let mut line: String = String::new();
@@ -71,29 +71,33 @@ macro_rules! get_vec {
 		}
 	};
 	($t:ty; $n:expr) => {
-		(0..$n).map(|_| get_vec!($t)).collect::<Vec<_>>()
+		(0..$n).map(|_| input_vec!($t)).collect::<Vec<_>>()
 	};
 }
 endsnippet
 
-snippet test "Test" b
-#[test]
-fn ${1:it_works}() {
-	$0
+snippet getter "getter of fields" b
+pub fn ${1:name}(&self) -> &${2:str} {
+	&self.$1
 }
 endsnippet
 
-snippet modtest "mod tests" b
-#[cfg(test)]
-mod ${1:tests} {
-
-	use super::*;
-
-	#[test]
-	fn ${2:it_works}() {
-		$0
-	}
-
+snippet getter_mut "mutable getter of fields" b
+pub fn ${1:name}_mut(&mut self) -> &mut ${2:str} {
+	&mut self.$1
 }
+endsnippet
 
+snippet setter "setter of fields" b
+pub fn set_${1:name}(&mut self, $1: ${2:String}) {
+	self.$1 = $1;
+}
+endsnippet
+
+snippet tpest "Test function of Pest parser" b
+#[test]
+fn ${1:rule_name}() {
+	assert_success(Rule::$1, "$2");
+	assert_fail(Rule::$1, "$3");
+}
 endsnippet
