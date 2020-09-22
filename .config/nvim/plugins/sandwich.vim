@@ -52,3 +52,59 @@ let g:sandwich#recipes += [
 \   {'buns': ['`', ' <>`_'], 'nesting': 0, 'input': ['l'], 'filetype': ['rst']},
 \   {'buns': ['` <', '>`_'], 'nesting': 0, 'input': ['L'], 'filetype': ['rst']},
 \ ]
+
+let g:sandwich#recipes += [
+\ {
+\   'buns': ['GenericsName()', '">"'],
+\   'expr': 1,
+\   'cursor': 'inner_tail',
+\   'kind': ['add', 'replace'],
+\   'action': ['add'],
+\   'input': ['g']
+\ },
+\ ]
+
+function! GenericsName() abort
+  let genericsname = input('generics name: ', '')
+  if genericsname ==# ''
+    throw 'OperatorSandwichCancel'
+  endif
+  return genericsname . '<'
+endfunction
+
+let g:sandwich#recipes += [
+\ {
+\   'buns': ['InlineCommandName()', '"}"'],
+\   'expr': 1,
+\   'cursor': 'inner_tail',
+\   'kind': ['add', 'replace'],
+\   'action': ['add'],
+\   'input': ['c'],
+\   'filetype': ['satysfi']
+\ },
+\ {
+\   'buns': ['BlockCommandName()', '">"'],
+\   'expr': 1,
+\   'cursor': 'inner_tail',
+\   'kind': ['add', 'replace'],
+\   'action': ['add'],
+\   'input': ['+'],
+\   'filetype': ['satysfi']
+\ },
+\ ]
+
+function! InlineCommandName() abort
+  let cmdname = input('inline-cmd name: ', '')
+  if cmdname ==# ''
+    throw 'OperatorSandwichCancel'
+  endif
+  return '\' . cmdname . '{'
+endfunction
+
+function! BlockCommandName() abort
+  let cmdname = input('block-cmd name: ', '')
+  if cmdname ==# ''
+    throw 'OperatorSandwichCancel'
+  endif
+  return '+' . cmdname . '<'
+endfunction

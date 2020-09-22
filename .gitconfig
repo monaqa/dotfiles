@@ -5,6 +5,7 @@
 	user = monaqa
 
 [tig "color"] cursor = yellow red bold
+
 [commit]
 	template = /Users/shinichi/.commit_template
 [core]
@@ -20,4 +21,6 @@
 	plog = log --pretty='format:%C(yellow)%h %C(green)%cd %C(reset)%s %C(red)%d %C(cyan)[%an]' --date=format:'%c' --all --graph
 	dlog = log --graph --name-status --pretty=format:\"%C(red)%h %C(green)%an %Creset%s %C(yellow)%d%Creset\"
 [push]
-    default = current
+	default = current
+[merge]
+	conflictStyle = diff3
