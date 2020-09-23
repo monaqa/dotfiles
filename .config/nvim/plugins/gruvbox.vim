@@ -1,6 +1,6 @@
 let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_material_background = 'hard'
-let g:gruvbit_transp_bg = v:true
+" let g:gruvbit_transp_bg = v:true
 set background=dark
 
 set termguicolors
@@ -8,12 +8,8 @@ colorscheme gruvbit
 
 augroup vimrc_colorscheme
   autocmd!
-  autocmd ColorScheme * if g:colors_name ==# 'gruvbox'
-  autocmd ColorScheme *   call s:setting_gruvbox()
-  autocmd ColorScheme * end
-  autocmd ColorScheme * if g:colors_name ==# 'gruvbit'
-  autocmd ColorScheme *   call s:setting_gruvbit()
-  autocmd ColorScheme * end
+  autocmd ColorScheme gruvbox call s:setting_gruvbox()
+  autocmd ColorScheme gruvbit call s:setting_gruvbit()
 augroup END
 
 function! s:setting_gruvbox() abort
@@ -31,8 +27,10 @@ function! s:setting_gruvbox() abort
 endfunction
 
 function! s:setting_gruvbit() abort
-  hi! FoldColumn ctermbg=236 guibg=#303030
-  hi! NonText ctermfg=103 guifg=#87873f
-  hi! CocHintFloat ctermbg=238 guibg=#444444 ctermfg=12 guifg=#15aabf
+  hi! FoldColumn guibg=#303030
+  " hi! NonText guifg=#87873f
+  hi! NonText guifg=#496da9
+  " hi! CocHintFloat guibg=#444444 guifg=#15aabf
+  hi! CocHintFloat guibg=#444444 guifg=#45daef
   hi! link CocRustChainingHint CocHintFloat
 endfunction
