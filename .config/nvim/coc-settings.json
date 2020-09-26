@@ -7,6 +7,8 @@
   "diagnostic.virtualTextPrefix": " ",
   "diagnostic.warningSign": "🐤",
   "diagnostic.errorSign": "🚨",
+  "diagnostic.infoSign": "ℹ️ ",
+  "diagnostic.hintSign": "ℹ️ ",
   "codeLens.enable": true,
   "coc.preferences.hoverTarget": "float",
 
@@ -26,12 +28,6 @@
   "python.linting.pep8CategorySeverity.E": "Warning",
 
   "languageserver": {
-    "golang": {
-      "command": "gopls",
-      "args": [],
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"]
-    },
     "efm": {
       "command": "efm-langserver",
       "args": [],
