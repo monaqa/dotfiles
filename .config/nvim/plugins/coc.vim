@@ -29,7 +29,7 @@ let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_
 
 augroup rc_coc
   autocmd!
-  autocmd Filetype java nnoremap <Space>i :CocCommand java.action.organizeImports<CR>
+  autocmd Filetype rust nnoremap <cr>r :CocCommand rust-analyzer.reload<CR>
 augroup END
 
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
