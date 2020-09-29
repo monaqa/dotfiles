@@ -9,6 +9,7 @@ scriptencoding utf-8
 let g:tex_flavor = "latex"
 
 source ~/.config/nvim/scripts/minpac.vim
+source ~/.config/nvim/scripts/plugin.vim
 filetype plugin indent on
 syntax enable
 
@@ -135,6 +136,10 @@ augroup END
 " }}}
 
 " Theme {{{
+
+set termguicolors
+set background=dark
+colorscheme gruvbit
 
 set termguicolors
 " augroup の設定の後に読み込む必要がある
@@ -1170,6 +1175,5 @@ augroup END
 " }}}
 
 
-source ~/.config/nvim/scripts/plugin.vim
 
 " }}}
