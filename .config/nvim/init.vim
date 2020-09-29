@@ -6,6 +6,10 @@ scriptencoding utf-8
 " エディタ全般の設定{{{
 """"""""""""""""""""""""
 
+augroup vimrc
+  autocmd!
+augroup END
+
 let g:tex_flavor = "latex"
 
 source ~/.config/nvim/scripts/minpac.vim
@@ -13,32 +17,15 @@ source ~/.config/nvim/scripts/plugin.vim
 filetype plugin indent on
 syntax enable
 
+source ~/.config/nvim/scripts/option.vim
+
 " mouse などの有効化{{{
-set mouse=a
-if &shell =~# 'fish$'
-  set shell=sh
-endif
 
 let g:python3_host_prog = $HOME . '/.pyenv/versions/neovim/bin/python'
-
-if has('persistent_undo')
-  set undodir=~/.vim/undo
-  set undofile
-endif
-
-augroup vimrc
-  autocmd!
-augroup END
 
 " }}}
 
 " タブ文字/不可視文字/インデントの設定{{{
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set breakindent
-set smartindent
-
 " indent 幅のデフォルト
 augroup vimrc
   autocmd FileType vim setlocal shiftwidth=2
@@ -55,28 +42,6 @@ augroup END
 """""""""""""""""""""""""""""""""
 
 " 表示設定 {{{
-set visualbell
-set noerrorbells
-" set showmatch " 対応カッコを表示
-set ambiwidth=single  "全角文字幅
-set showcmd
-set modeline
-set modelines=3
-
-set list
-set listchars=tab:▸▹┊,trail:⌑,extends:❯,precedes:❮
-set wrap
-
-set lazyredraw
-set ttyfast
-
-set number
-set colorcolumn=80
-set laststatus=2 " ステータスラインを常に表示
-set statusline^=%{coc#status()}
-set foldcolumn=0
-set signcolumn=yes:2
-
 augroup vimrc
   " 現在編集中のバッファは scrolloff あり
   autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
@@ -136,14 +101,6 @@ augroup END
 " }}}
 
 " Theme {{{
-
-set termguicolors
-set background=dark
-colorscheme gruvbit
-
-set termguicolors
-" augroup の設定の後に読み込む必要がある
-
 " VimShowHlGroup: Show highlight group name under a cursor
 command! VimShowHlGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
 " VimShowHlItem: Show highlight item name under a cursor
@@ -168,19 +125,6 @@ endfunction
 " エディタの機能に関する設定 {{{
 """""""""""""""""""""""""""""""""
 
-set nobackup
-set noswapfile
-set autoread
-set hidden
-set confirm
-
-set spelllang=en,cjk
-
-set virtualedit=block
-set backspace=indent,eol,start
-set history=10000
-" set formatoptions=jcrqlnB
-autocmd vimrc FileType * set formatoptions-=o formatoptions+=nB
 autocmd vimrc InsertLeave * set nopaste
 
 " folding {{{
@@ -198,12 +142,6 @@ command! AsUtf8 set fenc=utf-8|w
 " }}}
 
 " 検索機能{{{
-set ignorecase
-set smartcase
-set incsearch
-set wrapscan
-set hlsearch
-set inccommand=split
 nnoremap g/ /\v
 nnoremap * *N
 nnoremap g* g*N
@@ -496,9 +434,6 @@ nnoremap s/ q/G
 " Sandwich.vim のデフォルトキーバインドを上書きする
 nnoremap <nowait> srb <Nop>
 
-set splitbelow
-set splitright
-
 function! s:isWideWindow(nr)
   let wd = winwidth(a:nr)
   let ht = winheight(a:nr)
@@ -548,7 +483,6 @@ cnoremap <C-r><CR> <C-r>0
 cnoremap <C-r><Space> <C-r>+
 
 " set clipboard+=unnamed
-set clipboard=
 " noremap <Space>y "+y
 noremap <Space>p "+p
 noremap <Space>P "+P
