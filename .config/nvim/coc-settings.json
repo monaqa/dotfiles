@@ -27,6 +27,8 @@
   "python.linting.flake8CategorySeverity.F": "Warning",
   "python.linting.pep8CategorySeverity.E": "Warning",
 
+  "julia.executablePath": "$HOME/.local/bin/julia",
+
   "languageserver": {
     "efm": {
       "command": "efm-langserver",

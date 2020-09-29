@@ -7,6 +7,7 @@ set -g fish_ambiguous_width 1
 # environment variables {{{
 # bin at home directory
 set -x PATH "$HOME/.cargo/bin" $PATH
+set -x PATH "$HOME/.local/bin" $PATH
 
 # SATySFi
 export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi
@@ -101,6 +102,7 @@ if test -n "$FUZZY_FINDER"
   # mercurial とかぶっていることに注意
   abbr -a hg "history | $FUZZY_FINDER"
   abbr -a gc "git branch -a | $FUZZY_FINDER | xargs git checkout"
+  abbr -a gct "git tag -l | $FUZZY_FINDER | xargs git checkout"
 end
 # }}}
 
