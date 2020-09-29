@@ -8,7 +8,7 @@ scriptencoding utf-8
 
 let g:tex_flavor = "latex"
 
-source ~/.config/nvim/minpac.vim
+source ~/.config/nvim/scripts/minpac.vim
 filetype plugin indent on
 syntax enable
 
@@ -1169,5 +1169,7 @@ augroup END
 
 " }}}
 
+
+source ~/.config/nvim/scripts/plugin.vim
 
 " }}}
