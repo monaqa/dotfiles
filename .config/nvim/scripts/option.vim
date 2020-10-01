@@ -37,6 +37,15 @@ set termguicolors
 set background=dark
 colorscheme gruvbit
 
+" 全角スペース強調
+" https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776
+augroup vimrc
+  autocmd ColorScheme * highlight link UnicodeSpaces Error
+  autocmd VimEnter,WinEnter * highlight link UnicodeSpaces Error
+  autocmd VimEnter,WinEnter * match UnicodeSpaces
+  \ /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
+augroup END
+
 " §§1 editing
 set expandtab
 set tabstop=4
@@ -85,13 +94,3 @@ set incsearch
 set wrapscan
 set hlsearch
 set inccommand=split
-
-" §§1 terminal window
-augroup vimrc
-  autocmd TermOpen * call s:terminal_init()
-  autocmd TermOpen * setlocal wrap
-  autocmd TermOpen * setlocal nonumber
-  autocmd TermOpen * setlocal signcolumn=no
-  autocmd TermOpen * setlocal foldcolumn=0
-augroup END
-
