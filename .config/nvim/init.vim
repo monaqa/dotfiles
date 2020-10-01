@@ -67,13 +67,6 @@ augroup END
 
 " }}}
 
-" Theme {{{
-" VimShowHlGroup: Show highlight group name under a cursor
-command! VimShowHlGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
-" VimShowHlItem: Show highlight item name under a cursor
-command! VimShowHlItem echo synIDattr(synID(line("."), col("."), 1), "name")
-" }}}
-
 " .vimrc.local {{{
 augroup vimrc
   autocmd VimEnter * call s:vimrc_local(expand('<afile>:p:h'))
@@ -93,20 +86,6 @@ endfunction
 """""""""""""""""""""""""""""""""
 
 autocmd vimrc InsertLeave * set nopaste
-
-" folding {{{
-" }}}
-
-" 文字コード指定 {{{
-" フォーマット変えて開き直す系
-" thanks to cohama
-command! Utf8 edit ++enc=utf-8 %
-command! Cp932 edit ++enc=cp932 %
-command! Unix edit ++ff=unix %
-command! Dos edit ++ff=dos %
-command! AsUtf8 set fenc=utf-8|w
-" }}}
-
 
 " Automatically create missing directories {{{
 " thanks to lambdalisue
@@ -156,18 +135,6 @@ augroup END
 
 " diff {{{
 " thanks to cohama
-command! -nargs=0 DiffThese call s:diff_these()
-function! s:diff_these()
-  let win_count = winnr('$')
-  if win_count == 2
-    diffthis
-    wincmd w
-    diffthis
-    wincmd w
-  else
-    echomsg "Too many windows."
-  endif
-endfunction
 " }}}
 
 " }}}
@@ -211,150 +178,6 @@ endfunction
 
 " }}}
 
-
-
-" 行の操作/空行追加 {{{
-
-" 改行だけを入力する
-" thanks to cohama
-nnoremap <expr> <Space>o "mz" . v:count . "o\<Esc>`z"
-nnoremap <expr> <Space>O "mz" . v:count . "O\<Esc>`z"
-
-if !has('gui_running')
-  " CUIで入力された<S-CR>,<C-S-CR>が拾えないので
-  " iTerm2のキー設定を利用して特定の文字入力をmapする
-  " Map ✠ (U+2720) to <Esc> as <S-CR> is mapped to ✠ in iTerm2.
-  map ✠ <S-CR>
-  imap ✠ <S-CR>
-  map ✢ <C-S-CR>
-  imap ✢ <C-S-CR>
-  map ➿ <C-CR>
-  imap ➿ <C-CR>
-endif
-" 将来何かに割り当てようっと
-nnoremap <S-CR> <Nop>
-nnoremap <C-S-CR> <Nop>
-nnoremap <C-CR> <Nop>
-
-" 長い文の改行をノーマルモードから楽に行う
-" try: f.<Space><CR> or f,<Space><CR>
-nnoremap <silent> <Space><CR> a<CR><Esc>
-
-" }}}
-
-" マクロの活用 {{{
-nnoremap q qq<Esc>
-nnoremap Q q
-nnoremap , @q
-" JIS キーボードなので <S-;> が + と同じ
-nnoremap + ,
-" }}}
-
-" Transform with Lambda function {{{
-
-" 選択した数値を任意の関数で変換する．
-" たとえば 300pt の 300 を選択して <Space>s とし，
-" x -> x * 3/2 と指定すれば 450pt になる．
-" 計算式は g:monaqa_lambda_func に格納されるので <Space>r で使い回せる．
-" 小数のインクリメントや css での長さ調整等に便利？マクロと組み合わせてもいい．
-" 中で eval を用いているので悪用厳禁．基本的に数値にのみ用いるようにする
-vnoremap <Space>s :<C-u>call <SID>applyLambdaToSelectedArea()<CR>
-vnoremap <Space>r :<C-u>call <SID>repeatLambdaToSelectedArea()<CR>
-
-let g:monaqa_lambda_func = 'x'
-
-function s:applyLambdaToSelectedArea() abort
-  let tmp = @@
-  silent normal gvy
-  let visual_area = @@
-
-  let lambda_body = input('Lambda: x -> ', g:monaqa_lambda_func)
-  let g:monaqa_lambda_func = lambda_body
-  let lambda_expr = '{ x -> ' . lambda_body . ' }'
-  let Lambda = eval(lambda_expr)
-  let retval = Lambda(eval(visual_area))
-  let return_str = string(retval)
-
-  let @@ = return_str
-  silent normal gvp
-  let @@ = tmp
-endfunction
-
-function s:repeatLambdaToSelectedArea() abort
-  let tmp = @@
-  silent normal gvy
-  let visual_area = @@
-
-  let lambda_body = g:monaqa_lambda_func
-  let lambda_expr = '{ x -> ' . lambda_body . ' }'
-  let Lambda = eval(lambda_expr)
-  let retval = Lambda(eval(visual_area))
-  let return_str = string(retval)
-
-  let @@ = return_str
-  silent normal gvp
-  let @@ = tmp
-endfunction
-
-" }}}
-
-" jump with changed list {{{
-" 便利なので連打しやすいマップにしてみる
-nnoremap <C-h> g;
-nnoremap <C-g> g,
-
-" }}}
-
-" rename/delete current file {{{
-" thanks to cohama
-
-" 今開いているファイルを削除
-function! DeleteMe(force)
-  if a:force || !&modified
-    let filename = expand('%')
-    bdelete!
-    call delete(filename)
-  else
-    echomsg 'File modified'
-  endif
-endfunction
-command! -bang -nargs=0 DeleteMe call DeleteMe(<bang>0)
-
-" 今開いているファイルをリネーム
-function! RenameMe(newFileName)
-  let currentFileName = expand('%')
-  execute 'saveas ' . a:newFileName
-  bdelete! #
-  call delete(currentFileName)
-endfunction
-command! -nargs=1 RenameMe call RenameMe(<q-args>)
-
-cnoreabbrev <expr> RenameMe "RenameMe " . expand('%')
-
-" }}}
-
-" auto-format {{{
-" 行末の空白とか最終行の空行を削除
-function! RemoveUnwantedSpaces()
-  let pos_save = getpos('.')
-  try
-    keeppatterns %s/\s\+$//e
-    while 1
-      let lastline = getline('$')
-      if lastline =~ '^\s*$' && line('$') != 1
-        $delete
-      else
-        break
-      endif
-    endwhile
-  finally
-    call setpos('.', pos_save)
-  endtry
-endfunction
-command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
-" }}}
-
-" }}}
 
 
 " 特定の種類のファイルに対する設定{{{
