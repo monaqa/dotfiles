@@ -1,5 +1,7 @@
 " vim:fdm=marker:fmr=§§,■■
 
+" Package を load した後に設定するもの．
+
 " §§1 Plugin settings for Konfekt/FastFold
 
 " §§1 Plugin settings for Shougo/vimproc.vim
@@ -28,8 +30,8 @@ inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand
 
 " §§1 Plugin settings for habamax/vim-gruvbit
 
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_material_background = 'hard'
+" let g:gruvbox_contrast_dark = 'hard'
+" let g:gruvbox_material_background = 'hard'
 
 augroup vimrc_colorscheme
   autocmd!
@@ -138,11 +140,6 @@ augroup END
 
 " §§1 Plugin settings for lambdalisue/fern.vim
 
-let g:fern#disable_default_mappings = 1
-let g:fern#default_hidden = 1
-
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
 nnoremap sf :<C-u>Fern . -drawer -toggle<CR>
 
 augroup rc_fern
@@ -257,7 +254,6 @@ let g:vimtex_imaps_leader = "@"
 
 " §§1 Plugin settings for liuchengxu/vista.vim
 
-let g:vista_default_executive = 'coc'
 nnoremap <silent> sm :<C-u>Vista!!<CR>
 
 " §§1 Plugin settings for machakann/vim-sandwich
@@ -470,7 +466,6 @@ let g:rust_doc#define_map_K = 0
 
 " §§1 Plugin settings for sheerun/vim-polyglot
 
-let g:polyglot_disabled = ['tex', 'latex', 'fish']
 let g:rst_fold_enabled = 1
 
 " §§1 Plugin settings for thinca/vim-quickrun
@@ -526,8 +521,6 @@ augroup END
 
 " §§1 Plugin settings for thinca/vim-splash
 
-let g:splash#path = $HOME . "/.config/nvim/scripts/template/monaqa.txt"
-
 " §§1 Plugin settings for thinca/vim-submode
 
 call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
@@ -547,7 +540,6 @@ call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
 " §§1 Plugin settings for thinca/vim-textobj-between
 
-let g:textobj_between_no_default_key_mappings = 1
 omap m <Plug>(textobj-between-i)
 vmap m <Plug>(textobj-between-i)
 omap M <Plug>(textobj-between-a)
@@ -565,37 +557,6 @@ nmap <Space>cc <Plug>(caw:hatpos:toggle)
 
 
 " §§1 Plugin settings for vim-airline/vim-airline
-
-let g:airline_theme = 'sol'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_tabs = 0
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#tabline#buffer_idx_format = {
-\ '0': '0:',
-\ '1': '1:',
-\ '2': '2:',
-\ '3': '3:',
-\ '4': '4:',
-\ '5': '5:',
-\ '6': '6:',
-\ '7': '7:',
-\ '8': '8:',
-\ '9': '9:'
-\}
-nmap sp <Plug>AirlineSelectPrevTab
-nmap sn <Plug>AirlineSelectNextTab
-" 謎のエラーが出る
-" nmap <expr> s<Space> "<Plug>AirlineSelectTab" . v:count
-nmap 1s<Space> <Plug>AirlineSelectTab1
-nmap 2s<Space> <Plug>AirlineSelectTab2
-nmap 3s<Space> <Plug>AirlineSelectTab3
-nmap 4s<Space> <Plug>AirlineSelectTab4
-nmap 5s<Space> <Plug>AirlineSelectTab5
-nmap 6s<Space> <Plug>AirlineSelectTab6
-nmap 7s<Space> <Plug>AirlineSelectTab7
-nmap 8s<Space> <Plug>AirlineSelectTab8
-nmap 9s<Space> <Plug>AirlineSelectTab9
 
 " §§1 Plugin settings for vim-airline/vim-airline-themes
 

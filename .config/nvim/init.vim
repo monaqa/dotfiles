@@ -10,8 +10,7 @@ augroup vimrc
   autocmd!
 augroup END
 
-let g:tex_flavor = "latex"
-
+source ~/.config/nvim/scripts/plugin_beforeload.vim
 source ~/.config/nvim/scripts/minpac.vim
 source ~/.config/nvim/scripts/plugin.vim
 
