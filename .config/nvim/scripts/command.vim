@@ -75,7 +75,3 @@ function! RemoveUnwantedSpaces()
   endtry
 endfunction
 command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
-
-" §§1 
-" §§1 
-" §§1 
