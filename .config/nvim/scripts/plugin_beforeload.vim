@@ -2,6 +2,8 @@
 
 " Package を load する前に予め設定する変数値など．
 
+let g:python3_host_prog = $HOME . '/.pyenv/versions/neovim/bin/python'
+
 " §§1 Plugin settings for lambdalisue/fern.vim
 
 let g:fern#disable_default_mappings = 1
