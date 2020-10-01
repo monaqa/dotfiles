@@ -2,14 +2,6 @@
 
 " Package を load した後に設定するもの．
 
-" §§1 Plugin settings for Konfekt/FastFold
-
-" §§1 Plugin settings for Shougo/vimproc.vim
-
-" §§1 Plugin settings for Vimjas/vim-python-pep8-indent
-
-" §§1 Plugin settings for bps/vim-textobj-python
-
 " §§1 Plugin settings for cohama/lexima.vim
 
 call lexima#add_rule({'at': '\%#[-0-9a-zA-Z_]', 'char': '{', 'input': '{'})
@@ -21,12 +13,6 @@ call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex', '
 call lexima#add_rule({'char': '``', 'input_after': '``', 'filetype': ['rst']})
 
 inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
-
-" §§1 Plugin settings for file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx
-
-" §§1 Plugin settings for glts/vim-textobj-comment
-
-" §§1 Plugin settings for gruvbox-community/gruvbox
 
 " §§1 Plugin settings for habamax/vim-gruvbit
 
@@ -60,13 +46,9 @@ function! s:setting_gruvbit() abort
   hi! link CocRustChainingHint CocHintFloat
 endfunction
 
-" §§1 Plugin settings for junegunn/fzf
-
 " §§1 Plugin settings for kana/vim-altr
 
 nmap <CR>^ <Plug>(altr-forward)
-
-" §§1 Plugin settings for kana/vim-operator-user
 
 " §§1 Plugin settings for kana/vim-textobj-user
 
@@ -140,6 +122,7 @@ augroup END
 
 " §§1 Plugin settings for lambdalisue/fern.vim
 
+let g:fern#renderer = 'nerdfont'
 nnoremap sf :<C-u>Fern . -drawer -toggle<CR>
 
 augroup rc_fern
@@ -378,10 +361,6 @@ xmap a, <Plug>(swap-textobject-a)
 
 nnoremap U :<C-u>UndotreeToggle<CR>
 
-" §§1 Plugin settings for mhinz/vim-signify
-
-" §§1 Plugin settings for monaqa/satysfi.vim
-
 " §§1 Plugin settings for monaqa/smooth-scroll.vim
 
 let g:smooth_scroll_no_default_key_mappings = 1
@@ -449,20 +428,14 @@ nnoremap sg :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
 nnoremap so :<C-u>CocCommand fzf-preview.DirectoryFiles <CR>
 " ■■
 
-" §§1 Plugin settings for pest-parser/pest.vim
-
 " §§1 Plugin settings for previm/previm
 
 let g:previm_open_cmd = "open -a 'Google Chrome'"
 let g:previm_custom_css_path = "~/.config/nvim/scripts/template/markdown.css"
 
-" §§1 Plugin settings for raghur/vim-ghost
-
 " §§1 Plugin settings for rhysd/rust-doc.vim
 
 let g:rust_doc#define_map_K = 0
-
-" §§1 Plugin settings for sainnhe/gruvbox-material
 
 " §§1 Plugin settings for sheerun/vim-polyglot
 
@@ -519,8 +492,6 @@ augroup rc_quickrun
   autocmd FileType python nnoremap <buffer> <CR>q :QuickRun jupytext -args %{expand("%")}<CR>
 augroup END
 
-" §§1 Plugin settings for thinca/vim-splash
-
 " §§1 Plugin settings for thinca/vim-submode
 
 call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
@@ -556,12 +527,6 @@ vmap <Space>c <Plug>(caw:hatpos:toggle)
 nmap <Space>cc <Plug>(caw:hatpos:toggle)
 
 
-" §§1 Plugin settings for vim-airline/vim-airline
-
-" §§1 Plugin settings for vim-airline/vim-airline-themes
-
-" §§1 Plugin settings for xolox/vim-misc
-
 " §§1 Plugin settings for xolox/vim-session
 
 let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
@@ -580,6 +545,4 @@ else
   let g:session_autoload = 'no'
 endif
 unlet s:local_session_directory
-
-" §§1 Plugin settings for yasukotelin/shirotelin
 
