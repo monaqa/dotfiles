@@ -40,16 +40,16 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tabs = 0
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#buffer_idx_format = {
-\ '0': '𝟎@',
-\ '1': '𝟏@',
-\ '2': '𝟐@',
-\ '3': '𝟑@',
-\ '4': '𝟒@',
-\ '5': '𝟓@',
-\ '6': '𝟔@',
-\ '7': '𝟕@',
-\ '8': '𝟖@',
-\ '9': '𝟗@'
+\ '0': '𝟎ː',
+\ '1': '𝟏ː',
+\ '2': '𝟐ː',
+\ '3': '𝟑ː',
+\ '4': '𝟒ː',
+\ '5': '𝟓ː',
+\ '6': '𝟔ː',
+\ '7': '𝟕ː',
+\ '8': '𝟖ː',
+\ '9': '𝟗ː'
 \}
 
 nmap sp <Plug>AirlineSelectPrevTab

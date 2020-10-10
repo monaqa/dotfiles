@@ -423,6 +423,7 @@ nnoremap <silent> ma :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g
 
 " §§2 fzf-preview
 let g:fzf_preview_floating_window_rate = 0.8
+let g:fzf_preview_grep_cmd = 'rg --line-number --no-heading --color=never --hidden'
 nnoremap sb :<C-u>CocCommand fzf-preview.AllBuffers<CR>
 nnoremap sg :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
 nnoremap so :<C-u>CocCommand fzf-preview.DirectoryFiles <CR>
