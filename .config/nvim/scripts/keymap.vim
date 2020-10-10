@@ -575,3 +575,6 @@ endfunction
 " 便利なので連打しやすいマップにしてみる
 nnoremap <C-h> g;
 nnoremap <C-g> g,
+
+vnoremap <C-a> <C-a>gv
+vnoremap <C-x> <C-x>gv
