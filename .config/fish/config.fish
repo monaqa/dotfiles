@@ -18,6 +18,8 @@ source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 # gopath
 set -x PATH $HOME/go/bin $PATH
 
+# fzf-preview
+set -x FZF_PREVIEW_PREVIEW_BAT_THEME = 'gruvbox'
 # }}}
 
 eval (starship init fish)
