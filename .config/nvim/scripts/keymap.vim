@@ -293,6 +293,11 @@ noremap <CR>p :<C-u>put +<CR>
 noremap <CR>P :<C-u>put! +<CR>
 noremap <Space>y "+y
 
+" VISUAL mode での置換にはデフォルトでヤンクレジスタを使う
+" （無名レジスタが汚れても連続して同じ文字列を貼り付けることができる）
+" もし無名レジスタを使いたい場合は P を使う
+vnoremap p "0p
+
 " §§2 operator-like <C-y> in insert mode
 " a<Bs> を最初に入れるのは，直後の <Esc> 時に
 " インデントが消えてしまわないようにするため（もっといい方法がありそう）

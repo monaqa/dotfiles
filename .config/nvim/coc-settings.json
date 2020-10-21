@@ -40,5 +40,7 @@
 
   "yank.highlight.duration": 250,
   "yank.enableCompletion": false,
-  "rust-analyzer.lens.enable": false
+  "rust-analyzer.lens.enable": false,
+  "rust-analyzer.checkOnSave.command": "clippy"
+
 }

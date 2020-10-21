@@ -292,6 +292,18 @@ let g:sandwich#recipes += [
 let g:sandwich#recipes += [
 \   {'buns': ['`', ' <>`_'], 'nesting': 0, 'input': ['l'], 'filetype': ['rst']},
 \   {'buns': ['` <', '>`_'], 'nesting': 0, 'input': ['L'], 'filetype': ['rst']},
+\   {'buns': ['[', ']()'], 'nesting': 0, 'input': ['l'], 'filetype': ['markdown']},
+\   {'buns': ['[](', ')'], 'nesting': 0, 'input': ['L'], 'filetype': ['markdown']},
+\ ]
+
+let g:sandwich#recipes += [
+\   {
+\     'filetype'    : ['markdown'],
+\     'buns'        : ['```', '```' ],
+\     'input'       : ['c', ],
+\     'kind'        : ['add'],
+\     'linewise'    : 1,
+\   },
 \ ]
 
 let g:sandwich#recipes += [

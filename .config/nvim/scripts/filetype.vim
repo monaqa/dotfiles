@@ -102,6 +102,7 @@ augroup END
 " §§2 markdown
 augroup vimrc
   autocmd FileType markdown setlocal shiftwidth=2
+  autocmd FileType markdown setlocal spell
 augroup END
 
 " §§2 HTML/XML

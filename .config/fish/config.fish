@@ -20,9 +20,12 @@ set -x PATH $HOME/go/bin $PATH
 
 # fzf-preview
 set -x FZF_PREVIEW_PREVIEW_BAT_THEME = 'gruvbox'
-# }}}
+
+# poetry
+set -x PATH $HOME/.poetry/bin $PATH
 
 eval (starship init fish)
+# }}}
 
 # ls
 set -x LSCOLORS gxfxcxdxbxegedabagacad
