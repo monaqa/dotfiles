@@ -192,9 +192,14 @@ noremap fj f<C-k>j
 noremap Fj F<C-k>j
 noremap tj t<C-k>j
 noremap Tj T<C-k>j
+noremap fk f<C-k>k
+noremap Fk F<C-k>k
+noremap tk t<C-k>k
+noremap Tk T<C-k>k
 
 " これを設定することで， fjj を本来の fj と同じ効果にできる．
 digraphs jj 106  " j
+digraphs kk 107  " k
 
 " 記号追加時のヒント：追加したい記号の上で ga と押せば...
 " カッコ
@@ -208,8 +213,10 @@ digraphs j< 12304  " 【
 digraphs j> 12305  " 】
 
 " 句読点
-digraphs j, 65292  " ，
-digraphs j. 65294  " ．
+digraphs j, 12289  " 、
+digraphs j. 12290  " 。
+digraphs k, 65292  " ，
+digraphs k. 65294  " ．
 digraphs j! 65281  " ！
 digraphs j? 65311  " ？
 digraphs j: 65306  " ：
@@ -217,7 +224,7 @@ digraphs j: 65306  " ：
 " その他の記号
 digraphs j~ 12316  " 〜
 digraphs j/ 12539  " ・
-digraphs js 12288  " 　
+digraphs js  9251  " ␣
 
 " §§1 window/buffer
 " https://qiita.com/tekkoc/items/98adcadfa4bdc8b5a6ca
