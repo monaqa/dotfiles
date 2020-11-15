@@ -182,9 +182,6 @@ function! s:reformat_cmdstring(str)
   return s
 endfunction
 
-" §§1 command-line window
-let &cedit = "\<C-C>"
-
 " §§1 input Japanese character
 " ちょっと j くんには悪いけど，fj は予約したほうが便利．
 " これで「fj.」 と押せば全角ピリオドを検索できる
@@ -590,3 +587,6 @@ nnoremap <C-g> g,
 
 vnoremap <C-a> <C-a>gv
 vnoremap <C-x> <C-x>gv
+
+" 2020-11-12 に思いついた便利なアイデア。
+" vnoremap <expr> <Bar> "/\\%" .. virtcol(".") .. "v"
