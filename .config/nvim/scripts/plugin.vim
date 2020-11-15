@@ -21,29 +21,19 @@ inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand
 
 augroup vimrc_colorscheme
   autocmd!
-  autocmd ColorScheme gruvbox call s:setting_gruvbox()
   autocmd ColorScheme gruvbit call s:setting_gruvbit()
 augroup END
-
-function! s:setting_gruvbox() abort
-  hi! link SpecialKey GruvboxBg4
-  hi! NonText ctermfg=103 guifg=#8787af
-  hi! MatchParen ctermbg=66 ctermfg=223 guibg=#5f8787 guifg=#ffdfdf
-  hi! CursorColumn ctermbg=238 guibg=#444444
-  hi! CursorLine ctermbg=238 guibg=#444444
-  hi! FoldColumn ctermbg=236 guibg=#303030
-  hi! SignColumn ctermbg=238 guibg=#444444
-  hi! link Folded GruvboxPurpleBold
-  hi! link VertSplit GruvboxFg1
-  hi! link HighlightedyankRegion DiffChange
-  autocmd vimrc FileType help hi! Ignore ctermfg=66 guifg=#5f8787
-endfunction
 
 function! s:setting_gruvbit() abort
   hi! FoldColumn guibg=#303030
   hi! NonText guifg=#496da9
   hi! CocHintFloat guibg=#444444 guifg=#45daef
   hi! link CocRustChainingHint CocHintFloat
+  " Diff に関しては前のバージョン
+  " (https://github.com/habamax/vim-gruvbit/commit/a19259a1f02bbfff37d72eebef6b5d5d22f22248)
+  " のほうが好みだったので。
+  hi! DiffChange guifg=NONE guibg=#314a5c gui=NONE cterm=NONE
+  hi! DiffDelete guifg=#968772 guibg=#5c3728 gui=NONE cterm=NONE
 endfunction
 
 " §§1 Plugin settings for kana/vim-altr

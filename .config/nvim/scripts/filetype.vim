@@ -109,6 +109,7 @@ augroup END
 augroup vimrc
   autocmd FileType xml,html inoremap <buffer> </ </<C-x><C-o>
   autocmd FileType xml,html setlocal shiftwidth=2
+  autocmd FileType xml nnoremap <buffer> <CR>f :<C-u>%!tidy --indent-cdata true -xml -utf8 2>/dev/null<CR>
 augroup END
 
 " §§1 shell

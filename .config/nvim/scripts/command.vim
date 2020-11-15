@@ -75,3 +75,15 @@ function! RemoveUnwantedSpaces()
   endtry
 endfunction
 command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
+
+" §§1 substitute
+command! -bang -nargs=0 SubstituteCommaPeriod call SubstituteCommaPeriod(<bang>0)
+function! SubstituteCommaPeriod(invert)
+  if a:invert
+    %substitute/、/，/g
+    %substitute/。/．/g
+  else
+    %substitute/，/、/g
+    %substitute/．/。/g
+  endif
+endfunction

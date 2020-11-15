@@ -51,7 +51,7 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set breakindent
-set smartindent
+set nosmartindent
 set virtualedit=block
 
 set clipboard=
