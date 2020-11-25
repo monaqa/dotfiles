@@ -45,8 +45,6 @@ abbr -a mk    "mkdir"
 # git
 abbr -a g    "git"
 abbr -a gb   "git branch"
-abbr -a gcm  "git checkout master"
-abbr -a gcb  "git checkout -b"
 abbr -a gm  "git merge"
 abbr -a gmm  "git merge master"
 abbr -a gpl  "git pull"
@@ -55,9 +53,9 @@ abbr -a grm  "git remote"
 abbr -a grb  "git rebase"
 abbr -a grbm "git rebase master"
 abbr -a grbc "git rebase --continue"
-abbr -a gss  "git stash save"
-abbr -a gsl  "git stash list"
-abbr -a gsp  "git stash pop"
+abbr -a gst  "git stash"
+abbr -a gsm  "git switch master"
+abbr -a gsc  "git switch -c"
 # abbr -a gsd "git stash drop"
 
 # tig
@@ -106,8 +104,8 @@ if test -n "$FUZZY_FINDER"
   abbr -a tg "tmux a -t (tmux list-sessions | $FUZZY_FINDER | cut -d : -f 1)"
   # mercurial とかぶっていることに注意
   abbr -a hg "history | $FUZZY_FINDER"
-  abbr -a gc "git branch -a | $FUZZY_FINDER | xargs git checkout"
-  abbr -a gct "git tag -l | $FUZZY_FINDER | xargs git checkout"
+  abbr -a gs "git branch -a | $FUZZY_FINDER | xargs git switch"
+  abbr -a gst "git tag -l | $FUZZY_FINDER | xargs git switch"
 end
 # }}}
 
