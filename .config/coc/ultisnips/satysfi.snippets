@@ -364,6 +364,36 @@ document'<%
 >%
 endsnippet
 
+snippet tslydifi "SLyDIFi template" b
+@require: class-slydifi/theme/plain
+@require: color
+
+open FigBox  % 図の挿入に必要
+open SlydifiOverlay  % オーバーレイに必要
+
+in
+
+SlydifiPlain.document(|
+	draft-mode = false;
+|)'<%
+
+	+make-title(|
+		title = {|\SLyDIFi; デモ|};  % slide title
+		% 複数行にまたがるタイトルを書く場合は以下のようにします
+		% title = {|長い名前のタイトルが続く|\SLyDIFi; デモ|};
+		author = {| Your Name |};  % fill your name
+		date = {|2020年9月12日|};
+	|);
+
+	+section{|Example Section|}<%
+		+frame{普通のスライド}<%
+		$0
+		>%
+	>%
+
+>%
+endsnippet
+
 # }}}
 
 # SLyDIFi {{{

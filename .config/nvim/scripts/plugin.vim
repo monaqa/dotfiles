@@ -113,7 +113,8 @@ augroup END
 " §§1 Plugin settings for lambdalisue/fern.vim
 
 let g:fern#renderer = 'nerdfont'
-nnoremap sf :<C-u>Fern . -drawer -toggle<CR>
+nnoremap sf <Cmd>Fern .<CR>
+nnoremap sz <Cmd>Fern . -drawer -toggle<CR>
 
 augroup rc_fern
   autocmd!
@@ -229,6 +230,24 @@ let g:vimtex_imaps_leader = "@"
 
 nnoremap <silent> sm :<C-u>Vista!!<CR>
 
+" §§1 Plugin settings for machakann/vim-textobj-functioncall
+
+" ジェネリクスも関数呼び出しとして扱う
+let g:textobj_functioncall_patterns = [
+  \ {
+  \   'header' : '\<\%(\h\k*\.\)*\h\k*',
+  \   'bra'    : '(',
+  \   'ket'    : ')',
+  \   'footer' : '',
+  \ },
+  \ {
+  \   'header' : '\<\h\k*',
+  \   'bra'    : '<',
+  \   'ket'    : '>',
+  \   'footer' : '',
+  \ },
+  \ ]
+
 " §§1 Plugin settings for machakann/vim-sandwich
 
 " 従来のキーマッピングを保存
@@ -305,6 +324,12 @@ let g:sandwich#recipes += [
 \   'action': ['add'],
 \   'input': ['g']
 \ },
+\ {
+\   'external': ['i<', "\<Plug>(textobj-functioncall-a)"],
+\   'noremap': 0,
+\   'kind': ['delete', 'replace', 'query'],
+\   'input': ['g']
+\ },
 \ ]
 
 function! GenericsName() abort
@@ -351,6 +376,12 @@ function! BlockCommandName() abort
   endif
   return '+' . cmdname . '<'
 endfunction
+
+" §§2 between mappings
+omap m <Plug>(textobj-sandwich-literal-query-i)
+vmap m <Plug>(textobj-sandwich-literal-query-i)
+omap M <Plug>(textobj-sandwich-literal-query-a)
+vmap M <Plug>(textobj-sandwich-literal-query-a)
 
 " §§1 Plugin settings for machakann/vim-swap
 
@@ -512,13 +543,6 @@ call submode#map('vertjmp', 'n', '', ';', ':LineSameSearch<CR>')
 call submode#map('vertjmp', 'n', '', ',', ':LineBackSameSearch<CR>')
 call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
-" §§1 Plugin settings for thinca/vim-textobj-between
-
-omap m <Plug>(textobj-between-i)
-vmap m <Plug>(textobj-between-i)
-omap M <Plug>(textobj-between-a)
-vmap M <Plug>(textobj-between-a)
-
 " §§1 Plugin settings for tpope/vim-capslock
 
 inoremap <C-l> <Nop>
@@ -548,4 +572,3 @@ else
   let g:session_autoload = 'no'
 endif
 unlet s:local_session_directory
-

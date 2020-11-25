@@ -28,10 +28,6 @@ let g:polyglot_disabled = ['tex', 'latex', 'fish']
 
 let g:splash#path = $HOME . "/.config/nvim/scripts/template/monaqa.txt"
 
-" §§1 Plugin settings for thinca/vim-textobj-between
-
-let g:textobj_between_no_default_key_mappings = 1
-
 " §§1 Plugin settings for vim-airline/vim-airline
 
 let g:airline_theme = 'sol'

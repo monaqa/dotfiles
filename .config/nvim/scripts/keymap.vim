@@ -51,7 +51,7 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
 vnoremap * "my/\V<C-R><C-R>=substitute(
 \escape(@m, '/\'), '\_s\+', '\\_s\\+', 'g')<CR><CR>N
-vnoremap S "my:set hlsearch<CR>
+vnoremap R "my:set hlsearch<CR>
 \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
 \/gce<Bar>1,''-&&<CR>
 
@@ -256,6 +256,32 @@ nnoremap sQ :<C-u>tabc<CR>
 nnoremap s: q:G
 nnoremap s? q?G
 nnoremap s/ q/G
+
+function! s:filter() abort
+  let text = getcmdline()
+  let newhist = copy(s:hist)
+  let re = "\\v\\c" .. join(split(text, "\\zs"), ".*")
+  call filter(newhist, {_, val -> val =~? re})
+  call deletebufline("%", 1, "$")
+  call setline(1, newhist)
+  call cursor("$", 1)
+  redraw
+endfunction
+function! s:cmdline() abort
+  autocmd FuzzyHistory CmdlineChanged * call s:filter()
+  call input("candy:")
+endfunction
+function! s:leave() abort
+  autocmd! FuzzyHistory CmdlineChanged
+endfunction
+augroup FuzzyHistory
+  autocmd!
+  autocmd CmdwinEnter * let s:hist = getline(1, "$")
+  autocmd CmdlineLeave * autocmd! FuzzyHistory CmdlineChanged
+augroup END
+" nnoremap <silent> <buffer> <C-f> :<C-u>call <SID>cmdline()<CR>
+nnoremap <silent> <expr> <C-c> (empty(getcmdwintype()) ? "q:" : "") .. ":<C-u>call <SID>cmdline()<CR>"
+
 
 " Sandwich.vim のデフォルトキーバインドを上書きする
 nnoremap <nowait> srb <Nop>
@@ -590,3 +616,6 @@ vnoremap <C-x> <C-x>gv
 
 " 2020-11-12 に思いついた便利なアイデア。
 " vnoremap <expr> <Bar> "/\\%" .. virtcol(".") .. "v"
+
+nnoremap S <cmd>write<CR>
+vnoremap S <cmd>write<CR>

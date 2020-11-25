@@ -1,6 +1,6 @@
 " vim:fdm=marker:fmr=§§,■■
 
-" §§1 
+" §§1
 
 " §§1 Vim script
 let g:vim_indent_cont = 0
@@ -17,7 +17,7 @@ endfunction
 " augroup vimrc
 "   autocmd FileType netrw call NetrwMapping()
 " augroup END
-" 
+"
 " function! NetrwMapping()
 "   noremap <buffer> i h
 "   noremap <buffer> s <Nop>
