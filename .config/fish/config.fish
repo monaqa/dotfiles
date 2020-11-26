@@ -24,6 +24,9 @@ set -x FZF_PREVIEW_PREVIEW_BAT_THEME = 'gruvbox'
 # poetry
 set -x PATH $HOME/.poetry/bin $PATH
 
+# Haxe
+set -x HAXE_STD_PATH "/usr/local/lib/haxe/std"
+
 eval (starship init fish)
 # }}}
 
