@@ -448,11 +448,14 @@ let g:coc_snippet_next = '<C-g><C-j>'
 let g:coc_snippet_prev = '<C-g><C-k>'
 
 " Remap for do codeAction of selected region
-function! s:cocActionsOpenFromSelected(type) abort
-  execute 'CocCommand actions.open ' . a:type
-endfunction
-xnoremap <silent> ma :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-nnoremap <silent> ma :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@l
+" function! s:cocActionsOpenFromSelected(type) abort
+"   execute 'CocCommand actions.open ' . a:type
+" endfunction
+" xnoremap <silent> ma :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+" nnoremap <silent> ma :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@l
+xmap <silent> ma <Plug>(coc-codeaction-selected)
+nmap <silent> ma <Plug>(coc-codeaction-selected)l
+
 
 " §§2 fzf-preview
 let g:fzf_preview_floating_window_rate = 0.8
