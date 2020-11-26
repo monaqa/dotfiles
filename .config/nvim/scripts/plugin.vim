@@ -113,7 +113,7 @@ augroup END
 " §§1 Plugin settings for lambdalisue/fern.vim
 
 let g:fern#renderer = 'nerdfont'
-nnoremap sf <Cmd>Fern .<CR>
+nnoremap sf <Cmd>Fern . -reveal=%<CR>
 nnoremap sz <Cmd>Fern . -drawer -toggle<CR>
 
 augroup rc_fern
@@ -548,11 +548,10 @@ call submode#leave_with('vertjmp', 'n', '', '<Space>')
 inoremap <C-l> <Nop>
 
 " §§1 Plugin settings for tyru/caw.vim
-
-nmap <Space>c <Plug>(caw:hatpos:toggle:operator)
-vmap <Space>c <Plug>(caw:hatpos:toggle)
-nmap <Space>cc <Plug>(caw:hatpos:toggle)
-
+" toggle comment を t に割り当てる。
+nmap t <Plug>(caw:hatpos:toggle:operator)
+vmap t <Plug>(caw:hatpos:toggle)
+nmap tt <Plug>(caw:hatpos:toggle)
 
 " §§1 Plugin settings for xolox/vim-session
 

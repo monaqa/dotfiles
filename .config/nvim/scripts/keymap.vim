@@ -183,45 +183,52 @@ function! s:reformat_cmdstring(str)
 endfunction
 
 " §§1 input Japanese character
+
 " ちょっと j くんには悪いけど，fj は予約したほうが便利．
 " これで「fj.」 と押せば全角ピリオドを検索できる
 noremap fj f<C-k>j
 noremap Fj F<C-k>j
-noremap tj t<C-k>j
-noremap Tj T<C-k>j
-noremap fk f<C-k>k
-noremap Fk F<C-k>k
-noremap tk t<C-k>k
-noremap Tk T<C-k>k
+" normal/visual mode の t を潰したため omap のみ
+onoremap tj t<C-k>j
+onoremap Tj T<C-k>j
+
+" k はまだとっとこう
+" noremap fk f<C-k>k
+" noremap Fk F<C-k>k
+" onoremap tk t<C-k>k
+" onoremap Tk T<C-k>k
+
+function s:register_digraph(key_pair, char)
+  execute('digraphs ' .. a:key_pair .. ' ' .. char2nr(a:char) )
+endfunction
 
 " これを設定することで， fjj を本来の fj と同じ効果にできる．
-digraphs jj 106  " j
-digraphs kk 107  " k
+call s:register_digraph('jj', 'j')
+" call s:register_digraph('kk', 'k')
 
-" 記号追加時のヒント：追加したい記号の上で ga と押せば...
 " カッコ
-digraphs j( 65288  " （
-digraphs j) 65289  " ）
-digraphs j[ 12300  " 「
-digraphs j] 12301  " 」
-digraphs j{ 12302  " 『
-digraphs j} 12303  " 』
-digraphs j< 12304  " 【
-digraphs j> 12305  " 】
+call s:register_digraph('j(', '（')
+call s:register_digraph('j)', '）')
+call s:register_digraph('j[', '「')
+call s:register_digraph('j]', '」')
+call s:register_digraph('j{', '『')
+call s:register_digraph('j}', '』')
+call s:register_digraph('j<', '【')
+call s:register_digraph('j>', '】')
 
 " 句読点
-digraphs j, 12289  " 、
-digraphs j. 12290  " 。
-digraphs k, 65292  " ，
-digraphs k. 65294  " ．
-digraphs j! 65281  " ！
-digraphs j? 65311  " ？
-digraphs j: 65306  " ：
+call s:register_digraph('j,', '、')
+call s:register_digraph('j.', '。')
+" call s:register_digraph('k,', '，')
+" call s:register_digraph('k.', '．')
+call s:register_digraph('j!', '！')
+call s:register_digraph('j?', '？')
+call s:register_digraph('j:', '：')
 
 " その他の記号
-digraphs j~ 12316  " 〜
-digraphs j/ 12539  " ・
-digraphs js  9251  " ␣
+call s:register_digraph('j~', '〜')
+call s:register_digraph('j/', '・')
+call s:register_digraph('js',  '␣')
 
 " §§1 window/buffer
 " https://qiita.com/tekkoc/items/98adcadfa4bdc8b5a6ca
