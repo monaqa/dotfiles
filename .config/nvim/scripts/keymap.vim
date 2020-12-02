@@ -17,20 +17,20 @@ endfunction
 
 nnoremap <silent><nowait> <Space><Space> :call <SID>temporal_attention()<CR>:call <SID>temporal_relnum()<CR>
 function! s:temporal_attention() abort
-    set cursorline
-    set cursorcolumn
-    augroup temporal_attention
-        autocmd!
-        autocmd CursorMoved * ++once set nocursorline
-        autocmd CursorMoved * ++once set nocursorcolumn
-    augroup END
+  set cursorline
+  set cursorcolumn
+  augroup temporal_attention
+    autocmd!
+    autocmd CursorMoved * ++once set nocursorline
+    autocmd CursorMoved * ++once set nocursorcolumn
+  augroup END
 endfunction
 function! s:temporal_relnum() abort
-    set relativenumber
-    augroup temporal_relnum
-        autocmd!
-        autocmd CursorMoved * ++once set norelativenumber
-    augroup END
+  set relativenumber
+  augroup temporal_relnum
+    autocmd!
+    autocmd CursorMoved * ++once set norelativenumber
+  augroup END
 endfunction
 
 " 検索系は見失いやすいので
@@ -493,6 +493,9 @@ vnoremap <Space>f :<C-u>VisualLineSearch<Space>
 vnoremap <Space>F :<C-u>VisualLineBackSearch<Space>
 nnoremap <Space>; :LineSameSearch<CR>
 nnoremap <Space>, :LineBackSameSearch<CR>
+
+" noremap <Space>f /^\s*\V\zs
+" noremap <Space>F ?^\s*\V\zs
 
 " Command mode mapping
 cnoremap <C-a> <Home>

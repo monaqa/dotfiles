@@ -41,7 +41,7 @@
   "yank.enableCompletion": false,
   "rust-analyzer.lens.enable": false,
   "rust-analyzer.checkOnSave.command": "clippy",
-  "rust-analyzer.updates.channel": "nightly",
+  "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.procMacro.enable": true
 }

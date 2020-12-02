@@ -3,9 +3,9 @@
 " §§1 highlight
 
 " Show highlight group name under a cursor
-command! VimShowHlGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
+command! HighlightGroup echo synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
 " Show highlight item name under a cursor
-command! VimShowHlItem echo synIDattr(synID(line("."), col("."), 1), "name")
+command! HighlightItem echo synIDattr(synID(line("."), col("."), 1), "name")
 
 " §§1 文字コードフォーマット
 
