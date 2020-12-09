@@ -566,11 +566,11 @@ nnoremap <Space>x :<C-u>call <SID>increment_char(-v:count1)<CR>
 
 " 文字コードのインクリメント
 function! s:increment_char(count)
-  normal v"my
+  normal! v"my
   let char = @m
   let num = char2nr(char)
   let @m = nr2char(num + a:count)
-  normal gv"mp
+  normal! gv"mp
 endfunction
 
 " 選択した数値を任意の関数で変換する．

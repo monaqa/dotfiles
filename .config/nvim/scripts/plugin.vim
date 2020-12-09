@@ -489,7 +489,8 @@ let g:quickrun_config._ = {
 \ 'outputter': 'error',
 \ 'outputter/error/success': 'buffer',
 \ 'outputter/error/error': 'quickfix',
-\ 'hook/close_quickfix/enable_exit': 1
+\ 'hook/close_quickfix/enable_exit': 1,
+\ 'hook/shebang/enable': 0,
 \ }
 
 let quickrun_config['jupytext'] = {

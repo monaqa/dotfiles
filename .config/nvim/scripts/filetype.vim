@@ -82,6 +82,10 @@ let g:vimtex_view_general_options = '@line @pdf @tex'
 let g:tex_flavor = 'latex'
 augroup vimrc
   autocmd FileType tex setlocal shiftwidth=2
+  autocmd FileType tex setlocal iskeyword+=92,@-@
+  autocmd FileType tex nmap <buffer> <CR>q <Plug>(vimtex-compile)
+  autocmd FileType tex nmap <buffer> <CR>o <Plug>(vimtex-view)
+  autocmd FileType tex nmap <buffer> <CR>l <Plug>(vimtex-compile-output)
 augroup END
 
 " §§2 reStructuredText
