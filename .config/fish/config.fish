@@ -87,6 +87,9 @@ abbr -a cn   "cargo new"
 abbr -a cr   "cargo run"
 abbr -a ct   "cargo test"
 
+# ranger
+abbr -a r    "ranger-cd"
+
 # }}}
 
 # modern commands {{{

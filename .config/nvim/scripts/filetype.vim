@@ -43,6 +43,8 @@ augroup END
 " §§2 Python
 augroup vimrc
   autocmd FileType python setlocal nosmartindent
+  autocmd FileType python inoreabbrev <buffer> imprt import
+  autocmd FileType python inoreabbrev <buffer> improt import
 augroup END
 
 " §§2 Julia

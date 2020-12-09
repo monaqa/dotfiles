@@ -5,7 +5,7 @@ cnoreabbrev <expr> w ((getcmdtype() ==# ":" && getcmdline() ==# "'<,'>w") ? ("\<
 
 " typo の達人
 function! s:modify_write_typo(typo)
-  exec 'cnoreabbrev <expr> ' .. a:typo .. ' ((getcmdtype() ==# ":")? "w" : "' .. a:typo .. '")'
+  exec 'cnoreabbrev <expr> ' .. a:typo .. ' ((getcmdtype() ==# ":" && getcmdline() ==# "' .. a:typo .. '")? "w" : "' .. a:typo .. '")'
 endfunction
 
 call s:modify_write_typo("w2")
