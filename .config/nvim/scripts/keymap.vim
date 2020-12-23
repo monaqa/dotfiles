@@ -471,12 +471,15 @@ onoremap m" a"
 onoremap m` a`
 
 " Vertical WORD (vWORD) 単位での移動
-nnoremap <silent> <C-j> :<C-u>exe "keepjumps normal! " . v:count1 . "}"<CR>
-onoremap <C-j> }
-vnoremap <C-j> }
-nnoremap <silent> <C-k> :<C-u>exe "keepjumps normal! " . v:count1 . "{"<CR>
-onoremap <C-k> {
-vnoremap <C-k> {
+let g:par_motion_continuous = v:false
+function! SmartParMotion(direction, count)
+  execute ((g:par_motion_continuous ? "keepjumps " : "") .. "normal! " .. a:count .. (a:direction ? "}" : "{"))
+endfunction
+noremap <C-j> <Cmd>call SmartParMotion(v:true, v:count1)<CR><Cmd>let g:par_motion_continuous = v:true<CR>
+noremap <C-k> <Cmd>call SmartParMotion(v:false, v:count1)<CR><Cmd>let g:par_motion_continuous = v:true<CR>
+augroup vimrc
+  autocmd CursorMoved * let g:par_motion_continuous = v:false
+augroup END
 
 " Vertical f-motion
 command! -nargs=1 LineSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m)
