@@ -211,14 +211,6 @@ nnoremap <Space>gs :<C-u>Gina status -s --opener=split<CR>
 nnoremap <Space>gb :Gina browse --exact --yank :<CR>:let @+=@"<CR>:echo @+<CR>
 vnoremap <Space>gb :Gina browse --exact --yank :<CR>:let @+=@"<CR>:echo @+<CR>
 
-function! SetupCommandAbbrs(from, to)
-  exec 'cnoreabbrev <expr> '.a:from
-        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
-        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
-endfunction
-call SetupCommandAbbrs('Gc', 'Gina commit')
-call SetupCommandAbbrs('Gp', 'Gina push')
-
 " §§1 Plugin settings for lervag/vimtex
 
 let g:vimtex_compiler_latexmk = {'callback' : 0}
@@ -231,6 +223,10 @@ let g:vimtex_imaps_leader = "@"
 " §§1 Plugin settings for liuchengxu/vista.vim
 
 nnoremap <silent> sm :<C-u>Vista!!<CR>
+
+augroup vimrc
+  autocmd filetype vista_* nnoremap <buffer> i <Cmd>call vista#cursor#FoldOrJump()<CR>
+augroup END
 
 " §§1 Plugin settings for machakann/vim-textobj-functioncall
 

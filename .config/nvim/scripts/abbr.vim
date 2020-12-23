@@ -10,3 +10,35 @@ endfunction
 
 call s:modify_write_typo("w2")
 call s:modify_write_typo("w]")
+
+" abbrev の自動生成を行う
+" cnoreabbrev <expr> s ((getcmdtype() ==# ":" && getcmdline() ==# "CocCommand s")? "snippets.editSnippets" : "s")
+function! s:make_abbrev_rule(rules)
+  let keys = uniq(sort(map(copy(a:rules), "v:val['from']")))
+  for key in keys
+    let rules_with_key = filter(copy(a:rules), "v:val['from'] ==# '" .. key .. "'")
+    let dict = {}
+    for val in rules_with_key
+      if has_key(val, 'prepose')
+        let dict[val['prepose'] .. ' ' .. key] = (val['to'])
+      else
+        let dict[key] = val['to']
+      endif
+    endfor
+    exec 'cnoreabbrev <expr> ' .. key .. ' '
+    \ .. '(getcmdtype() !=# ":")? "' .. key .. '" : '
+    \ .. 'get(' .. string(dict) .. ', getcmdline(), "' .. key .. '")'
+  endfor
+endfunction
+
+call s:make_abbrev_rule([
+\   {'from': 'c', 'to': 'CocCommand'},
+\   {'from': 'cc', 'to': 'CocConfig'},
+\   {'from': 'gb', 'to': 'Gina blame'},
+\   {'from': 'gc', 'to': 'Gina commit'},
+\   {'from': 'gp', 'to': 'Gina push'},
+\   {'from': 'gs', 'to': 'Gina status -s --opener=split'},
+\   {'from': 'rs', 'to': 'RemoveUnwantedSpaces'},
+\   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
+\   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
+\ ])
