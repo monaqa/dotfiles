@@ -18,6 +18,8 @@
     "<C-k>": "normal:k"
   },
 
+  "highlight.colorNames.enable": false,
+
   "python.pythonPath": "/usr/local/bin/python3",
   "python.linting.mypyPath": "mypy",
   "python.linting.flake8Path": "flake8",

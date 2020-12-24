@@ -207,7 +207,6 @@ let s:gina_custom_translation_patterns = [
 \   },
 \ ]
 
-nnoremap <Space>gs :<C-u>Gina status -s --opener=split<CR>
 nnoremap <Space>gb :Gina browse --exact --yank :<CR>:let @+=@"<CR>:echo @+<CR>
 vnoremap <Space>gb :Gina browse --exact --yank :<CR>:let @+=@"<CR>:echo @+<CR>
 
