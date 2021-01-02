@@ -28,35 +28,14 @@ let g:polyglot_disabled = ['tex', 'latex', 'fish']
 
 let g:splash#path = $HOME . "/.config/nvim/scripts/template/monaqa.txt"
 
-" §§1 Plugin settings for vim-airline/vim-airline
+" §§1 Plugin settings for barbar.nvim
+" NOTE: This variable doesn't exist before barbar runs. Create it before
+"       setting any option.
 
-let g:airline_theme = 'sol'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_tabs = 0
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#tabline#buffer_idx_format = {
-\ '0': '𝟎ː',
-\ '1': '𝟏ː',
-\ '2': '𝟐ː',
-\ '3': '𝟑ː',
-\ '4': '𝟒ː',
-\ '5': '𝟓ː',
-\ '6': '𝟔ː',
-\ '7': '𝟕ː',
-\ '8': '𝟖ː',
-\ '9': '𝟗ː'
-\}
+" DUMMY highlight for avoiding error in barbar.nvim. This is overrided by gruvbit after
+hi! Special guifg=NONE guibg=NONE gui=NONE cterm=NONE
 
-nmap sp <Plug>AirlineSelectPrevTab
-nmap sn <Plug>AirlineSelectNextTab
-nmap s1 <Plug>AirlineSelectTab1
-nmap s2 <Plug>AirlineSelectTab2
-nmap s3 <Plug>AirlineSelectTab3
-nmap s4 <Plug>AirlineSelectTab4
-nmap s5 <Plug>AirlineSelectTab5
-nmap s6 <Plug>AirlineSelectTab6
-nmap s7 <Plug>AirlineSelectTab7
-nmap s8 <Plug>AirlineSelectTab8
-nmap s9 <Plug>AirlineSelectTab9
+let bufferline = {}
 
+" Sets the maximum padding width with which to surround each tab
+let bufferline.maximum_padding = 0

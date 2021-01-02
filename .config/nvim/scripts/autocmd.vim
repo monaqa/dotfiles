@@ -111,6 +111,10 @@ function! s:copyUnnamedToPlus(opr)
 endfunction
 
 " §§1
+augroup vimrc
+  autocmd QuickfixCmdPost [^l]* cwin
+  autocmd QuickfixCmdPost l* lwin
+augroup END
 
 
 " §§1

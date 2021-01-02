@@ -239,7 +239,7 @@ nnoremap s<Bar> :<C-u>vs<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap <silent><expr> ss <SID>isWideWindow('.') ? ':<C-u>vs<CR>' : ':<C-u>sp<CR>'
 nnoremap sq :<C-u>q<CR>
-nnoremap <expr> sw &buftype ==# '' ? ":\<C-u>bp\<CR>:\<C-u>bd #\<CR>" : ":bd\<CR>"
+" nnoremap <expr> sw &buftype ==# '' ? ":\<C-u>bp\<CR>:\<C-u>bd #\<CR>" : ":bd\<CR>"
 " nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 " バッファ間移動
 nnoremap sj <C-w>j
@@ -256,8 +256,8 @@ nnoremap sH <C-w>H
 nnoremap s= <C-w>=
 " タブページ
 nnoremap <silent> sT :<C-u>tabnew %<CR>
-nnoremap sN gt
-nnoremap sP gT
+" nnoremap sN gt
+" nnoremap sP gT
 nnoremap sQ :<C-u>tabc<CR>
 " Command-line window
 nnoremap s: q:G
@@ -630,5 +630,3 @@ vnoremap <C-x> <C-x>gv
 " 2020-11-12 に思いついた便利なアイデア。
 " vnoremap <expr> <Bar> "/\\%" .. virtcol(".") .. "v"
 
-nnoremap S <cmd>write<CR>
-vnoremap S <cmd>write<CR>

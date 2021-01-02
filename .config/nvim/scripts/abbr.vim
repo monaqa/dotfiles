@@ -32,6 +32,8 @@ function! s:make_abbrev_rule(rules)
 endfunction
 
 call s:make_abbrev_rule([
+\   {'from': 'bod', 'to': 'BufferOrderByDirectory'},
+\   {'from': 'bol', 'to': 'BufferOrderByLanguage'},
 \   {'from': 'c', 'to': 'CocCommand'},
 \   {'from': 'cc', 'to': 'CocConfig'},
 \   {'from': 'gb', 'to': 'Gina blame'},
