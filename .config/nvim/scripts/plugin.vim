@@ -51,77 +51,7 @@ function! s:setting_gruvbit() abort
   hi! BufferVisibleTarget  guifg=red     guibg=#1d2021
   hi! BufferTabpages       guifg=#e9593d guibg=#444444 gui=bold
   hi! BufferTabpageFill    guifg=#888888 guibg=#444444
-
-  " StatusLine
-  " hi! User1 gui=bold guibg=#666666 guifg=#1d2021
-  " hi! User2 gui=bold guibg=#e9593d guifg=#1d2021
-  " " Normal
-  " hi! User3 gui=bold guibg=#dc9656 guifg=#1d2021
-  " " Insert
-  " hi! User4 gui=bold guibg=#8ec07c guifg=#1d2021
-  " " Command
-  " hi! User5 gui=bold guibg=#83a598 guifg=#1d2021
-  " " Visual
-  " hi! User6 gui=bold guibg=#fe8019 guifg=#1d2021
-  " " Operator-pending/Select/Replace
-  " hi! User7 gui=bold guibg=#83a598 guifg=#1d2021
 endfunction
-
-function! SetStatusLine()
-  if g:statusline_winid == win_getid()
-    let status = s:status_mode()
-  else
-    let status = ''
-  endif
-  " let fname = (&modified||!&modifiable) ? '%2*%f' : '%1*%f'
-  let fname = '%1*%f'
-  let text = status .. '%1* ' .. fname .. '%1*｜%{coc#status()}'
-  return text
-endfunction
-
-function! s:status_mode()
-  let mode = mode(1)
-  if mode =~# 'niI'
-    let c = 3
-    let mode_name = 'NORMAL(tmp)'
-  elseif mode =~# 'n' && &buftype == 'terminal'
-    let c = 3
-    let mode_name = 'NORMAL(term)'
-  elseif mode =~# 'n'
-    let c = 3
-    let mode_name = 'NORMAL'
-  elseif mode =~# 'i'
-    let c = 4
-    let mode_name = 'INSERT'
-  elseif mode =~# 'c'
-    let c = 5
-    let mode_name = 'COMMAND'
-  elseif mode =~# 'v'
-    let c = 6
-    let mode_name = 'VISUAL'
-  elseif mode =~# 'V'
-    let c = 6
-    let mode_name = 'V-LINE'
-  elseif mode =~# "\<C-v>"
-    let c = 5
-    let mode_name = 'V-BLOCK'
-  elseif mode =~# "[sS\<C-s>]"
-    let c = 6
-    let mode_name = 'SELECT'
-  elseif mode =~# "R"
-    let c = 5
-    let mode_name = 'REPLACE'
-  elseif mode =~# "t"
-    let c = 4
-    let mode_name = 'TERMINAL'
-  else
-    let c = 7
-    let mode_name = '???'
-  endif
-  return '%' .. c .. '*[' .. mode_name .. ']%*'
-endfunction
-
-" set statusline=%!SetStatusLine()
 
 " §§1 Plugin settings for kana/vim-altr
 
