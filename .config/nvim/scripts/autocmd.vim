@@ -82,22 +82,6 @@ function! s:auto_mkdir(dir, force) abort
   call mkdir(a:dir, 'p')
 endfunction
 
-" Command-line window
-let &cedit = "\<C-C>"
-augroup vimrc
-  autocmd CmdwinEnter * setlocal nonumber
-  autocmd CmdwinEnter * setlocal norelativenumber
-  autocmd CmdwinEnter * setlocal signcolumn=no
-  autocmd CmdwinEnter * setlocal foldcolumn=0
-  autocmd CmdwinEnter * nnoremap <buffer> <C-f> <C-f>
-  autocmd CmdwinEnter * nnoremap <buffer> <C-u> <C-u>
-  autocmd CmdwinEnter * nnoremap <buffer> <C-b> <C-b>
-  autocmd CmdwinEnter * nnoremap <buffer> <C-d> <C-d>
-  autocmd CmdwinEnter * nnoremap <buffer><nowait> <CR> <CR>
-  autocmd CmdwinEnter : keeppatterns g/^qa\?!\?$/d _
-  autocmd CmdwinEnter : keeppatterns g/^wq\?a\?!\?$/d _
-augroup END
-
 " yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
 augroup vimrc
   if exists('##TextYankPost')
@@ -110,11 +94,25 @@ function! s:copyUnnamedToPlus(opr)
   endif
 endfunction
 
-" §§1
+" §§1 Quickfix
 augroup vimrc
   autocmd QuickfixCmdPost [^l]* cwin
   autocmd QuickfixCmdPost l* lwin
 augroup END
 
-
-" §§1
+" §§1 Command-line window
+let &cedit = "\<C-c>"
+augroup vimrc
+  autocmd CmdwinEnter * setlocal nonumber
+  autocmd CmdwinEnter * setlocal norelativenumber
+  autocmd CmdwinEnter * setlocal signcolumn=no
+  autocmd CmdwinEnter * setlocal foldcolumn=0
+  autocmd CmdwinEnter * nnoremap <buffer> <C-f> <C-f>
+  autocmd CmdwinEnter * nnoremap <buffer> <C-u> <C-u>
+  autocmd CmdwinEnter * nnoremap <buffer> <C-b> <C-b>
+  autocmd CmdwinEnter * nnoremap <buffer> <C-d> <C-d>
+  autocmd CmdwinEnter * nnoremap <buffer><nowait> <CR> <CR>
+  autocmd CmdwinEnter : keeppatterns g/^qa\?!\?$/d _
+  autocmd CmdwinEnter : keeppatterns g/^wq\?a\?!\?$/d _
+  autocmd CmdwinEnter * $
+augroup END

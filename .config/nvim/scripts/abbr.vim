@@ -1,7 +1,7 @@
 " vim:fdm=marker:fmr=§§,■■
 
 " 範囲保存したいときは write を使おう
-cnoreabbrev <expr> w ((getcmdtype() ==# ":" && getcmdline() ==# "'<,'>w") ? ("\<C-u>w") : ("w"))
+cnoreabbrev <expr> w (getcmdtype() ==# ":" && getcmdline() ==# "'<,'>w") ? "\<C-u>w" : "w"
 
 " typo の達人
 function! s:modify_write_typo(typo)
@@ -44,3 +44,5 @@ call s:make_abbrev_rule([
 \   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
 \ ])
+
+cnoreabbrev <expr> m (getcmdtype() ==# ":" && getcmdline() ==# "'<,'>m") ? "MakeTable" : "m"
