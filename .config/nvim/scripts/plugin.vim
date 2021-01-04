@@ -616,10 +616,14 @@ lualine.sections.lualine_b = lualine.sections.lualine_c
 lualine.sections.lualine_y = { function()
     return "" .. vim.fn["gina#component#repo#branch"]()
 end }
-function cocstatus()
-  return vim.fn["coc#status"]()
+local function cocstatus()
+    return vim.fn["coc#status"]()
+end
+local function location()
+    return [[%3l/%L:%-2c]]
 end
 lualine.sections.lualine_c = { cocstatus }
+lualine.sections.lualine_z = { location }
 EOF
 
 " §§1 Plugin settings for dial.nvim
