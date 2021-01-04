@@ -21,7 +21,7 @@ set matchpairs+=（:）,「:」,『:』,【:】
 " 下
 set showcmd
 set laststatus=2  " ステータスラインを常に表示
-" set statusline^=%{coc#status()}
+set statusline^=%{coc#status()}
 
 " 左
 set number

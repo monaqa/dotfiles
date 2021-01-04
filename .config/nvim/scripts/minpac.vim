@@ -5,6 +5,7 @@ if exists('*minpac#init')
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
   " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
+  call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/dial.nvim')
   call minpac#add('Konfekt/FastFold')
   call minpac#add('Shougo/vimproc.vim')
   call minpac#add('Vimjas/vim-python-pep8-indent')

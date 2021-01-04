@@ -610,7 +610,28 @@ lua << EOF
 local lualine = require('lualine')
 lualine.status()
 lualine.theme = 'gruvbox'
-lualine.sections.lualine_b = { function() 
-    return vim.fn["gina#component#repo#branch"]()
+
+lualine.sections.lualine_b = lualine.sections.lualine_c
+
+lualine.sections.lualine_y = { function()
+    return "" .. vim.fn["gina#component#repo#branch"]()
 end }
+function cocstatus()
+  return vim.fn["coc#status"]()
+end
+lualine.sections.lualine_c = { cocstatus }
 EOF
+
+" §§1 Plugin settings for dial.nvim
+lua << EOF
+  local dial = require("dial")
+  dial.searchlist = {
+    dial.augends.number.decimal,
+    dial.augends.number.binary,
+    dial.augends.color.hex,
+    dial.augends.date.date,
+    dial.augends.markup.markdown_header,
+  }
+EOF
+nmap <C-a> <Plug>(dial-increment)
+nmap <C-x> <Plug>(dial-decrement)
