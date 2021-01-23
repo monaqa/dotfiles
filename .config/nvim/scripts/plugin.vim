@@ -423,14 +423,14 @@ map <C-p> <Plug>(edgemotion-k)
 
 " §§1 Plugin settings for neoclide/coc.nvim
 
-nnoremap m <Nop>
-" m を prefix にする
-nmap <silent> md <Plug>(coc-definition)
+nnoremap t <Nop>
+" t を prefix にする
+nmap <silent> td <Plug>(coc-definition)
 nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> mi <Plug>(coc-implementation)
-nmap <silent> my <Plug>(coc-type-definition)
-nmap <silent> mr <Plug>(coc-references)
-nmap <silent> mn <Plug>(coc-rename)
+nmap <silent> ti <Plug>(coc-implementation)
+nmap <silent> ty <Plug>(coc-type-definition)
+nmap <silent> tr <Plug>(coc-references)
+nmap <silent> tn <Plug>(coc-rename)
 nnoremap <silent> K :call CocAction('doHover')<CR>
 nnoremap <silent> <Space>j :call CocAction('diagnosticNext')<CR>
 nnoremap <silent> <Space>k :call CocAction('diagnosticPrevious')<CR>
@@ -565,9 +565,14 @@ inoremap <C-l> <Nop>
 
 " §§1 Plugin settings for tyru/caw.vim
 " toggle comment を t に割り当てる。
-nmap t <Plug>(caw:hatpos:toggle:operator)
-vmap t <Plug>(caw:hatpos:toggle)
-nmap tt <Plug>(caw:hatpos:toggle)
+nmap m <Plug>(caw:hatpos:toggle:operator)
+nmap mm <Plug>(caw:hatpos:toggle)
+vmap mm <Plug>(caw:hatpos:toggle)
+
+augroup vimrc
+  autocmd FileType pest let b:caw_oneline_comment = '//'
+augroup END
+
 
 " §§1 Plugin settings for xolox/vim-session
 
@@ -627,15 +632,15 @@ lualine.sections.lualine_z = { location }
 EOF
 
 " §§1 Plugin settings for dial.nvim
-lua << EOF
-  local dial = require("dial")
-  dial.searchlist = {
-    dial.augends.number.decimal,
-    dial.augends.number.binary,
-    dial.augends.color.hex,
-    dial.augends.date.date,
-    dial.augends.markup.markdown_header,
-  }
-EOF
-nmap <C-a> <Plug>(dial-increment)
-nmap <C-x> <Plug>(dial-decrement)
+
+if exists("g:loaded_dial")
+
+  nmap <C-a> <Plug>(dial-increment)
+  nmap <C-x> <Plug>(dial-decrement)
+
+  vmap <C-a> <Plug>(dial-increment)
+  vmap <C-x> <Plug>(dial-decrement)
+  vmap g<C-a> <Plug>(dial-increment-additional)
+  vmap g<C-x> <Plug>(dial-decrement-additional)
+
+endif
