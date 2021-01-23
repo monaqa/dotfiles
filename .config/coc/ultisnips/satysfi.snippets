@@ -37,20 +37,20 @@ end = struct
 end
 endsnippet
 
-snippet let-inline "let-inline" b
-let-inline ${1:ctx }\\${2:cmd} ${3:arg }=
-	$0
-endsnippet
-
-snippet let-math "let-math" b
-let-math \\${1:cmd} ${2:arg }=
-	$0
-endsnippet
-
-snippet let-block "let-block" b
-let-block ${1:ctx }+${2:cmd} ${3:arg }=
-	$0
-endsnippet
+# snippet let-inline "let-inline" b
+# let-inline ${1:ctx }\\${2:cmd} ${3:arg }=
+# 	$0
+# endsnippet
+# 
+# snippet let-math "let-math" b
+# let-math \\${1:cmd} ${2:arg }=
+# 	$0
+# endsnippet
+# 
+# snippet let-block "let-block" b
+# let-block ${1:ctx }+${2:cmd} ${3:arg }=
+# 	$0
+# endsnippet
 
 snippet letin "let ... in" b
 let ${1:cmd} = ${2:expr} in
@@ -74,17 +74,17 @@ endsnippet
 
 # complicated primitives {{{
 
-snippet read-inline "primitive: read-inline" w
-read-inline ${1:ctx} ${2:it}
-endsnippet
+# snippet read-inline "primitive: read-inline" w
+# read-inline ${1:ctx} ${2:it}
+# endsnippet
 
-snippet read-block "primitive: read-block" w
-read-block ${1:ctx} ${2:bt}
-endsnippet
+# snippet read-block "primitive: read-block" w
+# read-block ${1:ctx} ${2:bt}
+# endsnippet
 
-snippet line-break "primitive: line-break" w
-line-break ${1:true} ${2:true} ${3:ctx} ${4:ib}
-endsnippet
+# snippet line-break "primitive: line-break" w
+# line-break ${1:true} ${2:true} ${3:ctx} ${4:ib}
+# endsnippet
 
 snippet line-read "line-break and read-inline" w
 line-break ${1:true} ${2:true} ${3:ctx} (read-inline $3 ${4:it})
@@ -302,37 +302,12 @@ endsnippet
 
 # minimal template {{{
 
-snippet template "minimal template" b
-% begin template
+snippet template "standalone template" b
+@require: standalone
 
 % essential command
 
-let-inline ctx \math m = script-guard Latin (embed-math ctx m)
-
 let-block ctx +p it = line-break true true ctx (read-inline ctx it ++ inline-fil)
-
-let document bt =
-	let ctx =
-		get-initial-context 440pt (command \math)
-			|> set-dominant-narrow-script Latin
-			|> set-dominant-wide-script Kana
-			|> set-language Kana Japanese
-			|> set-language HanIdeographic Japanese
-			|> set-language Latin English
-			|> set-hyphen-penalty 100
-	in
-	let bb = read-block ctx bt in
-	page-break A4Paper
-		(fun _ -> (| text-origin = (80pt, 100pt); text-height = 630pt; |))
-			(fun _ -> (|
-				header-origin = (0pt, 0pt);
-				header-content = block-nil;
-				footer-origin = (0pt, 0pt);
-				footer-content = block-nil;
-			|))
-				bb
-
-% text template
 
 let-inline \pang = {The quick brown fox jumps over the lazy dog.}
 
@@ -353,11 +328,9 @@ let-inline \jugem = {
 グーリンダイのポンポコピーのポンポコナーの長久命の長助．
 }
 
-% end
-
 in
 
-document'<%
+standalone'<%
 	+p{\pang;}
 	+p{\lipsum;}
 	+p{\jugem;}
