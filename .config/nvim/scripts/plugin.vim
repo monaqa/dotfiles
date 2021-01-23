@@ -470,11 +470,11 @@ nmap <silent> ma <Plug>(coc-codeaction-selected)l
 
 
 " §§2 fzf-preview
-let g:fzf_preview_floating_window_rate = 0.8
-let g:fzf_preview_grep_cmd = 'rg --line-number --no-heading --color=never --hidden'
-nnoremap sb :<C-u>CocCommand fzf-preview.AllBuffers<CR>
-nnoremap sg :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
-nnoremap so :<C-u>CocCommand fzf-preview.DirectoryFiles <CR>
+" let g:fzf_preview_floating_window_rate = 0.8
+" let g:fzf_preview_grep_cmd = 'rg --line-number --no-heading --color=never --hidden'
+" nnoremap sb :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+" nnoremap sg :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+" nnoremap so :<C-u>CocCommand fzf-preview.DirectoryFiles <CR>
 " ■■
 
 " §§1 Plugin settings for previm/previm
@@ -609,27 +609,6 @@ nnoremap sP <Cmd>BufferMovePrevious<CR>
 nnoremap sN <Cmd>BufferMoveNext<CR>
 
 nnoremap sw <Cmd>BufferClose<CR>
-" §§1 Plugin settings for lualine.nvim
-
-lua << EOF
-local lualine = require('lualine')
-lualine.status()
-lualine.theme = 'gruvbox'
-
-lualine.sections.lualine_b = lualine.sections.lualine_c
-
-lualine.sections.lualine_y = { function()
-    return "" .. vim.fn["gina#component#repo#branch"]()
-end }
-local function cocstatus()
-    return vim.fn["coc#status"]()
-end
-local function location()
-    return [[%3l/%L:%-2c]]
-end
-lualine.sections.lualine_c = { cocstatus }
-lualine.sections.lualine_z = { location }
-EOF
 
 " §§1 Plugin settings for dial.nvim
 
@@ -644,3 +623,10 @@ if exists("g:loaded_dial")
   vmap g<C-x> <Plug>(dial-decrement-additional)
 
 endif
+
+" §§1 Plugin settings for telescope.nvim
+nnoremap so <Cmd>Telescope git_files<CR>
+nnoremap sg <Cmd>Telescope live_grep<CR>
+nnoremap sb <Cmd>Telescope buffers<CR>
+
+call execute('luafile ' .. expand("<sfile>:p:h") .. '/plugin.lua')

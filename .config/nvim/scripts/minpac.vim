@@ -6,6 +6,10 @@ function! PackInit() abort
   call minpac#init()
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
+  call minpac#add('nvim-lua/popup.nvim')
+  call minpac#add('nvim-lua/plenary.nvim')
+  call minpac#add('nvim-telescope/telescope.nvim')
+
   " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
   call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/dial.nvim')
   call minpac#add('Konfekt/FastFold')
@@ -15,7 +19,6 @@ function! PackInit() abort
   call minpac#add('cohama/lexima.vim')
   call minpac#add('glts/vim-textobj-comment')
   call minpac#add('habamax/vim-gruvbit')
-  call minpac#add('junegunn/fzf')
   call minpac#add('kana/vim-altr')
   call minpac#add('kana/vim-operator-user')
   call minpac#add('kana/vim-textobj-user')

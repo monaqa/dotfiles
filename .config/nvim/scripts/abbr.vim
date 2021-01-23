@@ -41,6 +41,7 @@ call s:make_abbrev_rule([
 \   {'from': 'gp', 'to': 'Gina push'},
 \   {'from': 'gs', 'to': 'Gina status -s --opener=split'},
 \   {'from': 'rs', 'to': 'RemoveUnwantedSpaces'},
+\   {'from': 't', 'to': 'Telescope'},
 \   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
 \ ])
