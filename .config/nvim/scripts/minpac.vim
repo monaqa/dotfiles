@@ -1,6 +1,8 @@
 let s:script = expand('<sfile>')
 
-if exists('*minpac#init')
+function! PackInit() abort
+  packadd minpac
+
   call minpac#init()
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
@@ -52,26 +54,8 @@ if exists('*minpac#init')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
 
   call minpac#add('hoob3rt/lualine.nvim')
-endif
-packloadall
+endfunction
 
-" Load plugins/*.vim
-" function! s:load_configurations() abort
-"   for path in glob($HOME . '/.config/nvim/plugins/*.vim', 1, 1, 1)
-"     execute printf('source %s', fnameescape(path))
-"   endfor
-" endfunction
-" call s:load_configurations()
-
-" Define user commands for updating/cleaning the plugins.
-" Each of them loads minpac, reloads .vimrc to register the
-" information of plugins, then performs the task.
-if !exists('*s:init')
-  function! s:init() abort
-    packadd minpac
-    execute 'source' fnameescape(s:script)
-  endfunction
-endif
-command! PackUpdate call s:init() | call minpac#update('', {'do': 'call minpac#status()'})
-command! PackClean  call s:init() | call minpac#clean()
-command! PackStatus call s:init() | call minpac#status()
+command! PackUpdate call PackInit() | call minpac#update()
+command! PackClean  call PackInit() | call minpac#clean()
+command! PackStatus packadd minpac | call minpac#status()
