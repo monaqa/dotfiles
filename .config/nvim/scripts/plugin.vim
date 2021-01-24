@@ -36,6 +36,7 @@ function! s:setting_gruvbit() abort
   " のほうが好みだったので。
   hi! DiffChange guifg=NONE guibg=#314a5c gui=NONE cterm=NONE
   hi! DiffDelete guifg=#968772 guibg=#5c3728 gui=NONE cterm=NONE
+  hi! MatchParen guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
 
   hi! BufferCurrent        guifg=#ebdbb2 guibg=#1d2021 gui=bold
   hi! BufferCurrentMod     guifg=#dc9656 guibg=#1d2021 gui=bold
@@ -239,7 +240,7 @@ let g:vimtex_imaps_leader = "@"
 nnoremap <silent> sm :<C-u>Vista!!<CR>
 
 augroup vimrc
-  autocmd filetype vista_* nnoremap <buffer> i <Cmd>call vista#cursor#FoldOrJump()<CR>
+  autocmd filetype vista_* nnoremap <buffer> <C-]> <Cmd>call vista#cursor#FoldOrJump()<CR>
 augroup END
 
 " §§1 Plugin settings for machakann/vim-textobj-functioncall

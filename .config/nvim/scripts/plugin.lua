@@ -4,7 +4,11 @@ local lualine = require('lualine')
 lualine.status()
 lualine.theme = 'gruvbox'
 
-lualine.sections.lualine_b = lualine.sections.lualine_c
+lualine.sections.lualine_b = {
+    function()
+        return [[%f %m]]
+    end
+}
 
 lualine.sections.lualine_y = { function()
     return "" .. vim.fn["gina#component#repo#branch"]()
@@ -13,7 +17,9 @@ local function cocstatus()
     return vim.fn["coc#status"]()
 end
 local function location()
-    return [[%3l/%L:%-2c]]
+    local n = #tostring(vim.fn.line("$"))
+    n = math.max(n, 3)
+    return "%" .. n .. [[l/%-3L:%-2c]]
 end
 lualine.sections.lualine_c = { cocstatus }
 lualine.sections.lualine_z = { location }
