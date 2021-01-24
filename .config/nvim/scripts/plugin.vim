@@ -625,8 +625,8 @@ if exists("g:loaded_dial")
 endif
 
 " §§1 Plugin settings for telescope.nvim
-nnoremap so <Cmd>Telescope git_files<CR>
-nnoremap sg <Cmd>Telescope live_grep<CR>
-nnoremap sb <Cmd>Telescope buffers<CR>
+nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
+nnoremap sg <Cmd>Telescope live_grep prompt_prefix=𝜸<CR>
+nnoremap sb <Cmd>Telescope buffers prompt_prefix=𝜷<CR>
 
 call execute('luafile ' .. expand("<sfile>:p:h") .. '/plugin.lua')

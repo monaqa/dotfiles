@@ -35,7 +35,7 @@ require('telescope').setup{
       '--column',
       -- '--smart-case'
     },
-    prompt_prefix = "λ",
+    prompt_prefix = "𝜻",
     find_command = {
         "rg",
         '--ignore',
