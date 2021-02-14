@@ -11,8 +11,15 @@ function! PackInit() abort
   call minpac#add('nvim-telescope/telescope.nvim')
 
   " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
-  call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/dial.nvim')
-  " call minpac#add('monaqa/dial.nvim')
+  " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/dial.nvim')
+  call minpac#add('monaqa/dial.nvim')
+  call minpac#add('vim-denops/denops-helloworld.vim')
+  call minpac#add('vim-denops/denops.vim')
+  call minpac#add('glidenote/memolist.vim')
+
+  call minpac#add('nvim-treesitter/nvim-treesitter')
+  call minpac#add('nvim-treesitter/nvim-treesitter-textobjects')
+
   call minpac#add('Konfekt/FastFold')
   call minpac#add('Shougo/vimproc.vim')
   call minpac#add('Vimjas/vim-python-pep8-indent')

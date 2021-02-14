@@ -16,6 +16,14 @@ call lexima#add_rule({'char': '``', 'input_after': '``', 'filetype': ['rst']})
 
 inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
 
+" §§1 Plugin settings for glts/vim-textobj-comment
+
+let g:textobj_comment_no_default_key_mappings = 1
+xmap am <Plug>(textobj-comment-a)
+nmap am <Plug>(textobj-comment-a)
+xmap im <Plug>(textobj-comment-i)
+nmap im <Plug>(textobj-comment-i)
+
 " §§1 Plugin settings for habamax/vim-gruvbit
 
 " let g:gruvbox_contrast_dark = 'hard'
@@ -246,6 +254,7 @@ augroup END
 
 " §§1 Plugin settings for machakann/vim-textobj-functioncall
 
+let g:textobj_functioncall_no_default_key_mappings = 1
 " ジェネリクスも関数呼び出しとして扱う
 let g:textobj_functioncall_patterns = [
   \ {

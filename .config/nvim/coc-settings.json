@@ -10,8 +10,7 @@
   "diagnostic.errorSign": "🚨",
   "diagnostic.infoSign": "ℹ️ ",
   "diagnostic.hintSign": "ℹ️ ",
-  "codeLens.enable": true,
-  "coc.preferences.hoverTarget": "float",
+  "codeLens.enable": true, "coc.preferences.hoverTarget": "float",
 
   "list.insertMappings": {
     "<C-j>": "normal:j",
@@ -48,6 +47,12 @@
   "rust-analyzer.procMacro.enable": true,
 
   "lua.enable": false,
+
+  "tsserver.enable": false,
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.codeLens.references": true,
+  "deno.codeLens.referencesAllFunctions": true,
 
   "yank.highlight.duration": 250,
   "yank.enableCompletion": false
