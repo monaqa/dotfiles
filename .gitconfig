@@ -11,6 +11,7 @@
 [core]
 	editor = nvim
 [alias]
+	cancel = !git commit -a -m 'Temporary commit for cancel' && git reset --hard HEAD~
 	commend = commit --amend --no-edit
 	it = !git init && git commit -m “root” --allow-empty
 	stsh = stash --keep-index
@@ -22,5 +23,7 @@
 	dlog = log --graph --name-status --pretty=format:\"%C(red)%h %C(green)%an %Creset%s %C(yellow)%d%Creset\"
 [push]
 	default = current
+[pull]
+	ff = only
 [merge]
 	conflictStyle = diff3
