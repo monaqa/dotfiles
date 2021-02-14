@@ -36,6 +36,9 @@ call s:make_abbrev_rule([
 \   {'from': 'bol', 'to': 'BufferOrderByLanguage'},
 \   {'from': 'c', 'to': 'CocCommand'},
 \   {'from': 'cc', 'to': 'CocConfig'},
+\   {'from': 'cl', 'to': 'CocList'},
+\   {'from': 'clc', 'to': 'CocLocalConfig'},
+\   {'from': 'cr', 'to': 'CocRestart'},
 \   {'from': 'gb', 'to': 'Gina blame'},
 \   {'from': 'gc', 'to': 'Gina commit'},
 \   {'from': 'gp', 'to': 'Gina push'},
@@ -44,6 +47,7 @@ call s:make_abbrev_rule([
 \   {'from': 'rs', 'to': 'RemoveUnwantedSpaces'},
 \   {'from': 't', 'to': 'Telescope'},
 \   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
+\   {'prepose': 'CocList', 'from': 'e', 'to': 'extensions'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
 \ ])
 

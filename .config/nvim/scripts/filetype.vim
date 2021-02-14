@@ -38,6 +38,7 @@ endfunction
 let g:rust_fold = 2
 augroup vimrc
   autocmd FileType rust setlocal foldlevel=1
+  autocmd FileType rust nnoremap <buffer><silent> tk :<C-u>CocCommand rust-analyzer.openDocs<CR>
 augroup END
 
 " §§2 Python
@@ -66,7 +67,7 @@ augroup vimrc
   autocmd FileType satysfi setlocal shiftwidth=2
   autocmd FileType satysfi setlocal suffixesadd+=.saty,.satyh,.satyg
   " iskeyword で +,\,@ の3文字を単語に含める
-  autocmd FileType satysfi setlocal iskeyword+=43,92,@-@
+  " autocmd FileType satysfi setlocal iskeyword+=43,92,@-@
   autocmd FileType satysfi let b:caw_oneline_comment = "%"
   autocmd FileType satysfi let b:match_words = '<%:>%'
   autocmd FileType satysfi setlocal matchpairs-=<:>

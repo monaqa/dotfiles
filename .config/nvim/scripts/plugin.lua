@@ -62,7 +62,6 @@ require('telescope').setup{
       },
       n = {
         ["<Esc>"] = actions.close,
-        ["<C-i>"] = my_cool_custom_action,
       },
     },
   }

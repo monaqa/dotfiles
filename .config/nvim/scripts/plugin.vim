@@ -240,7 +240,8 @@ let g:vimtex_imaps_leader = "@"
 nnoremap <silent> sm :<C-u>Vista!!<CR>
 
 augroup vimrc
-  autocmd filetype vista_* nnoremap <buffer> <C-]> <Cmd>call vista#cursor#FoldOrJump()<CR>
+  autocmd filetype vista nnoremap <buffer> <C-]> <Cmd>call vista#cursor#FoldOrJump()<CR>
+  autocmd filetype vista nnoremap <buffer><nowait> <CR> <Cmd>call vista#cursor#FoldOrJump()<CR>
 augroup END
 
 " §§1 Plugin settings for machakann/vim-textobj-functioncall
@@ -466,8 +467,8 @@ let g:coc_snippet_prev = '<C-g><C-k>'
 " endfunction
 " xnoremap <silent> ma :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
 " nnoremap <silent> ma :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@l
-xmap <silent> ma <Plug>(coc-codeaction-selected)
-nmap <silent> ma <Plug>(coc-codeaction-selected)l
+xmap <silent> ta <Plug>(coc-codeaction-selected)
+nmap <silent> ta <Plug>(coc-codeaction-selected)l
 
 
 " §§2 fzf-preview
@@ -613,21 +614,18 @@ nnoremap sw <Cmd>BufferClose<CR>
 
 " §§1 Plugin settings for dial.nvim
 
-if exists("g:loaded_dial")
+nmap <C-a> <Plug>(dial-increment)
+nmap <C-x> <Plug>(dial-decrement)
 
-  nmap <C-a> <Plug>(dial-increment)
-  nmap <C-x> <Plug>(dial-decrement)
-
-  vmap <C-a> <Plug>(dial-increment)
-  vmap <C-x> <Plug>(dial-decrement)
-  vmap g<C-a> <Plug>(dial-increment-additional)
-  vmap g<C-x> <Plug>(dial-decrement-additional)
-
-endif
+vmap <C-a> <Plug>(dial-increment)
+vmap <C-x> <Plug>(dial-decrement)
+vmap g<C-a> <Plug>(dial-increment-additional)
+vmap g<C-x> <Plug>(dial-decrement-additional)
 
 " §§1 Plugin settings for telescope.nvim
 nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
 nnoremap sg <Cmd>Telescope live_grep prompt_prefix=𝜸<CR>
 nnoremap sb <Cmd>Telescope buffers prompt_prefix=𝜷<CR>
+nnoremap <Space>s <cmd>lua require('telescope.builtin').find_files()<cr>
 
 call execute('luafile ' .. expand("<sfile>:p:h") .. '/plugin.lua')

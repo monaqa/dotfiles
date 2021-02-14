@@ -119,9 +119,6 @@ function! s:openTerminal()
     split
   endif
   edit term://fish
-  " if (ft ==# 'python')
-  "   call chansend(b:terminal_job_id, "ipython -c '%autoindent' -i\n")
-  " endif
   let g:current_terminal_job_id = b:terminal_job_id
 endfunction
 

@@ -68,7 +68,11 @@ abbr -a ta   "tig --all"
 
 abbr -a tn   "tmux new-session -A -s"
 
-# jupyter
+# poetry & ipython & jupyter
+abbr -a ipy  "ipython -c '%autoindent' -i"
+abbr -a pyr  "poetry run"
+abbr -a pyri "poetry run ipython -c '%autoindent' -i"
+abbr -a pya  "poetry add"
 abbr -a jnb  "jupyter notebook"
 abbr -a jlb  "jupyter lab"
 
