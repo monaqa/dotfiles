@@ -52,23 +52,23 @@ endsnippet
 # 	$0
 # endsnippet
 
-snippet letin "let ... in" b
-let ${1:cmd} = ${2:expr} in
-endsnippet
+# snippet letin "let ... in" b
+# let ${1:cmd} = ${2:expr} in
+# endsnippet
 
-snippet direct\ "direct signature (inline-cmd)" b
-direct \\${1:cmd} : [$2] inline-cmd
-endsnippet
+# snippet direct\ "direct signature (inline-cmd)" b
+# direct \\${1:cmd} : [$2] inline-cmd
+# endsnippet
 
-snippet direct+ "direct signature (block-cmd)" b
-direct +${1:cmd} : [$2] block-cmd
-endsnippet
+# snippet direct+ "direct signature (block-cmd)" b
+# direct +${1:cmd} : [$2] block-cmd
+# endsnippet
 
-snippet match "match with" w
-match ${1:arg} with
-	| ${2:Some($1)} -> ${3}
-	| ${4:None} -> ${5}
-endsnippet
+# snippet match "match with" w
+# match ${1:arg} with
+# 	| ${2:Some($1)} -> ${3}
+# 	| ${4:None} -> ${5}
+# endsnippet
 
 # }}}
 
@@ -86,33 +86,33 @@ endsnippet
 # line-break ${1:true} ${2:true} ${3:ctx} ${4:ib}
 # endsnippet
 
-snippet line-read "line-break and read-inline" w
-line-break ${1:true} ${2:true} ${3:ctx} (read-inline $3 ${4:it})
-endsnippet
+# snippet line-read "line-break and read-inline" w
+# line-break ${1:true} ${2:true} ${3:ctx} (read-inline $3 ${4:it})
+# endsnippet
 
-snippet page-break "primitive: page-break" b
-page-break ${1:paper} ${2:pagecontf} ${3:pagepartsf} ${4:bb}
-endsnippet
+# snippet page-break "primitive: page-break" b
+# page-break ${1:paper} ${2:pagecontf} ${3:pagepartsf} ${4:bb}
+# endsnippet
 
-snippet inline-graphics "primitive: inline-graphics" w
-inline-graphics ${1:wid} ${2:ht} ${3:dp} ${4:(fun (x, y) -> [])}
-endsnippet
+# snippet inline-graphics "primitive: inline-graphics" w
+# inline-graphics ${1:wid} ${2:ht} ${3:dp} ${4:(fun (x, y) -> [])}
+# endsnippet
 
-snippet fill "fill" w
-fill ${1:Color.black} ${2:path}
-endsnippet
+# snippet fill "fill" w
+# fill ${1:Color.black} ${2:path}
+# endsnippet
 
-snippet map "list module: map" w
-${1:lst} |> List.map ${2:func}
-endsnippet
+# snippet map "list module: map" w
+# ${1:lst} |> List.map ${2:func}
+# endsnippet
 
-snippet display-message "primitive: display-message" w
-let () = display-message \`${1}\` in
-endsnippet
+# snippet display-message "primitive: display-message" w
+# let () = display-message \`${1}\` in
+# endsnippet
 
-snippet draw-text "primitive: draw-text" w
-draw-text ${1:(x, y)} ${2:ib}
-endsnippet
+# snippet draw-text "primitive: draw-text" w
+# draw-text ${1:(x, y)} ${2:ib}
+# endsnippet
 
 snippet embed-block-top "-> inline-boxes" w
 embed-block-top ${1:ctx} ${2:wid} ${3:(fun ctx -> read-block ctx bt)}
