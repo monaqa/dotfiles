@@ -1,7 +1,6 @@
 -- vim:fdm=marker:fmr=§§,■■
 -- §§1 Plugin settings for lualine.nvim
 local lualine = require('lualine')
-lualine.status()
 lualine.theme = 'gruvbox'
 
 lualine.sections.lualine_b = {
@@ -23,6 +22,8 @@ local function location()
 end
 lualine.sections.lualine_c = { cocstatus }
 lualine.sections.lualine_z = { location }
+
+lualine.status()
 
 
 -- §§1 Plugin settings for telescope.nvim

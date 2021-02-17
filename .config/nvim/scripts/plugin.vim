@@ -20,9 +20,9 @@ inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand
 
 let g:textobj_comment_no_default_key_mappings = 1
 xmap am <Plug>(textobj-comment-a)
-nmap am <Plug>(textobj-comment-a)
+omap am <Plug>(textobj-comment-a)
 xmap im <Plug>(textobj-comment-i)
-nmap im <Plug>(textobj-comment-i)
+omap im <Plug>(textobj-comment-i)
 
 " §§1 Plugin settings for habamax/vim-gruvbit
 

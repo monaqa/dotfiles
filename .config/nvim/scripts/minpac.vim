@@ -13,8 +13,8 @@ function! PackInit() abort
   " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
   " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/dial.nvim')
   call minpac#add('monaqa/dial.nvim')
-  call minpac#add('vim-denops/denops-helloworld.vim')
-  call minpac#add('vim-denops/denops.vim')
+  " call minpac#add('vim-denops/denops-helloworld.vim')
+  " call minpac#add('vim-denops/denops.vim')
   call minpac#add('glidenote/memolist.vim')
 
   call minpac#add('nvim-treesitter/nvim-treesitter')
