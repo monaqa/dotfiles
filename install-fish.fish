@@ -24,6 +24,7 @@ mksymblink $dir/.config/nvim/init.vim ~/.config/nvim/init.vim
 mksymblink $dir/.config/nvim/coc-settings.json ~/.config/nvim/coc-settings.json
 mksymblink $dir/.config/nvim/scripts ~/.config/nvim/scripts
 mksymblink $dir/.config/nvim/syntax ~/.config/nvim/syntax
+mksymblink $dir/.config/nvim/after ~/.config/nvim/after
 
 mksymblink $dir/.vimrc ~/.vimrc
 mksymblink $dir/.tigrc ~/.tigrc
