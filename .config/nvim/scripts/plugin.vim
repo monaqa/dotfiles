@@ -623,13 +623,18 @@ nnoremap sw <Cmd>BufferClose<CR>
 
 " §§1 Plugin settings for dial.nvim
 
-nmap <C-a> <Plug>(dial-increment)
-nmap <C-x> <Plug>(dial-decrement)
+command! DialEnable call DialEnableFunc()
 
-vmap <C-a> <Plug>(dial-increment)
-vmap <C-x> <Plug>(dial-decrement)
-vmap g<C-a> <Plug>(dial-increment-additional)
-vmap g<C-x> <Plug>(dial-decrement-additional)
+function! DialEnableFunc()
+  packadd dial.nvim
+  nmap <C-a> <Plug>(dial-increment)
+  nmap <C-x> <Plug>(dial-decrement)
+
+  vmap <C-a> <Plug>(dial-increment)
+  vmap <C-x> <Plug>(dial-decrement)
+  vmap g<C-a> <Plug>(dial-increment-additional)
+  vmap g<C-x> <Plug>(dial-decrement-additional)
+endfunction
 
 " §§1 Plugin settings for telescope.nvim
 nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
