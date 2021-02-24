@@ -38,7 +38,9 @@ nnoremap <silent> n n:call <SID>temporal_attention()<CR>
 nnoremap <silent> N N:call <SID>temporal_attention()<CR>
 
 " §§1 fold
-nnoremap <Space>z zMzv
+" nnoremap <Space>z zMzv
+" 自分のいない level1 の fold だけたたむ
+nnoremap <Space>z zMzA
 
 
 " §§1 search
