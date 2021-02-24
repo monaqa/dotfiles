@@ -296,18 +296,21 @@ cnoremap <C-r><C-r> <C-r>"
 cnoremap <C-r><CR> <C-r>0
 cnoremap <C-r><Space> <C-r>+
 
-" set clipboard+=unnamed
 " noremap <Space>y "+y
-noremap <Space>p "+p
-noremap <Space>P "+P
+noremap <Space>p "0p
+noremap <Space>P "0P
 noremap <CR>p :<C-u>put +<CR>
 noremap <CR>P :<C-u>put! +<CR>
-noremap <Space>y "+y
 
-" VISUAL mode での置換にはデフォルトでヤンクレジスタを使う
-" （無名レジスタが汚れても連続して同じ文字列を貼り付けることができる）
-" もし無名レジスタを使いたい場合は P を使う
-vnoremap p "0p
+vnoremap p <Cmd>call VisualReplace(v:register)<CR>
+
+" 選択箇所を無名レジスタの内容で置き換える。塗り替え元の内容をそのレジスタには保持しない。
+" 無名レジスタには保持されるので、それを使いたければ `P` を用いる。
+function! VisualReplace(register)
+  let reg_body = getreg(a:register)
+  exe 'normal! "' .. a:register .. 'p'
+  call setreg(a:register, reg_body)
+endfunction
 
 " §§2 operator-like <C-y> in insert mode
 " a<Bs> を最初に入れるのは，直後の <Esc> 時に

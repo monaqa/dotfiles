@@ -83,16 +83,16 @@ function! s:auto_mkdir(dir, force) abort
 endfunction
 
 " yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
-augroup vimrc
-  if exists('##TextYankPost')
-    autocmd TextYankPost * call <SID>copyUnnamedToPlus(v:event.operator)
-  endif
-augroup END
-function! s:copyUnnamedToPlus(opr)
-  if a:opr ==# 'y'
-    let @+ = @"
-  endif
-endfunction
+" augroup vimrc
+"   if exists('##TextYankPost')
+"     autocmd TextYankPost * call <SID>copyUnnamedToPlus(v:event.operator)
+"   endif
+" augroup END
+" function! s:copyUnnamedToPlus(opr)
+"   if a:opr ==# 'y'
+"     let @+ = @"
+"   endif
+" endfunction
 
 " §§1 Quickfix
 augroup vimrc
