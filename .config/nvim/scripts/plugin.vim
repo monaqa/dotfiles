@@ -64,7 +64,7 @@ endfunction
 
 " §§1 Plugin settings for kana/vim-altr
 
-nmap <CR>^ <Plug>(altr-forward)
+nmap <Space>^ <Plug>(altr-forward)
 
 " §§1 Plugin settings for kana/vim-textobj-user
 
@@ -460,11 +460,6 @@ endfunction
 " let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 " let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
-augroup rc_coc
-  autocmd!
-  autocmd Filetype rust nnoremap <cr>r :CocCommand rust-analyzer.reload<CR>
-augroup END
-
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
 let g:coc_snippet_next = '<C-g><C-j>'
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
@@ -640,6 +635,6 @@ endfunction
 nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
 nnoremap sg <Cmd>Telescope live_grep prompt_prefix=𝜸<CR>
 nnoremap sb <Cmd>Telescope buffers prompt_prefix=𝜷<CR>
-nnoremap <Space>s <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
 
 call execute('luafile ' .. expand("<sfile>:p:h") .. '/plugin.lua')

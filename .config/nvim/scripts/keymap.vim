@@ -59,17 +59,7 @@ vnoremap R "my:set hlsearch<CR>
 
 " §§1 terminal
 
-tnoremap <Esc><Esc> <C-\><C-n>
-tnoremap <expr> <C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'
-tnoremap <C-r><C-r> <C-\><C-N>""pi
-tnoremap <C-r><CR> <C-\><C-N>"0pi
-tnoremap <C-r><Space> <C-\><C-N>"+pi
-" 苦肉の策
-tnoremap <C-r><Esc> <C-r>
-
-augroup vimrc
-  autocmd FileType fzf tnoremap <buffer><nowait> <Esc> <C-g>
-augroup END
+tnoremap <C-]> <C-\><C-n>
 
 augroup vimrc
   autocmd TermOpen * call s:terminal_init()
@@ -90,6 +80,8 @@ function! s:terminal_init()
   " nnoremap <buffer> I i<C-a>
   nnoremap <buffer> A i<C-e>
   nnoremap <buffer><expr> I "i\<C-a>" . repeat("\<Right>", <SID>calc_cursor_right_num())
+  nnoremap <buffer> p pi
+  nnoremap <buffer> <C-]> <Nop>
 endfunction
 function! s:calc_cursor_right_num() abort
   " ad hoc!
@@ -125,10 +117,10 @@ function! s:openTerminal()
 endfunction
 
 " §§2 send string to terminal buffer
-nnoremap <CR>t :<C-u>set opfunc=<SID>op_send_terminal<CR>g@
-nnoremap <CR>tp :<C-u>set opfunc=<SID>op_send_terminal<CR>g@ap
-nnoremap <nowait> <CR>tt :<C-u>call <SID>send_terminal_line(v:count1)<CR>
-vnoremap <CR>t <Esc>:<C-u>call <SID>send_terminal_visual_range()<CR>
+nnoremap <Space>t :<C-u>set opfunc=<SID>op_send_terminal<CR>g@
+nnoremap <Space>tp :<C-u>set opfunc=<SID>op_send_terminal<CR>g@ap
+nnoremap <nowait> <Space>tt :<C-u>call <SID>send_terminal_line(v:count1)<CR>
+vnoremap <Space>t <Esc>:<C-u>call <SID>send_terminal_visual_range()<CR>
 
 function! s:op_send_terminal(type)
   let sel_save = &selection
@@ -297,10 +289,8 @@ cnoremap <C-r><CR> <C-r>0
 cnoremap <C-r><Space> <C-r>+
 
 " noremap <Space>y "+y
-noremap <Space>p "0p
-noremap <Space>P "0P
-noremap <CR>p :<C-u>put +<CR>
-noremap <CR>P :<C-u>put! +<CR>
+noremap <Space>p :<C-u>put +<CR>
+noremap <Space>P :<C-u>put! +<CR>
 
 vnoremap p <Cmd>call VisualReplace(v:register)<CR>
 

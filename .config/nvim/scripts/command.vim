@@ -76,6 +76,9 @@ function! RemoveUnwantedSpaces()
 endfunction
 command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
 
+" 現在のファイル名をコピー
+command! YankCurrentFileName let @+ = expand("%:p")
+
 " §§1 substitute
 command! -bang -nargs=0 SubstituteCommaPeriod call SubstituteCommaPeriod(<bang>0)
 function! SubstituteCommaPeriod(invert)

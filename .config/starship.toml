@@ -1,3 +1,54 @@
+# format = """
+# $time\
+# $cmd_duration\
+# $line_break\
+# $username\
+# $hostname\
+# $shlvl\
+# $kubernetes\
+# $directory\
+# $git_branch\
+# $git_commit\
+# $git_state\
+# $git_status\
+# $hg_branch\
+# $docker_context\
+# $package\
+# $cmake\
+# $dart\
+# $dotnet\
+# $elixir\
+# $elm\
+# $erlang\
+# $golang\
+# $helm\
+# $java\
+# $julia\
+# $nim\
+# $nodejs\
+# $ocaml\
+# $perl\
+# $php\
+# $purescript\
+# $python\
+# $ruby\
+# $rust\
+# $swift\
+# $terraform\
+# $zig\
+# $nix_shell\
+# $conda\
+# $memory_usage\
+# $aws\
+# $gcloud\
+# $env_var\
+# $crystal\
+# $custom\
+# $line_break\
+# $jobs\
+# $battery\
+# $status\
+# $character"""
 format = """
 $time\
 $cmd_duration\
@@ -5,44 +56,26 @@ $line_break\
 $username\
 $hostname\
 $shlvl\
-$kubernetes\
 $directory\
 $git_branch\
 $git_commit\
 $git_state\
 $git_status\
-$hg_branch\
-$docker_context\
 $package\
-$cmake\
-$dart\
-$dotnet\
-$elixir\
-$elm\
-$erlang\
 $golang\
-$helm\
-$java\
 $julia\
 $nim\
 $nodejs\
 $ocaml\
-$perl\
-$php\
-$purescript\
 $python\
 $ruby\
 $rust\
 $swift\
 $terraform\
-$zig\
-$nix_shell\
-$conda\
 $memory_usage\
 $aws\
 $gcloud\
 $env_var\
-$crystal\
 $custom\
 $line_break\
 $jobs\

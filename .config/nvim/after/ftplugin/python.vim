@@ -1,4 +1,4 @@
-function FoldOnlyCode(lnum) abort
+function PythonFoldOnlyCode(lnum) abort
   if getline(a:lnum + 1) =~ '^# %%'
     return '0'
   endif
@@ -8,7 +8,7 @@ function FoldOnlyCode(lnum) abort
   return '='
 endfunction
 
-function MyFoldText()
+function PythonCustomFoldText()
   let line_fstart = getline(v:foldstart)
   if line_fstart =~ '^# %% \[markdown\]'
     let kind = '[M]'
@@ -22,18 +22,20 @@ function MyFoldText()
   return kind . ' ' . line_content . ' '
 endfunction
 
-setlocal nosmartindent
-setlocal foldmethod=indent
 inoreabbrev <buffer> imprt import
 inoreabbrev <buffer> improt import
 
-" hydrogen-like python file
-if getline(1) ==# "# %% [markdown]"
-  setlocal fdm=expr
-  setlocal foldexpr=FoldOnlyCode(v:lnum)
-  setlocal foldtext=MyFoldText()
-  nnoremap <buffer> <CR>q :QuickRun jupytext -args %{expand("%")}<CR>
-endif
+augroup vimrc
+  autocmd FileType python setlocal nosmartindent
+  autocmd FileType python setlocal foldmethod=indent
+  " hydrogen-like python file
+  autocmd FileType python if getline(1) ==# "# %% [markdown]"
+  autocmd FileType python   setlocal fdm=expr
+  autocmd FileType python   setlocal foldexpr=PythonFoldOnlyCode(v:lnum)
+  autocmd FileType python   setlocal foldtext=PythonCustomFoldText()
+  autocmd FileType python   nnoremap <buffer> <CR>q :QuickRun jupytext -args %{expand("%")}<CR>
+  autocmd FileType python endif
+augroup END
 
 let quickrun_config['jupytext'] = {
       \ 'command': 'jupytext',

@@ -21,6 +21,8 @@ function! s:make_abbrev_rule(rules)
     for val in rules_with_key
       if has_key(val, 'prepose')
         let dict[val['prepose'] .. ' ' .. key] = (val['to'])
+      elseif has_key(val, 'prepose_nospace')
+        let dict[val['prepose_nospace'] .. key] = (val['to'])
       else
         let dict[key] = val['to']
       endif
@@ -49,6 +51,6 @@ call s:make_abbrev_rule([
 \   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
 \   {'prepose': 'CocList', 'from': 'e', 'to': 'extensions'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
+\   {'prepose': 'Telescope', 'from': 'm', 'to': 'find_files cwd=~/memo'},
+\   {'prepose_nospace': "'<,'>", 'from': 'm', 'to': 'MakeTable'},
 \ ])
-
-cnoreabbrev <expr> m (getcmdtype() ==# ":" && getcmdline() ==# "'<,'>m") ? "MakeTable" : "m"

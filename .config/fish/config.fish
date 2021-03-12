@@ -114,7 +114,8 @@ if test -n "$FUZZY_FINDER"
   abbr -a tg "tmux a -t (tmux list-sessions | $FUZZY_FINDER | cut -d : -f 1)"
   # mercurial とかぶっていることに注意
   abbr -a hg "history | $FUZZY_FINDER"
-  abbr -a gs "git branch -a | $FUZZY_FINDER | xargs git switch"
+  # abbr -a gs "git branches | $FUZZY_FINDER | xargs git switch"
+  abbr -a gs 'git branches | $FUZZY_FINDER | awk \'{ print $2 }\' | xargs git switch'
   abbr -a gst "git tag -l | $FUZZY_FINDER | xargs git switch"
 end
 # }}}

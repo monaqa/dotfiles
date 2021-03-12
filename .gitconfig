@@ -21,6 +21,13 @@
 	grog = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
 	plog = log --pretty='format:%C(yellow)%h %C(green)%cd %C(reset)%s %C(red)%d %C(cyan)[%an]' --date=format:'%c' --all --graph
 	dlog = log --graph --name-status --pretty=format:\"%C(red)%h %C(green)%an %Creset%s %C(yellow)%d%Creset\"
+
+	branches = "!f () {\
+		git branch --format=\"%(align:width=8)local%(end) %(align:width=48)%(refname:short)%(end) %(align:width=16)%(committername)%(end)  %(if)%(upstream)%(then)%(upstream:short)%(end)\";\
+		git branch --remotes --format=\"%(align:width=8)remote%(end) %(align:width=48)%(refname:short)%(end) %(committername)\";\
+	};f"
+
+	default = !basename "$(git symbolic-ref --short refs/remotes/origin/HEAD)"
 [push]
 	default = current
 [pull]
