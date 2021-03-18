@@ -15,6 +15,7 @@ function! PackInit() abort
   call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
   call minpac#add('vim-denops/denops.vim')
   call minpac#add('glidenote/memolist.vim')
+  " call minpac#add('tversteeg/registers.nvim')
 
   call minpac#add('nvim-treesitter/nvim-treesitter')
   call minpac#add('nvim-treesitter/nvim-treesitter-textobjects')
@@ -53,7 +54,6 @@ function! PackInit() abort
   call minpac#add('raghur/vim-ghost')
   call minpac#add('rhysd/rust-doc.vim')
   call minpac#add('romgrk/barbar.nvim')
-  call minpac#add('sheerun/vim-polyglot')
   call minpac#add('thinca/vim-quickrun')
   call minpac#add('thinca/vim-splash')
   call minpac#add('thinca/vim-submode')
@@ -64,6 +64,16 @@ function! PackInit() abort
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
 
   call minpac#add('hoob3rt/lualine.nvim')
+
+  " Filetype Plugins
+  " call minpac#add('sheerun/vim-polyglot')
+
+  call minpac#add('cespare/vim-toml')
+  call minpac#add('plasticboy/vim-markdown')
+  call minpac#add('rust-lang/rust.vim')
+
+
+
 endfunction
 
 command! PackUpdate call PackInit() | call minpac#update()
