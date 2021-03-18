@@ -46,20 +46,27 @@ function! s:setting_gruvbit() abort
   hi! DiffDelete guifg=#968772 guibg=#5c3728 gui=NONE cterm=NONE
   hi! MatchParen guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
 
-  hi! BufferCurrent        guifg=#ebdbb2 guibg=#1d2021 gui=bold
-  hi! BufferCurrentMod     guifg=#dc9656 guibg=#1d2021 gui=bold
-  hi! BufferCurrentSign    guifg=#e9593d guibg=#1d2021 gui=bold
-  hi! BufferCurrentTarget  guifg=red     guibg=#1d2021 gui=bold
-  hi! BufferInactive       guifg=#888888 guibg=#444444
-  hi! BufferInactiveMod    guifg=#dc9656 guibg=#444444
-  hi! BufferInactiveSign   guifg=#444444 guibg=#444444
-  hi! BufferInactiveTarget guifg=red     guibg=#444444
-  hi! BufferVisible        guifg=#888888 guibg=#1d2021
-  hi! BufferVisibleMod     guifg=#dc9656 guibg=#1d2021
-  hi! BufferVisibleSign    guifg=#888888 guibg=#1d2021
-  hi! BufferVisibleTarget  guifg=red     guibg=#1d2021
+  hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
+  hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
+  hi! Folded     guifg=#9e8f7a guibg=#535657 gui=NONE cterm=NONE
+
+  hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
+  hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
+  hi! BufferCurrentSign    guifg=#e9593d guibg=#444444 gui=bold
+  hi! BufferCurrentTarget  guifg=red     guibg=#444444 gui=bold
+  hi! BufferInactive       guifg=#bbbbbb guibg=#777777
+  hi! BufferInactiveMod    guifg=#dc9656 guibg=#777777
+  hi! BufferInactiveSign   guifg=#444444 guibg=#777777
+  hi! BufferInactiveTarget guifg=red     guibg=#777777
+  hi! BufferVisible        guifg=#888888 guibg=#444444
+  hi! BufferVisibleMod     guifg=#dc9656 guibg=#444444
+  hi! BufferVisibleSign    guifg=#888888 guibg=#444444
+  hi! BufferVisibleTarget  guifg=red     guibg=#444444
   hi! BufferTabpages       guifg=#e9593d guibg=#444444 gui=bold
-  hi! BufferTabpageFill    guifg=#888888 guibg=#444444
+  hi! BufferTabpageFill    guifg=#888888 guibg=#c8c8c8
+  hi! TabLineFill          guibg=#c8c8c8
+
+  let g:gruvbit_transp_bg = 1
 endfunction
 
 " §§1 Plugin settings for kana/vim-altr
@@ -217,6 +224,15 @@ function! s:hijack_directory() abort
 endfunction
 
 " §§1 Plugin settings for lambdalisue/gina.vim
+
+augroup rc_gina
+  autocmd!
+  autocmd FileType gina-blame setlocal nonumber
+  autocmd FileType gina-blame setlocal signcolumn=no
+  autocmd FileType gina-blame setlocal foldcolumn=0
+augroup END
+
+let g:gina#command#blame#formatter#format = '%su%=|%au %ti %ma%in'
 
 let s:gina_custom_translation_patterns = [
 \   [

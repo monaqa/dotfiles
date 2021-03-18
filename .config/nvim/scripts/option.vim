@@ -54,7 +54,7 @@ set breakindent
 set nosmartindent
 set virtualedit=block
 
-set clipboard+=unnamedplus
+" set clipboard+=unnamedplus
 
 autocmd vimrc FileType * set formatoptions-=o formatoptions+=nB
 

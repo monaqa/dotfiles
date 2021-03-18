@@ -288,9 +288,9 @@ cnoremap <C-r><C-r> <C-r>"
 cnoremap <C-r><CR> <C-r>0
 cnoremap <C-r><Space> <C-r>+
 
-" noremap <Space>y "+y
-noremap <Space>p :<C-u>put +<CR>
-noremap <Space>P :<C-u>put! +<CR>
+nnoremap <Space>p <Cmd>put +<CR>
+nnoremap <Space>P <Cmd>put! +<CR>
+vnoremap <Space>p <Cmd>call VisualReplace('+')<CR>
 
 vnoremap p <Cmd>call VisualReplace(v:register)<CR>
 

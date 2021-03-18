@@ -49,6 +49,7 @@ call s:make_abbrev_rule([
 \   {'from': 'rs', 'to': 'RemoveUnwantedSpaces'},
 \   {'from': 't', 'to': 'Telescope'},
 \   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
+\   {'prepose': 'CocCommand', 'from': 'sout', 'to': 'workspace.showOutput'},
 \   {'prepose': 'CocList', 'from': 'e', 'to': 'extensions'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
 \   {'prepose': 'Telescope', 'from': 'm', 'to': 'find_files cwd=~/memo'},

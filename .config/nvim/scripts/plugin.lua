@@ -1,29 +1,36 @@
 -- vim:fdm=marker:fmr=§§,■■
 -- §§1 Plugin settings for lualine.nvim
-local lualine = require('lualine')
-lualine.theme = 'gruvbox'
-
-lualine.sections.lualine_b = {
-    function()
+require('lualine').setup {
+  sections = {
+    lualine_b = {
+      function ()
         return [[%f %m]]
-    end
+      end
+    },
+    lualine_c = {
+      function()
+        return vim.fn["coc#status"]()
+      end
+    },
+    lualine_y = {
+      function()
+        return "" .. vim.fn["gina#component#repo#branch"]()
+      end
+    },
+    lualine_z = {
+      function()
+        local n = #tostring(vim.fn.line("$"))
+        n = math.max(n, 3)
+        return "%" .. n .. [[l/%-3L:%-2c]]
+      end
+    }
+  },
+  options = {
+    theme = 'tomorrow',
+    section_separators = {'', ''},
+    component_separators = {'', ''},
+  },
 }
-
-lualine.sections.lualine_y = { function()
-    return "" .. vim.fn["gina#component#repo#branch"]()
-end }
-local function cocstatus()
-    return vim.fn["coc#status"]()
-end
-local function location()
-    local n = #tostring(vim.fn.line("$"))
-    n = math.max(n, 3)
-    return "%" .. n .. [[l/%-3L:%-2c]]
-end
-lualine.sections.lualine_c = { cocstatus }
-lualine.sections.lualine_z = { location }
-
-lualine.status()
 
 
 -- §§1 Plugin settings for telescope.nvim
