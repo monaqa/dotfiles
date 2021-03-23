@@ -524,12 +524,42 @@ nnoremap <C-CR> <Nop>
 " try: f.<Space><CR> or f,<Space><CR>
 nnoremap <silent> <Space><CR> a<CR><Esc>
 
-" マクロの活用
-nnoremap q qq<Esc>
-nnoremap Q q
-nnoremap , @q
-" JIS キーボードなので <S-;> が + と同じ
-nnoremap + ,
+" マクロの活用。
+" マクロの記録レジスタは "aq のような一般のレジスタを指定するのと同様の
+" インターフェースで変更するようにし、デフォルトの記録レジスタを q とする。
+nnoremap <expr> q g:vimrc_recording_macro ? <SID>keymap_stop_macro() : <SID>keymap_start_macro(v:register)
+nnoremap <expr> Q <SID>keymap_play_macro(v:register)
+nnoremap @ <Nop>
+
+let g:vimrc_recording_macro = v:false
+let g:last_played_macro_register = 'q'
+
+function! s:keymap_start_macro(register)
+  " 無名レジスタには格納できないようにする & デフォルトを q にする
+  let _register = a:register
+  if a:register ==# '"'
+    let _register = 'q'
+  endif
+  let g:vimrc_recording_macro = v:true
+  return 'q' .. _register
+endfunction
+
+function! s:keymap_stop_macro()
+  let g:vimrc_recording_macro = v:false
+  return 'q'
+endfunction
+
+function! s:keymap_play_macro(register)
+  " 無名レジスタには格納できないようにする
+  " & デフォルトを前回再生したマクロにする
+  let _register = a:register
+  if a:register ==# '"'
+    let _register = g:last_played_macro_register
+  endif
+  let g:last_played_macro_register = _register
+  echom 'Playing macro: @' .. _register
+  return '@' .. _register
+endfunction
 
 nnoremap <Space>a :<C-u>call <SID>increment_char(v:count1)<CR>
 nnoremap <Space>x :<C-u>call <SID>increment_char(-v:count1)<CR>
@@ -597,3 +627,5 @@ vnoremap <C-x> <C-x>gv
 " 2020-11-12 に思いついた便利なアイデア。
 " vnoremap <expr> <Bar> "/\\%" .. virtcol(".") .. "v"
 
+" gF は gf の上位互換？
+nnoremap gf gF

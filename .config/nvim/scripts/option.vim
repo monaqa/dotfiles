@@ -53,6 +53,8 @@ set shiftwidth=4
 set breakindent
 set nosmartindent
 set virtualedit=block
+" shellscript 対策
+set isfname-==
 
 " set clipboard+=unnamedplus
 

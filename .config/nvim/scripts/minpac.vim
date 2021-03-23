@@ -71,6 +71,7 @@ function! PackInit() abort
   call minpac#add('cespare/vim-toml')
   call minpac#add('plasticboy/vim-markdown')
   call minpac#add('rust-lang/rust.vim')
+  call minpac#add('JuliaEditorSupport/julia-vim')
 
 
 
