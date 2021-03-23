@@ -37,3 +37,6 @@ function! MarkdownLevel(lnum)
   " 差し引いたものを見出しレベルとする
   return ">" .. max([0, lnum_depth - initial_depth])
 endfunction
+
+" 行頭にて - ] と打つと Checkbox list となる
+inoreabbrev <buffer><expr> ] (getline('.') ==# '- ]') ? '[ ]' : ']'
