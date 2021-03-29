@@ -629,3 +629,7 @@ vnoremap <C-x> <C-x>gv
 
 " gF は gf の上位互換？
 nnoremap gf gF
+
+" <C-v>x, <C-v>u, <C-v>U を統一して分かりやすくした。
+" See |i_CTRL-V_digit|
+noremap! <C-v>u <C-r>=nr2char(0x)<Left>
