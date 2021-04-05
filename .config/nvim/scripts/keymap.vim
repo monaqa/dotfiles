@@ -34,8 +34,10 @@ function! s:temporal_relnum() abort
 endfunction
 
 " 検索系は見失いやすいので
-nnoremap <silent> n n:call <SID>temporal_attention()<CR>
-nnoremap <silent> N N:call <SID>temporal_attention()<CR>
+" nnoremap <silent> n n:call <SID>temporal_attention()<CR>
+" nnoremap <silent> N N:call <SID>temporal_attention()<CR>
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
 
 " §§1 fold
 " nnoremap <Space>z zMzv
@@ -45,9 +47,9 @@ nnoremap <Space>z zMzA
 
 " §§1 search
 nnoremap g/ /\v
-nnoremap * *N
-nnoremap g* g*N
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+nnoremap * *Nzz
+nnoremap g* g*Nzz
+nnoremap <silent> <C-l> <Cmd>nohlsearch<CR><C-l>
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
@@ -529,6 +531,7 @@ nnoremap <silent> <Space><CR> a<CR><Esc>
 " インターフェースで変更するようにし、デフォルトの記録レジスタを q とする。
 nnoremap <expr> q g:vimrc_recording_macro ? <SID>keymap_stop_macro() : <SID>keymap_start_macro(v:register)
 nnoremap <expr> Q <SID>keymap_play_macro(v:register)
+nnoremap <expr> <C-q> <SID>keymap_play_macro(v:register)
 nnoremap @ <Nop>
 
 let g:vimrc_recording_macro = v:false

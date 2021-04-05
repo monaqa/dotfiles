@@ -11,15 +11,15 @@ function! PackInit() abort
   call minpac#add('nvim-telescope/telescope.nvim')
 
   " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
-  " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/dial.nvim')
-  call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
-  call minpac#add('vim-denops/denops.vim')
-  call minpac#add('glidenote/memolist.vim')
+  " call minpac#add('vim-denops/denops.vim')
   " call minpac#add('tversteeg/registers.nvim')
+  " call minpac#add('lambdalisue/vim-protocol')
 
   call minpac#add('nvim-treesitter/nvim-treesitter')
   call minpac#add('nvim-treesitter/nvim-treesitter-textobjects')
 
+  call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
+  call minpac#add('glidenote/memolist.vim')
   call minpac#add('Konfekt/FastFold')
   call minpac#add('Shougo/vimproc.vim')
   call minpac#add('Vimjas/vim-python-pep8-indent')
@@ -62,13 +62,10 @@ function! PackInit() abort
   call minpac#add('xolox/vim-misc')
   call minpac#add('xolox/vim-session')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
-  " call minpac#add('lambdalisue/vim-protocol')
-
   call minpac#add('hoob3rt/lualine.nvim')
 
   " Filetype Plugins
   " call minpac#add('sheerun/vim-polyglot')
-
   call minpac#add('cespare/vim-toml')
   call minpac#add('plasticboy/vim-markdown')
   call minpac#add('rust-lang/rust.vim')

@@ -21,7 +21,7 @@ source ~/.config/nvim/scripts/abbr.vim
 source ~/.config/nvim/scripts/autocmd.vim
 source ~/.config/nvim/scripts/command.vim
 
-" source ~/.config/nvim/scripts/filetype.vim
+source ~/.config/nvim/scripts/filetype.vim
 
 filetype plugin indent on
 syntax enable

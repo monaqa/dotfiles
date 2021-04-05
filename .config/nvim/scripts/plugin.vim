@@ -50,6 +50,9 @@ function! s:setting_gruvbit() abort
   hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
   hi! Folded     guifg=#9e8f7a guibg=#535657 gui=NONE cterm=NONE
 
+  hi! CursorLine           guifg=NONE    guibg=#535657
+  hi! CursorColumn         guifg=NONE    guibg=#535657
+
   hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
   hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
   hi! BufferCurrentSign    guifg=#e9593d guibg=#444444 gui=bold
@@ -587,9 +590,9 @@ inoremap <C-l> <Nop>
 
 " §§1 Plugin settings for tyru/caw.vim
 " toggle comment を t に割り当てる。
-nmap m <Plug>(caw:hatpos:toggle:operator)
-nmap mm <Plug>(caw:hatpos:toggle)
-vmap mm <Plug>(caw:hatpos:toggle)
+nmap , <Plug>(caw:hatpos:toggle:operator)
+nmap ,, <Plug>(caw:hatpos:toggle)
+vmap ,, <Plug>(caw:hatpos:toggle)
 
 augroup vimrc
   autocmd FileType pest let b:caw_oneline_comment = '//'

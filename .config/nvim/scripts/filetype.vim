@@ -22,3 +22,28 @@ augroup vimrc
   " autocmd FileType todo6 setlocal tabstop=4
   " autocmd FileType todo6 setlocal foldmethod=indent
 augroup END
+
+" §§1 hydrogen
+function HydrogenFoldOnlyCode(lnum) abort
+  if getline(a:lnum + 1) =~ '^# %%'
+    return '0'
+  endif
+  if getline(a:lnum) =~ '^# %%$'
+    return '1'
+  endif
+  return '='
+endfunction
+
+function HydrogenCustomFoldText()
+  let line_fstart = getline(v:foldstart)
+  if line_fstart =~ '^# %% \[markdown\]'
+    let kind = '[M]'
+    let line_content = getline(v:foldstart + 2)
+  else
+    let kind = '[ ]'
+    let line_content = getline(v:foldstart + 1)
+  endif
+  " let line_content = getline(v:foldstart + 2)
+  " let sub = substitute(line, '', '', 'g')
+  return kind . ' ' . line_content . ' '
+endfunction
