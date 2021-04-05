@@ -27,6 +27,9 @@ set -x PATH $HOME/.poetry/bin $PATH
 # Haxe
 set -x HAXE_STD_PATH "/usr/local/lib/haxe/std"
 
+# deno
+set -x PATH $HOME/.deno/bin $PATH
+
 eval (starship init fish)
 # }}}
 

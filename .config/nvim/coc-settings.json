@@ -10,7 +10,7 @@
   "diagnostic.errorSign": "🚨",
   "diagnostic.infoSign": "ℹ️ ",
   "diagnostic.hintSign": "ℹ️ ",
-  "codeLens.enable": true, "coc.preferences.hoverTarget": "float",
+  "codeLens.enable": true,
 
   "list.insertMappings": {
     "<C-j>": "normal:j",
@@ -29,7 +29,7 @@
   "python.linting.pep8CategorySeverity.E": "Warning",
   "python.linting.flake8Args": ["--ignore=E501"],
 
-  "julia.executablePath": "$HOME/.local/bin/julia",
+  "julia.executablePath": "/usr/local/bin/julia",
 
   "languageserver": {
     "efm": {
@@ -43,7 +43,6 @@
   "rust-analyzer.lens.enable": false,
   "rust-analyzer.checkOnSave.command": "clippy",
   "rust-analyzer.updates.channel": "stable",
-  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.procMacro.enable": true,
 
   "lua.enable": false,

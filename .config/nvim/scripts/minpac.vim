@@ -62,6 +62,7 @@ function! PackInit() abort
   call minpac#add('xolox/vim-misc')
   call minpac#add('xolox/vim-session')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
+  " call minpac#add('lambdalisue/vim-protocol')
 
   call minpac#add('hoob3rt/lualine.nvim')
 
@@ -72,6 +73,7 @@ function! PackInit() abort
   call minpac#add('plasticboy/vim-markdown')
   call minpac#add('rust-lang/rust.vim')
   call minpac#add('JuliaEditorSupport/julia-vim')
+  call minpac#add('ocaml/vim-ocaml')
 
 
 

@@ -9,8 +9,10 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 let g:fern#disable_default_mappings = 1
 let g:fern#default_hidden = 1
 
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
+let g:loaded_netrw             = 1
+let g:loaded_netrwPlugin       = 1
+let g:loaded_netrwSettings     = 1
+let g:loaded_netrwFileHandlers = 1
 
 " §§1 Plugin settings for lervag/vimtex
 

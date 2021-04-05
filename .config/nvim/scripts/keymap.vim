@@ -633,3 +633,7 @@ nnoremap gf gF
 " <C-v>x, <C-v>u, <C-v>U を統一して分かりやすくした。
 " See |i_CTRL-V_digit|
 noremap! <C-v>u <C-r>=nr2char(0x)<Left>
+
+" https://github.com/ompugao/vim-bundle/blob/074e7b22320ad4bfba4da5516e53b498ace35a89/vimrc
+vnoremap <expr> I  mode() ==# 'V' ? "\<C-v>0o$I" : "I"
+vnoremap <expr> A  mode() ==# 'V' ? "\<C-v>0o$A" : "A"
