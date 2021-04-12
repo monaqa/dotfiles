@@ -529,12 +529,11 @@ nnoremap <silent> <Space><CR> a<CR><Esc>
 " マクロの活用。
 " マクロの記録レジスタは "aq のような一般のレジスタを指定するのと同様の
 " インターフェースで変更するようにし、デフォルトの記録レジスタを q とする。
-nnoremap <expr> q g:vimrc_recording_macro ? <SID>keymap_stop_macro() : <SID>keymap_start_macro(v:register)
-nnoremap <expr> Q <SID>keymap_play_macro(v:register)
+nnoremap <expr> q reg_recording() ==# '' ? <SID>keymap_start_macro(v:register) : 'q'
+nnoremap <expr> Q     <SID>keymap_play_macro(v:register)
 nnoremap <expr> <C-q> <SID>keymap_play_macro(v:register)
 nnoremap @ <Nop>
 
-let g:vimrc_recording_macro = v:false
 let g:last_played_macro_register = 'q'
 
 function! s:keymap_start_macro(register)
@@ -543,13 +542,7 @@ function! s:keymap_start_macro(register)
   if a:register ==# '"'
     let _register = 'q'
   endif
-  let g:vimrc_recording_macro = v:true
   return 'q' .. _register
-endfunction
-
-function! s:keymap_stop_macro()
-  let g:vimrc_recording_macro = v:false
-  return 'q'
 endfunction
 
 function! s:keymap_play_macro(register)

@@ -11,7 +11,8 @@ function! PackInit() abort
   call minpac#add('nvim-telescope/telescope.nvim')
 
   " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
-  " call minpac#add('vim-denops/denops.vim')
+  call minpac#add('vim-denops/denops.vim', {'type': 'opt'})
+  call minpac#add('yutkat/dps-coding-now.nvim', {'type': 'opt'})
   " call minpac#add('tversteeg/registers.nvim')
   " call minpac#add('lambdalisue/vim-protocol')
 

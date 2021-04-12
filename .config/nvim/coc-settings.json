@@ -26,8 +26,9 @@
   "python.linting.mypyEnabled": true,
   "python.linting.flake8CategorySeverity.E": "Warning",
   "python.linting.flake8CategorySeverity.F": "Warning",
-  "python.linting.pep8CategorySeverity.E": "Warning",
   "python.linting.flake8Args": ["--ignore=E501"],
+  "python.formatting.provider": "black",
+  "python.formatting.blackdPath": "/usr/local/bin/black",
 
   "julia.executablePath": "/usr/local/bin/julia",
 

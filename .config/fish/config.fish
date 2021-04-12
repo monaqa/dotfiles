@@ -19,7 +19,7 @@ source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 set -x PATH $HOME/go/bin $PATH
 
 # fzf-preview
-set -x FZF_PREVIEW_PREVIEW_BAT_THEME = 'gruvbox'
+set -x FZF_PREVIEW_PREVIEW_BAT_THEME 'gruvbox'
 
 # poetry
 set -x PATH $HOME/.poetry/bin $PATH
@@ -121,6 +121,14 @@ if test -n "$FUZZY_FINDER"
   abbr -a gs 'git branches | $FUZZY_FINDER | awk \'{ print $2 }\' | xargs git switch'
   abbr -a gst "git tag -l | $FUZZY_FINDER | xargs git switch"
 end
+# }}}
+
+# local configs {{{
+
+if test -e ~/.config/fish/local.fish
+  source ~/.config/fish/local.fish
+end
+
 # }}}
 
 # vim:fdm=marker
