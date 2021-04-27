@@ -48,10 +48,12 @@ call s:make_abbrev_rule([
 \   {'from': 'gina', 'to': 'Gina'},
 \   {'from': 'rs', 'to': 'RemoveUnwantedSpaces'},
 \   {'from': 't', 'to': 'Telescope'},
+\   {'from': 'tf', 'to': 'Telescope find_files'},
+\   {'from': 'tg', 'to': 'Telescope live_grep'},
 \   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
 \   {'prepose': 'CocCommand', 'from': 'sout', 'to': 'workspace.showOutput'},
 \   {'prepose': 'CocList', 'from': 'e', 'to': 'extensions'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
-\   {'prepose': 'Telescope', 'from': 'm', 'to': 'find_files cwd=~/memo'},
+\   {'prepose': 'Telescope find_files', 'from': 'm', 'to': 'cwd=~/memo'},
 \   {'prepose_nospace': "'<,'>", 'from': 'm', 'to': 'MakeTable'},
 \ ])
