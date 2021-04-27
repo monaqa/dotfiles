@@ -85,7 +85,7 @@ if &shell =~# 'fish$'
 endif
 
 if has('persistent_undo')
-  set undodir=~/.vim/undo
+  " set undodir=~/.vim/undo
   set undofile
 endif
 
@@ -96,3 +96,6 @@ set incsearch
 set wrapscan
 set hlsearch
 set inccommand=split
+
+" §§1 session
+set sessionoptions=buffers,folds,tabpages,winsize

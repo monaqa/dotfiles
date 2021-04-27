@@ -101,7 +101,8 @@ augroup vimrc
 augroup END
 
 " §§1 Command-line window
-let &cedit = "\<C-c>"
+" let &cedit = "\<C-f>"
+cnoremap <C-c> <C-f>
 augroup vimrc
   autocmd CmdwinEnter * setlocal nonumber
   autocmd CmdwinEnter * setlocal norelativenumber
