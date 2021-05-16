@@ -264,11 +264,7 @@ nnoremap <nowait> srb <Nop>
 function! s:isWideWindow(nr)
   let wd = winwidth(a:nr)
   let ht = winheight(a:nr)
-  if (wd > 2.2 * ht)
-    return 1
-  else
-    return 0
-  endif
+  return wd > 2.2 * ht
 endfunction
 
 " §§1 operator

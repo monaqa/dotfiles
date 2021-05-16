@@ -103,6 +103,12 @@ augroup END
 " §§1 Command-line window
 " let &cedit = "\<C-f>"
 cnoremap <C-c> <C-f>
+
+" 特定の文字を入力したら自動でコマンドラインウィンドウに切り替わるようにする
+" → abbrev が効かなくなるので一旦保留
+" cnoremap <expr> <Space> getcmdtype() ==# ":" ? "\<Space>\<C-f>" : "\<Space>"
+" cnoremap <expr> \ (getcmdtype() ==# "/" <Bar><Bar> getcmdtype() ==# "?") ? "\\<C-f>" : '\'
+
 augroup vimrc
   autocmd CmdwinEnter * setlocal nonumber
   autocmd CmdwinEnter * setlocal norelativenumber
@@ -112,8 +118,11 @@ augroup vimrc
   autocmd CmdwinEnter * nnoremap <buffer> <C-u> <C-u>
   autocmd CmdwinEnter * nnoremap <buffer> <C-b> <C-b>
   autocmd CmdwinEnter * nnoremap <buffer> <C-d> <C-d>
+  autocmd CmdwinEnter * nnoremap <buffer> <Esc> :q<CR>
   autocmd CmdwinEnter * nnoremap <buffer><nowait> <CR> <CR>
-  autocmd CmdwinEnter : keeppatterns g/^qa\?!\?$/d _
-  autocmd CmdwinEnter : keeppatterns g/^wq\?a\?!\?$/d _
-  autocmd CmdwinEnter * $
+  " autocmd CmdwinEnter : keeppatterns g/^qa\?!\?$/d _
+  " autocmd CmdwinEnter : keeppatterns g/^wq\?a\?!\?$/d _
+  " autocmd CmdwinEnter : keeppatterns g/^e$/d _
+  " autocmd CmdwinEnter * $
+  " autocmd CmdwinEnter * startinsert!
 augroup END

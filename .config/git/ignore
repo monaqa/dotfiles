@@ -12,3 +12,5 @@ Icon
 .todo6
 
 .git/
+
+.local_ignore_*/
