@@ -40,3 +40,6 @@ endfunction
 
 " 行頭にて - ] と打つと Checkbox list となる
 inoreabbrev <buffer><expr> ] (getline('.') ==# '- ]') ? '[ ]' : ']'
+
+" 選択テキストをハイパーリンク化
+vnoremap L "lc[<C-r>=substitute(getreg("l"), '\n', '', 'g')<CR>](<C-r>+)<Esc>
