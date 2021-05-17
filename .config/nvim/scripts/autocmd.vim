@@ -94,6 +94,11 @@ function! s:copyUnnamedToPlus(event)
   endif
 endfunction
 
+augroup vimrc
+  " マクロ用のレジスタを消去
+  autocmd VimEnter * let @q = ''
+augroup END
+
 " §§1 Quickfix
 augroup vimrc
   autocmd QuickfixCmdPost [^l]* cwin

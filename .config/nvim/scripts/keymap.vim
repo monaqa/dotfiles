@@ -474,6 +474,69 @@ cnoremap <C-n> <Down>
 cnoremap <Up> <C-p>
 cnoremap <Down> <C-n>
 
+" §§1 macros
+
+" マクロの記録レジスタは "aq のような一般のレジスタを指定するのと同様の
+" インターフェースで変更するようにし、デフォルトの記録レジスタを q とする。
+
+" マクロの自己再帰呼出しによるループや、マクロの中でマクロを呼び出すことは簡単にはできないようにしている。
+" （もちろんレジスタを直接書き換えれば可能）
+" デフォルトのレジスタ @q は Vim の開始ごとに初期化される。
+
+" マクロの記録を開始する。もし既に記録中であれば記録を停止する。
+nnoremap <expr> q     reg_recording() ==# '' ? <SID>keymap_start_macro(v:register) : 'q'
+" マクロを再生する。もし何らかの記録の途中であれば、その記録をキャンセル（今まで書いたものを破棄）する。
+nnoremap <expr> Q     reg_recording() ==# '' ? <SID>keymap_play_macro(v:register) : <SID>keymap_cancel_macro(reg_recording())
+" マクロを再生する。もし何らかの記録の途中であれば、その記録をキャンセル（今まで書いたものを破棄）する。
+nnoremap <expr> <C-q> reg_recording() ==# '' ? <SID>keymap_play_macro(v:register) : <SID>keymap_cancel_macro(reg_recording())
+" デフォルトの再生用キーマップは無効化（local なコマンドの prefix に使うため）
+nnoremap @ <Nop>
+
+let g:last_played_macro_register = 'q'
+
+" マクロの記録を開始する。
+function! s:keymap_start_macro(register)
+  " 無名レジスタには格納できないようにする & デフォルトを q にする
+  let _register = a:register
+  if a:register ==# '"'
+    let _register = 'q'
+  endif
+  return 'q' .. _register
+endfunction
+
+function! s:keymap_play_macro(register)
+  " 無名レジスタには格納できないようにする
+  " & デフォルトを前回再生したマクロにする
+  let _register = a:register
+  if a:register ==# '"'
+    let _register = g:last_played_macro_register
+  endif
+  let g:last_played_macro_register = _register
+  if getreg(_register) ==# ''
+    echohl ErrorMsg
+    echo 'Register @' .. _register .. ' is empty.'
+    echohl None
+    return ''
+  endif
+  echohl WarningMsg
+  echo 'Playing macro: @' .. _register
+  echohl None
+  return '@' .. _register
+endfunction
+
+" 記録を中止
+function! s:keymap_cancel_macro(register)
+  " 現在のレジスタに入っているコマンド列を一旦 reg_content に退避
+  let cmd = ":\<C-u>let reg_content = @" .. a:register .. "\<CR>"
+  " マクロの記録を停止
+  let cmd .= 'q'
+  " 対象としていたレジスタの中身を先程退避したものに入れ替える
+  let cmd .= ":\<C-u>let @" .. a:register .. " = reg_content\<CR>"
+  " キャンセルした旨を表示
+  let cmd .= ":echo 'Recording Cancelled: @" .. a:register .. "'\<CR>"
+  return cmd
+endfunction
+
 " §§1 特殊キー
 noremap <F1>   <Nop>
 noremap <M-F1> <Nop>
@@ -521,37 +584,6 @@ nnoremap <C-CR> <Nop>
 " 長い文の改行をノーマルモードから楽に行う
 " try: f.<Space><CR> or f,<Space><CR>
 nnoremap <silent> <Space><CR> a<CR><Esc>
-
-" マクロの活用。
-" マクロの記録レジスタは "aq のような一般のレジスタを指定するのと同様の
-" インターフェースで変更するようにし、デフォルトの記録レジスタを q とする。
-nnoremap <expr> q reg_recording() ==# '' ? <SID>keymap_start_macro(v:register) : 'q'
-nnoremap <expr> Q     <SID>keymap_play_macro(v:register)
-nnoremap <expr> <C-q> <SID>keymap_play_macro(v:register)
-nnoremap @ <Nop>
-
-let g:last_played_macro_register = 'q'
-
-function! s:keymap_start_macro(register)
-  " 無名レジスタには格納できないようにする & デフォルトを q にする
-  let _register = a:register
-  if a:register ==# '"'
-    let _register = 'q'
-  endif
-  return 'q' .. _register
-endfunction
-
-function! s:keymap_play_macro(register)
-  " 無名レジスタには格納できないようにする
-  " & デフォルトを前回再生したマクロにする
-  let _register = a:register
-  if a:register ==# '"'
-    let _register = g:last_played_macro_register
-  endif
-  let g:last_played_macro_register = _register
-  echom 'Playing macro: @' .. _register
-  return '@' .. _register
-endfunction
 
 nnoremap <Space>a :<C-u>call <SID>increment_char(v:count1)<CR>
 nnoremap <Space>x :<C-u>call <SID>increment_char(-v:count1)<CR>
