@@ -72,7 +72,7 @@ function! PackInit() abort
   call minpac#add('rust-lang/rust.vim')
   call minpac#add('JuliaEditorSupport/julia-vim')
   call minpac#add('ocaml/vim-ocaml')
-
+  call minpac#add('vim-python/python-syntax')
 
 
 endfunction
