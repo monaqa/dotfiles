@@ -31,6 +31,7 @@ set signcolumn=yes:2
 " misc
 set splitbelow
 set splitright
+set diffopt+=vertical
 
 " §§1 colorscheme
 set termguicolors

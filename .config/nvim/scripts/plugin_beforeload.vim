@@ -44,3 +44,6 @@ let g:sonictemplate_vim_template_dir = [
 \ '$HOME/.config/nvim/scripts/template',
 \]
 
+" §§1 Plugin settings for vim-python/python-syntax
+"
+let g:python_highlight_all = 1
