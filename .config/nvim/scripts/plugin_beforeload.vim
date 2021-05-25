@@ -22,13 +22,9 @@ let g:tex_flavor = "latex"
 
 let g:vista_default_executive = 'coc'
 
-" §§1 Plugin settings for sheerun/vim-polyglot
-
-let g:polyglot_disabled = ['tex', 'latex', 'fish']
-
 " §§1 Plugin settings for thinca/vim-splash
 
-let g:splash#path = $HOME . "/.config/nvim/scripts/template/monaqa.txt"
+let g:splash#path = $HOME . "/.config/nvim/scripts/resource/monaqa.txt"
 
 " §§1 Plugin settings for barbar.nvim
 " NOTE: This variable doesn't exist before barbar runs. Create it before
@@ -41,3 +37,10 @@ let bufferline = {}
 
 " Sets the maximum padding width with which to surround each tab
 let bufferline.maximum_padding = 0
+
+" §§1 Plugin settings for mattn/vim-sonictemplate
+
+let g:sonictemplate_vim_template_dir = [
+\ '$HOME/.config/nvim/scripts/template',
+\]
+

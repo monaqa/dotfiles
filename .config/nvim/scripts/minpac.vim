@@ -64,6 +64,7 @@ function! PackInit() abort
   call minpac#add('xolox/vim-session')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
   call minpac#add('hoob3rt/lualine.nvim')
+  call minpac#add('mattn/vim-sonictemplate')
 
   " Filetype Plugins
   " call minpac#add('sheerun/vim-polyglot')

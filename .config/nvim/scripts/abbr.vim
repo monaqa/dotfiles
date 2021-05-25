@@ -50,6 +50,7 @@ call s:make_abbrev_rule([
 \   {'from': 't', 'to': 'Telescope'},
 \   {'from': 'tf', 'to': 'Telescope find_files'},
 \   {'from': 'tg', 'to': 'Telescope live_grep'},
+\   {'from': 'tmp', 'to': 'Template'},
 \   {'from': 'ssf', 'to': 'syntax sync fromstart'},
 \   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
 \   {'prepose': 'CocCommand', 'from': 'sout', 'to': 'workspace.showOutput'},

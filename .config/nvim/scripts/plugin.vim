@@ -505,7 +505,7 @@ nmap <silent> ta <Plug>(coc-codeaction-selected)l
 " §§1 Plugin settings for previm/previm
 
 let g:previm_open_cmd = "open -a 'Google Chrome'"
-let g:previm_custom_css_path = "~/.config/nvim/scripts/template/markdown.css"
+let g:previm_custom_css_path = "~/.config/nvim/scripts/resource/markdown.css"
 
 " §§1 Plugin settings for rhysd/rust-doc.vim
 
