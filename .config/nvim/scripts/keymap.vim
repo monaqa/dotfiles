@@ -562,8 +562,13 @@ noremap <CR> <Nop>
 
 " 改行だけを入力する
 " thanks to cohama
-nnoremap <expr> <Space>o "mz" . v:count . "o\<Esc>`z"
-nnoremap <expr> <Space>O "mz" . v:count . "O\<Esc>`z"
+nnoremap <Space>o <Cmd>call <SID>append_new_lines(line("."), v:count1)<CR>
+nnoremap <Space>O <Cmd>call <SID>append_new_lines(line(".") - 1, v:count1)<CR>
+
+function! s:append_new_lines(pos_line, n_lines)
+  let lines = repeat([""], a:n_lines)
+  call append(a:pos_line, lines)
+endfunction
 
 if !has('gui_running')
   " CUIで入力された<S-CR>,<C-S-CR>が拾えないので
