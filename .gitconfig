@@ -27,7 +27,10 @@
 		git branch --remotes --format=\"%(align:width=8)remote%(end) %(align:width=48)%(refname:short)%(end) %(committername)\";\
 	};f"
 
+    swim = "!git branches | sk | awk '{if($1==\"remote\"){print substr($2,match($2,\"/\")+1)}else{print $2}}' | xargs git switch"
+
 	default = !basename "$(git symbolic-ref --short refs/remotes/origin/HEAD)"
+
 [push]
 	default = current
 [pull]

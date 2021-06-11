@@ -59,6 +59,7 @@ abbr -a grm  "git remote"
 abbr -a grb  "git rebase"
 abbr -a grbm "git rebase master"
 abbr -a grbc "git rebase --continue"
+abbr -a gs   "git swim"
 abbr -a gst  "git stash"
 abbr -a gsm  "git switch master"
 abbr -a gsc  "git switch -c"
@@ -118,7 +119,6 @@ if test -n "$FUZZY_FINDER"
   # mercurial とかぶっていることに注意
   abbr -a hg "history | $FUZZY_FINDER"
   # abbr -a gs "git branches | $FUZZY_FINDER | xargs git switch"
-  abbr -a gs 'git branches | $FUZZY_FINDER | awk \'{ print $2 }\' | xargs git switch'
   abbr -a gst "git tag -l | $FUZZY_FINDER | xargs git switch"
 end
 # }}}
