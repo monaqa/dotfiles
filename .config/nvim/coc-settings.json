@@ -37,6 +37,12 @@
       "command": "efm-langserver",
       "args": [],
       "filetypes": ["satysfi"]
+    },
+    "satysfi-ls": {
+        "command": "/Users/shinichi/ghq/github.com/monaqa/satysfi-language-server/target/debug/satysfi-language-server",
+        "args": [],
+        "filetypes": ["satysfi"],
+        "trace.server": "verbose"
     }
 
   },
@@ -46,7 +52,7 @@
   "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.procMacro.enable": true,
 
-  "lua.enable": false,
+  "lua.enable": true,
 
   "tsserver.enable": false,
   "deno.enable": true,

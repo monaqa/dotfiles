@@ -6,6 +6,8 @@ setlocal spell
 setlocal foldexpr=MarkdownLevel(v:lnum)
 setlocal foldmethod=expr
 
+setlocal suffixesadd+=.md
+
 " マークダウンのタイトルのパターンにマッチしたらそのタイトルの深さを返す。
 " マッチしなかったら -1 を返す。
 function! s:markdown_title_pattern(text)
