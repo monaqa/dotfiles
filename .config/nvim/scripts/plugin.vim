@@ -192,6 +192,7 @@ function s:fern_settings()
   nmap <nowait><buffer> <CR> <Plug>(fern-open-or-enter)
   nmap <buffer> e <Plug>(fern-action-open)
   nmap <buffer> <BS> <Plug>(fern-action-leave)
+  nmap <nowait><buffer> <Space> <Plug>(fern-action-mark)
 
   " expand/collapse tree
   nmap <nowait><buffer> t <Plug>(fern-expand-or-collapse)
@@ -493,6 +494,12 @@ let g:coc_snippet_prev = '<C-g><C-k>'
 xmap <silent> ta <Plug>(coc-codeaction-selected)
 nmap <silent> ta <Plug>(coc-codeaction-selected)l
 
+function! CocServiceNames(ArgLead, CmdLine, CursorPos)
+  let actions = map(CocAction('services'), {idx, d -> d['id']})
+  return actions
+endfunction
+
+command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call CocAction('toggleService', <q-args>)
 
 " §§2 fzf-preview
 " let g:fzf_preview_floating_window_rate = 0.8
