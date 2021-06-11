@@ -368,22 +368,42 @@ inoremap <C-f> <C-g>U<Right>
 inoremap <C-Space> <Space>
 
 " かしこい Home
-" thanks to Shougo
-noremap <expr> <Space>h <SID>smart_home()
+nnoremap <Space>h <Cmd>call <SID>smart_home()<CR>
+xnoremap <Space>h <Cmd>call <SID>smart_home()<CR>
+onoremap <Space>h ^
 function! s:smart_home()
   let str_before_cursor = strpart(getline('.'), 0, col('.') - 1)
-  let wrap_prefix = &wrap ? 'g' : ''
-  if str_before_cursor !~ '^\s*$'
-    return wrap_prefix . '^ze'
+  " カーソル前がインデントしかないかどうかでコマンドを変える
+  if str_before_cursor =~ '^\s*$'
+    let move_cmd = '0'
   else
-    return wrap_prefix . '0'
+    let move_cmd = '^'
+  endif
+
+  let col_before = col(".")
+  " まずは表示行の範囲で行頭移動
+  exe 'normal! g' .. move_cmd
+  " 移動前後でカーソル位置が変わらなかったら再度やり直す
+  let col_after = col(".")
+  if col_before == col_after
+    exe 'normal! ' .. move_cmd
   endif
 endfunction
 
 " かしこい End
-nnoremap <expr> <Space>l &wrap ? 'g$' : '$'
-onoremap <expr> <Space>l &wrap ? 'g$' : '$'
-xnoremap <expr> <Space>l visualmode() ==# "v" ? '$h' : '$'
+nnoremap <Space>l <Cmd>call <SID>smart_end()<CR>
+xnoremap <Space>l <Cmd>call <SID>smart_end()<CR>
+onoremap <Space>l $
+function! s:smart_end()
+  let col_before = col(".")
+  " まずは表示行の範囲で行末移動
+  normal! g$
+  let col_after = col(".")
+  " 移動前後でカーソル位置が変わらなかったら再度やり直す
+  if col_before == col_after
+    normal! $
+  endif
+endfunction
 
 inoremap <C-b> <C-g>U<Left>
 inoremap <C-f> <C-g>U<Right>
