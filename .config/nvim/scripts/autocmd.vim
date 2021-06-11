@@ -11,6 +11,13 @@ augroup vimrc
   autocmd BufLeave,FocusLost,InsertEnter   * setlocal scrolloff=0
 augroup END
 
+augroup vimrc
+  " temporal attention の設定初期化
+  autocmd BufLeave,FocusLost,InsertEnter * setlocal nocursorline
+  autocmd BufLeave,FocusLost,InsertEnter * setlocal nocursorcolumn
+  autocmd BufLeave,FocusLost,InsertEnter * setlocal norelativenumber
+augroup END
+
 " 全角スペース強調
 " https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776
 

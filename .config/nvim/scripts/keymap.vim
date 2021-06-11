@@ -15,29 +15,27 @@ function! s:toggle_column() abort
   endif
 endfunction
 
-nnoremap <silent><nowait> <Space><Space> :call <SID>temporal_attention()<CR>:call <SID>temporal_relnum()<CR>
+nnoremap <silent><nowait> <Space><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>
 function! s:temporal_attention() abort
-  set cursorline
-  set cursorcolumn
+  setlocal cursorline
+  setlocal cursorcolumn
   augroup temporal_attention
     autocmd!
-    autocmd CursorMoved * ++once set nocursorline
-    autocmd CursorMoved * ++once set nocursorcolumn
+    autocmd CursorMoved * ++once setlocal nocursorline
+    autocmd CursorMoved * ++once setlocal nocursorcolumn
   augroup END
 endfunction
 function! s:temporal_relnum() abort
-  set relativenumber
+  setlocal relativenumber
   augroup temporal_relnum
     autocmd!
-    autocmd CursorMoved * ++once set norelativenumber
+    autocmd CursorMoved * ++once setlocal norelativenumber
   augroup END
 endfunction
 
 " 検索系は見失いやすいので
-" nnoremap <silent> n n:call <SID>temporal_attention()<CR>
-" nnoremap <silent> N N:call <SID>temporal_attention()<CR>
-nnoremap <silent> n nzz
-nnoremap <silent> N Nzz
+nnoremap <silent> n n<Cmd>call <SID>temporal_attention()<CR>
+nnoremap <silent> N N<Cmd>call <SID>temporal_attention()<CR>
 
 " §§1 fold
 " nnoremap <Space>z zMzv
@@ -47,8 +45,8 @@ nnoremap <Space>z zMzA
 
 " §§1 search
 nnoremap g/ /\v
-nnoremap * *Nzz
-nnoremap g* g*Nzz
+nnoremap * *N<Cmd>call <SID>temporal_attention()<CR>
+nnoremap g* g*N<Cmd>call <SID>temporal_attention()<CR>
 nnoremap <silent> <C-l> <Cmd>nohlsearch<CR><C-l>
 
 " VISUAL モードから簡単に検索
