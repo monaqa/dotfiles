@@ -603,6 +603,7 @@ vmap ,, <Plug>(caw:hatpos:toggle)
 
 augroup vimrc
   autocmd FileType pest let b:caw_oneline_comment = '//'
+  autocmd FileType todo6 let b:caw_oneline_comment = 'x'
 augroup END
 
 

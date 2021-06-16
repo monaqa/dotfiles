@@ -47,3 +47,7 @@ let g:sonictemplate_vim_template_dir = [
 " §§1 Plugin settings for vim-python/python-syntax
 "
 let g:python_highlight_all = 1
+
+" §§1 Plugin settings for plasticboy/vim-markdown
+
+let g:vim_markdown_new_list_item_indent = 2
