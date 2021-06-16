@@ -15,7 +15,8 @@ function! s:toggle_column() abort
   endif
 endfunction
 
-nnoremap <silent><nowait> <Space><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>
+" temporal attention
+nnoremap <silent> <Space><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>
 function! s:temporal_attention() abort
   setlocal cursorline
   setlocal cursorcolumn
@@ -34,8 +35,9 @@ function! s:temporal_relnum() abort
 endfunction
 
 " 検索系は見失いやすいので
-nnoremap <silent> n n<Cmd>call <SID>temporal_attention()<CR>
-nnoremap <silent> N N<Cmd>call <SID>temporal_attention()<CR>
+nnoremap <silent><expr> n 'Nn'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
+nnoremap <silent><expr> N 'nN'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
+nnoremap <silent> zz zz<Cmd>call <SID>temporal_attention()<CR>
 
 " §§1 fold
 " nnoremap <Space>z zMzv
@@ -276,6 +278,15 @@ nnoremap Y y$
 nnoremap dx "_d
 nnoremap cx "_c
 
+" operator with temporal attention
+nnoremap <silent> d<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>d
+nnoremap <silent> c<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>c
+nnoremap <silent> y<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>y
+nnoremap <silent> gu<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gu
+nnoremap <silent> gU<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gU
+" comment operator
+nmap <silent> ,<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>,
+
 " よく使うレジスタは挿入モードでも挿入しやすく
 inoremap <C-r><C-r> <C-g>u<C-r>"
 inoremap <C-r><CR> <C-g>u<C-r>0
@@ -390,7 +401,7 @@ endfunction
 
 " かしこい End
 nnoremap <Space>l <Cmd>call <SID>smart_end()<CR>
-xnoremap <Space>l <Cmd>call <SID>smart_end()<CR>
+xnoremap <Space>l $
 onoremap <Space>l $
 function! s:smart_end()
   let col_before = col(".")
@@ -402,13 +413,6 @@ function! s:smart_end()
     normal! $
   endif
 endfunction
-
-inoremap <C-b> <C-g>U<Left>
-inoremap <C-f> <C-g>U<Right>
-" 上記移動を行っていると <C-Space> で <C-@> が動作してしまうのが不便．
-" imap <Nul> <Nop>
-" としてもうまくいかないので，苦肉の策で <C-@> を潰す
-inoremap <C-Space> <Space>
 
 " word-in-word motion
 onoremap u t_
@@ -465,32 +469,65 @@ augroup vimrc
 augroup END
 
 " Vertical f-motion
-command! -nargs=1 LineSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m)
-command! -nargs=1 VisualLineSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 's') | normal v`'o
-command! LineSameSearch call search('^\s*\V'. @m)
-command! -nargs=1 LineBackSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 'b')
-command! -nargs=1 VisualLineBackSearch let @m=escape(<q-args>, '/\') | call search('^\s*\V'. @m, 'bs') | normal v`'o
-command! LineBackSameSearch call search('^\s*\V'. @m, 'b')
-nnoremap <Space>f :LineSearch<Space>
-nnoremap <Space>F :LineBackSearch<Space>
-onoremap <Space>f :LineSearch<Space>
-onoremap <Space>F :LineBackSearch<Space>
-vnoremap <Space>f :<C-u>VisualLineSearch<Space>
-vnoremap <Space>F :<C-u>VisualLineBackSearch<Space>
-nnoremap <Space>; :LineSameSearch<CR>
-nnoremap <Space>, :LineBackSameSearch<CR>
 
-" noremap <Space>f /^\s*\V\zs
-" noremap <Space>F ?^\s*\V\zs
+" let s:ns_line_search = nvim_create_namespace("line_search")
+" 
+" function! s:line_search_update(text, forward) abort
+"   let opt = (a:forward) ? 'nW' : 'nWb'
+"   let [lnum, col] = searchpos('^\s*\V\zs' .. a:text, opt)
+"   if lnum != 0
+"     call nvim_buf_clear_namespace(0, s:ns_line_search, 0, -1)
+"     call nvim_buf_add_highlight(0, s:ns_line_search, "Search", lnum - 1, col - 1, col - 1 + len(a:text))
+"     redraw
+"   endif
+"   " keeppatterns execute '/^\s*\V\zs' .. a:text .. '/-1'
+"   " redraw
+"   " execute "normal! \<C-o>"
+" endfunction
+" 
+" function! s:line_search_prompt(forward) abort
+"   " autocmd の中では変数が使えない？
+"   if a:forward
+"     " 現在行を上に持っていって検索しやすくする
+"     autocmd vimrc_linesearch CmdlineChanged @ call s:line_search_update(getcmdline(), v:true)
+"   else
+"     " 現在行を下に持っていって検索しやすくする
+"     autocmd vimrc_linesearch CmdlineChanged @ call s:line_search_update(getcmdline(), v:false)
+"   endif
+"   " 現在行を目立たせる
+"   call s:temporal_attention()
+"   redraw
+"   let final = input(a:forward ? 'vsearch(forward): ' : 'vsearch(backward): ')
+"   let opt = (a:forward) ? 'sW' : 'sWb'
+"   " let lnum = search('^\s*\V\zs' .. final, opt)
+"   execute '/^\s*\V\zs' .. final
+"   " if lnum == 0
+"   "   echom 'パターンは見つかりませんでした: ' .. final
+"   " endif
+"   call nvim_buf_clear_namespace(0, s:ns_line_search, 0, -1)
+" endfunction
+" 
+" augroup vimrc_linesearch
+"   autocmd!
+"   autocmd CmdlineLeave @ autocmd! vimrc_linesearch CmdlineChanged
+" augroup END
+" 
+" noremap <C-f> <Cmd>call <SID>line_search_prompt(1)<CR>
+" noremap <C-b> <Cmd>call <SID>line_search_prompt(0)<CR>
 
 " Command mode mapping
 cnoremap <C-a> <Home>
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
+" cnoremap <C-b> <Left>
+" cnoremap <C-f> <Right>
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 cnoremap <Up> <C-p>
 cnoremap <Down> <C-n>
+
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+" cnoremap <expr> <C-f> (getcmdtype() ==# '@' && getcmdline() ==# '') ? histget('@', -1) .. "\<CR>" : "\<Right>"
+" cnoremap <expr> <C-b> (getcmdtype() ==# '@' && getcmdline() ==# '') ? histget('@', -1) .. "\<CR>" : "\<Left>"
 
 " §§1 macros
 

@@ -2,14 +2,14 @@
 
 " §§1 表示設定
 
-augroup vimrc
-  " 現在編集中のバッファは scrolloff あり
-  autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
-  autocmd BufEnter,FocusGained,InsertLeave *   setlocal scrolloff=10
-  autocmd BufEnter,FocusGained,InsertLeave * endif
-  " 編集中でないバッファは scrolloff なし
-  autocmd BufLeave,FocusLost,InsertEnter   * setlocal scrolloff=0
-augroup END
+" augroup vimrc
+"   " 現在編集中のバッファは scrolloff あり
+"   autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
+"   autocmd BufEnter,FocusGained,InsertLeave *   setlocal scrolloff=10
+"   autocmd BufEnter,FocusGained,InsertLeave * endif
+"   " 編集中でないバッファは scrolloff なし
+"   autocmd BufLeave,FocusLost,InsertEnter   * setlocal scrolloff=0
+" augroup END
 
 augroup vimrc
   " temporal attention の設定初期化
@@ -89,14 +89,14 @@ function! s:auto_mkdir(dir, force) abort
   call mkdir(a:dir, 'p')
 endfunction
 
-" yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
+" 無名レジスタへの yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）
 augroup vimrc
   if exists('##TextYankPost')
     autocmd TextYankPost * call <SID>copyUnnamedToPlus(v:event)
   endif
 augroup END
 function! s:copyUnnamedToPlus(event)
-  if a:event.operator ==# 'y'
+  if a:event.operator ==# 'y' && a:event.regname ==# ''
     let @+ = @"
   endif
 endfunction

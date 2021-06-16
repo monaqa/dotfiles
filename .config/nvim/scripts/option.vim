@@ -15,6 +15,7 @@ set wrap
 set colorcolumn=80
 set list
 set listchars=tab:▸▹┊,trail:⌑,extends:❯,precedes:❮
+set scrolloff=0
 
 set matchpairs+=（:）,「:」,『:』,【:】
 
