@@ -138,3 +138,28 @@ augroup vimrc
   " autocmd CmdwinEnter * $
   " autocmd CmdwinEnter * startinsert!
 augroup END
+
+augroup instant-visual-highlight
+  au!
+  autocmd WinLeave * call <SID>free_visual_match()
+  autocmd CursorMoved,CursorHold * call <SID>visual_match()
+augroup END
+vnoremap <Esc> <Esc><Cmd>call <SID>free_visual_match()<CR>
+
+function! s:visual_match()
+  call s:free_visual_match()
+  if index(['v', ''], mode()) != -1 && line('v') == line('.')
+    let len_of_char_of_v   = strlen(matchstr(getline('v'), '.', col('v')-1))
+    let len_of_char_of_dot = strlen(matchstr(getline('.'), '.', col('.')-1))
+    let first = min([col('v') - 1, col('.') - 1])
+    let last = max([col('v') - 2 + len_of_char_of_v, col('.') - 2 + len_of_char_of_dot])
+    let w:visual_match_id = matchadd('VisualBlue', '\C\V' .. escape(getline('.')[first:last], '\'))
+  endif
+endfunction
+
+function! s:free_visual_match()
+  if exists("w:visual_match_id")
+    call matchdelete(w:visual_match_id)
+    unlet w:visual_match_id
+  endif
+endfunction

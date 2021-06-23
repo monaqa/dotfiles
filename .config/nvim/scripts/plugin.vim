@@ -48,6 +48,7 @@ function! s:setting_gruvbit() abort
 
   hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
   hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
+  hi! VisualBlue guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
   hi! Folded     guifg=#9e8f7a guibg=#535657 gui=NONE cterm=NONE
 
   hi! CursorLine           guifg=NONE    guibg=#535657
