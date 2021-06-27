@@ -235,6 +235,8 @@ augroup rc_gina
   autocmd FileType gina-blame setlocal nonumber
   autocmd FileType gina-blame setlocal signcolumn=no
   autocmd FileType gina-blame setlocal foldcolumn=0
+
+  autocmd FileType gina-log nmap <buffer><nowait> c <Plug>(gina-changes-between)
 augroup END
 
 let g:gina#command#blame#formatter#format = '%su%=|%au %ti %ma%in'
