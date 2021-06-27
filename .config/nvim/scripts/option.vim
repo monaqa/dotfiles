@@ -101,3 +101,10 @@ set inccommand=split
 
 " §§1 session
 set sessionoptions=buffers,folds,tabpages,winsize
+
+" §§1 grep
+if executable('rg')
+  let &grepprg = 'rg --vimgrep --hidden --glob ' .. "'!tags*'"
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
+

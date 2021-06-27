@@ -47,3 +47,10 @@ function HydrogenCustomFoldText()
   " let sub = substitute(line, '', '', 'g')
   return kind . ' ' . line_content . ' '
 endfunction
+
+" §§1 Quickfix
+augroup vimrc
+  autocmd FileType qf nnoremap <buffer> <CR> <CR>
+  autocmd FileType qf nnoremap <buffer> j j
+  autocmd FileType qf nnoremap <buffer> k k
+augroup END
