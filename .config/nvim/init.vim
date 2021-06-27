@@ -5,6 +5,7 @@ augroup vimrc
   autocmd!
 augroup END
 
+" 正直このあたりよくわかってません
 " https://wiredool.hatenadiary.org/entry/20120618/1340019962
 filetype off
 filetype plugin indent off

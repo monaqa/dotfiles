@@ -26,9 +26,6 @@ omap im <Plug>(textobj-comment-i)
 
 " §§1 Plugin settings for habamax/vim-gruvbit
 
-" let g:gruvbox_contrast_dark = 'hard'
-" let g:gruvbox_material_background = 'hard'
-
 augroup vimrc_colorscheme
   autocmd!
   autocmd ColorScheme gruvbit call s:setting_gruvbit()

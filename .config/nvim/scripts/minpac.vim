@@ -6,28 +6,15 @@ function! PackInit() abort
   call minpac#init()
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
-  call minpac#add('nvim-lua/popup.nvim')
-  call minpac#add('nvim-lua/plenary.nvim')
-  call minpac#add('nvim-telescope/telescope.nvim')
-
-  " call minpac#add('file:///Users/shinichi/ghq/github.com/monaqa/vim-satynx')
-  call minpac#add('vim-denops/denops.vim', {'type': 'opt'})
-  call minpac#add('yutkat/dps-coding-now.nvim', {'type': 'opt'})
-  " call minpac#add('tversteeg/registers.nvim')
-  " call minpac#add('lambdalisue/vim-protocol')
-
-  call minpac#add('nvim-treesitter/nvim-treesitter')
-  call minpac#add('nvim-treesitter/nvim-treesitter-textobjects')
-
-  call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
-  call minpac#add('glidenote/memolist.vim')
   call minpac#add('Konfekt/FastFold')
   call minpac#add('Shougo/vimproc.vim')
   call minpac#add('Vimjas/vim-python-pep8-indent')
   call minpac#add('bps/vim-textobj-python')
   call minpac#add('cohama/lexima.vim')
+  call minpac#add('glidenote/memolist.vim')
   call minpac#add('glts/vim-textobj-comment')
   call minpac#add('habamax/vim-gruvbit')
+  call minpac#add('hoob3rt/lualine.nvim')
   call minpac#add('kana/vim-altr')
   call minpac#add('kana/vim-operator-user')
   call minpac#add('kana/vim-textobj-user')
@@ -43,8 +30,10 @@ function! PackInit() abort
   call minpac#add('machakann/vim-swap')
   call minpac#add('machakann/vim-textobj-functioncall')
   call minpac#add('mattn/vim-maketable')
+  call minpac#add('mattn/vim-sonictemplate')
   call minpac#add('mbbill/undotree')
   call minpac#add('mhinz/vim-signify')
+  call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
   call minpac#add('monaqa/satysfi.vim')
   call minpac#add('monaqa/smooth-scroll.vim')
   call minpac#add('monaqa/vim-edgemotion')
@@ -63,19 +52,29 @@ function! PackInit() abort
   call minpac#add('xolox/vim-misc')
   call minpac#add('xolox/vim-session')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
-  call minpac#add('hoob3rt/lualine.nvim')
-  call minpac#add('mattn/vim-sonictemplate')
   call minpac#add('yuki-yano/fern-preview.vim')
+
+  " telescope
+  call minpac#add('nvim-lua/popup.nvim')
+  call minpac#add('nvim-lua/plenary.nvim')
+  call minpac#add('nvim-telescope/telescope.nvim')
+
+  " denops
+  call minpac#add('vim-denops/denops.vim', {'type': 'opt'})
+  call minpac#add('yutkat/dps-coding-now.nvim', {'type': 'opt'})
+
+  " Treesitter
+  call minpac#add('nvim-treesitter/nvim-treesitter')
+  call minpac#add('nvim-treesitter/nvim-treesitter-textobjects')
 
   " Filetype Plugins
   " call minpac#add('sheerun/vim-polyglot')
+  call minpac#add('JuliaEditorSupport/julia-vim')
   call minpac#add('cespare/vim-toml')
+  call minpac#add('ocaml/vim-ocaml')
   call minpac#add('plasticboy/vim-markdown')
   call minpac#add('rust-lang/rust.vim')
-  call minpac#add('JuliaEditorSupport/julia-vim')
-  call minpac#add('ocaml/vim-ocaml')
   call minpac#add('vim-python/python-syntax')
-
 
 endfunction
 

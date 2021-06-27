@@ -1,7 +1,10 @@
 " vim:fdm=marker:fmr=§§,■■
+" キーマッピング関連。
+" そのキーマップが適切に動くようにするための関数や autocmd もここに載せる。
 
-" §§1 表示関連
+" §§1 changing display
 
+" Z を signcolumn/foldcolumn の toggle に使う
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
@@ -17,6 +20,7 @@ endfunction
 
 " temporal attention
 nnoremap <silent> <Space><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>
+nnoremap <silent> zz zz<Cmd>call <SID>temporal_attention()<CR>
 function! s:temporal_attention() abort
   setlocal cursorline
   setlocal cursorcolumn
@@ -34,11 +38,6 @@ function! s:temporal_relnum() abort
   augroup END
 endfunction
 
-" 検索系は見失いやすいので
-nnoremap <silent><expr> n 'Nn'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
-nnoremap <silent><expr> N 'nN'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
-nnoremap <silent> zz zz<Cmd>call <SID>temporal_attention()<CR>
-
 " §§1 fold
 " nnoremap <Space>z zMzv
 " 自分のいない level1 の fold だけたたむ
@@ -50,6 +49,10 @@ nnoremap g/ /\v
 nnoremap * *N<Cmd>call <SID>temporal_attention()<CR>
 nnoremap g* g*N<Cmd>call <SID>temporal_attention()<CR>
 nnoremap <silent> <C-l> <Cmd>nohlsearch<CR><C-l>
+
+" 検索 with temporal attention
+nnoremap <silent><expr> n 'Nn'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
+nnoremap <silent><expr> N 'nN'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
@@ -72,14 +75,12 @@ augroup vimrc
 augroup END
 function! s:terminal_init()
   " ここに :terminal のバッファ固有の設定を記述する
-  " nnoremap <buffer> a i<Up><CR><C-\><C-n>
   nnoremap <buffer> <CR> i<CR><C-\><C-n>
   nnoremap <expr><buffer> u "i" . repeat("<Up>", v:count1) . "<C-\><C-n>"
   nnoremap <expr><buffer> <C-r> "i" . repeat("<Down>", v:count1) . "<C-\><C-n>"
   nnoremap <buffer> sw :<C-u>bd!<CR>
   nnoremap <buffer> t :<C-u>let g:current_terminal_job_id = b:terminal_job_id<CR>
   nnoremap <buffer> dd i<C-u><C-\><C-n>
-  " nnoremap <buffer> I i<C-a>
   nnoremap <buffer> A i<C-e>
   nnoremap <buffer><expr> I "i\<C-a>" . repeat("\<Right>", <SID>calc_cursor_right_num())
   nnoremap <buffer> p pi
@@ -87,8 +88,6 @@ function! s:terminal_init()
 endfunction
 function! s:calc_cursor_right_num() abort
   " ad hoc!
-  " normal "my0
-  " let strlen = strchars(@m)
   let cpos = getcurpos()
   return cpos[2] - 5
 endfunction
@@ -185,19 +184,12 @@ noremap Fj F<C-k>j
 onoremap tj t<C-k>j
 onoremap Tj T<C-k>j
 
-" k はまだとっとこう
-" noremap fk f<C-k>k
-" noremap Fk F<C-k>k
-" onoremap tk t<C-k>k
-" onoremap Tk T<C-k>k
-
 function s:register_digraph(key_pair, char)
   execute('digraphs ' .. a:key_pair .. ' ' .. char2nr(a:char) )
 endfunction
 
 " これを設定することで， fjj を本来の fj と同じ効果にできる．
 call s:register_digraph('jj', 'j')
-" call s:register_digraph('kk', 'k')
 
 " カッコ
 call s:register_digraph('j(', '（')
@@ -212,8 +204,6 @@ call s:register_digraph('j>', '】')
 " 句読点
 call s:register_digraph('j,', '、')
 call s:register_digraph('j.', '。')
-" call s:register_digraph('k,', '，')
-" call s:register_digraph('k.', '．')
 call s:register_digraph('j!', '！')
 call s:register_digraph('j?', '？')
 call s:register_digraph('j:', '：')
@@ -232,8 +222,6 @@ nnoremap s<Bar> :<C-u>vs<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap <silent><expr> ss <SID>isWideWindow('.') ? ':<C-u>vs<CR>' : ':<C-u>sp<CR>'
 nnoremap sq :<C-u>q<CR>
-" nnoremap <expr> sw &buftype ==# '' ? ":\<C-u>bp\<CR>:\<C-u>bd #\<CR>" : ":bd\<CR>"
-" nnoremap s<Space> :<C-u>execute "buffer" v:count<CR>
 " バッファ間移動
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
@@ -257,7 +245,6 @@ nnoremap s: q:G
 nnoremap s? q?G
 nnoremap s/ q/G
 
-
 " Sandwich.vim のデフォルトキーバインドを上書きする
 nnoremap <nowait> srb <Nop>
 
@@ -267,25 +254,21 @@ function! s:isWideWindow(nr)
   return wd > 2.2 * ht
 endfunction
 
-" §§1 operator
+" §§1 operator / put
 " D や C との一貫性
 nnoremap Y y$
 
-" x の結果はバッファに入れない．dx でも同様に扱う
-" いや，別にバッファに入れてもいい気がしてきた．一旦コメントアウトしておこう
-" nnoremap x "_x
-" nnoremap X "_X
-nnoremap dx "_d
-nnoremap cx "_c
-
-" operator with temporal attention
-nnoremap <silent> d<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>d
-nnoremap <silent> c<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>c
-nnoremap <silent> y<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>y
+" operator with temporal relnum
+nnoremap <silent>  d<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>d
+nnoremap <silent>  c<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>c
+nnoremap <silent>  y<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>y
 nnoremap <silent> gu<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gu
 nnoremap <silent> gU<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gU
+nnoremap <silent>  ><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>>
+nnoremap <silent>  <<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR><
+nnoremap <silent>  =<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>=
 " comment operator
-nmap <silent> ,<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>,
+nmap     <silent>  ,<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>,
 
 " よく使うレジスタは挿入モードでも挿入しやすく
 inoremap <C-r><C-r> <C-g>u<C-r>"
@@ -299,11 +282,11 @@ nnoremap <Space>p <Cmd>put +<CR>
 nnoremap <Space>P <Cmd>put! +<CR>
 vnoremap <Space>p <Cmd>call VisualReplace('+')<CR>
 
-vnoremap p <Cmd>call VisualReplace(v:register)<CR>
+vnoremap p <Cmd>call <SID>visual_replace(v:register)<CR>
 
-" 選択箇所を無名レジスタの内容で置き換える。塗り替え元の内容をそのレジスタには保持しない。
-" 無名レジスタには保持されるので、それを使いたければ `P` を用いる。
-function! VisualReplace(register)
+" 選択箇所を指定レジスタの内容で置き換える。ただし、指定レジスタの中身はそのまま。
+" デフォルトの p と同じ挙動を望む場合は `P` を用いる。
+function! s:visual_replace(register)
   let reg_body = getreg(a:register)
   exe 'normal! "' .. a:register .. 'p'
   call setreg(a:register, reg_body)
@@ -459,75 +442,30 @@ onoremap m` a`
 
 " Vertical WORD (vWORD) 単位での移動
 let g:par_motion_continuous = v:false
-function! SmartParMotion(direction, count)
-  execute ((g:par_motion_continuous ? "keepjumps " : "") .. "normal! " .. a:count .. (a:direction ? "}" : "{"))
-endfunction
-noremap <C-j> <Cmd>call SmartParMotion(v:true, v:count1)<CR><Cmd>let g:par_motion_continuous = v:true<CR>
-noremap <C-k> <Cmd>call SmartParMotion(v:false, v:count1)<CR><Cmd>let g:par_motion_continuous = v:true<CR>
 augroup vimrc
   autocmd CursorMoved * let g:par_motion_continuous = v:false
 augroup END
+function! s:smart_par_motion(direction, count)
+  execute ((g:par_motion_continuous ? 'keepjumps ' : '') .. 'normal! ' .. a:count .. (a:direction ? '}' : '{'))
+endfunction
+noremap <C-j> <Cmd>call <SID>smart_par_motion(v:true, v:count1)<CR><Cmd>let g:par_motion_continuous = v:true<CR>
+noremap <C-k> <Cmd>call <SID>smart_par_motion(v:false, v:count1)<CR><Cmd>let g:par_motion_continuous = v:true<CR>
 
-" Vertical f-motion
+function! AddCursorLineToJumpList()
+  let line = line(".")
+  execute("normal! " .. line .. "gg")
+  return ''
+endfunction
 
-" let s:ns_line_search = nvim_create_namespace("line_search")
-" 
-" function! s:line_search_update(text, forward) abort
-"   let opt = (a:forward) ? 'nW' : 'nWb'
-"   let [lnum, col] = searchpos('^\s*\V\zs' .. a:text, opt)
-"   if lnum != 0
-"     call nvim_buf_clear_namespace(0, s:ns_line_search, 0, -1)
-"     call nvim_buf_add_highlight(0, s:ns_line_search, "Search", lnum - 1, col - 1, col - 1 + len(a:text))
-"     redraw
-"   endif
-"   " keeppatterns execute '/^\s*\V\zs' .. a:text .. '/-1'
-"   " redraw
-"   " execute "normal! \<C-o>"
-" endfunction
-" 
-" function! s:line_search_prompt(forward) abort
-"   " autocmd の中では変数が使えない？
-"   if a:forward
-"     " 現在行を上に持っていって検索しやすくする
-"     autocmd vimrc_linesearch CmdlineChanged @ call s:line_search_update(getcmdline(), v:true)
-"   else
-"     " 現在行を下に持っていって検索しやすくする
-"     autocmd vimrc_linesearch CmdlineChanged @ call s:line_search_update(getcmdline(), v:false)
-"   endif
-"   " 現在行を目立たせる
-"   call s:temporal_attention()
-"   redraw
-"   let final = input(a:forward ? 'vsearch(forward): ' : 'vsearch(backward): ')
-"   let opt = (a:forward) ? 'sW' : 'sWb'
-"   " let lnum = search('^\s*\V\zs' .. final, opt)
-"   execute '/^\s*\V\zs' .. final
-"   " if lnum == 0
-"   "   echom 'パターンは見つかりませんでした: ' .. final
-"   " endif
-"   call nvim_buf_clear_namespace(0, s:ns_line_search, 0, -1)
-" endfunction
-" 
-" augroup vimrc_linesearch
-"   autocmd!
-"   autocmd CmdlineLeave @ autocmd! vimrc_linesearch CmdlineChanged
-" augroup END
-" 
-" noremap <C-f> <Cmd>call <SID>line_search_prompt(1)<CR>
-" noremap <C-b> <Cmd>call <SID>line_search_prompt(0)<CR>
 
 " Command mode mapping
 cnoremap <C-a> <Home>
-" cnoremap <C-b> <Left>
-" cnoremap <C-f> <Right>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 cnoremap <Up> <C-p>
 cnoremap <Down> <C-n>
-
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
-" cnoremap <expr> <C-f> (getcmdtype() ==# '@' && getcmdline() ==# '') ? histget('@', -1) .. "\<CR>" : "\<Right>"
-" cnoremap <expr> <C-b> (getcmdtype() ==# '@' && getcmdline() ==# '') ? histget('@', -1) .. "\<CR>" : "\<Left>"
 
 " §§1 macros
 

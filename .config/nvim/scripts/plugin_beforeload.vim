@@ -31,7 +31,7 @@ let g:splash#path = $HOME . "/.config/nvim/scripts/resource/monaqa.txt"
 "       setting any option.
 
 " DUMMY highlight for avoiding error in barbar.nvim. This is overrided by gruvbit after
-hi! Special guifg=NONE guibg=NONE gui=NONE cterm=NONE
+" hi! Special guifg=NONE guibg=NONE gui=NONE cterm=NONE
 
 let bufferline = {}
 

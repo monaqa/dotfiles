@@ -10,7 +10,7 @@ set lazyredraw
 set ttyfast
 
 " バッファ内
-set ambiwidth=single  "全角文字幅
+set ambiwidth=single
 set wrap
 set colorcolumn=80
 set list
@@ -21,8 +21,7 @@ set matchpairs+=（:）,「:」,『:』,【:】
 
 " 下
 set showcmd
-set laststatus=2  " ステータスラインを常に表示
-" set statusline^=%{coc#status()}
+set laststatus=2
 
 " 左
 set number
@@ -38,15 +37,6 @@ set diffopt+=vertical
 set termguicolors
 set background=dark
 colorscheme gruvbit
-
-" 全角スペース強調
-" https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776
-augroup vimrc
-  autocmd ColorScheme * highlight link UnicodeSpaces Error
-  autocmd VimEnter,WinEnter * highlight link UnicodeSpaces Error
-  autocmd VimEnter,WinEnter * match UnicodeSpaces
-  \ /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
-augroup END
 
 " §§1 editing
 set expandtab
@@ -87,7 +77,6 @@ if &shell =~# 'fish$'
 endif
 
 if has('persistent_undo')
-  " set undodir=~/.vim/undo
   set undofile
 endif
 

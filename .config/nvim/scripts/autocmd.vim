@@ -1,15 +1,7 @@
 " vim:fdm=marker:fmr=§§,■■
+" autocmd まわり。
 
 " §§1 表示設定
-
-" augroup vimrc
-"   " 現在編集中のバッファは scrolloff あり
-"   autocmd BufEnter,FocusGained,InsertLeave * if &buftype ==# ''
-"   autocmd BufEnter,FocusGained,InsertLeave *   setlocal scrolloff=10
-"   autocmd BufEnter,FocusGained,InsertLeave * endif
-"   " 編集中でないバッファは scrolloff なし
-"   autocmd BufLeave,FocusLost,InsertEnter   * setlocal scrolloff=0
-" augroup END
 
 augroup vimrc
   " temporal attention の設定初期化
@@ -20,7 +12,6 @@ augroup END
 
 " 全角スペース強調
 " https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776
-
 augroup vimrc
   autocmd ColorScheme * highlight link UnicodeSpaces Error
   autocmd VimEnter,WinEnter * highlight link UnicodeSpaces Error
