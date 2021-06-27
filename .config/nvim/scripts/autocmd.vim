@@ -139,8 +139,10 @@ augroup vimrc
   " autocmd CmdwinEnter * startinsert!
 augroup END
 
-augroup instant-visual-highlight
-  au!
+" Instant Visual Highlight
+" Thanks to woodyZootopia
+" https://github.com/woodyZootopia/nvim/blob/81047bbf893570cd0d832ef3ec076f278087dc6b/autocmd.vim#L44-L71
+augroup vimrc
   autocmd WinLeave * call <SID>free_visual_match()
   autocmd CursorMoved,CursorHold * call <SID>visual_match()
 augroup END
