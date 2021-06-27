@@ -120,6 +120,9 @@ if test -n "$FUZZY_FINDER"
   abbr -a hg "history | $FUZZY_FINDER"
   # abbr -a gs "git branches | $FUZZY_FINDER | xargs git switch"
   abbr -a gst "git tag -l | $FUZZY_FINDER | xargs git switch"
+
+  # 便利な z
+  abbr -a ff  "cd (z -l | awk '{print \$2;}' | $FUZZY_FINDER || echo .)"
 end
 # }}}
 
