@@ -451,13 +451,6 @@ endfunction
 noremap <C-j> <Cmd>call <SID>smart_par_motion(v:true, v:count1)<CR><Cmd>let g:par_motion_continuous = v:true<CR>
 noremap <C-k> <Cmd>call <SID>smart_par_motion(v:false, v:count1)<CR><Cmd>let g:par_motion_continuous = v:true<CR>
 
-function! AddCursorLineToJumpList()
-  let line = line(".")
-  execute("normal! " .. line .. "gg")
-  return ''
-endfunction
-
-
 " Command mode mapping
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
