@@ -280,7 +280,7 @@ cnoremap <C-r><Space> <C-r>+
 
 nnoremap <Space>p <Cmd>put +<CR>
 nnoremap <Space>P <Cmd>put! +<CR>
-vnoremap <Space>p <Cmd>call VisualReplace('+')<CR>
+vnoremap <Space>p <Cmd>call <SID>visual_replace('+')<CR>
 
 vnoremap p <Cmd>call <SID>visual_replace(v:register)<CR>
 
