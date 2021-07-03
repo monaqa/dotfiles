@@ -468,8 +468,10 @@ nnoremap <silent> <C-b> <Cmd>call smooth_scroll#flick(v:count1 * winheight(0)   
 
 " §§1 Plugin settings for monaqa/vim-edgemotion
 
-map <C-n> m`<Plug>(edgemotion-j)
-map <C-p> m`<Plug>(edgemotion-k)
+nmap <C-n> m`<Plug>(edgemotion-j)
+nmap <C-p> m`<Plug>(edgemotion-k)
+vmap <C-n> <Plug>(edgemotion-j)
+vmap <C-p> <Plug>(edgemotion-k)
 
 " §§1 Plugin settings for neoclide/coc.nvim
 
