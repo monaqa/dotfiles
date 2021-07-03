@@ -340,6 +340,7 @@ let g:sandwich#recipes += [
 \   {'buns': ['\[', '\]'], 'nesting': 1, 'input': ['\[', '\]']},
 \ ]
 
+" リンク記法
 let g:sandwich#recipes += [
 \   {'buns': ['`', ' <>`_'], 'nesting': 0, 'input': ['l'], 'filetype': ['rst']},
 \   {'buns': ['` <', '>`_'], 'nesting': 0, 'input': ['L'], 'filetype': ['rst']},
@@ -347,19 +348,36 @@ let g:sandwich#recipes += [
 \   {'buns': ['[](', ')'], 'nesting': 0, 'input': ['L'], 'filetype': ['markdown']},
 \ ]
 
-let g:sandwich#recipes += [
-\   {
-\     'filetype'    : ['markdown'],
-\     'buns'        : ['```', '```' ],
-\     'input'       : ['c', ],
-\     'kind'        : ['add'],
-\     'linewise'    : 1,
-\   },
-\ ]
-
+" Markdown のコードブロック
 let g:sandwich#recipes += [
 \ {
-\   'buns': ['GenericsName()', '">"'],
+\   'filetype' : ['markdown'],
+\   'buns'     : ['SandwichMarkdownCodeSnippet()', '"```"' ],
+\   'expr'     : 1,
+\   'input'    : ['C', ],
+\   'kind'     : ['add'],
+\   'linewise' : 1,
+\   'command'  : ["']s/^\\s*//"],
+\ },
+\ {
+\   'filetype' : ['markdown'],
+\   'buns'     : ['```', '```' ],
+\   'input'    : ['c', ],
+\   'kind'     : ['add'],
+\   'linewise' : 1,
+\   'command'  : ["']s/^\\s*//"],
+\ },
+\ ]
+
+function! SandwichMarkdownCodeSnippet() abort
+  let lang_name = input('language: ', '')
+  return '```' .. lang_name
+endfunction
+
+" generics
+let g:sandwich#recipes += [
+\ {
+\   'buns': ['SandwichGenericsName()', '">"'],
 \   'expr': 1,
 \   'cursor': 'inner_tail',
 \   'kind': ['add', 'replace'],
@@ -374,7 +392,7 @@ let g:sandwich#recipes += [
 \ },
 \ ]
 
-function! GenericsName() abort
+function! SandwichGenericsName() abort
   let genericsname = input('generics name: ', '')
   if genericsname ==# ''
     throw 'OperatorSandwichCancel'
@@ -395,6 +413,7 @@ let g:sandwich#recipes += [
 \ {
 \   'buns': ['BlockCommandName()', '">"'],
 \   'expr': 1,
+\   'linewise' : 1,
 \   'cursor': 'inner_tail',
 \   'kind': ['add', 'replace'],
 \   'action': ['add'],
