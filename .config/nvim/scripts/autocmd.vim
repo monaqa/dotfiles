@@ -137,7 +137,9 @@ augroup vimrc
   autocmd WinLeave * call <SID>free_visual_match()
   autocmd CursorMoved,CursorHold * call <SID>visual_match()
 augroup END
-vnoremap <Esc> <Esc><Cmd>call <SID>free_visual_match()<CR>
+xnoremap <Esc> <Esc><Cmd>call <SID>free_visual_match()<CR>
+" なぜか SELECT モードでは <Cmd> がうまく動かない
+snoremap <silent> <Esc> <Esc>:<C-u>call <SID>free_visual_match()<CR>
 
 function! s:visual_match()
   call s:free_visual_match()

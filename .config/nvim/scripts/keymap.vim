@@ -40,8 +40,9 @@ endfunction
 
 " §§1 fold
 " nnoremap <Space>z zMzv
-" 自分のいない level1 の fold だけたたむ
+" 自分のいない level が 1 の fold だけたたむ
 nnoremap <Space>z zMzA
+nnoremap <Space>z zx
 
 
 " §§1 search
@@ -574,7 +575,7 @@ nnoremap <C-CR> <Nop>
 
 " 長い文の改行をノーマルモードから楽に行う
 " try: f.<Space><CR> or f,<Space><CR>
-nnoremap <silent> <Space><CR> a<CR><Esc>
+nnoremap <Space><CR> a<CR><Esc>
 
 nnoremap <Space>a :<C-u>call <SID>increment_char(v:count1)<CR>
 nnoremap <Space>x :<C-u>call <SID>increment_char(-v:count1)<CR>

@@ -210,20 +210,6 @@ function s:fern_settings()
   nmap <buffer> <C-l> <Plug>(fern-action-redraw)
 endfunction
 
-augroup my-fern-hijack
-  autocmd!
-  autocmd BufEnter * ++nested call s:hijack_directory()
-augroup END
-
-function! s:hijack_directory() abort
-  let path = expand('%:p')
-  if !isdirectory(path)
-    return
-  endif
-  bwipeout %
-  execute printf('Fern %s', fnameescape(path))
-endfunction
-
 " §§1 Plugin settings for lambdalisue/gina.vim
 
 augroup rc_gina
@@ -617,7 +603,7 @@ call submode#leave_with('vertjmp', 'n', '', '<Space>')
 inoremap <C-l> <Nop>
 
 " §§1 Plugin settings for tyru/caw.vim
-" toggle comment を t に割り当てる。
+" toggle comment を , に割り当てる。
 nmap , <Plug>(caw:hatpos:toggle:operator)
 nmap ,, <Plug>(caw:hatpos:toggle)
 vmap ,, <Plug>(caw:hatpos:toggle)

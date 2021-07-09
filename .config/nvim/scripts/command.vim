@@ -36,8 +36,8 @@ endfunction
 
 " thanks to cohama
 " 今開いているファイルを削除
-command! -bang -nargs=0 DeleteMe call DeleteMe(<bang>0)
-function! DeleteMe(force)
+command! -bang -nargs=0 DeleteMe call s:delete_me(<bang>0)
+function! s:delete_me(force)
   if a:force || !&modified
     let filename = expand('%')
     bdelete!
@@ -48,8 +48,8 @@ function! DeleteMe(force)
 endfunction
 
 " 今開いているファイルをリネーム
-command! -nargs=1 RenameMe call RenameMe(<q-args>)
-function! RenameMe(newFileName)
+command! -nargs=1 RenameMe call s:rename_me(<q-args>)
+function! s:rename_me(newFileName)
   let currentFileName = expand('%')
   execute 'saveas ' . a:newFileName
   bdelete! #
@@ -58,7 +58,8 @@ endfunction
 cnoreabbrev <expr> RenameMe "RenameMe " . expand('%')
 
 " §§1 行末の空白とか最終行の空行を削除
-function! RemoveUnwantedSpaces()
+command! -nargs=0 RemoveUnwantedSpaces call s:remove_unwanted_spaces()
+function! s:remove_unwanted_spaces()
   let pos_save = getpos('.')
   try
     keeppatterns %s/\s\+$//e
@@ -74,14 +75,13 @@ function! RemoveUnwantedSpaces()
     call setpos('.', pos_save)
   endtry
 endfunction
-command! -nargs=0 RemoveUnwantedSpaces call RemoveUnwantedSpaces()
 
 " 現在のファイル名をコピー
 command! YankCurrentFileName let @+ = expand("%:p")
 
 " §§1 substitute
-command! -bang -nargs=0 SubstituteCommaPeriod call SubstituteCommaPeriod(<bang>0)
-function! SubstituteCommaPeriod(invert)
+command! -bang -nargs=0 SubstituteCommaPeriod call s:substitute_comma_period(<bang>0)
+function! s:substitute_comma_period(invert)
   if a:invert
     %substitute/、/，/g
     %substitute/。/．/g

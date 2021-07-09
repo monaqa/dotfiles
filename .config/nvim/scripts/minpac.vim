@@ -21,6 +21,7 @@ function! PackInit() abort
   call minpac#add('kkiyama117/zenn-vim')
   call minpac#add('kyazdani42/nvim-web-devicons')
   call minpac#add('lambdalisue/fern-renderer-nerdfont.vim')
+  call minpac#add('lambdalisue/fern-hijack.vim')
   call minpac#add('lambdalisue/fern.vim')
   call minpac#add('lambdalisue/gina.vim')
   call minpac#add('lambdalisue/nerdfont.vim')
@@ -38,7 +39,6 @@ function! PackInit() abort
   call minpac#add('monaqa/smooth-scroll.vim')
   call minpac#add('monaqa/vim-edgemotion')
   call minpac#add('neoclide/coc.nvim')
-  call minpac#add('pest-parser/pest.vim')
   call minpac#add('previm/previm')
   call minpac#add('rafcamlet/coc-nvim-lua')
   call minpac#add('raghur/vim-ghost')
@@ -60,7 +60,7 @@ function! PackInit() abort
   call minpac#add('nvim-telescope/telescope.nvim')
 
   " denops
-  call minpac#add('vim-denops/denops.vim', {'type': 'opt'})
+  call minpac#add('vim-denops/denops.vim')
   call minpac#add('yutkat/dps-coding-now.nvim', {'type': 'opt'})
 
   " Treesitter
@@ -72,6 +72,7 @@ function! PackInit() abort
   call minpac#add('JuliaEditorSupport/julia-vim')
   call minpac#add('cespare/vim-toml')
   call minpac#add('ocaml/vim-ocaml')
+  call minpac#add('pest-parser/pest.vim')
   call minpac#add('plasticboy/vim-markdown')
   call minpac#add('rust-lang/rust.vim')
   call minpac#add('vim-python/python-syntax')
