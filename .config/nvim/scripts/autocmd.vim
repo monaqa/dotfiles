@@ -15,24 +15,13 @@ augroup END
 augroup vimrc
   autocmd ColorScheme * highlight link UnicodeSpaces Error
   autocmd VimEnter,WinEnter * highlight link UnicodeSpaces Error
-  autocmd VimEnter,WinEnter * match UnicodeSpaces
-  \ /\%u180E\|\%u2000\|\%u2001\|\%u2002\|\%u2003\|\%u2004\|\%u2005\|\%u2006\|\%u2007\|\%u2008\|\%u2009\|\%u200A\|\%u2028\|\%u2029\|\%u202F\|\%u205F\|\%u3000/
+  autocmd VimEnter,WinEnter * match UnicodeSpaces /[\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/
 augroup END
 
 " window/buffer
 augroup vimrc
-  autocmd VimResized * call <SID>resizeFloatingWindow()
   autocmd VimResized * exe "normal \<c-w>="
 augroup END
-
-function s:resizeFloatingWindow()
-  if exists('*ResizeDefxFloatingWindow')
-    call ResizeDefxFloatingWindow()
-  endif
-  if exists('*ResizeDeniteFloatingWindow')
-    call ResizeDeniteFloatingWindow()
-  endif
-endfunction
 
 
 " §§1 .vimrc.local

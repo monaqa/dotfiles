@@ -7,7 +7,7 @@
 " Z を signcolumn/foldcolumn の toggle に使う
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
-nnoremap <silent><nowait> Z :call <SID>toggle_column()<CR>
+nnoremap <silent><nowait> Z <Cmd>call <SID>toggle_column()<CR>
 function! s:toggle_column() abort
   if &signcolumn ==# 'yes:2' && &foldcolumn == 0
     setlocal foldcolumn=4
@@ -539,6 +539,14 @@ function! s:keymap_cancel_macro(register)
   return cmd
 endfunction
 
+" §§2 dot repeat のハック
+" dot repeat の実現が難しいコマンドのために、 '.' をハックする。
+let g:dot_repeat_register = ''
+nmap <expr> . g:dot_repeat_register ==# '' ? '.' : g:dot_repeat_register
+augroup vimrc
+  autocmd TextChanged * let g:dot_repeat_register = ""
+augroup END
+
 " §§1 特殊キー
 noremap <F1>   <Nop>
 noremap <M-F1> <Nop>
@@ -564,8 +572,8 @@ noremap <CR> <Nop>
 
 " 改行だけを入力する
 " thanks to cohama
-nnoremap <Space>o <Cmd>call <SID>append_new_lines(line("."), v:count1)<CR>
-nnoremap <Space>O <Cmd>call <SID>append_new_lines(line(".") - 1, v:count1)<CR>
+nnoremap <Space>o <Cmd>call <SID>append_new_lines(line("."), v:count1)<CR><Cmd>let g:dot_repeat_register=" o"<CR>
+nnoremap <Space>O <Cmd>call <SID>append_new_lines(line(".") - 1, v:count1)<CR><Cmd>let g:dot_repeat_register=" O"<CR>
 
 function! s:append_new_lines(pos_line, n_lines)
   let lines = repeat([""], a:n_lines)

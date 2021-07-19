@@ -3,8 +3,7 @@
 " §§1 表示設定
 
 " 全体
-set visualbell
-set noerrorbells
+set belloff=all
 
 set lazyredraw
 set ttyfast
@@ -16,6 +15,7 @@ set colorcolumn=80
 set list
 set listchars=tab:▸▹┊,trail:⌑,extends:❯,precedes:❮
 set scrolloff=0
+set foldlevelstart=99
 
 set matchpairs+=（:）,「:」,『:』,【:】
 

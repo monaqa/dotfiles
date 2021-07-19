@@ -83,10 +83,10 @@ command! YankCurrentFileName let @+ = expand("%:p")
 command! -bang -nargs=0 SubstituteCommaPeriod call s:substitute_comma_period(<bang>0)
 function! s:substitute_comma_period(invert)
   if a:invert
-    %substitute/、/，/g
-    %substitute/。/．/g
+    keeppatterns %substitute/、/，/g
+    keeppatterns %substitute/。/．/g
   else
-    %substitute/，/、/g
-    %substitute/．/。/g
+    keeppatterns %substitute/，/、/g
+    keeppatterns %substitute/．/。/g
   endif
 endfunction

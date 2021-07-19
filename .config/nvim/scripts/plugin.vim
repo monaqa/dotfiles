@@ -3,6 +3,8 @@
 
 " §§1 Plugin settings for cohama/lexima.vim
 
+let g:lexima_no_default_rules = 1
+call lexima#set_default_rules()
 call lexima#add_rule({'at': '\%#[-0-9a-zA-Z_]', 'char': '{', 'input': '{'})
 call lexima#add_rule({'at': '\%#\\', 'char': '{', 'input': '{', 'filetype': ['latex', 'tex']})
 call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': ['latex', 'tex']})
@@ -46,9 +48,11 @@ function! s:setting_gruvbit() abort
   hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
   hi! VisualBlue guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
   hi! Folded     guifg=#9e8f7a guibg=#535657 gui=NONE cterm=NONE
+  hi! Pmenu      guibg=#505064
 
   hi! CursorLine           guifg=NONE    guibg=#535657
   hi! CursorColumn         guifg=NONE    guibg=#535657
+  hi! QuickFixLine         guifg=NONE    guibg=#4d569e
 
   hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
   hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
@@ -656,6 +660,8 @@ command! DialEnable call DialEnableFunc()
 
 function! DialEnableFunc()
   packadd dial.nvim
+  " nmap <expr> <C-a> 'm`' .. v:count1 .. '<Plug>(dial-increment)``'
+  " nmap <expr> <C-x> 'm`' .. v:count1 .. '<Plug>(dial-decrement)``'
   nmap <C-a> <Plug>(dial-increment)
   nmap <C-x> <Plug>(dial-decrement)
 
