@@ -52,6 +52,8 @@
   "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.procMacro.enable": true,
 
+  "coc.preferences.semanticTokensHighlights": false,
+
   "lua.enable": true,
 
   "tsserver.enable": false,
