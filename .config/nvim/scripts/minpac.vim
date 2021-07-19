@@ -71,6 +71,8 @@ function! PackInit() abort
   " call minpac#add('sheerun/vim-polyglot')
   call minpac#add('JuliaEditorSupport/julia-vim')
   call minpac#add('cespare/vim-toml')
+  call minpac#add('ekalinin/Dockerfile.vim')
+  call minpac#add('leafgarland/typescript-vim')
   call minpac#add('ocaml/vim-ocaml')
   call minpac#add('pest-parser/pest.vim')
   call minpac#add('plasticboy/vim-markdown')
