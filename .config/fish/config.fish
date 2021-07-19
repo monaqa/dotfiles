@@ -98,6 +98,9 @@ abbr -a ct   "cargo test"
 # ranger
 abbr -a r    "ranger-cd"
 
+# raf
+abbr -a rafnew "cd (raf new)"
+
 # }}}
 
 # modern commands {{{
@@ -123,6 +126,9 @@ if test -n "$FUZZY_FINDER"
 
   # 便利な z
   abbr -a ff  "cd (z -l | awk '{print \$2;}' | $FUZZY_FINDER || echo .)"
+
+  # raf
+  abbr -a rafls  "cd (raf ls | $FUZZY_FINDER || pwd)"
 end
 # }}}
 
