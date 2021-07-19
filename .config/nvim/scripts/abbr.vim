@@ -46,6 +46,7 @@ call s:make_abbrev_rule([
 \   {'from': 'gp', 'to': 'Gina push'},
 \   {'from': 'gs', 'to': 'Gina status -s --opener=split'},
 \   {'from': 'gina', 'to': 'Gina'},
+\   {'from': 'rg', 'to': 'silent grep'},
 \   {'from': 'rs', 'to': 'RemoveUnwantedSpaces'},
 \   {'from': 't', 'to': 'Telescope'},
 \   {'from': 'tf', 'to': 'Telescope find_files'},

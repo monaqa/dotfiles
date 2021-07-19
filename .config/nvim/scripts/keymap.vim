@@ -46,7 +46,6 @@ nnoremap <Space>z zx
 
 
 " §§1 search
-nnoremap g/ /\v
 nnoremap * *N<Cmd>call <SID>temporal_attention()<CR>
 nnoremap g* g*N<Cmd>call <SID>temporal_attention()<CR>
 nnoremap <silent> <C-l> <Cmd>nohlsearch<CR><C-l>
@@ -62,6 +61,24 @@ vnoremap * "my/\V<C-R><C-R>=substitute(
 vnoremap R "my:set hlsearch<CR>
 \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
 \/gce<Bar>1,''-&&<CR>
+
+" §§2 QuickFix search
+
+nnoremap <expr> g/ ":\<C-u>silent grep " .. input('g/') .. ' %'
+nnoremap gj <Cmd>cnext<CR>
+nnoremap gk <Cmd>cprevious<CR>
+
+" https://qiita.com/lighttiger2505/items/166a4705f852e8d7cd0d
+" Toggle QuickFix
+function! s:toggle_quickfix()
+  let l:nr = winnr('$')
+  cwindow
+  let l:nr2 = winnr('$')
+  if l:nr == l:nr2
+    cclose
+  endif
+endfunction
+nnoremap <script><silent> q :call <SID>toggle_quickfix()<CR>
 
 " §§1 terminal
 
@@ -471,9 +488,7 @@ cnoremap <Down> <C-n>
 " デフォルトのレジスタ @q は Vim の開始ごとに初期化される。
 
 " マクロの記録を開始する。もし既に記録中であれば記録を停止する。
-nnoremap <expr> q     reg_recording() ==# '' ? <SID>keymap_start_macro(v:register) : 'q'
-" マクロを再生する。もし何らかの記録の途中であれば、その記録をキャンセル（今まで書いたものを破棄）する。
-nnoremap <expr> Q     reg_recording() ==# '' ? <SID>keymap_play_macro(v:register) : <SID>keymap_cancel_macro(reg_recording())
+nnoremap <expr> Q     reg_recording() ==# '' ? <SID>keymap_start_macro(v:register) : 'q'
 " マクロを再生する。もし何らかの記録の途中であれば、その記録をキャンセル（今まで書いたものを破棄）する。
 nnoremap <expr> <C-q> reg_recording() ==# '' ? <SID>keymap_play_macro(v:register) : <SID>keymap_cancel_macro(reg_recording())
 " デフォルトの再生用キーマップは無効化（local なコマンドの prefix に使うため）
