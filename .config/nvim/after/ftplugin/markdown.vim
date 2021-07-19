@@ -41,7 +41,7 @@ function! MarkdownLevel(lnum)
 endfunction
 
 " 行頭にて - ] と打つと Checkbox list となる
-inoreabbrev <buffer><expr> ] (getline('.') ==# '- ]') ? '[ ]' : ']'
+inoreabbrev <buffer><expr> ] (getline('.') =~# '\s*- ]') ? '[ ]' : ']'
 
 " 選択テキストをハイパーリンク化
-vnoremap L "lc[<C-r>=substitute(getreg("l"), '\n', '', 'g')<CR>](<C-r>+)<Esc>
+vnoremap L "lc[<C-r>=substitute(getreg("l"), '\n', '', 'g')<CR>](<C-r>=substitute(getreg("+"), '\n', '', 'g')<CR>)<Esc>
