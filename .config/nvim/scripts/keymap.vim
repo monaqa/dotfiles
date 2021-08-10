@@ -276,6 +276,9 @@ endfunction
 " D や C との一貫性
 nnoremap Y y$
 
+" どうせ空行1行なんて put するようなもんじゃないし、空行で上書きされるの嫌よね
+nnoremap <expr> dd (v:count1 == 1 && v:register == '"' && getline('.') == "") ? '"_dd' : 'dd'
+
 " operator with temporal relnum
 nnoremap <silent>  d<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>d
 nnoremap <silent>  c<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>c
@@ -569,6 +572,9 @@ noremap <CR> <Nop>
 
 
 " §§1 その他操作
+
+" 終了・保存
+nnoremap <Space>w <Cmd>update<CR>
 
 " 改行だけを入力する
 " thanks to cohama
