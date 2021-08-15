@@ -30,11 +30,12 @@ omap im <Plug>(textobj-comment-i)
 augroup vimrc_colorscheme
   autocmd!
   autocmd ColorScheme gruvbit call s:setting_gruvbit()
+  autocmd ColorScheme gruvbox-material call s:setting_gruvbox_material()
 augroup END
 
 function! s:setting_gruvbit() abort
   hi! FoldColumn guibg=#303030
-  hi! NonText guifg=#496da9
+  hi! NonText    guifg=#496da9
   hi! CocHintFloat guibg=#444444 guifg=#45daef
   hi! link CocRustChainingHint CocHintFloat
   " Diff に関しては前のバージョン
@@ -47,7 +48,6 @@ function! s:setting_gruvbit() abort
   hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
   hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
   hi! VisualBlue guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
-  hi! Folded     guifg=#9e8f7a guibg=#535657 gui=NONE cterm=NONE
   hi! Pmenu      guibg=#505064
 
   hi! CursorLine           guifg=NONE    guibg=#535657
@@ -72,6 +72,51 @@ function! s:setting_gruvbit() abort
 
   let g:gruvbit_transp_bg = 1
 endfunction
+
+function! s:setting_gruvbox_material() abort
+  let g:gruvbox_material_background = 'hard'
+  let g:gruvbox_material_transparent_background = 1
+  let g:gruvbox_material_ui_contrast = 'high'
+  let g:gruvbox_material_diagnostic_virtual_text = 'colored'
+
+  hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
+  hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
+  hi! BufferCurrentSign    guifg=#e9593d guibg=#444444 gui=bold
+  hi! BufferCurrentTarget  guifg=red     guibg=#444444 gui=bold
+  hi! BufferInactive       guifg=#bbbbbb guibg=#777777
+  hi! BufferInactiveMod    guifg=#dc9656 guibg=#777777
+  hi! BufferInactiveSign   guifg=#444444 guibg=#777777
+  hi! BufferInactiveTarget guifg=red     guibg=#777777
+  hi! BufferVisible        guifg=#888888 guibg=#444444
+  hi! BufferVisibleMod     guifg=#dc9656 guibg=#444444
+  hi! BufferVisibleSign    guifg=#888888 guibg=#444444
+  hi! BufferVisibleTarget  guifg=red     guibg=#444444
+  hi! BufferTabpages       guifg=#e9593d guibg=#444444 gui=bold
+  hi! BufferTabpageFill    guifg=#888888 guibg=#c8c8c8
+  hi! TabLineFill          guibg=#c8c8c8
+
+  hi! LineNr       guifg=#888888
+  hi! CursorLineNr guifg=#ebdbb2 guibg=#535657    gui=bold
+  hi! CursorLine   guifg=NONE    guibg=#535657
+  hi! CursorColumn guifg=NONE    guibg=#535657
+  hi! QuickFixLine guifg=NONE    guibg=#4d569e
+  hi! NonText      guifg=#496da9
+  hi! WhiteSpace   guifg=#496da9
+  hi! SpecialKey   guifg=#496da9
+  hi! Folded       guifg=#9e8f7a guibg=#535657 gui=NONE cterm=NONE
+  hi! VertSplit    guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
+  hi! MatchParen   guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
+
+  hi! Visual       guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
+  hi! VisualBlue   guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
+
+  hi! CocRustHintFloat guibg=#444444 guifg=#258aaf
+  hi! link CocRustChainingHint CocRustHintFloat
+  hi! link CocRustTypeHint     CocRustHintFloat
+
+endfunction
+
+
 
 " §§1 Plugin settings for kana/vim-altr
 

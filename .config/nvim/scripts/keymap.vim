@@ -624,43 +624,43 @@ endfunction
 " 計算式は g:monaqa_lambda_func に格納されるので <Space>r で使い回せる．
 " 小数のインクリメントや css での長さ調整等に便利？マクロと組み合わせてもいい．
 " 中で eval を用いているので悪用厳禁．基本的に数値にのみ用いるようにする
-vnoremap <Space>s :<C-u>call <SID>applyLambdaToSelectedArea()<CR>
-vnoremap <Space>r :<C-u>call <SID>repeatLambdaToSelectedArea()<CR>
+" vnoremap <Space>s :<C-u>call <SID>applyLambdaToSelectedArea()<CR>
+" vnoremap <Space>r :<C-u>call <SID>repeatLambdaToSelectedArea()<CR>
 
-let g:monaqa_lambda_func = 'x'
+" let g:monaqa_lambda_func = 'x'
 
-function s:applyLambdaToSelectedArea() abort
-  let tmp = @@
-  silent normal gvy
-  let visual_area = @@
-
-  let lambda_body = input('Lambda: x -> ', g:monaqa_lambda_func)
-  let g:monaqa_lambda_func = lambda_body
-  let lambda_expr = '{ x -> ' . lambda_body . ' }'
-  let Lambda = eval(lambda_expr)
-  let retval = Lambda(eval(visual_area))
-  let return_str = string(retval)
-
-  let @@ = return_str
-  silent normal gvp
-  let @@ = tmp
-endfunction
-
-function s:repeatLambdaToSelectedArea() abort
-  let tmp = @@
-  silent normal gvy
-  let visual_area = @@
-
-  let lambda_body = g:monaqa_lambda_func
-  let lambda_expr = '{ x -> ' . lambda_body . ' }'
-  let Lambda = eval(lambda_expr)
-  let retval = Lambda(eval(visual_area))
-  let return_str = string(retval)
-
-  let @@ = return_str
-  silent normal gvp
-  let @@ = tmp
-endfunction
+" function s:applyLambdaToSelectedArea() abort
+"   let tmp = @@
+"   silent normal gvy
+"   let visual_area = @@
+" 
+"   let lambda_body = input('Lambda: x -> ', g:monaqa_lambda_func)
+"   let g:monaqa_lambda_func = lambda_body
+"   let lambda_expr = '{ x -> ' . lambda_body . ' }'
+"   let Lambda = eval(lambda_expr)
+"   let retval = Lambda(eval(visual_area))
+"   let return_str = string(retval)
+" 
+"   let @@ = return_str
+"   silent normal gvp
+"   let @@ = tmp
+" endfunction
+" 
+" function s:repeatLambdaToSelectedArea() abort
+"   let tmp = @@
+"   silent normal gvy
+"   let visual_area = @@
+" 
+"   let lambda_body = g:monaqa_lambda_func
+"   let lambda_expr = '{ x -> ' . lambda_body . ' }'
+"   let Lambda = eval(lambda_expr)
+"   let retval = Lambda(eval(visual_area))
+"   let return_str = string(retval)
+" 
+"   let @@ = return_str
+"   silent normal gvp
+"   let @@ = tmp
+" endfunction
 
 " 便利なので連打しやすいマップにしてみる
 nnoremap <C-h> g;

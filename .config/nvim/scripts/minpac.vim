@@ -65,6 +65,7 @@ function! PackInit() abort
 
   " Treesitter
   call minpac#add('nvim-treesitter/nvim-treesitter')
+  call minpac#add('sainnhe/gruvbox-material')
   call minpac#add('nvim-treesitter/nvim-treesitter-textobjects')
 
   " Filetype Plugins
@@ -73,6 +74,7 @@ function! PackInit() abort
   call minpac#add('cespare/vim-toml')
   call minpac#add('ekalinin/Dockerfile.vim')
   call minpac#add('leafgarland/typescript-vim')
+  call minpac#add('pangloss/vim-javascript')
   call minpac#add('ocaml/vim-ocaml')
   call minpac#add('pest-parser/pest.vim')
   call minpac#add('plasticboy/vim-markdown')
