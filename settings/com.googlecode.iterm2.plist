@@ -1154,27 +1154,6 @@
 					<key>Text</key>
 					<string>0x7f</string>
 				</dict>
-				<key>0xd-0x20000</key>
-				<dict>
-					<key>Action</key>
-					<integer>38</integer>
-					<key>Text</key>
-					<string>✠</string>
-				</dict>
-				<key>0xd-0x40000</key>
-				<dict>
-					<key>Action</key>
-					<integer>38</integer>
-					<key>Text</key>
-					<string>➿</string>
-				</dict>
-				<key>0xd-0x60000</key>
-				<dict>
-					<key>Action</key>
-					<integer>38</integer>
-					<key>Text</key>
-					<string>✢</string>
-				</dict>
 				<key>0xf700-0x220000</key>
 				<dict>
 					<key>Action</key>
@@ -2208,20 +2187,6 @@
 					<key>Text</key>
 					<string>0x7f</string>
 				</dict>
-				<key>0xd-0x20000</key>
-				<dict>
-					<key>Action</key>
-					<integer>38</integer>
-					<key>Text</key>
-					<string>✠</string>
-				</dict>
-				<key>0xd-0x60000</key>
-				<dict>
-					<key>Action</key>
-					<integer>38</integer>
-					<key>Text</key>
-					<string>✢</string>
-				</dict>
 				<key>0xf700-0x220000</key>
 				<dict>
 					<key>Action</key>
@@ -3133,6 +3098,8 @@
 			<string>/Users/shinichi</string>
 		</dict>
 	</array>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -3166,6 +3133,8 @@
 			<string>kNextWindowPointerAction</string>
 		</dict>
 	</dict>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>ShowFullScreenTabBar</key>
 	<true/>
 	<key>SoundForEsc</key>

@@ -38,7 +38,8 @@ function! PackInit() abort
   call minpac#add('monaqa/satysfi.vim')
   call minpac#add('monaqa/smooth-scroll.vim')
   call minpac#add('monaqa/vim-edgemotion')
-  call minpac#add('neoclide/coc.nvim')
+  " call minpac#add('neoclide/coc.nvim', {'branch' = 'release'})
+  call minpac#add('neoclide/coc.nvim', {'rev': 'bdd11f8bfbe38522e20e49c97739d747c9db5bcf'})
   call minpac#add('previm/previm')
   call minpac#add('rafcamlet/coc-nvim-lua')
   call minpac#add('raghur/vim-ghost')
@@ -61,6 +62,7 @@ function! PackInit() abort
 
   " denops
   call minpac#add('vim-denops/denops.vim')
+  call minpac#add('monaqa/dps-dial.vim', {'type': 'opt'})
   call minpac#add('yutkat/dps-coding-now.nvim', {'type': 'opt'})
 
   " Treesitter

@@ -704,16 +704,21 @@ nnoremap sw <Cmd>BufferClose<CR>
 command! DialEnable call DialEnableFunc()
 
 function! DialEnableFunc()
-  packadd dial.nvim
-  " nmap <expr> <C-a> 'm`' .. v:count1 .. '<Plug>(dial-increment)``'
-  " nmap <expr> <C-x> 'm`' .. v:count1 .. '<Plug>(dial-decrement)``'
-  nmap <C-a> <Plug>(dial-increment)
-  nmap <C-x> <Plug>(dial-decrement)
+  packadd dps-dial.vim
+  nmap  <C-a>  <Plug>(dps-dial-increment)
+  nmap  <C-x>  <Plug>(dps-dial-decrement)
+  vmap  <C-a>  <Plug>(dps-dial-increment)
+  vmap  <C-x>  <Plug>(dps-dial-decrement)
+  vmap g<C-a> g<Plug>(dps-dial-increment)
+  vmap g<C-x> g<Plug>(dps-dial-decrement)
+  nnoremap  <Up>    <C-a>
+  nnoremap  <Down>  <C-x>
+  vnoremap  <Up>    <C-a>
+  vnoremap  <Down>  <C-x>
+  vnoremap g<Up>   g<C-a>
+  vnoremap g<Down> g<C-x>
 
-  vmap <C-a> <Plug>(dial-increment)
-  vmap <C-x> <Plug>(dial-decrement)
-  vmap g<C-a> <Plug>(dial-increment-additional)
-  vmap g<C-x> <Plug>(dial-decrement-additional)
+  let g:dps_dial#augends#register#c = [ {'kind': 'case', 'opts': ['camelCase', 'snake_case']} ]
 endfunction
 
 " §§1 Plugin settings for telescope.nvim

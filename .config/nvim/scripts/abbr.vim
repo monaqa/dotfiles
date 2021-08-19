@@ -58,5 +58,8 @@ call s:make_abbrev_rule([
 \   {'prepose': 'CocList', 'from': 'e', 'to': 'extensions'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
 \   {'prepose': 'Telescope find_files', 'from': 'm', 'to': 'cwd=~/memo'},
+\   {'prepose': 'Telescope live_grep', 'from': 'm', 'to': 'cwd=~/memo'},
+\   {'prepose': 'Telescope find_files', 'from': 'l', 'to': 'cwd=.local_ignore*'},
+\   {'prepose': 'Telescope live_grep', 'from': 'l', 'to': 'cwd=.local_ignore*'},
 \   {'prepose_nospace': "'<,'>", 'from': 'm', 'to': 'MakeTable'},
 \ ])
