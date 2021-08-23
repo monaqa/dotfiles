@@ -39,3 +39,6 @@
 	conflictStyle = diff3
 [init]
     defaultBranch = master
+
+[diff]
+    algorithm = histogram

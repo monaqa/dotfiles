@@ -31,7 +31,7 @@ set signcolumn=yes:2
 " misc
 set splitbelow
 set splitright
-set diffopt+=vertical
+set diffopt+=vertical,algorithm:histogram
 
 " §§1 colorscheme
 set termguicolors
