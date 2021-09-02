@@ -69,7 +69,7 @@ function! PackInit() abort
   " Treesitter
   call minpac#add('nvim-treesitter/nvim-treesitter')
   call minpac#add('sainnhe/gruvbox-material')
-  call minpac#add('nvim-treesitter/nvim-treesitter-textobjects')
+  call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': '0.5-compat'})
 
   " Filetype Plugins
   " call minpac#add('sheerun/vim-polyglot')
