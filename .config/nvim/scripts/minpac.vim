@@ -38,6 +38,7 @@ function! PackInit() abort
   call minpac#add('monaqa/satysfi.vim')
   call minpac#add('monaqa/smooth-scroll.vim')
   call minpac#add('monaqa/vim-edgemotion')
+  call minpac#add('monaqa/peridot.vim')
   " call minpac#add('neoclide/coc.nvim', {'branch' = 'release'})
   call minpac#add('neoclide/coc.nvim', {'rev': 'bdd11f8bfbe38522e20e49c97739d747c9db5bcf'})
   call minpac#add('previm/previm')
@@ -46,7 +47,7 @@ function! PackInit() abort
   call minpac#add('rhysd/rust-doc.vim')
   call minpac#add('romgrk/barbar.nvim')
   call minpac#add('thinca/vim-quickrun')
-  call minpac#add('thinca/vim-splash')
+  call minpac#add('thinca/vim-qfreplace')
   call minpac#add('thinca/vim-submode')
   call minpac#add('tpope/vim-capslock')
   call minpac#add('tyru/caw.vim')
@@ -82,6 +83,7 @@ function! PackInit() abort
   call minpac#add('plasticboy/vim-markdown')
   call minpac#add('rust-lang/rust.vim')
   call minpac#add('vim-python/python-syntax')
+  call minpac#add('wlangstroth/vim-racket')
 
 endfunction
 

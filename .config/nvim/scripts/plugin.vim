@@ -70,15 +70,67 @@ function! s:setting_gruvbit() abort
   hi! BufferTabpageFill    guifg=#888888 guibg=#c8c8c8
   hi! TabLineFill          guibg=#c8c8c8
 
-  let g:gruvbit_transp_bg = 1
+  " hi TypeBuiltin guifg=#fe8019 guibg=NONE gui=NONE cterm=NONE gui=bold
+  " 
+  " hi! link TSStrong    NONE
+  " hi! link TSEmphasis  NONE
+  " hi! link TSUnderline NONE
+  " hi! link TSNote      NONE
+  " hi! link TSWarning   WarningMsg
+  " hi! link TSDanger    ErrorMsg
+  " 
+  " hi! link TSAnnotation Constant
+  " hi! link TSAttribute Constant
+  " hi! link TSBoolean Constant
+  " hi! link TSCharacter String
+  " hi! link TSComment Comment
+  " hi! link TSConditional Statement
+  " hi! link TSConstBuiltin Constant
+  " hi! link TSConstMacro Constant
+  " hi! link TSConstant Constant
+  " hi! link TSConstructor Normal
+  " hi! link TSException Statement
+  " hi! link TSField Normal
+  " hi! link TSFloat Constant
+  " hi! link TSFuncBuiltin Normal
+  " hi! link TSFuncMacro Normal
+  " hi! link TSFunction Normal
+  " hi! link TSInclude Statement
+  " hi! link TSKeyword Statement
+  " hi! link TSKeywordFunction Statement
+  " hi! link TSKeywordOperator SpellRare
+  " hi! link TSLabel SpellRare
+  " hi! link TSMethod Normal
+  " hi! link TSNamespace Type
+  " hi! link TSNone Normal
+  " hi! link TSNumber Constant
+  " hi! link TSOperator SpellRare
+  " hi! link TSParameter Normal
+  " hi! link TSParameterReference Normal
+  " hi! link TSProperty String
+  " hi! link TSPunctBracket Normal
+  " hi! link TSPunctDelimiter Comment
+  " hi! link TSPunctSpecial Special
+  " hi! link TSRepeat Statement
+  " hi! link TSString String
+  " hi! link TSStringEscape String
+  " hi! link TSStringRegex String
+  " hi! link TSStructure BlueItalic
+  " hi! link TSSymbol Normal
+  " hi! link TSTag SpellRare
+  " hi! link TSTagDelimiter String
+  " hi! link TSText String
+  " hi! link TSStrike Comment
+  " hi! link TSMath String
+  " hi! link TSType Type
+  " hi! link TSTypeBuiltin TypeBuiltin
+  " hi! link TSURI String
+  " hi! link TSVariable Normal
+  " hi! link TSVariableBuiltin Identifier
+
 endfunction
 
 function! s:setting_gruvbox_material() abort
-  let g:gruvbox_material_background = 'hard'
-  let g:gruvbox_material_transparent_background = 1
-  let g:gruvbox_material_ui_contrast = 'high'
-  let g:gruvbox_material_diagnostic_virtual_text = 'colored'
-
   hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
   hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
   hi! BufferCurrentSign    guifg=#e9593d guibg=#444444 gui=bold
@@ -114,6 +166,7 @@ function! s:setting_gruvbox_material() abort
   hi! link CocRustChainingHint CocRustHintFloat
   hi! link CocRustTypeHint     CocRustHintFloat
 
+  hi! link TSField Normal
 endfunction
 
 

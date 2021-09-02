@@ -136,10 +136,9 @@ function! s:openTerminal()
 endfunction
 
 " §§2 send string to terminal buffer
-nnoremap <Space>t :<C-u>set opfunc=<SID>op_send_terminal<CR>g@
-nnoremap <Space>tp :<C-u>set opfunc=<SID>op_send_terminal<CR>g@ap
-nnoremap <nowait> <Space>tt :<C-u>call <SID>send_terminal_line(v:count1)<CR>
-vnoremap <Space>t <Esc>:<C-u>call <SID>send_terminal_visual_range()<CR>
+nnoremap <Space>t <Cmd>set opfunc=<SID>op_send_terminal<CR>g@
+nnoremap <nowait> <Space>tt <Cmd>set opfunc=<SID>op_send_terminal<CR>g@_
+vnoremap <Space>t <Cmd>set opfunc=<SID>op_send_terminal<CR>g@
 
 function! s:op_send_terminal(type)
   let sel_save = &selection
@@ -152,30 +151,6 @@ function! s:op_send_terminal(type)
     let visual_range = '`[v`]'
   endif
   exe "normal! " . visual_range . '"my'
-  call chansend(g:current_terminal_job_id, s:reformat_cmdstring(@m))
-
-  let &selection = sel_save
-  let @m=m_reg
-endfunction
-
-function! s:send_terminal_line(n_line)
-  let sel_save = &selection
-  let &selection = "inclusive"
-  let m_reg = @m
-
-  exe "normal! " . '"m' . a:n_line . 'yy'
-  call chansend(g:current_terminal_job_id, s:reformat_cmdstring(@m))
-
-  let &selection = sel_save
-  let @m=m_reg
-endfunction
-
-function! s:send_terminal_visual_range()
-  let sel_save = &selection
-  let &selection = "inclusive"
-  let m_reg = @m
-
-  exe "normal! gv" . '"my'
   call chansend(g:current_terminal_job_id, s:reformat_cmdstring(@m))
 
   let &selection = sel_save
@@ -280,16 +255,17 @@ nnoremap Y y$
 nnoremap <expr> dd (v:count1 == 1 && v:register == '"' && getline('.') == "") ? '"_dd' : 'dd'
 
 " operator with temporal relnum
-nnoremap <silent>  d<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>d
-nnoremap <silent>  c<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>c
-nnoremap <silent>  y<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>y
-nnoremap <silent> gu<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gu
-nnoremap <silent> gU<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gU
-nnoremap <silent>  ><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>>
-nnoremap <silent>  <<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR><
-nnoremap <silent>  =<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>=
-" comment operator
-nmap     <silent>  ,<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>,
+" <Space> はじまりのモーションと競合して不便なので無効化
+" nnoremap <silent>  d<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>d
+" nnoremap <silent>  c<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>c
+" nnoremap <silent>  y<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>y
+" nnoremap <silent> gu<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gu
+" nnoremap <silent> gU<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gU
+" nnoremap <silent>  ><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>>
+" nnoremap <silent>  <<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR><
+" nnoremap <silent>  =<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>=
+" " comment operator
+" nmap     <silent>  ,<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>,
 
 " よく使うレジスタは挿入モードでも挿入しやすく
 inoremap <C-r><C-r> <C-g>u<C-r>"
@@ -405,7 +381,7 @@ endfunction
 
 " かしこい End
 nnoremap <Space>l <Cmd>call <SID>smart_end()<CR>
-xnoremap <Space>l $
+xnoremap <Space>l $h
 onoremap <Space>l $
 function! s:smart_end()
   let col_before = col(".")
@@ -544,11 +520,11 @@ endfunction
 
 " §§2 dot repeat のハック
 " dot repeat の実現が難しいコマンドのために、 '.' をハックする。
-let g:dot_repeat_register = ''
-nmap <expr> . g:dot_repeat_register ==# '' ? '.' : g:dot_repeat_register
-augroup vimrc
-  autocmd TextChanged * let g:dot_repeat_register = ""
-augroup END
+" let g:dot_repeat_register = ''
+" nmap <expr> . g:dot_repeat_register ==# '' ? '.' : g:dot_repeat_register
+" augroup vimrc
+"   autocmd TextChanged * let g:dot_repeat_register = ""
+" augroup END
 
 " §§1 特殊キー
 noremap <F1>   <Nop>
@@ -578,11 +554,15 @@ nnoremap <Space>w <Cmd>update<CR>
 
 " 改行だけを入力する
 " thanks to cohama
-nnoremap <Space>o <Cmd>call <SID>append_new_lines(line("."), v:count1)<CR><Cmd>let g:dot_repeat_register=" o"<CR>
-nnoremap <Space>O <Cmd>call <SID>append_new_lines(line(".") - 1, v:count1)<CR><Cmd>let g:dot_repeat_register=" O"<CR>
+" nnoremap <Space>o <Cmd>call <SID>append_new_lines(line("."), v:count1)<CR><Cmd>let g:dot_repeat_register=" o"<CR>
+" nnoremap <Space>O <Cmd>call <SID>append_new_lines(line(".") - 1, v:count1)<CR><Cmd>let g:dot_repeat_register=" O"<CR>
 
-function! s:append_new_lines(pos_line, n_lines)
-  let lines = repeat([""], a:n_lines)
+nnoremap <expr> <Space>o peridot#repeatable_function("\<SID>append_new_lines", [line(".")])
+nnoremap <expr> <Space>O peridot#repeatable_function("\<SID>append_new_lines", [line(".") - 1])
+
+function! s:append_new_lines(ctx, pos_line)
+  let n_lines = a:ctx['set_count'] ? a:ctx['count'] : 1
+  let lines = repeat([""], n_lines)
   call append(a:pos_line, lines)
 endfunction
 

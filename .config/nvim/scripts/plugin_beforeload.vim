@@ -2,6 +2,13 @@
 
 " Package を load する前に予め設定する変数値など．
 
+" §§1 Plugin settings for habamax/vim-gruvbit と gruvbox-material
+let g:gruvbit_transp_bg = 1
+let g:gruvbox_material_transparent_background = 1
+let g:gruvbox_material_background = 'hard'
+let g:gruvbox_material_ui_contrast = 'high'
+let g:gruvbox_material_diagnostic_virtual_text = 'colored'
+
 let g:python3_host_prog = '/usr/local/bin/python3'
 
 " §§1 Plugin settings for lambdalisue/fern.vim
@@ -24,7 +31,7 @@ let g:vista_default_executive = 'coc'
 
 " §§1 Plugin settings for thinca/vim-splash
 
-let g:splash#path = $HOME . "/.config/nvim/scripts/resource/monaqa.txt"
+" let g:splash#path = $HOME . "/.config/nvim/scripts/resource/monaqa.txt"
 
 " §§1 Plugin settings for barbar.nvim
 " NOTE: This variable doesn't exist before barbar runs. Create it before
