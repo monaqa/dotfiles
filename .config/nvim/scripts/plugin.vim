@@ -169,6 +169,8 @@ function! s:setting_gruvbox_material() abort
   " hi! IncSearch    ctermfg=234 ctermbg=142 guifg=#1d2021 guibg=#a9b665
   " hi! link Search VisualBlue
 
+  hi! Pmenu            guibg=#505064
+  hi! NormalFloat      guibg=#505064
   hi! CocRustHintFloat guibg=#444444 guifg=#258aaf
   hi! link CocRustChainingHint CocRustHintFloat
   hi! link CocRustTypeHint     CocRustHintFloat
@@ -715,8 +717,8 @@ inoremap <C-l> <Nop>
 " §§1 Plugin settings for tyru/caw.vim
 " toggle comment を , に割り当てる。
 nmap , <Plug>(caw:hatpos:toggle:operator)
-nmap ,, <Plug>(caw:hatpos:toggle)
-vmap ,, <Plug>(caw:hatpos:toggle)
+nmap ,, ,_
+vmap , <Plug>(caw:hatpos:toggle)
 
 augroup vimrc
   autocmd FileType pest let b:caw_oneline_comment = '//'
@@ -742,6 +744,12 @@ else
   let g:session_autoload = 'no'
 endif
 unlet s:local_session_directory
+
+" §§1 Plugin settings for ghost.vim
+augroup vimrc
+  autocmd BufNewFile,BufRead *ghost-github.com* setlocal filetype=markdown
+augroup END
+
 " §§1 Plugin settings for barbar.nvim
 
 nnoremap sp <Cmd>BufferPrevious<CR>

@@ -552,18 +552,16 @@ noremap <CR> <Nop>
 " 終了・保存
 nnoremap <Space>w <Cmd>update<CR>
 
-" 改行だけを入力する
-" thanks to cohama
-" nnoremap <Space>o <Cmd>call <SID>append_new_lines(line("."), v:count1)<CR><Cmd>let g:dot_repeat_register=" o"<CR>
-" nnoremap <Space>O <Cmd>call <SID>append_new_lines(line(".") - 1, v:count1)<CR><Cmd>let g:dot_repeat_register=" O"<CR>
+" 改行だけを入力する dot-repeatable なマッピング
+nnoremap <expr> <Space>o peridot#repeatable_function("\<SID>append_new_lines", [0])
+nnoremap <expr> <Space>O peridot#repeatable_function("\<SID>append_new_lines", [-1])
 
-nnoremap <expr> <Space>o peridot#repeatable_function("\<SID>append_new_lines", [line(".")])
-nnoremap <expr> <Space>O peridot#repeatable_function("\<SID>append_new_lines", [line(".") - 1])
-
-function! s:append_new_lines(ctx, pos_line)
+function! s:append_new_lines(ctx, offset_line)
+  let curpos = line(".")
+  let pos_line = curpos + a:offset_line
   let n_lines = a:ctx['set_count'] ? a:ctx['count'] : 1
   let lines = repeat([""], n_lines)
-  call append(a:pos_line, lines)
+  call append(pos_line, lines)
 endfunction
 
 if !has('gui_running')
@@ -607,40 +605,39 @@ endfunction
 " vnoremap <Space>s :<C-u>call <SID>applyLambdaToSelectedArea()<CR>
 " vnoremap <Space>r :<C-u>call <SID>repeatLambdaToSelectedArea()<CR>
 
-" let g:monaqa_lambda_func = 'x'
+let s:monaqa_lambda_func = 'x'
 
-" function s:applyLambdaToSelectedArea() abort
-"   let tmp = @@
-"   silent normal gvy
-"   let visual_area = @@
-" 
-"   let lambda_body = input('Lambda: x -> ', g:monaqa_lambda_func)
-"   let g:monaqa_lambda_func = lambda_body
-"   let lambda_expr = '{ x -> ' . lambda_body . ' }'
-"   let Lambda = eval(lambda_expr)
-"   let retval = Lambda(eval(visual_area))
-"   let return_str = string(retval)
-" 
-"   let @@ = return_str
-"   silent normal gvp
-"   let @@ = tmp
-" endfunction
-" 
-" function s:repeatLambdaToSelectedArea() abort
-"   let tmp = @@
-"   silent normal gvy
-"   let visual_area = @@
-" 
-"   let lambda_body = g:monaqa_lambda_func
-"   let lambda_expr = '{ x -> ' . lambda_body . ' }'
-"   let Lambda = eval(lambda_expr)
-"   let retval = Lambda(eval(visual_area))
-"   let return_str = string(retval)
-" 
-"   let @@ = return_str
-"   silent normal gvp
-"   let @@ = tmp
-" endfunction
+let g:apply_lambda_num_expr = '\d\+\(\.\d\+\)\?'
+
+nnoremap <expr> <Space>s peridot#repeatable_function("<SID>apply_lambda")
+
+function s:apply_lambda(ctx) abort
+  let line = getline(".")
+  let match = matchstrpos(line, g:apply_lambda_num_expr)
+  if match[1] == -1
+    return
+  endif
+  let text = match[0]
+  let start = match[1]
+  let end = match[2]
+
+  let lambda_func = s:monaqa_lambda_func
+  if !a:ctx['repeated']
+    let lambda_func = input({
+    \   'prompt': 'Lambda: x (= ' .. text .. ') -> ',
+    \   'default': s:monaqa_lambda_func,
+    \   'cancelreturn': ''
+    \ })
+  endif
+  if lambda_func ==# ''
+    return
+  endif
+  let s:monaqa_lambda_func = lambda_func
+  let lambda_expr = '{ x -> ' . s:monaqa_lambda_func . ' }'
+  let Lambda = eval(lambda_expr)
+  let retval = string(Lambda(eval(text)))
+  call setline(".", line[:start - 1] .. retval .. line[end:])
+endfunction
 
 " 便利なので連打しやすいマップにしてみる
 nnoremap <C-h> g;
