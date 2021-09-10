@@ -32,6 +32,11 @@ require('lualine').setup {
   },
 }
 
+-- §§1 Plugin settings for hlslens
+require'hlslens'.setup{
+    nearest_only = true,
+    -- nearest_float_when = 'always',
+}
 
 -- §§1 Plugin settings for telescope.nvim
 local actions = require('telescope.actions')
@@ -66,7 +71,7 @@ require('telescope').setup{
 
 -- §§1 Plugin settings for nvim-treesitter.nvim
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {'rust', 'lua', 'typescript'},
+  ensure_installed = {'rust', 'lua', 'typescript', 'query'},
   highlight = {
       enable = true,
   },

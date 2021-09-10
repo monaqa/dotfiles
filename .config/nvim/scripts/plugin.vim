@@ -1,6 +1,9 @@
 " vim:fdm=marker:fmr=§§,■■
 " Package を load した後に設定するもの．
 
+" Lua の設定の読み込み
+call execute('luafile ' .. expand("<sfile>:p:h") .. '/plugin.lua')
+
 " §§1 Plugin settings for cohama/lexima.vim
 
 let g:lexima_no_default_rules = 1
@@ -162,9 +165,14 @@ function! s:setting_gruvbox_material() abort
   hi! Visual       guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
   hi! VisualBlue   guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
 
+  hi! link IncSearch Search
+  " hi! IncSearch    ctermfg=234 ctermbg=142 guifg=#1d2021 guibg=#a9b665
+  " hi! link Search VisualBlue
+
   hi! CocRustHintFloat guibg=#444444 guifg=#258aaf
   hi! link CocRustChainingHint CocRustHintFloat
   hi! link CocRustTypeHint     CocRustHintFloat
+
 
   hi! link TSField Normal
 endfunction
@@ -780,4 +788,13 @@ nnoremap sg <Cmd>Telescope live_grep prompt_prefix=𝜸<CR>
 nnoremap sb <Cmd>Telescope buffers prompt_prefix=𝜷<CR>
 nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
 
-call execute('luafile ' .. expand("<sfile>:p:h") .. '/plugin.lua')
+" §§1 Plugin settings for nvim-treesitter
+nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
+
+" §§1 Plugin settings for nvim-hlslens
+noremap <silent> n n<Cmd>lua require('hlslens').start()<CR>
+noremap <silent> N N<Cmd>lua require('hlslens').start()<CR>
+nmap *  <Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>
+nmap #  <Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>
+nmap g* <Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>
+nmap g# <Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>

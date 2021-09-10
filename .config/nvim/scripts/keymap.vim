@@ -1,4 +1,4 @@
-" vim:fdm=marker:fmr=§§,■■
+"treesitter vim:fdm=marker:fmr=§§,■■
 " キーマッピング関連。
 " そのキーマップが適切に動くようにするための関数や autocmd もここに載せる。
 
@@ -46,13 +46,13 @@ nnoremap <Space>z zx
 
 
 " §§1 search
-nnoremap * *N<Cmd>call <SID>temporal_attention()<CR>
-nnoremap g* g*N<Cmd>call <SID>temporal_attention()<CR>
-nnoremap <silent> <C-l> <Cmd>nohlsearch<CR><C-l>
+" nnoremap * *N<Cmd>call <SID>temporal_attention()<CR>
+" nnoremap g* g*N<Cmd>call <SID>temporal_attention()<CR>
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " 検索 with temporal attention
-nnoremap <silent><expr> n 'Nn'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
-nnoremap <silent><expr> N 'nN'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
+" nnoremap <silent><expr> n 'Nn'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
+" nnoremap <silent><expr> N 'nN'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
