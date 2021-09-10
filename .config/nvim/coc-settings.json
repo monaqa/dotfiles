@@ -21,12 +21,8 @@
 
   "python.pythonPath": "/usr/local/bin/python3",
   "python.linting.mypyPath": "mypy",
-  "python.linting.flake8Path": "flake8",
-  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Enabled": false,
   "python.linting.mypyEnabled": true,
-  "python.linting.flake8CategorySeverity.E": "Warning",
-  "python.linting.flake8CategorySeverity.F": "Warning",
-  "python.linting.flake8Args": ["--ignore=E501"],
   "python.formatting.provider": "black",
   "python.formatting.blackdPath": "/usr/local/bin/black",
 
