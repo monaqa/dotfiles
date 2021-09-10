@@ -1,5 +1,6 @@
 augroup vimrc
   autocmd FileType julia setlocal shiftwidth=4
+  autocmd FileType julia setlocal formatoptions-=o
   " hydrogen-like julia file
   autocmd FileType julia if getline(1) ==# "# %% [markdown]"
   autocmd FileType julia   setlocal fdm=expr
