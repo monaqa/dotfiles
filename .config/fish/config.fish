@@ -49,7 +49,6 @@ abbr -a mk    "mkdir"
 # abbr -a rr  "rm -r"
 
 # git
-abbr -a g    "git"
 abbr -a gb   "git branch"
 abbr -a gm  "git merge"
 abbr -a gmm  "git merge master"
@@ -117,7 +116,7 @@ else if type -q fzf
   set FUZZY_FINDER fzf
 end
 if test -n "$FUZZY_FINDER"
-  abbr -a gg "cd (ghq list -p | $FUZZY_FINDER || pwd)"
+  abbr -a g "cd (ghq list -p | $FUZZY_FINDER || pwd)"
   abbr -a tg "tmux a -t (tmux list-sessions | $FUZZY_FINDER | cut -d : -f 1)"
   # mercurial とかぶっていることに注意
   abbr -a hg "history | $FUZZY_FINDER"

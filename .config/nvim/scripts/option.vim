@@ -36,7 +36,7 @@ set diffopt+=vertical,algorithm:histogram
 " §§1 colorscheme
 set termguicolors
 set background=dark
-colorscheme gruvbox-material
+colorscheme gruvbit
 
 " §§1 editing
 set expandtab

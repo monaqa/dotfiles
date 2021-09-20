@@ -71,7 +71,7 @@ require('telescope').setup{
 
 -- §§1 Plugin settings for nvim-treesitter.nvim
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {'rust', 'lua', 'typescript', 'query'},
+  ensure_installed = {'rust', 'lua', 'typescript', 'query', 'vim', 'toml'},
   highlight = {
       enable = true,
   },

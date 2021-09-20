@@ -800,9 +800,9 @@ nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
 nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
 
 " §§1 Plugin settings for nvim-hlslens
-noremap <silent> n n<Cmd>lua require('hlslens').start()<CR>
-noremap <silent> N N<Cmd>lua require('hlslens').start()<CR>
-nmap *  <Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>
-nmap #  <Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>
-nmap g* <Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>
-nmap g# <Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>
+" noremap <silent> n n<Cmd>lua require('hlslens').start()<CR>
+" noremap <silent> N N<Cmd>lua require('hlslens').start()<CR>
+nmap *  <Plug>(asterisk-z*)
+nmap #  <Plug>(asterisk-z#)
+nmap g* <Plug>(asterisk-gz*)
+nmap g# <Plug>(asterisk-gz*)

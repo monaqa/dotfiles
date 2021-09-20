@@ -6,7 +6,6 @@ function! PackInit() abort
   call minpac#init()
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
-  call minpac#add('Iron-E/nvim-highlite')
   call minpac#add('Konfekt/FastFold')
   call minpac#add('Shougo/vimproc.vim')
   call minpac#add('Vimjas/vim-python-pep8-indent')
