@@ -1,3 +1,9 @@
+if exists('b:loaded_ftplugin_markdown')
+  finish
+endif
+
+let b:loaded_ftplugin_markdown = 1
+
 " YAML 形式の frontmatter があるときはそのシンタックスハイライトを有効にする
 let g:vim_markdown_frontmatter = 1
 
