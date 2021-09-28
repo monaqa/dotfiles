@@ -29,13 +29,13 @@
 
 # frequently used {{{
 
-snippet module "module" b
-module ${1:Example} : sig
-	$2
-end = struct
-	$0
-end
-endsnippet
+# snippet module "module" b
+# module ${1:Example} : sig
+# 	$2
+# end = struct
+# 	$0
+# end
+# endsnippet
 
 # snippet let-inline "let-inline" b
 # let-inline ${1:ctx }\\${2:cmd} ${3:arg }=
@@ -114,21 +114,21 @@ endsnippet
 # draw-text ${1:(x, y)} ${2:ib}
 # endsnippet
 
-snippet embed-block-top "-> inline-boxes" w
-embed-block-top ${1:ctx} ${2:wid} ${3:(fun ctx -> read-block ctx bt)}
-endsnippet
-
-snippet discretionary "-> inline-boxes" w
-discretionary ${1:-100} ${2:inline-nil} ${3:inline-fil} ${4:inline-nil}
-endsnippet
-
-snippet inline-frame-outer "-> inline-boxes" b
-inline-frame-outer (${1:0pt}, $1, $1, $1) ${2:deco} ${3:ib}
-endsnippet
-
-snippet block-frame-breakable "-> block-boxes" b
-block-frame-breakable ${1:ctx} (${2:0pt}, $2, $2, $2) (${3:deco}, $3, $3, $3) (fun ctx -> ${4:(read-block ctx bt)})
-endsnippet
+# snippet embed-block-top "-> inline-boxes" w
+# embed-block-top ${1:ctx} ${2:wid} ${3:(fun ctx -> read-block ctx bt)}
+# endsnippet
+# 
+# snippet discretionary "-> inline-boxes" w
+# discretionary ${1:-100} ${2:inline-nil} ${3:inline-fil} ${4:inline-nil}
+# endsnippet
+# 
+# snippet inline-frame-outer "-> inline-boxes" b
+# inline-frame-outer (${1:0pt}, $1, $1, $1) ${2:deco} ${3:ib}
+# endsnippet
+# 
+# snippet block-frame-breakable "-> block-boxes" b
+# block-frame-breakable ${1:ctx} (${2:0pt}, $2, $2, $2) (${3:deco}, $3, $3, $3) (fun ctx -> ${4:(read-block ctx bt)})
+# endsnippet
 # }}}
 
 # }}}
@@ -137,164 +137,164 @@ endsnippet
 
 # section {{{
 
-snippet +chp "chapter" b
-+chapter{${1}}<%
-	${0}
->%
-endsnippet
-
-snippet +sec "section" b
-+section{${1}}<%
-	${0}
->%
-endsnippet
-
-snippet +sse "subsection" b
-+subsection{${1}}<%
-	${0}
->%
-endsnippet
-
-snippet +sss "subsubsection" b
-+subsubsection{${1}}<%
-	${0}
->%
-endsnippet
-
-snippet +p "paragraph" b
-+p{
-	${0}
-}
-endsnippet
+# snippet +chp "chapter" b
+# +chapter{${1}}<%
+# 	${0}
+# >%
+# endsnippet
+# 
+# snippet +sec "section" b
+# +section{${1}}<%
+# 	${0}
+# >%
+# endsnippet
+# 
+# snippet +sse "subsection" b
+# +subsection{${1}}<%
+# 	${0}
+# >%
+# endsnippet
+# 
+# snippet +sss "subsubsection" b
+# +subsubsection{${1}}<%
+# 	${0}
+# >%
+# endsnippet
+# 
+# snippet +p "paragraph" b
+# +p{
+# 	${0}
+# }
+# endsnippet
 
 # }}}
 
 # inline markup {{{
 
-snippet \em "emphasize" w
-\\emph{${1}}
-endsnippet
-
-snippet \bf "textbf" w
-\\textbf{${1}}
-endsnippet
-
-snippet \co "inline code" i
-\\code(\`${1:string}\`);$0
-endsnippet
-
-snippet \link "Link" w
-\link?:({${1}})(\`${2: }\`);
-endsnippet
+# snippet \em "emphasize" w
+# \\emph{${1}}
+# endsnippet
+# 
+# snippet \bf "textbf" w
+# \\textbf{${1}}
+# endsnippet
+# 
+# snippet \co "inline code" i
+# \\code(\`${1:string}\`);$0
+# endsnippet
+# 
+# snippet \link "Link" w
+# \link?:({${1}})(\`${2: }\`);
+# endsnippet
 
 # }}}
 
 # block command/block-embedding command {{{
 
-snippet +co "code block" b
-+code(\`\`\`
-	${1:string}
-\`\`\`);
-$0
-endsnippet
-
-snippet \list "listing (inline)" b
-\\listing{
-	* ${1}
-}
-endsnippet
-
-snippet +list "listing (block)" b
-+listing{
-	* ${1}
-}
-endsnippet
-
-snippet \enum "enumerate (inline)" b
-\\enumerate{
-	* ${1}
-}
-endsnippet
-
-snippet +enum "enumerate (block)" b
-+enumerate{
-	* ${1}
-}
-endsnippet
-
-snippet \desc "description (inline)" b
-\\description{
-	* ${1}
-		** ${2}
-}
-endsnippet
-
-snippet +desc "description (block)" b
-+description{
-	* ${1}
-		** ${2}
-}
-endsnippet
-
-snippet \eqn "equation" b
-\eqn(${
-	$1
-	});
-endsnippet
-
-snippet +eqn "block equation" b
-+eqn(${
-	$1
-	});
-endsnippet
-
-snippet +ga "gather" b
-+gather(${
-	| ${1}
-	| ${2}
-	|});
-$0
-endsnippet
-
-snippet +al "align" b
-+align(${
-	| ${1} | ${2}
-	| ${3} | ${4}
-	|});
-$0
-endsnippet
+# snippet +co "code block" b
+# +code(\`\`\`
+# 	${1:string}
+# \`\`\`);
+# $0
+# endsnippet
+# 
+# snippet \list "listing (inline)" b
+# \\listing{
+# 	* ${1}
+# }
+# endsnippet
+# 
+# snippet +list "listing (block)" b
+# +listing{
+# 	* ${1}
+# }
+# endsnippet
+# 
+# snippet \enum "enumerate (inline)" b
+# \\enumerate{
+# 	* ${1}
+# }
+# endsnippet
+# 
+# snippet +enum "enumerate (block)" b
+# +enumerate{
+# 	* ${1}
+# }
+# endsnippet
+# 
+# snippet \desc "description (inline)" b
+# \\description{
+# 	* ${1}
+# 		** ${2}
+# }
+# endsnippet
+# 
+# snippet +desc "description (block)" b
+# +description{
+# 	* ${1}
+# 		** ${2}
+# }
+# endsnippet
+# 
+# snippet \eqn "equation" b
+# \eqn(${
+# 	$1
+# 	});
+# endsnippet
+# 
+# snippet +eqn "block equation" b
+# +eqn(${
+# 	$1
+# 	});
+# endsnippet
+# 
+# snippet +ga "gather" b
+# +gather(${
+# 	| ${1}
+# 	| ${2}
+# 	|});
+# $0
+# endsnippet
+# 
+# snippet +al "align" b
+# +align(${
+# 	| ${1} | ${2}
+# 	| ${3} | ${4}
+# 	|});
+# $0
+# endsnippet
 
 # }}}
 
 # math command {{{
 
-snippet \p "paren" w
-\\p{$1}$0
-endsnippet
-
-snippet \b "brace" w
-\\pb{$1}$0
-endsnippet
-
-snippet \B "bracket" w
-\\pB{$1}$0
-endsnippet
-
-snippet \pabs "abs" b
-\\pabs{$1}$0
-endsnippet
-
-snippet \pangle "paren (angle)" b
-\\pangle{$1}$0
-endsnippet
-
-snippet \hat "hat" b
-\\hat{$1}$0
-endsnippet
-
-snippet \bm "bm" b
-\\bm{$1}$0
-endsnippet
+# snippet \p "paren" w
+# \\p{$1}$0
+# endsnippet
+# 
+# snippet \b "brace" w
+# \\pb{$1}$0
+# endsnippet
+# 
+# snippet \B "bracket" w
+# \\pB{$1}$0
+# endsnippet
+# 
+# snippet \pabs "abs" b
+# \\pabs{$1}$0
+# endsnippet
+# 
+# snippet \pangle "paren (angle)" b
+# \\pangle{$1}$0
+# endsnippet
+# 
+# snippet \hat "hat" b
+# \\hat{$1}$0
+# endsnippet
+# 
+# snippet \bm "bm" b
+# \\bm{$1}$0
+# endsnippet
 
 #}}}
 
@@ -302,78 +302,78 @@ endsnippet
 
 # minimal template {{{
 
-snippet template "standalone template" b
-@require: standalone
-
-% essential command
-
-let-block ctx +p it = line-break true true ctx (read-inline ctx it ++ inline-fil)
-
-let-inline \pang = {The quick brown fox jumps over the lazy dog.}
-
-let-inline \lipsum = {
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-	Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-	Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-	Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-}
-
-let-inline \jugem = {
-寿限無，寿限無，五劫のすりきれ，
-海砂利水魚の水行末・雲来末・風来末，
-食う寝るところに住むところ，
-やぶら小路のぶら小路，
-パイポパイポ，パイポのシューリンガン，
-シューリンガンのグーリンダイ，
-グーリンダイのポンポコピーのポンポコナーの長久命の長助．
-}
-
-in
-
-standalone'<%
-	+p{\pang;}
-	+p{\lipsum;}
-	+p{\jugem;}
->%
-endsnippet
-
-snippet tslydifi "SLyDIFi template" b
-@require: class-slydifi/theme/plain
-@require: color
-
-open FigBox  % 図の挿入に必要
-open SlydifiOverlay  % オーバーレイに必要
-
-in
-
-SlydifiPlain.document(|
-	draft-mode = false;
-|)'<%
-
-	+make-title(|
-		title = {|\SLyDIFi; デモ|};  % slide title
-		% 複数行にまたがるタイトルを書く場合は以下のようにします
-		% title = {|長い名前のタイトルが続く|\SLyDIFi; デモ|};
-		author = {| Your Name |};  % fill your name
-		date = {|2020年9月12日|};
-	|);
-
-	+section{|Example Section|}<%
-		+frame{普通のスライド}<%
-		$0
-		>%
-	>%
-
->%
-endsnippet
+# snippet template "standalone template" b
+# @require: standalone
+# 
+# % essential command
+# 
+# let-block ctx +p it = line-break true true ctx (read-inline ctx it ++ inline-fil)
+# 
+# let-inline \pang = {The quick brown fox jumps over the lazy dog.}
+# 
+# let-inline \lipsum = {
+# 	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+# 	Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+# 	Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+# 	Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+# }
+# 
+# let-inline \jugem = {
+# 寿限無，寿限無，五劫のすりきれ，
+# 海砂利水魚の水行末・雲来末・風来末，
+# 食う寝るところに住むところ，
+# やぶら小路のぶら小路，
+# パイポパイポ，パイポのシューリンガン，
+# シューリンガンのグーリンダイ，
+# グーリンダイのポンポコピーのポンポコナーの長久命の長助．
+# }
+# 
+# in
+# 
+# standalone'<%
+# 	+p{\pang;}
+# 	+p{\lipsum;}
+# 	+p{\jugem;}
+# >%
+# endsnippet
+# 
+# snippet tslydifi "SLyDIFi template" b
+# @require: class-slydifi/theme/plain
+# @require: color
+# 
+# open FigBox  % 図の挿入に必要
+# open SlydifiOverlay  % オーバーレイに必要
+# 
+# in
+# 
+# SlydifiPlain.document(|
+# 	draft-mode = false;
+# |)'<%
+# 
+# 	+make-title(|
+# 		title = {|\SLyDIFi; デモ|};  % slide title
+# 		% 複数行にまたがるタイトルを書く場合は以下のようにします
+# 		% title = {|長い名前のタイトルが続く|\SLyDIFi; デモ|};
+# 		author = {| Your Name |};  % fill your name
+# 		date = {|2020年9月12日|};
+# 	|);
+# 
+# 	+section{|Example Section|}<%
+# 		+frame{普通のスライド}<%
+# 		$0
+# 		>%
+# 	>%
+# 
+# >%
+# endsnippet
 
 # }}}
 
 # SLyDIFi {{{
-snippet +frame "SLyDIFi frame" b
-+frame{$1}<%
-	$0
->%
-endsnippet
+# snippet +frame "SLyDIFi frame" b
+# +frame{$1}<%
+# 	$0
+# >%
+# endsnippet
 # }}}
 
