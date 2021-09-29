@@ -46,13 +46,11 @@ nnoremap <Space>z zx
 
 
 " §§1 search
-" nnoremap * *N<Cmd>call <SID>temporal_attention()<CR>
-" nnoremap g* g*N<Cmd>call <SID>temporal_attention()<CR>
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " 検索 with temporal attention
-" nnoremap <silent><expr> n 'Nn'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
-" nnoremap <silent><expr> N 'nN'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
+nnoremap <silent><expr> n 'Nn'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
+nnoremap <silent><expr> N 'nN'[v:searchforward] .. '<Cmd>call <SID>temporal_attention()<CR>'
 
 " VISUAL モードから簡単に検索
 " http://vim.wikia.com/wiki/Search_for_visually_selected_text
@@ -61,6 +59,68 @@ vnoremap * "my/\V<C-R><C-R>=substitute(
 vnoremap R "my:set hlsearch<CR>
 \:,$s//<C-R><C-R>=escape(@m, '/\&~')<CR>
 \/gce<Bar>1,''-&&<CR>
+
+" modal search
+nnoremap <expr> <leader> <SID>modal_search()
+cnoremap <expr> <C-x> s:modal_search_is_active ? s:modal_search_toggle_mode() : "<C-x>"
+
+let s:modal_search_is_active = v:false
+let s:modal_search_mode = 'rawstr'
+
+augroup vimrc
+  autocmd CmdlineLeave * call <SID>free_modal_highlight()
+  autocmd CmdlineChanged @ if s:modal_search_is_active
+  autocmd CmdlineChanged @   call <SID>free_modal_highlight()
+  autocmd CmdlineChanged @   call <SID>modal_highlight()
+  autocmd CmdlineChanged @ endif
+augroup END
+
+function! s:modal_search()
+  let s:modal_search_is_active = v:true
+  let text = s:modal_search_prompt()
+  if text ==# ''
+    return ''
+  endif
+  let s:modal_search_is_active = v:false
+  if s:modal_search_mode ==# 'regexp'
+    return '/\v' .. text .. "\<CR>"
+  else
+    return '/\V' .. escape(text, '/\') .. "\<CR>"
+  endif
+endfunction
+
+function! s:modal_search_prompt()
+  let current_modal_search = s:modal_search_mode
+  let text = input({'prompt': '[' .. s:modal_search_mode .. ']\', 'cancelreturn': ''})
+  " 中で s:modal_search_mode が変わったらもう一度 prompt を出す
+  while s:modal_search_mode !=# current_modal_search
+    let current_modal_search = s:modal_search_mode
+    let text = input({'prompt': '[' .. s:modal_search_mode .. ']\', 'cancelreturn': '', 'default': text})
+  endwhile
+  return text
+endfunction
+
+function! s:modal_search_toggle_mode()
+  let s:modal_search_mode = s:modal_search_mode ==# 'rawstr' ? 'regexp' : 'rawstr'
+  return "\<CR>"
+endfunction
+
+function! s:modal_highlight()
+  if s:modal_search_mode ==# 'regexp'
+    let regex = '\v' .. getcmdline()
+  else
+    let regex = '\V' .. escape(getcmdline(), '/\')
+  endif
+  let w:modal_match_id = matchadd('IncSearch', regex)
+  redraw
+endfunction
+
+function! s:free_modal_highlight()
+  if exists("w:modal_match_id")
+    call matchdelete(w:modal_match_id)
+    unlet w:modal_match_id
+  endif
+endfunction
 
 " §§2 QuickFix search
 
