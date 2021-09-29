@@ -630,7 +630,7 @@ command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call Coc
 
 " §§1 Plugin settings for previm/previm
 
-let g:previm_open_cmd = "open -a 'Google Chrome'"
+let g:previm_open_cmd = "open -a 'Vivaldi'"
 let g:previm_custom_css_path = "~/.config/nvim/scripts/resource/markdown.css"
 
 " §§1 Plugin settings for rhysd/rust-doc.vim

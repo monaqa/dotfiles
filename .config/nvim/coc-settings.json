@@ -17,6 +17,8 @@
     "<C-k>": "normal:k"
   },
 
+  "sumneko-lua.enableNvimLuaDev": true,
+
   "highlight.colorNames.enable": false,
 
   "python.pythonPath": "/usr/local/bin/python3",

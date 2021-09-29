@@ -27,3 +27,11 @@
 snippet autocmd "autocmd" b
 autocmd ${1:vimrc} FileType ${2:*} ${3:setlocal }
 endsnippet
+
+snippet loadft "loaded ftplugin" b
+if exists('b:loaded_ftplugin_${1:lang}')
+	finish
+endif
+
+let b:loaded_ftplugin_$1 = 1
+endsnippet
