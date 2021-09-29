@@ -33,10 +33,10 @@ require('lualine').setup {
 }
 
 -- §§1 Plugin settings for hlslens
-require'hlslens'.setup{
-    nearest_only = true,
-    -- nearest_float_when = 'always',
-}
+-- require'hlslens'.setup{
+--     nearest_only = true,
+--     -- nearest_float_when = 'always',
+-- }
 
 -- §§1 Plugin settings for telescope.nvim
 local actions = require('telescope.actions')

@@ -20,7 +20,7 @@ function! PackInit() abort
   call minpac#add('kana/vim-altr')
   call minpac#add('kana/vim-operator-user')
   call minpac#add('kana/vim-textobj-user')
-  call minpac#add('kevinhwang91/nvim-hlslens')
+  " call minpac#add('kevinhwang91/nvim-hlslens')
   call minpac#add('kkiyama117/zenn-vim')
   call minpac#add('kyazdani42/nvim-web-devicons')
   call minpac#add('lambdalisue/fern-hijack.vim')
