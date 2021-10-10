@@ -52,8 +52,6 @@
 
   "coc.preferences.semanticTokensHighlights": false,
 
-  "lua.enable": true,
-
   "tsserver.enable": false,
   "deno.enable": true,
   "deno.lint": true,
