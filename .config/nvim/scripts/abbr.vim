@@ -54,7 +54,7 @@ call s:make_abbrev_rule([
 \   {'from': 'tmp', 'to': 'Template'},
 \   {'from': 'ssf', 'to': 'syntax sync fromstart'},
 \   {'prepose': 'CocCommand', 'from': 's', 'to': 'snippets.editSnippets'},
-\   {'prepose': 'CocCommand', 'from': 'sout', 'to': 'workspace.showOutput'},
+\   {'prepose': 'CocCommand', 'from': 'r', 'to': 'rust-analyzer.reload'},
 \   {'prepose': 'CocList', 'from': 'e', 'to': 'extensions'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
 \   {'prepose': 'Telescope find_files', 'from': 'm', 'to': 'cwd=~/memo'},

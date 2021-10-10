@@ -105,3 +105,16 @@ endsnippet
 snippet ua "use anyhow" b
 use anyhow::*;
 endsnippet
+
+snippet usd "use serde" b
+use serde::*;
+endsnippet
+
+snippet structopts "structopt" b
+use structopt::StructOpt;
+
+#[derive(Debug, Clone, StructOpt)]
+struct Opts {
+	$0
+}
+endsnippet
