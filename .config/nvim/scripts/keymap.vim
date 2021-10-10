@@ -61,66 +61,71 @@ vnoremap R "my:set hlsearch<CR>
 \/gce<Bar>1,''-&&<CR>
 
 " modal search
-nnoremap <expr> <leader> <SID>modal_search()
-cnoremap <expr> <C-x> s:modal_search_is_active ? s:modal_search_toggle_mode() : "<C-x>"
-
-let s:modal_search_is_active = v:false
-let s:modal_search_mode = 'rawstr'
-
-augroup vimrc
-  autocmd CmdlineLeave * call <SID>free_modal_highlight()
-  autocmd CmdlineChanged @ if s:modal_search_is_active
-  autocmd CmdlineChanged @   call <SID>free_modal_highlight()
-  autocmd CmdlineChanged @   call <SID>modal_highlight()
-  autocmd CmdlineChanged @ endif
-augroup END
-
-function! s:modal_search()
-  let s:modal_search_is_active = v:true
-  let text = s:modal_search_prompt()
-  if text ==# ''
-    return ''
-  endif
-  let s:modal_search_is_active = v:false
-  if s:modal_search_mode ==# 'regexp'
-    return '/\v' .. text .. "\<CR>"
-  else
-    return '/\V' .. escape(text, '/\') .. "\<CR>"
-  endif
-endfunction
-
-function! s:modal_search_prompt()
-  let current_modal_search = s:modal_search_mode
-  let text = input({'prompt': '[' .. s:modal_search_mode .. ']\', 'cancelreturn': ''})
-  " 中で s:modal_search_mode が変わったらもう一度 prompt を出す
-  while s:modal_search_mode !=# current_modal_search
-    let current_modal_search = s:modal_search_mode
-    let text = input({'prompt': '[' .. s:modal_search_mode .. ']\', 'cancelreturn': '', 'default': text})
-  endwhile
-  return text
-endfunction
-
-function! s:modal_search_toggle_mode()
-  let s:modal_search_mode = s:modal_search_mode ==# 'rawstr' ? 'regexp' : 'rawstr'
-  return "\<CR>"
-endfunction
-
-function! s:modal_highlight()
-  if s:modal_search_mode ==# 'regexp'
-    let regex = '\v' .. getcmdline()
-  else
-    let regex = '\V' .. escape(getcmdline(), '/\')
-  endif
-  let w:modal_match_id = matchadd('IncSearch', regex)
-  redraw
-endfunction
-
-function! s:free_modal_highlight()
-  if exists("w:modal_match_id")
-    call matchdelete(w:modal_match_id)
-    unlet w:modal_match_id
-  endif
-endfunction
+" nnoremap <expr> <leader> <SID>modal_search()
+" cnoremap <expr> <C-x> s:modal_search_is_active ? s:modal_search_toggle_mode() : "<C-x>"
+" 
+" let s:modal_search_is_active = v:false
+" let s:modal_search_mode = 'rawstr'
+" 
+" augroup vimrc
+"   autocmd CmdlineLeave * call <SID>free_modal_highlight()
+"   autocmd CmdlineChanged @ if s:modal_search_is_active
+"   autocmd CmdlineChanged @   call <SID>free_modal_highlight()
+"   autocmd CmdlineChanged @   call <SID>modal_highlight()
+"   autocmd CmdlineChanged @ endif
+" augroup END
+" 
+" function! s:modal_search()
+"   let s:modal_search_is_active = v:true
+"   let text = s:modal_search_prompt()
+"   if text ==# ''
+"     return "/\<CR>"
+"   endif
+"   let s:modal_search_is_active = v:false
+"   if s:modal_search_mode ==# 'regexp'
+"     return '/\v' .. escape(text, '/') .. "\<CR>"
+"   else
+"     return '/\V' .. escape(text, '/\') .. "\<CR>"
+"   endif
+" endfunction
+" 
+" function! s:modal_search_prompt()
+"   let current_modal_search = s:modal_search_mode
+"   let text = input({'prompt': '[' .. s:modal_search_mode .. ']/', 'cancelreturn': ''})
+"   " 中で s:modal_search_mode が変わったらもう一度 prompt を出す
+"   while s:modal_search_mode !=# current_modal_search
+"     let current_modal_search = s:modal_search_mode
+"     let text = input({'prompt': '[' .. s:modal_search_mode .. ']/', 'cancelreturn': '', 'default': text})
+"   endwhile
+"   return text
+" endfunction
+" 
+" function! s:modal_search_toggle_mode()
+"   let s:modal_search_mode = s:modal_search_mode ==# 'rawstr' ? 'regexp' : 'rawstr'
+"   return "\<CR>"
+" endfunction
+" 
+" function! s:modal_highlight()
+"   let cmdline = getcmdline()
+"   if cmdline ==# ''
+"     echom "None"
+"     return
+"   endif
+"   if s:modal_search_mode ==# 'regexp'
+"     let regex = '\v' .. escape(cmdline, '/')
+"   else
+"     let regex = '\V' .. escape(cmdline, '/\')
+"   endif
+"   let w:modal_match_id = matchadd('IncSearch', regex)
+"   redraw
+" endfunction
+" 
+" function! s:free_modal_highlight()
+"   if exists("w:modal_match_id")
+"     call matchdelete(w:modal_match_id)
+"     unlet w:modal_match_id
+"   endif
+" endfunction
 
 " §§2 QuickFix search
 

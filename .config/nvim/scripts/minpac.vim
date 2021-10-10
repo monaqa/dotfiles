@@ -37,11 +37,6 @@ function! PackInit() abort
   call minpac#add('mattn/vim-sonictemplate')
   call minpac#add('mbbill/undotree')
   call minpac#add('mhinz/vim-signify')
-  call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
-  call minpac#add('monaqa/peridot.vim')
-  call minpac#add('monaqa/satysfi.vim')
-  call minpac#add('monaqa/smooth-scroll.vim')
-  call minpac#add('monaqa/vim-edgemotion')
   " call minpac#add('neoclide/coc.nvim', {'branch' = 'release'})
   call minpac#add('neoclide/coc.nvim', {'rev': 'bdd11f8bfbe38522e20e49c97739d747c9db5bcf'})
   call minpac#add('previm/previm')
@@ -88,6 +83,15 @@ function! PackInit() abort
   call minpac#add('rust-lang/rust.vim')
   call minpac#add('vim-python/python-syntax')
   call minpac#add('wlangstroth/vim-racket')
+
+  " My packages
+  call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
+  call minpac#add('monaqa/peridot.vim')
+  call minpac#add('monaqa/satysfi.vim')
+  call minpac#add('monaqa/smooth-scroll.vim')
+  call minpac#add('monaqa/vim-edgemotion')
+  call minpac#add('monaqa/modesearch.vim')
+  call minpac#add('monaqa/colordinate.vim')
 
 endfunction
 
