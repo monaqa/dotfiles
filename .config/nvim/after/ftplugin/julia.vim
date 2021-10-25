@@ -1,9 +1,3 @@
-if exists('b:loaded_ftplugin_julia')
-  finish
-endif
-
-let b:loaded_ftplugin_julia = 1
-
 setlocal shiftwidth=4
 setlocal formatoptions-=o
 
