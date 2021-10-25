@@ -575,11 +575,16 @@ vmap <C-p> <Plug>(edgemotion-k)
 
 nnoremap t <Nop>
 " t を prefix にする
-nmap <silent> td <Plug>(coc-definition)
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> ti <Plug>(coc-implementation)
-nmap <silent> ty <Plug>(coc-type-definition)
-nmap <silent> tr <Plug>(coc-references)
+nmap <silent> td <Cmd>Telescope coc definitions<CR>
+nmap <silent> gd <Cmd>Telescope coc definitions<CR>
+nmap <silent> ti <Cmd>Telescope coc implementations<CR>
+nmap <silent> ty <Cmd>Telescope coc type_definitions<CR>
+nmap <silent> tr <Cmd>Telescope coc references<CR>
+" nmap <silent> td <Plug>(coc-definition)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> ti <Plug>(coc-implementation)
+" nmap <silent> ty <Plug>(coc-type-definition)
+" nmap <silent> tr <Plug>(coc-references)
 nmap <silent> tn <Plug>(coc-rename)
 nnoremap <silent> K :call CocAction('doHover')<CR>
 nnoremap <silent> <Space>j :call CocAction('diagnosticNext')<CR>
@@ -806,3 +811,10 @@ nmap *  <Plug>(asterisk-z*)
 nmap #  <Plug>(asterisk-z#)
 nmap g* <Plug>(asterisk-gz*)
 nmap g# <Plug>(asterisk-gz*)
+
+" §§1 Plugin settings for modesearch
+nmap \ <Plug>(modesearch-slash)
+cmap <C-x> <Plug>(modesearch-toggle-mode)
+
+" §§1 Plugin settings for colordinate
+let g:colordinate_save_path = expand("~/.config/nvim/colors")

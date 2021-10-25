@@ -15,7 +15,7 @@ function! PackInit() abort
   call minpac#add('glts/vim-textobj-comment')
   call minpac#add('habamax/vim-gruvbit')
   call minpac#add('haya14busa/vim-asterisk')
-  call minpac#add('hoob3rt/lualine.nvim')
+  call minpac#add('nvim-lualine/lualine.nvim')
   call minpac#add('itchyny/vim-qfedit')
   call minpac#add('kana/vim-altr')
   call minpac#add('kana/vim-operator-user')
@@ -58,6 +58,7 @@ function! PackInit() abort
   call minpac#add('nvim-lua/popup.nvim')
   call minpac#add('nvim-lua/plenary.nvim')
   call minpac#add('nvim-telescope/telescope.nvim')
+  call minpac#add('fannheyward/telescope-coc.nvim')
 
   " denops
   call minpac#add('vim-denops/denops.vim')

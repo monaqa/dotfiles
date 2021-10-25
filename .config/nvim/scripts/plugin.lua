@@ -40,6 +40,7 @@ require('lualine').setup {
 
 -- §§1 Plugin settings for telescope.nvim
 local actions = require('telescope.actions')
+require('telescope').load_extension('coc')
 -- Global remapping
 ------------------------------
 require('telescope').setup{
