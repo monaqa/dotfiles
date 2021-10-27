@@ -50,7 +50,7 @@ abbr -a mk    "mkdir"
 
 # git
 abbr -a gb   "git branch"
-abbr -a gm  "git merge"
+abbr -a gm   "git merge"
 abbr -a gmm  "git merge master"
 abbr -a gpl  "git pull"
 abbr -a gps  "git push"
@@ -128,6 +128,11 @@ if test -n "$FUZZY_FINDER"
 
   # raf
   abbr -a rafls  "cd (raf ls | $FUZZY_FINDER || pwd)"
+
+  # gh
+  abbr -a ghpc   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr checkout {}"
+  abbr -a ghpv   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr view --web {}"
+  abbr -a ghiv   "gh issue list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh issue view --web {}"
 end
 # }}}
 

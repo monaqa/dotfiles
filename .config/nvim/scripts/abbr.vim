@@ -62,6 +62,7 @@ call s:make_abbrev_rule([
 \   {'prepose': 'CocCommand', 'from': 'r', 'to': 'rust-analyzer.reload'},
 \   {'prepose': 'CocList', 'from': 'e', 'to': 'extensions'},
 \   {'prepose': 'Gina commit', 'from': 'a', 'to': '--amend'},
+\   {'prepose': 'Gina log', 'from': 'a', 'to': '--all'},
 \   {'prepose': 'Telescope find_files', 'from': 'm', 'to': 'cwd=~/memo'},
 \   {'prepose': 'Telescope live_grep', 'from': 'm', 'to': 'cwd=~/memo'},
 \   {'prepose': 'Telescope find_files', 'from': 'l', 'to': 'cwd=.local_ignore*'},
