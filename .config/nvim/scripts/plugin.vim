@@ -792,7 +792,11 @@ function! DialEnableFunc()
   vnoremap g<Up>   g<C-a>
   vnoremap g<Down> g<C-x>
 
+  " 2013-08-04
+  let g:dps_dial#augends = [ "decimal", "date", {"kind": "date", "opts": {"format": "yyyy-MM-dd"}} ]
   let g:dps_dial#augends#register#c = [ {'kind': 'case', 'opts': ['camelCase', 'snake_case']} ]
+
+  echo denops#plugin#register("dial")
 endfunction
 
 " §§1 Plugin settings for telescope.nvim

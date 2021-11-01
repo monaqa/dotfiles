@@ -54,3 +54,8 @@ augroup vimrc
   autocmd FileType qf nnoremap <buffer> j j
   autocmd FileType qf nnoremap <buffer> k k
 augroup END
+
+" §§1 todome
+augroup vimrc
+  autocmd BufRead,BufNewFile *.todome setfiletype todome
+augroup END

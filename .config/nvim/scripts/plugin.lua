@@ -99,3 +99,11 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.todome = {
+  install_info = {
+    url = "~/ghq/github.com/monaqa/tree-sitter-todome", -- local path or git repo
+    files = {"src/parser.c", "src/scanner.cc"}
+  },
+  filetype = "todome", -- if filetype does not agrees with parser name
+}
