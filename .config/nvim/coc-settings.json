@@ -1,7 +1,7 @@
 {
   "suggest.snippetIndicator": "►",
   "suggest.acceptSuggestionOnCommitCharacter": false,
-  "suggest.asciiCharactersOnly": true,
+  "suggest.asciiCharactersOnly": false,
   "diagnostic.messageTarget": "float",
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextCurrentLineOnly": false,
@@ -41,8 +41,13 @@
         "args": [],
         "filetypes": ["satysfi"],
         "trace.server": "verbose"
+    },
+    "todome-ls": {
+        "command": "todome-language-server",
+        "args": [],
+        "filetypes": ["todome"],
+        "trace.server": "verbose"
     }
-
   },
 
   "rust-analyzer.lens.enable": false,
