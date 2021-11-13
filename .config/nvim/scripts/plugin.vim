@@ -348,8 +348,13 @@ let s:gina_custom_translation_patterns = [
 \   },
 \ ]
 
-nnoremap <Space>gb :Gina browse --exact --yank :<CR>:let @+=@"<CR>:echo @+<CR>
-vnoremap <Space>gb :Gina browse --exact --yank :<CR>:let @+=@"<CR>:echo @+<CR>
+command! -range=% GinaBrowseYank call s:gina_browse_yank(<line1>, <line2>)
+
+function! s:gina_browse_yank(line1, line2)
+  execute a:line1 .. ',' .. a:line2 .. 'Gina browse --exact --yank :'
+  let @+ = @"
+  echo @+
+endfunction
 
 " §§1 Plugin settings for lervag/vimtex
 
@@ -389,6 +394,8 @@ let g:textobj_functioncall_patterns = [
   \ ]
 
 " §§1 Plugin settings for machakann/vim-sandwich
+
+call operator#sandwich#set('all', 'all', 'highlight', 0)
 
 " 従来のキーマッピングを保存
 nmap ds <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
@@ -730,6 +737,9 @@ augroup vimrc
   autocmd FileType todo6 let b:caw_oneline_comment = 'x'
 augroup END
 
+" §§1 Plugin settings for open-browser
+nmap gb <Plug>(openbrowser-smart-search)
+xmap gb <Plug>(openbrowser-smart-search)
 
 " §§1 Plugin settings for xolox/vim-session
 
@@ -794,7 +804,7 @@ function! DialEnableFunc()
 
   " 2013-08-04
   let g:dps_dial#augends = [ "decimal", "date", {"kind": "date", "opts": {"format": "yyyy-MM-dd"}} ]
-  let g:dps_dial#augends#register#c = [ {'kind': 'case', 'opts': ['camelCase', 'snake_case']} ]
+  let g:dps_dial#augends#register#c = [ {'kind': 'case', 'opts': {"cases": ['camelCase', 'snake_case'], "cyclic": v:true}} ]
 
   echo denops#plugin#register("dial")
 endfunction
@@ -822,3 +832,4 @@ cmap <C-x> <Plug>(modesearch-toggle-mode)
 
 " §§1 Plugin settings for colordinate
 let g:colordinate_save_path = expand("~/.config/nvim/colors")
+

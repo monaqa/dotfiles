@@ -50,6 +50,7 @@ function! PackInit() abort
   call minpac#add('tpope/vim-capslock')
   call minpac#add('tyru/capture.vim')
   call minpac#add('tyru/caw.vim')
+  call minpac#add('tyru/open-browser.vim')
   call minpac#add('xolox/vim-misc')
   call minpac#add('xolox/vim-session')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})

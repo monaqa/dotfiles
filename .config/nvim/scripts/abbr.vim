@@ -41,7 +41,9 @@ call s:make_abbrev_rule([
 \   {'from': 'cl', 'to': 'CocList'},
 \   {'from': 'clc', 'to': 'CocLocalConfig'},
 \   {'from': 'cr', 'to': 'CocRestart'},
-\   {'from': 'gb', 'to': 'Gina blame'},
+\   {'from': 'gbl', 'to': 'Gina blame'},
+\   {'from': 'gbr', 'to': 'GinaBrowseYank'},
+\   {'from': 'gby', 'to': 'GinaBrowseYank'},
 \   {'from': 'gc', 'to': 'Gina commit'},
 \   {'from': 'gp', 'to': 'Gina push'},
 \   {'from': 'gs', 'to': 'Gina status -s --opener=split'},
@@ -68,4 +70,6 @@ call s:make_abbrev_rule([
 \   {'prepose': 'Telescope find_files', 'from': 'l', 'to': 'cwd=.local_ignore*'},
 \   {'prepose': 'Telescope live_grep', 'from': 'l', 'to': 'cwd=.local_ignore*'},
 \   {'prepose_nospace': "'<,'>", 'from': 'm', 'to': 'MakeTable'},
+\   {'prepose_nospace': "'<,'>", 'from': 'gbr', 'to': 'GinaBrowseYank'},
+\   {'prepose_nospace': "'<,'>", 'from': 'gby', 'to': 'GinaBrowseYank'},
 \ ])

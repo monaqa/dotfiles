@@ -15,3 +15,6 @@ Icon
 .git/
 
 .local_ignore_*/
+.local_ignore_*
+
+.worktree/

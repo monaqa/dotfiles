@@ -133,6 +133,9 @@ if test -n "$FUZZY_FINDER"
   abbr -a ghpc   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr checkout {}"
   abbr -a ghpv   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr view --web {}"
   abbr -a ghiv   "gh issue list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh issue view --web {}"
+
+  # git swim worktree
+  abbr -a gsw "cd (git worktree list | $FUZZY_FINDER | awk '{print \$1;}' || pwd)"
 end
 # }}}
 
@@ -143,5 +146,12 @@ if test -e ~/.config/fish/local.fish
 end
 
 # }}}
+
+function gitaddtree -a branch
+  set reponame (basename (git rev-parse --show-toplevel))
+  git branch $branch 2> /dev/null
+  git worktree add .worktree/$branch/$reponame $branch
+  cd .worktree/$branch/$reponame
+end
 
 # vim:fdm=marker
