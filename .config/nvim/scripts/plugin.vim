@@ -580,6 +580,17 @@ vmap <C-p> <Plug>(edgemotion-k)
 
 " §§1 Plugin settings for neoclide/coc.nvim
 
+let g:coc_global_extensions = [
+\ 'coc-snippets',
+\ 'coc-marketplace',
+\ 'coc-actions',
+\ 'coc-rust-analyzer',
+\ 'coc-pyright',
+\ 'coc-sumneko-lua',
+\ 'coc-json',
+\ 'coc-deno',
+\]
+
 nnoremap t <Nop>
 " t を prefix にする
 nmap <silent> td <Cmd>Telescope coc definitions<CR>
@@ -802,12 +813,23 @@ function! DialEnableFunc()
   vnoremap g<Up>   g<C-a>
   vnoremap g<Down> g<C-x>
 
-  " 2013-08-04
-  let g:dps_dial#augends = [ "decimal", "date", {"kind": "date", "opts": {"format": "yyyy-MM-dd"}} ]
-  let g:dps_dial#augends#register#c = [ {'kind': 'case', 'opts': {"cases": ['camelCase', 'snake_case'], "cyclic": v:true}} ]
+  let g:dps_dial#augends = [
+  \   "decimal",
+  \   "hex",
+  \   "date-hyphen",
+  \   "date-slash",
+  \ ]
 
-  echo denops#plugin#register("dial")
+  nmap gc "c<Plug>(dps-dial-increment)
+  let g:dps_dial#augends#register#c = [ 'case' ]
+
+  autocmd vimrc User DenopsReady call denops#plugin#register("dial")
 endfunction
+
+if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dps-dial.vim')
+  call DialEnableFunc()
+  echom 'dps-dial.vim is loaded.'
+endif
 
 " §§1 Plugin settings for telescope.nvim
 nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>

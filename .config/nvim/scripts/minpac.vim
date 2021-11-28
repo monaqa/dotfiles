@@ -64,13 +64,12 @@ function! PackInit() abort
   " denops
   call minpac#add('vim-denops/denops.vim')
   call minpac#add('monaqa/dps-dial.vim', {'type': 'opt'})
-  call minpac#add('yutkat/dps-coding-now.nvim', {'type': 'opt'})
 
   " Treesitter
   call minpac#add('nvim-treesitter/nvim-treesitter')
   call minpac#add('nvim-treesitter/playground')
   call minpac#add('sainnhe/gruvbox-material')
-  call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': '0.5-compat'})
+  " call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': '0.5-compat'})
 
   " Filetype Plugins
   " call minpac#add('sheerun/vim-polyglot')

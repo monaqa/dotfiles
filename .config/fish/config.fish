@@ -6,6 +6,7 @@ set -g fish_ambiguous_width 1
 
 # environment variables {{{
 # bin at home directory
+set -x PATH "/opt/homebrew/bin" $PATH
 set -x PATH "$HOME/.cargo/bin" $PATH
 set -x PATH "$HOME/.local/bin" $PATH
 
@@ -148,6 +149,7 @@ end
 # }}}
 
 function gitaddtree -a branch
+  cd (git rev-parse --git-common-dir)/../
   set reponame (basename (git rev-parse --show-toplevel))
   git branch $branch 2> /dev/null
   git worktree add .worktree/$branch/$reponame $branch

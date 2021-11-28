@@ -7,7 +7,7 @@
 [tig "color"] cursor = yellow red bold
 
 [commit]
-	template = /Users/shinichi/.commit_template
+	template = /Users/monaqa/.commit_template
 [core]
 	editor = nvim
 [alias]
