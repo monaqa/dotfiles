@@ -1,7 +1,7 @@
 {
   "suggest.snippetIndicator": "►",
   "suggest.acceptSuggestionOnCommitCharacter": false,
-  "suggest.asciiCharactersOnly": false,
+  "suggest.asciiCharactersOnly": true,
   "diagnostic.messageTarget": "float",
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextCurrentLineOnly": false,
