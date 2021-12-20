@@ -87,6 +87,9 @@ function! PackInit() abort
   call minpac#add('wlangstroth/vim-racket')
   call minpac#add('aklt/plantuml-syntax')
   call minpac#add('bfontaine/Brewfile.vim')
+  call minpac#add('mracos/mermaid.vim')
+  call minpac#add('chr4/nginx.vim')
+  call minpac#add('vito-c/jq.vim')
 
   " My packages
   call minpac#add('monaqa/dial.nvim', {'type': 'opt'})

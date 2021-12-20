@@ -49,7 +49,8 @@ function! s:setting_gruvbit() abort
   hi! MatchParen guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
 
   " hi! WeakTitle  cterm=bold ctermfg=225 gui=bold guifg=#fabd2f
-  hi! WeakTitle  gui=bold guifg=#e69393
+  " hi! WeakTitle  gui=nocombine,NONE guifg=#e69393
+  hi! WeakTitle  guifg=#fad57f
   hi! Quote      guifg=#c6b7a2
 
   hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE

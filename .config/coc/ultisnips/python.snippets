@@ -53,6 +53,17 @@ snippet todo "not implemented" b
 raise NotImplementedError("${1:Not implemented yet.}")
 endsnippet
 
+snippet __main "__name__ == '__main__'" b
+def main():
+	"""Main function.
+	"""
+	pass
+
+
+if __name__ == "__main__":
+	main()
+endsnippet
+
 # snippet Param "Numpy-style docstring: Param" b
 # Parameters
 # ----------

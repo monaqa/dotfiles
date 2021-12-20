@@ -9,7 +9,7 @@ let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_ui_contrast = 'high'
 let g:gruvbox_material_diagnostic_virtual_text = 'colored'
 
-let g:python3_host_prog = '/Users/monaqa/.local/share/nvim/venv/neovim/bin/python'
+let g:python3_host_prog = $HOME .. '/.local/share/nvim/venv/neovim/bin/python'
 
 " §§1 Plugin settings for lambdalisue/fern.vim
 
