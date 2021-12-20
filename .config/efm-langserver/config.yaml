@@ -2,7 +2,8 @@ version: 2
 
 tools:
   satysfi-lint: &satysfi-lint
-    lint-command: "satysfi_lint"
+    # lint-command: "satysfi_lint"
+    lint-command: "satysfi-typelint"
 
 languages:
   satysfi:

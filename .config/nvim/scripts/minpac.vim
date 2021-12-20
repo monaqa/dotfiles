@@ -63,7 +63,8 @@ function! PackInit() abort
 
   " denops
   call minpac#add('vim-denops/denops.vim')
-  call minpac#add('monaqa/dps-dial.vim', {'type': 'opt'})
+  " call minpac#add('monaqa/dps-dial.vim', {'type': 'opt'})
+  call minpac#add('monaqa/dps-dial.vim')
 
   " Treesitter
   call minpac#add('nvim-treesitter/nvim-treesitter')

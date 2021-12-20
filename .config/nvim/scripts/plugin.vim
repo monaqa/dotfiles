@@ -48,6 +48,10 @@ function! s:setting_gruvbit() abort
   hi! DiffDelete guifg=#968772 guibg=#5c3728 gui=NONE cterm=NONE
   hi! MatchParen guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
 
+  " hi! WeakTitle  cterm=bold ctermfg=225 gui=bold guifg=#fabd2f
+  hi! WeakTitle  gui=bold guifg=#e69393
+  hi! Quote      guifg=#c6b7a2
+
   hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
   hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
   hi! VisualBlue guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
@@ -796,10 +800,7 @@ nnoremap sw <Cmd>BufferClose<CR>
 
 " §§1 Plugin settings for dial.nvim
 
-command! DialEnable call DialEnableFunc()
-
-function! DialEnableFunc()
-  packadd dps-dial.vim
+function! DialConfig()
   nmap  <C-a>  <Plug>(dps-dial-increment)
   nmap  <C-x>  <Plug>(dps-dial-decrement)
   vmap  <C-a>  <Plug>(dps-dial-increment)
@@ -813,22 +814,67 @@ function! DialEnableFunc()
   vnoremap g<Up>   g<C-a>
   vnoremap g<Down> g<C-x>
 
-  let g:dps_dial#augends = [
-  \   "decimal",
-  \   "hex",
-  \   "date-hyphen",
-  \   "date-slash",
+  function! MarkdownHeaderFind(line, cursor)
+    let match = matchstr(a:line, '^#\+')
+    if match !=# ''
+      return {"from": 0, "to": strlen(match)}
+    endif
+    return v:null
+  endfunction
+
+  function! MarkdownHeaderAdd(text, addend, cursor)
+    let n_header = strlen(a:text)
+    let n_header = min([6, max([1, n_header + a:addend])])
+    let text = repeat('#', n_header)
+    let cursor = 1
+    return {'text': text, 'cursor': cursor}
+  endfunction
+
+  let s:id_find = dps_dial#register_callback(function("MarkdownHeaderFind"))
+  let s:id_add = dps_dial#register_callback(function("MarkdownHeaderAdd"))
+
+  autocmd FileType markdown let b:dps_dial_augends_register_h = [
+  \  {'kind': 'user', 'opts': {'find': s:id_find, 'add': s:id_add}}
+  \ ]
+  autocmd FileType markdown nmap <buffer> <Space>a "h<Plug>(dps-dial-increment)
+  autocmd FileType markdown nmap <buffer> <Space>x "h<Plug>(dps-dial-decrement)
+  autocmd FileType markdown vmap <buffer> <Space>a "h<Plug>(dps-dial-increment)
+  autocmd FileType markdown vmap <buffer> <Space>x "h<Plug>(dps-dial-decrement)
+
+  autocmd FileType typescript let b:dps_dial_augends = g:dps_dial#augends + [
+  \   {
+  \     'kind': 'constant', 'opts': {
+  \       'elements': ['let', 'const'],
+  \       'cyclic': v:true,
+  \       'word': v:true,
+  \   }}
   \ ]
 
-  nmap gc "c<Plug>(dps-dial-increment)
-  let g:dps_dial#augends#register#c = [ 'case' ]
+  let g:dps_dial#augends = [
+  \   'decimal',
+  \   'hex',
+  \   'date-hyphen',
+  \   'date-slash',
+  \   'color',
+  \ ]
 
-  autocmd vimrc User DenopsReady call denops#plugin#register("dial")
+  let g:dps_dial#augends#register#d = [
+  \   {'kind': 'date', 'opts': {'format': 'yyyy/MM/dd'}},
+  \   {'kind': 'date', 'opts': {'format': 'yyyy-MM-dd'}},
+  \   {'kind': 'date', 'opts': {'format': 'MM/dd', 'only_valid': v:true}},
+  \   {'kind': 'date', 'opts': {'format': 'HH:mm', 'only_valid': v:true}},
+  \   {'kind': 'date', 'opts': {'format': 'M/d', 'only_valid': v:true}},
+  \ ]
+
+  let g:dps_dial#aliases = {}
+
+  let g:dps_dial#augends#register#c = [ 'case' ]
+  nmap gc "c<Plug>(dps-dial-increment)
 endfunction
 
 if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dps-dial.vim')
-  call DialEnableFunc()
-  echom 'dps-dial.vim is loaded.'
+  call DialConfig()
+  echom 'general config of dps-dial.vim is loaded.'
 endif
 
 " §§1 Plugin settings for telescope.nvim

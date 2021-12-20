@@ -95,4 +95,4 @@ utc_time_offset = "+9"
 style = "fg:249"
 
 [python]
-format = '[${symbol}(${version})( \($virtualenv\)]($style)'
+format = '[${symbol}(${version})( \($virtualenv\))]($style)'

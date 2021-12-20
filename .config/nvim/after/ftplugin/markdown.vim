@@ -50,4 +50,4 @@ endfunction
 inoreabbrev <buffer><expr> ] (getline('.') =~# '\s*- ]') ? '[ ]' : ']'
 
 " 選択テキストをハイパーリンク化
-vnoremap L "lc[<C-r>=substitute(getreg("l"), '\n', '', 'g')<CR>](<C-r>=substitute(getreg("+"), '\n', '', 'g')<CR>)<Esc>
+xnoremap L "lc[<C-r>=substitute(getreg("l"), '\n', '', 'g')<CR>](<C-r>=substitute(getreg("+"), '\n', '', 'g')<CR>)<Esc>
