@@ -58,11 +58,11 @@ endfunction
 cnoreabbrev <expr> RenameMe "RenameMe " . expand('%')
 
 " §§1 行末の空白とか最終行の空行を削除
-command! -nargs=0 RemoveUnwantedSpaces call s:remove_unwanted_spaces()
-function! s:remove_unwanted_spaces()
+command! -range=% -nargs=0 RemoveUnwantedSpaces call s:remove_unwanted_spaces(<line1>, <line2>)
+function! s:remove_unwanted_spaces(start, end)
   let pos_save = getpos('.')
   try
-    keeppatterns %s/\s\+$//e
+    execute "keeppatterns" a:start .. ',' .. a:end .. 's/\s\+$//e'
     while 1
       let lastline = getline('$')
       if lastline =~ '^\s*$' && line('$') != 1
