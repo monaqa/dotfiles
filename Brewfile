@@ -41,6 +41,7 @@ cask "adobe-acrobat-reader"
 cask "visual-studio-code"
 cask "google-japanese-ime"
 cask "slack"
+cask "vlc"
 
 cask "font-hack-nerd-font"
 cask "font-mplus-nerd-font"

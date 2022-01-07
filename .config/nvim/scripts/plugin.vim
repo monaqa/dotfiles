@@ -441,6 +441,8 @@ let g:sandwich#recipes += [
 \   {'buns': ['「', '」'], 'nesting': 1, 'input': ['j[', 'j]', 'jb']},
 \   {'buns': ['『', '』'], 'nesting': 1, 'input': ['j{', 'j}', 'jB']},
 \   {'buns': ['【', '】'], 'nesting': 1, 'input': ['j<', 'j>', 'jk']},
+\   {'buns': ['“', '”'], 'nesting': 1, 'input': ['j"' ]},
+\   {'buns': ['‘', '’'], 'nesting': 1, 'input': ["j'" ]},
 \ ]
 
 " Escaped parens
@@ -591,7 +593,6 @@ let g:coc_global_extensions = [
 \ 'coc-actions',
 \ 'coc-rust-analyzer',
 \ 'coc-pyright',
-\ 'coc-sumneko-lua',
 \ 'coc-json',
 \ 'coc-deno',
 \]
@@ -886,6 +887,13 @@ nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
 
 " §§1 Plugin settings for nvim-treesitter
 nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
+
+" tree-sitter の fold を有効にしたい場合
+
+" augroup vimrc
+"   autocmd FileType rust,lua,typescript,query,toml,python setlocal foldmethod=expr
+"   autocmd FileType rust,lua,typescript,query,toml,python setlocal foldexpr=nvim_treesitter#foldexpr()
+" augroup END
 
 " §§1 Plugin settings for nvim-hlslens
 " noremap <silent> n n<Cmd>lua require('hlslens').start()<CR>

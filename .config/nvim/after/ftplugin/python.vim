@@ -1,9 +1,3 @@
-if exists('b:loaded_ftplugin_python')
-  finish
-endif
-
-let b:loaded_ftplugin_python = 1
-
 inoreabbrev <buffer> imprt import
 inoreabbrev <buffer> improt import
 

@@ -537,6 +537,7 @@ nnoremap <expr> Q     reg_recording() ==# '' ? <SID>keymap_start_macro(v:registe
 nnoremap <expr> <C-q> reg_recording() ==# '' ? <SID>keymap_play_macro(v:register) : <SID>keymap_cancel_macro(reg_recording())
 " デフォルトの再生用キーマップは無効化（local なコマンドの prefix に使うため）
 nnoremap @ <Nop>
+nnoremap @: @:
 
 let g:last_played_macro_register = 'q'
 
