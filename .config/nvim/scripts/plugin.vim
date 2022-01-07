@@ -263,7 +263,7 @@ augroup END
 " §§1 Plugin settings for lambdalisue/fern.vim
 
 let g:fern#renderer = 'nerdfont'
-nnoremap sf <Cmd>Fern . -reveal=%<CR>
+nnoremap sf <Cmd>Fern . -reveal=%:p<CR>
 nnoremap sz <Cmd>Fern . -drawer -toggle<CR>
 
 augroup rc_fern

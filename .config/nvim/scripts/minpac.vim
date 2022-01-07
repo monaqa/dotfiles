@@ -7,7 +7,6 @@ function! PackInit() abort
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
   " call minpac#add('kevinhwang91/nvim-hlslens')
-  " call minpac#add('neoclide/coc.nvim', {'rev': 'bdd11f8bfbe38522e20e49c97739d747c9db5bcf'})
   call minpac#add('Konfekt/FastFold')
   call minpac#add('Shougo/vimproc.vim')
   call minpac#add('Vimjas/vim-python-pep8-indent')
