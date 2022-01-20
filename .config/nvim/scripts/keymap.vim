@@ -204,7 +204,8 @@ function! s:openTerminal()
   else
     split
   endif
-  edit term://fish
+  " edit term://fish
+  terminal fish
   let g:current_terminal_job_id = b:terminal_job_id
 endfunction
 
@@ -310,6 +311,8 @@ nnoremap sQ :<C-u>tabc<CR>
 nnoremap s: q:G
 nnoremap s? q?G
 nnoremap s/ q/G
+
+nnoremap - <C-^>
 
 " Sandwich.vim のデフォルトキーバインドを上書きする
 nnoremap <nowait> srb <Nop>

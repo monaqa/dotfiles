@@ -3,6 +3,11 @@
  (image)
 ] @attribute
 
+[
+ (indented_code_block)
+ (fenced_code_block)
+ ] @text.literal
+
 (block_quote) @comment
 
 (atx_heading

@@ -4,3 +4,5 @@ setlocal shiftwidth=4
 setlocal foldmethod=indent
 
 nnoremap <buffer><expr> @d "<cmd>normal! I(" .. strftime('%Y-%m-%d', localtime() + 86400 * v:count) .. ") <CR>"
+
+let b:caw_oneline_comment = '-'

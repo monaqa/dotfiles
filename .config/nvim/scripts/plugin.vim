@@ -78,6 +78,8 @@ function! s:setting_gruvbit() abort
   hi! BufferTabpageFill    guifg=#888888 guibg=#c8c8c8
   hi! TabLineFill          guibg=#c8c8c8
 
+  " nvim-treesitter
+  hi! TSParameter ctermfg=14 guifg=#b3d5c8
   " hi TypeBuiltin guifg=#fe8019 guibg=NONE gui=NONE cterm=NONE gui=bold
   " 
   " hi! link TSStrong    NONE
@@ -113,7 +115,6 @@ function! s:setting_gruvbit() abort
   " hi! link TSNone Normal
   " hi! link TSNumber Constant
   " hi! link TSOperator SpellRare
-  " hi! link TSParameter Normal
   " hi! link TSParameterReference Normal
   " hi! link TSProperty String
   " hi! link TSPunctBracket Normal
@@ -179,7 +180,6 @@ function! s:setting_gruvbox_material() abort
   hi! CocRustHintFloat guibg=#444444 guifg=#258aaf
   hi! link CocRustChainingHint CocRustHintFloat
   hi! link CocRustTypeHint     CocRustHintFloat
-
 
   hi! link TSField Normal
 endfunction
@@ -262,6 +262,24 @@ augroup END
 
 " §§1 Plugin settings for lambdalisue/fern.vim
 
+let s:exclude_files = [
+\   '.*\.egg-info',
+\   '.*\.pyc',
+\   '\.DS_Store',
+\   '\.git',
+\   '\.mypy_cache',
+\   '\.pytest_cache',
+\   '\.vim',
+\   '\.vimsessions',
+\   '\.worktree',
+\   '__pycache__',
+\   'sumneko-lua-.*',
+\   'Cargo.lock',
+\   'poetry.lock',
+\ ]
+
+let g:fern#default_exclude = '^\%(' .. join(s:exclude_files, '\|') .. '\)$'
+
 let g:fern#renderer = 'nerdfont'
 nnoremap sf <Cmd>Fern . -reveal=%:p<CR>
 nnoremap sz <Cmd>Fern . -drawer -toggle<CR>
@@ -323,8 +341,24 @@ function s:fern_settings()
   nmap <nowait><buffer> m <Plug>(fern-action-move)
 
   " other
-  nmap <nowait><buffer> ! <Plug>(fern-action-hidden-toggle)
   nmap <buffer> <C-l> <Plug>(fern-action-redraw)
+
+  " toggle exclusion
+  " nmap <nowait><buffer> ! <Plug>(fern-action-hidden-toggle)
+  let s:fern_excluded = v:true
+
+  function! s:fern_exclude_toggle()
+    if s:fern_excluded
+      let s:fern_excluded = v:false
+      return "\<Plug>(fern-action-exclude=)\<C-u>\<CR>"
+    endif
+    let s:fern_excluded = v:true
+    return "\<Plug>(fern-action-exclude=)\<C-u>" .. g:fern#default_exclude .. "\<CR>"
+  endfunction
+  nmap <expr><buffer> <Plug>(fern-exclude-toggle) <SID>fern_exclude_toggle()
+
+  nmap <nowait><buffer> ! <Plug>(fern-exclude-toggle)
+
 endfunction
 
 " §§1 Plugin settings for lambdalisue/gina.vim
@@ -601,6 +635,8 @@ vmap <C-p> <Plug>(edgemotion-k)
 
 " §§1 Plugin settings for neoclide/coc.nvim
 
+set tagfunc=CocTagFunc
+
 let g:coc_global_extensions = [
 \ 'coc-snippets',
 \ 'coc-marketplace',
@@ -614,7 +650,8 @@ let g:coc_global_extensions = [
 nnoremap t <Nop>
 " t を prefix にする
 nmap <silent> td <Cmd>Telescope coc definitions<CR>
-nmap <silent> gd <Cmd>Telescope coc definitions<CR>
+" nmap <silent> gd <Cmd>Telescope coc definitions<CR>
+nmap <silent> gd <C-]>
 nmap <silent> ti <Cmd>Telescope coc implementations<CR>
 nmap <silent> ty <Cmd>Telescope coc type_definitions<CR>
 nmap <silent> tr <Cmd>Telescope coc references<CR>

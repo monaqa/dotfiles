@@ -136,7 +136,7 @@ if test -n "$FUZZY_FINDER"
   abbr -a ghiv   "gh issue list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh issue view --web {}"
 
   # git swim worktree
-  abbr -a gsw "cd (git worktree list | $FUZZY_FINDER | awk '{print \$1;}' || pwd)"
+  abbr -a gsw "cd (echo (git worktree list | $FUZZY_FINDER || pwd) | awk '{print \$1;}')"
 end
 # }}}
 

@@ -18,3 +18,5 @@ Icon
 .local_ignore_*
 
 .worktree/
+
+__pycache__
