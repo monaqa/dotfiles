@@ -487,6 +487,20 @@ function! SandwichMarkdownCodeSnippet() abort
 endfunction
 
 " generics
+let g:textobj_functioncall_generics_patterns = [
+\ {
+\   'header' : '\<\%(\h\k*\.\)*\h\k*',
+\   'bra'    : '<',
+\   'ket'    : '>',
+\   'footer' : '',
+\ },
+\ ]
+
+onoremap <silent> <Plug>(textobj-functioncall-generics-i) :<C-u>call textobj#functioncall#ip('o', g:textobj_functioncall_generics_patterns)<CR>
+xnoremap <silent> <Plug>(textobj-functioncall-generics-i) :<C-u>call textobj#functioncall#ip('x', g:textobj_functioncall_generics_patterns)<CR>
+onoremap <silent> <Plug>(textobj-functioncall-generics-a) :<C-u>call textobj#functioncall#i('o', g:textobj_functioncall_generics_patterns)<CR>
+xnoremap <silent> <Plug>(textobj-functioncall-generics-a) :<C-u>call textobj#functioncall#i('x', g:textobj_functioncall_generics_patterns)<CR>
+
 let g:sandwich#recipes += [
 \ {
 \   'buns': ['SandwichGenericsName()', '">"'],
@@ -497,7 +511,7 @@ let g:sandwich#recipes += [
 \   'input': ['g']
 \ },
 \ {
-\   'external': ['i<', "\<Plug>(textobj-functioncall-a)"],
+\   'external': ['i<', "\<Plug>(textobj-functioncall-generics-a)"],
 \   'noremap': 0,
 \   'kind': ['delete', 'replace', 'query'],
 \   'input': ['g']
@@ -891,8 +905,8 @@ nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
 " tree-sitter の fold を有効にしたい場合
 
 " augroup vimrc
-"   autocmd FileType rust,lua,typescript,query,toml,python setlocal foldmethod=expr
-"   autocmd FileType rust,lua,typescript,query,toml,python setlocal foldexpr=nvim_treesitter#foldexpr()
+"   autocmd FileType rust,lua setlocal foldmethod=expr
+"   autocmd FileType rust,lua setlocal foldexpr=nvim_treesitter#foldexpr()
 " augroup END
 
 " §§1 Plugin settings for nvim-hlslens

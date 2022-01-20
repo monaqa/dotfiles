@@ -90,3 +90,8 @@ function! s:substitute_comma_period(invert)
     keeppatterns %substitute/．/。/g
   endif
 endfunction
+
+" §§1 memolist.vim
+
+command! MemoFind lua require("telescope.builtin").find_files{ cwd = "~/memo" }
+command! MemoLiveGrep lua require("telescope.builtin").live_grep{ cwd = "~/memo" }

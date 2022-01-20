@@ -17,8 +17,6 @@
     "<C-k>": "normal:k"
   },
 
-  "sumneko-lua.enableNvimLuaDev": true,
-
   "highlight.colorNames.enable": false,
 
   "python.pythonPath": "/usr/local/bin/python3",
@@ -29,6 +27,11 @@
   "python.formatting.blackdPath": "/usr/local/bin/black",
 
   "julia.executablePath": "/usr/local/bin/julia",
+
+  "sumneko-lua.enableNvimLuaDev": true,
+  "Lua.workspace.library": [
+      "~/.config/nvim/pack/minpac/start/nvim-treesitter/lua"
+  ],
 
   "languageserver": {
     "efm": {
@@ -57,12 +60,8 @@
 
   "coc.preferences.semanticTokensHighlights": false,
 
-  "tsserver.enable": false,
   "deno.enable": true,
   "deno.lint": true,
   "deno.codeLens.references": true,
-  "deno.codeLens.referencesAllFunctions": true,
-
-  "yank.highlight.duration": 250,
-  "yank.enableCompletion": false
+  "deno.codeLens.referencesAllFunctions": true
 }
