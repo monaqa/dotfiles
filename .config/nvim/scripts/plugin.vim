@@ -939,6 +939,20 @@ nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
 " §§1 Plugin settings for nvim-treesitter
 nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
 
+let s:query_dir = expand("<sfile>:p:h:h") .. '/after/queries/'
+
+function! s:override_query(filetype, query_type)
+  let query_file = s:query_dir .. a:filetype .. '/' .. a:query_type .. '.scm'
+  let query = join(readfile(query_file), "\n")
+  call luaeval('require("vim.treesitter.query").set_query(_A[1], _A[2], _A[3])', [a:filetype, a:query_type, query])
+endfunction
+
+function! LoadQuery()
+  call s:override_query('bash', 'highlights')
+endfunction
+
+call LoadQuery()
+
 " tree-sitter の fold を有効にしたい場合
 
 " augroup vimrc
