@@ -18,8 +18,6 @@ function! s:toggle_column() abort
   endif
 endfunction
 
-" temporal attention
-nnoremap <silent> <Space><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>
 nnoremap <silent> zz zz<Cmd>call <SID>temporal_attention()<CR>
 function! s:temporal_attention() abort
   setlocal cursorline
@@ -37,6 +35,16 @@ function! s:temporal_relnum() abort
     autocmd CursorMoved * ++once setlocal norelativenumber
   augroup END
 endfunction
+
+function s:expr_temporal_attention()
+  call s:temporal_attention()
+  call s:temporal_relnum()
+  return ""
+endfunction
+
+nnoremap <expr> + <SID>expr_temporal_attention()
+onoremap <expr> + <SID>expr_temporal_attention()
+vnoremap <expr> + <SID>expr_temporal_attention()
 
 " §§1 fold
 " nnoremap <Space>z zMzv
@@ -318,19 +326,6 @@ nnoremap Y y$
 
 " どうせ空行1行なんて put するようなもんじゃないし、空行で上書きされるの嫌よね
 nnoremap <expr> dd (v:count1 == 1 && v:register == '"' && getline('.') == "") ? '"_dd' : 'dd'
-
-" operator with temporal relnum
-" <Space> はじまりのモーションと競合して不便なので無効化
-" nnoremap <silent>  d<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>d
-" nnoremap <silent>  c<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>c
-" nnoremap <silent>  y<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>y
-" nnoremap <silent> gu<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gu
-" nnoremap <silent> gU<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>gU
-" nnoremap <silent>  ><Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>>
-" nnoremap <silent>  <<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR><
-" nnoremap <silent>  =<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>=
-" " comment operator
-" nmap     <silent>  ,<Space> <Cmd>call <SID>temporal_attention()<CR><Cmd>call <SID>temporal_relnum()<CR>,
 
 " よく使うレジスタは挿入モードでも挿入しやすく
 inoremap <C-r><C-r> <C-g>u<C-r>"
