@@ -118,3 +118,22 @@ struct Opts {
 	$0
 }
 endsnippet
+
+# methods
+snippet new "constructor" b
+pub fn new() -> Self {
+	${0:todo!()}
+}
+endsnippet
+
+snippet from "from_xxx method" b
+pub fn from_${1}($1: ${2}) -> Self {
+	${0:todo!()}
+}
+endsnippet
+
+snippet try_from "try_from_xxx method" b
+pub fn try_from_${1}($1: ${2}) -> Result<Self> {
+	${0:todo!()}
+}
+endsnippet

@@ -80,6 +80,7 @@ function! s:setting_gruvbit() abort
 
   " nvim-treesitter
   hi! TSParameter ctermfg=14 guifg=#b3d5c8
+  hi! TSField     ctermfg=14 guifg=#b3d5c8
   " hi TypeBuiltin guifg=#fe8019 guibg=NONE gui=NONE cterm=NONE gui=bold
   " 
   " hi! link TSStrong    NONE
@@ -368,6 +369,7 @@ augroup rc_gina
   autocmd FileType gina-blame setlocal nonumber
   autocmd FileType gina-blame setlocal signcolumn=no
   autocmd FileType gina-blame setlocal foldcolumn=0
+  autocmd FileType gina-status nnoremap <buffer> <C-l> <Cmd>e<CR>
 
   autocmd FileType gina-log nmap <buffer><nowait> c <Plug>(gina-changes-between)
 augroup END

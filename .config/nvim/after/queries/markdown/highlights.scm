@@ -16,6 +16,7 @@
  )
 
 (fenced_code_block
+ (fenced_code_block_delimiter)
  .
  (code_fence_content) @text.literal)
 
