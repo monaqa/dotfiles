@@ -949,11 +949,7 @@ function! s:override_query(filetype, query_type)
   call luaeval('require("vim.treesitter.query").set_query(_A[1], _A[2], _A[3])', [a:filetype, a:query_type, query])
 endfunction
 
-function! LoadQuery()
-  call s:override_query('bash', 'highlights')
-endfunction
-
-call LoadQuery()
+call s:override_query('bash', 'highlights')
 
 " tree-sitter の fold を有効にしたい場合
 

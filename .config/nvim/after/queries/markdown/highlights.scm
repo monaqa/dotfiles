@@ -27,3 +27,4 @@
  (heading_content) @WeakTitle
  )
 
+(uri_autolink) @text.uri

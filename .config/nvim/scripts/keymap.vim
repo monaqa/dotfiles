@@ -231,6 +231,10 @@ function! s:op_send_terminal(type)
   let @m=m_reg
 endfunction
 
+function! SendTerminal(cmd)
+  call chansend(g:current_terminal_job_id, s:reformat_cmdstring(a:cmd))
+endfunction
+
 function! s:reformat_cmdstring(str)
   " 空行の削除
   let s = substitute(a:str, '\n\n', '\n', 'g')

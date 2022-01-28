@@ -2,6 +2,15 @@
   "suggest.snippetIndicator": "►",
   "suggest.acceptSuggestionOnCommitCharacter": false,
   "suggest.asciiCharactersOnly": true,
+  "suggest.invalidInsertCharacters": [
+      "(",
+      "<",
+      "{",
+      "[",
+      "\r",
+      "\n"
+  ],
+
   "diagnostic.messageTarget": "float",
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextCurrentLineOnly": false,
