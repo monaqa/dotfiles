@@ -8,7 +8,7 @@
  (fenced_code_block)
  ] @text.literal
 
-(block_quote) @comment
+(block_quote) @Quote
 
 (atx_heading
  (atx_h1_marker)
@@ -16,9 +16,17 @@
  )
 
 (fenced_code_block
- (fenced_code_block_delimiter)
+ (fenced_code_block_delimiter) @text.literal
  .
- (code_fence_content) @text.literal)
+ (code_fence_content) @text.literal
+ (fenced_code_block_delimiter) @text.literal
+ )
+
+(fenced_code_block
+ (fenced_code_block_delimiter) @punctuation.delimiter
+ (info_string) @punctuation.delimiter
+ (fenced_code_block_delimiter) @punctuation.delimiter
+ )
 
 (html_block) @comment
 

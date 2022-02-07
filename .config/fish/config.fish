@@ -86,9 +86,6 @@ abbr -a vtex "env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim"
 abbr -a mkvs "mkdir .vimsessions"
 abbr -a rmvs "rm .vimsessions/*"
 
-# ssh
-abbr -a s    "ssh"
-
 # cargo
 abbr -a cb   "cargo build"
 abbr -a cn   "cargo new"

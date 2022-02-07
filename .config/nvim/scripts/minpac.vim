@@ -33,7 +33,6 @@ function! PackInit() abort
   call minpac#add('machakann/vim-swap')
   call minpac#add('machakann/vim-textobj-functioncall')
   call minpac#add('mattn/vim-maketable')
-  call minpac#add('mattn/vim-sonictemplate')
   call minpac#add('mbbill/undotree')
   call minpac#add('mhinz/vim-signify')
   call minpac#add('neoclide/coc.nvim', {'branch': 'release'})
