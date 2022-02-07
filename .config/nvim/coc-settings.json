@@ -1,33 +1,4 @@
 {
-  "suggest.snippetIndicator": "►",
-  "suggest.acceptSuggestionOnCommitCharacter": false,
-  "suggest.asciiCharactersOnly": true,
-  "suggest.invalidInsertCharacters": [
-      "(",
-      "<",
-      "{",
-      "[",
-      "\r",
-      "\n"
-  ],
-
-  "diagnostic.messageTarget": "float",
-  "diagnostic.virtualText": true,
-  "diagnostic.virtualTextCurrentLineOnly": false,
-  "diagnostic.virtualTextPrefix": " ",
-  "diagnostic.warningSign": "🐤",
-  "diagnostic.errorSign": "🚨",
-  "diagnostic.infoSign": "ℹ️ ",
-  "diagnostic.hintSign": "ℹ️ ",
-  "codeLens.enable": true,
-
-  "list.insertMappings": {
-    "<C-j>": "normal:j",
-    "<C-k>": "normal:k"
-  },
-
-  "highlight.colorNames.enable": false,
-
   "python.pythonPath": "/usr/local/bin/python3",
   "python.linting.mypyPath": "mypy",
   "python.linting.flake8Enabled": false,
@@ -35,12 +6,22 @@
   "python.formatting.provider": "black",
   "python.formatting.blackdPath": "/usr/local/bin/black",
 
-  "julia.executablePath": "/usr/local/bin/julia",
-
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.workspace.library": [
       "~/.config/nvim/pack/minpac/start/nvim-treesitter/lua"
   ],
+
+  "rust-analyzer.lens.enable": false,
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.updates.channel": "stable",
+  "rust-analyzer.procMacro.enable": true,
+
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.codeLens.references": true,
+  "deno.codeLens.referencesAllFunctions": true,
+
+  "highlight.colorNames.enable": false,
 
   "languageserver": {
     "efm": {
@@ -62,15 +43,31 @@
     }
   },
 
-  "rust-analyzer.lens.enable": false,
-  "rust-analyzer.checkOnSave.command": "clippy",
-  "rust-analyzer.updates.channel": "stable",
-  "rust-analyzer.procMacro.enable": true,
+  "codeLens.enable": true,
 
-  "coc.preferences.semanticTokensHighlights": false,
+  "diagnostic.messageTarget": "float",
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "diagnostic.virtualTextPrefix": " ",
+  "diagnostic.warningSign": "🐤",
+  "diagnostic.errorSign": "🚨",
+  "diagnostic.infoSign": "ℹ️ ",
+  "diagnostic.hintSign": "ℹ️ ",
 
-  "deno.enable": true,
-  "deno.lint": true,
-  "deno.codeLens.references": true,
-  "deno.codeLens.referencesAllFunctions": true
+  "suggest.snippetIndicator": "►",
+  "suggest.acceptSuggestionOnCommitCharacter": false,
+  "suggest.asciiCharactersOnly": true,
+  "suggest.invalidInsertCharacters": [
+      "(",
+      "<",
+      "{",
+      "[",
+      "\r",
+      "\n"
+  ],
+
+  "list.insertMappings": {
+    "<C-j>": "normal:j",
+    "<C-k>": "normal:k"
+  }
 }
