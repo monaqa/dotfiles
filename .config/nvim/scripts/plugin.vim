@@ -623,10 +623,15 @@ let g:smooth_scroll_no_default_key_mappings = 1
 let g:smooth_scroll_interval = 1000.0 / 40
 let g:smooth_scroll_scrollkind = "quintic"
 let g:smooth_scroll_add_jumplist = v:true
-nnoremap <silent> <C-d> <Cmd>call smooth_scroll#flick(v:count1 * winheight(0) / 2, 15,  1)<CR>
-nnoremap <silent> <C-u> <Cmd>call smooth_scroll#flick(v:count1 * winheight(0) / 2, 15, -1)<CR>
-nnoremap <silent> <C-f> <Cmd>call smooth_scroll#flick(v:count1 * winheight(0)    , 25,  1)<CR>
-nnoremap <silent> <C-b> <Cmd>call smooth_scroll#flick(v:count1 * winheight(0)    , 25, -1)<CR>
+
+nnoremap <silent> <C-d> <Cmd>call smooth_scroll#flick( v:count1 * &scroll     , 15, 'j', 'k')<CR>
+nnoremap <silent> <C-u> <Cmd>call smooth_scroll#flick(-v:count1 * &scroll     , 15, 'j', 'k')<CR>
+nnoremap <silent> <C-f> <Cmd>call smooth_scroll#flick( v:count1 * winheight(0), 25, 'j', 'k')<CR>
+nnoremap <silent> <C-b> <Cmd>call smooth_scroll#flick(-v:count1 * winheight(0), 25, 'j', 'k')<CR>
+vnoremap <silent> <C-d> <Cmd>call smooth_scroll#flick( v:count1 * &scroll     , 15, 'j', 'k')<CR>
+vnoremap <silent> <C-u> <Cmd>call smooth_scroll#flick(-v:count1 * &scroll     , 15, 'j', 'k')<CR>
+vnoremap <silent> <C-f> <Cmd>call smooth_scroll#flick( v:count1 * winheight(0), 25, 'j', 'k')<CR>
+vnoremap <silent> <C-b> <Cmd>call smooth_scroll#flick(-v:count1 * winheight(0), 25, 'j', 'k')<CR>
 
 " §§1 Plugin settings for monaqa/vim-edgemotion
 
@@ -967,9 +972,10 @@ nmap g* <Plug>(asterisk-gz*)
 nmap g# <Plug>(asterisk-gz*)
 
 " §§1 Plugin settings for modesearch
-nmap \ <Plug>(modesearch-slash)
+nmap / <Plug>(modesearch-slash-rawstr)
+nmap ? <Plug>(modesearch-slash-regexp)
 cmap <C-x> <Plug>(modesearch-toggle-mode)
+nnoremap _ /
 
 " §§1 Plugin settings for colordinate
 let g:colordinate_save_path = expand("~/.config/nvim/colors")
-

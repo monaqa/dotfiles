@@ -148,4 +148,4 @@ require('pretty-fold').setup{
         { 'for%s', 'end' },
     },
 }
-require('pretty-fold.preview').setup_keybinding()
+-- require('pretty-fold.preview').setup_keybinding()

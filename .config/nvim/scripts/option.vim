@@ -57,6 +57,10 @@ autocmd vimrc FileType * set formatoptions-=o formatoptions+=nB
 set nobackup
 set noswapfile
 
+augroup vimrc
+  autocmd StdinReadPost * set nomodified
+augroup END
+
 " safety
 set autoread
 set confirm
