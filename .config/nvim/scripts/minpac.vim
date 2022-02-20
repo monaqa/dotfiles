@@ -51,6 +51,7 @@ function! PackInit() abort
   call minpac#add('xolox/vim-misc')
   call minpac#add('xolox/vim-session')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
+  call minpac#add('thinca/vim-partedit')
 
   " telescope
   call minpac#add('nvim-lua/popup.nvim')
@@ -61,7 +62,18 @@ function! PackInit() abort
   " denops
   call minpac#add('vim-denops/denops.vim')
   " call minpac#add('monaqa/dps-dial.vim', {'type': 'opt'})
-  call minpac#add('monaqa/dps-dial.vim')
+  " call minpac#add('monaqa/dps-dial.vim')
+
+  " ddu
+  call minpac#add('Shougo/ddu.vim')
+  call minpac#add('Shougo/ddu-ui-ff')
+  call minpac#add('Shougo/ddu-source-file_rec')
+  call minpac#add('matsui54/ddu-source-file_external')
+  call minpac#add('shun/ddu-source-rg')
+  call minpac#add('kuuote/ddu-source-mr')
+  call minpac#add('lambdalisue/mr.vim')
+  call minpac#add('Shougo/ddu-filter-matcher_substring')
+  call minpac#add('Shougo/ddu-kind-file')
 
   " Treesitter
   call minpac#add('nvim-treesitter/nvim-treesitter')
@@ -89,7 +101,7 @@ function! PackInit() abort
   call minpac#add('vito-c/jq.vim')
 
   " My packages
-  call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
+  call minpac#add('monaqa/dial.nvim', {'branch': 'renew'})
   call minpac#add('monaqa/peridot.vim')
   call minpac#add('monaqa/satysfi.vim')
   call minpac#add('monaqa/smooth-scroll.vim')

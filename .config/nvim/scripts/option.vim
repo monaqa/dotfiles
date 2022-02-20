@@ -3,6 +3,7 @@
 " §§1 表示設定
 
 " 全体
+language messages en_US.UTF-8
 set belloff=all
 
 set lazyredraw
@@ -50,7 +51,8 @@ set isfname-==
 
 " set clipboard+=unnamedplus
 
-autocmd vimrc FileType * set formatoptions-=o formatoptions+=nB
+" set formatoptions-=ro
+" autocmd FileType * setlocal formatoptions-=ro formatoptions+=nB
 
 " §§1 editor functions
 " backup

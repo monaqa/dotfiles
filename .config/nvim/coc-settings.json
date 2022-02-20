@@ -8,8 +8,10 @@
 
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.workspace.library": [
-      "~/.config/nvim/pack/minpac/start/nvim-treesitter/lua"
+      "~/.config/nvim/pack/minpac/start/nvim-treesitter/lua",
+      "~/.config/nvim/pack/minpac/start/plenary.nvim/lua/plenary/busted.lua"
   ],
+  "Lua.telemetry.enable": false,
 
   "rust-analyzer.lens.enable": false,
   "rust-analyzer.checkOnSave.command": "clippy",

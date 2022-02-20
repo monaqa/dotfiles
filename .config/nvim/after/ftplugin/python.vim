@@ -59,3 +59,6 @@ function! SandwichPythonGenericsName() abort
   endif
   return genericsname . '['
 endfunction
+
+let b:partedit_prefix = ' '
+let b:partedit_filetype = 'markdown'

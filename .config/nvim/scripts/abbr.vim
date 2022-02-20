@@ -77,4 +77,6 @@ call s:make_abbrev_rule([
 \   {'prepose_nospace': "'<,'>", 'from': 'm', 'to': 'MakeTable'},
 \   {'prepose_nospace': "'<,'>", 'from': 'gbr', 'to': 'GinaBrowseYank'},
 \   {'prepose_nospace': "'<,'>", 'from': 'gby', 'to': 'GinaBrowseYank'},
+\   {'prepose_nospace': "'<,'>", 'from': 'p', 'to': 'Partedit'},
+\   {'prepose_nospace': "'<,'>", 'from': 'pc', 'to': 'ParteditCodeblock'},
 \ ])

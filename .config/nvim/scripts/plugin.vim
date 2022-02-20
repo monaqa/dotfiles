@@ -860,82 +860,82 @@ nnoremap sw <Cmd>BufferClose<CR>
 
 " §§1 Plugin settings for dial.nvim
 
-function! DialConfig()
-  nmap  <C-a>  <Plug>(dps-dial-increment)
-  nmap  <C-x>  <Plug>(dps-dial-decrement)
-  vmap  <C-a>  <Plug>(dps-dial-increment)
-  vmap  <C-x>  <Plug>(dps-dial-decrement)
-  vmap g<C-a> g<Plug>(dps-dial-increment)
-  vmap g<C-x> g<Plug>(dps-dial-decrement)
-  nnoremap  <Up>    <C-a>
-  nnoremap  <Down>  <C-x>
-  vnoremap  <Up>    <C-a>
-  vnoremap  <Down>  <C-x>
-  vnoremap g<Up>   g<C-a>
-  vnoremap g<Down> g<C-x>
-
-  function! MarkdownHeaderFind(line, cursor)
-    let match = matchstr(a:line, '^#\+')
-    if match !=# ''
-      return {"from": 0, "to": strlen(match)}
-    endif
-    return v:null
-  endfunction
-
-  function! MarkdownHeaderAdd(text, addend, cursor)
-    let n_header = strlen(a:text)
-    let n_header = min([6, max([1, n_header + a:addend])])
-    let text = repeat('#', n_header)
-    let cursor = 1
-    return {'text': text, 'cursor': cursor}
-  endfunction
-
-  let s:id_find = dps_dial#register_callback(function("MarkdownHeaderFind"))
-  let s:id_add = dps_dial#register_callback(function("MarkdownHeaderAdd"))
-
-  autocmd FileType markdown let b:dps_dial_augends_register_h = [
-  \  {'kind': 'user', 'opts': {'find': s:id_find, 'add': s:id_add}}
-  \ ]
-  autocmd FileType markdown nmap <buffer> <Space>a "h<Plug>(dps-dial-increment)
-  autocmd FileType markdown nmap <buffer> <Space>x "h<Plug>(dps-dial-decrement)
-  autocmd FileType markdown vmap <buffer> <Space>a "h<Plug>(dps-dial-increment)
-  autocmd FileType markdown vmap <buffer> <Space>x "h<Plug>(dps-dial-decrement)
-
-  autocmd FileType typescript let b:dps_dial_augends = g:dps_dial#augends + [
-  \   {
-  \     'kind': 'constant', 'opts': {
-  \       'elements': ['let', 'const'],
-  \       'cyclic': v:true,
-  \       'word': v:true,
-  \   }}
-  \ ]
-
-  let g:dps_dial#augends = [
-  \   'decimal',
-  \   'hex',
-  \   'date-hyphen',
-  \   'date-slash',
-  \   'color',
-  \ ]
-
-  let g:dps_dial#augends#register#d = [
-  \   {'kind': 'date', 'opts': {'format': 'yyyy/MM/dd'}},
-  \   {'kind': 'date', 'opts': {'format': 'yyyy-MM-dd'}},
-  \   {'kind': 'date', 'opts': {'format': 'MM/dd', 'only_valid': v:true}},
-  \   {'kind': 'date', 'opts': {'format': 'HH:mm', 'only_valid': v:true}},
-  \   {'kind': 'date', 'opts': {'format': 'M/d', 'only_valid': v:true}},
-  \ ]
-
-  let g:dps_dial#aliases = {}
-
-  let g:dps_dial#augends#register#c = [ 'case' ]
-  nmap gc "c<Plug>(dps-dial-increment)
-endfunction
-
-if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dps-dial.vim')
-  call DialConfig()
-  echom 'general config of dps-dial.vim is loaded.'
-endif
+" function! DialConfig()
+"   nmap  <C-a>  <Plug>(dps-dial-increment)
+"   nmap  <C-x>  <Plug>(dps-dial-decrement)
+"   vmap  <C-a>  <Plug>(dps-dial-increment)
+"   vmap  <C-x>  <Plug>(dps-dial-decrement)
+"   vmap g<C-a> g<Plug>(dps-dial-increment)
+"   vmap g<C-x> g<Plug>(dps-dial-decrement)
+"   nnoremap  <Up>    <C-a>
+"   nnoremap  <Down>  <C-x>
+"   vnoremap  <Up>    <C-a>
+"   vnoremap  <Down>  <C-x>
+"   vnoremap g<Up>   g<C-a>
+"   vnoremap g<Down> g<C-x>
+" 
+"   function! MarkdownHeaderFind(line, cursor)
+"     let match = matchstr(a:line, '^#\+')
+"     if match !=# ''
+"       return {"from": 0, "to": strlen(match)}
+"     endif
+"     return v:null
+"   endfunction
+" 
+"   function! MarkdownHeaderAdd(text, addend, cursor)
+"     let n_header = strlen(a:text)
+"     let n_header = min([6, max([1, n_header + a:addend])])
+"     let text = repeat('#', n_header)
+"     let cursor = 1
+"     return {'text': text, 'cursor': cursor}
+"   endfunction
+" 
+"   let s:id_find = dps_dial#register_callback(function("MarkdownHeaderFind"))
+"   let s:id_add = dps_dial#register_callback(function("MarkdownHeaderAdd"))
+" 
+"   autocmd FileType markdown let b:dps_dial_augends_register_h = [
+"  \  {'kind': 'user', 'opts': {'find': s:id_find, 'add': s:id_add}}
+"  \ ]
+"   autocmd FileType markdown nmap <buffer> <Space>a "h<Plug>(dps-dial-increment)
+"   autocmd FileType markdown nmap <buffer> <Space>x "h<Plug>(dps-dial-decrement)
+"   autocmd FileType markdown vmap <buffer> <Space>a "h<Plug>(dps-dial-increment)
+"   autocmd FileType markdown vmap <buffer> <Space>x "h<Plug>(dps-dial-decrement)
+" 
+"   autocmd FileType typescript let b:dps_dial_augends = g:dps_dial#augends + [
+"  \   {
+"  \     'kind': 'constant', 'opts': {
+"  \       'elements': ['let', 'const'],
+"  \       'cyclic': v:true,
+"  \       'word': v:true,
+"  \   }}
+"  \ ]
+" 
+"   let g:dps_dial#augends = [
+"  \   'decimal',
+"  \   'hex',
+"  \   'date-hyphen',
+"  \   'date-slash',
+"  \   'color',
+"  \ ]
+" 
+"   let g:dps_dial#augends#register#d = [
+"  \   {'kind': 'date', 'opts': {'format': 'yyyy/MM/dd'}},
+"  \   {'kind': 'date', 'opts': {'format': 'yyyy-MM-dd'}},
+"  \   {'kind': 'date', 'opts': {'format': 'MM/dd', 'only_valid': v:true}},
+"  \   {'kind': 'date', 'opts': {'format': 'HH:mm', 'only_valid': v:true}},
+"  \   {'kind': 'date', 'opts': {'format': 'M/d', 'only_valid': v:true}},
+"  \ ]
+" 
+"   let g:dps_dial#aliases = {}
+" 
+"   let g:dps_dial#augends#register#c = [ 'case' ]
+"   nmap gc "c<Plug>(dps-dial-increment)
+" endfunction
+" 
+" if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dps-dial.vim')
+"   call DialConfig()
+"   echom 'general config of dps-dial.vim is loaded.'
+" endif
 
 " §§1 Plugin settings for telescope.nvim
 nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
@@ -955,6 +955,7 @@ function! s:override_query(filetype, query_type)
 endfunction
 
 call s:override_query('bash', 'highlights')
+call s:override_query('markdown', 'highlights')
 
 " tree-sitter の fold を有効にしたい場合
 
@@ -977,5 +978,77 @@ nmap ? <Plug>(modesearch-slash-regexp)
 cmap <C-x> <Plug>(modesearch-toggle-mode)
 nnoremap _ /
 
+" §§1 Plugin settings for partedit
+let g:partedit#opener = ":vsplit"
+let g:partedit#auto_prefix = v:false
+
+command! -range ParteditCodeblock call s:partedit_code_block(<line1>, <line2>)
+function! s:partedit_code_block(line1, line2)
+  let line_codeblock_start = getline(a:line1 - 1)
+  let filetype = matchstr(line_codeblock_start, '\v```\zs[-a-zA-Z0-9]+\ze')
+  let options = { "filetype": filetype }
+  call partedit#start(a:line1, a:line2, options)
+endfunction
+
 " §§1 Plugin settings for colordinate
 let g:colordinate_save_path = expand("~/.config/nvim/colors")
+
+" §§1 Plugin settings for ddu.vim
+call ddu#custom#patch_global({
+    \   'ui': 'ff',
+    \   'uiParams': {
+    \     'ff': {
+    \       'split': 'floating',
+    \     }
+    \   },
+    \   'sources': [
+    \      {'name': 'file_rec', 'params': {}},
+    \   ],
+    \   'sourceOptions': {
+    \     '_': {
+    \       'matchers': ['matcher_substring'],
+    \     },
+    \     'rg' : {
+    \       'args': ['--column', '--no-heading', '--color', 'never'],
+    \     },
+    \   },
+    \   'kindOptions': {
+    \     'file': {
+    \       'defaultAction': 'open',
+    \     },
+    \   }
+    \ })
+
+call ddu#custom#patch_global({
+    \   'sourceParams' : {
+    \     'rg' : {
+    \       'args': ['--column', '--no-heading', '--color=never', '--hidden'],
+    \     },
+    \   },
+    \ })
+
+call ddu#custom#patch_global('sourceParams', {
+      \ 'file_external': {'cmd': ['fd', '.', '-H', '-E', '__pycache__', '-t', 'f']}
+      \ })
+
+nnoremap @o <Cmd>call ddu#start({'sources': [{'name': 'file_external', 'params': {}}]})<CR>
+nnoremap @m <Cmd>call ddu#start({'sources': [{'name': 'mr', 'params': {'kind': 'mru'}}]})<CR>
+nnoremap @g <Cmd>call ddu_rg#find()<CR>
+
+autocmd FileType ddu-ff call s:ddu_my_settings()
+function! s:ddu_my_settings() abort
+  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
+  nnoremap <buffer><silent> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+  nnoremap <buffer><silent> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  nnoremap <buffer><silent> <Esc>   <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+endfunction
+
+autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
+function! s:ddu_filter_my_settings() abort
+  inoremap <buffer><silent> <CR> <Esc><Cmd>close<CR>
+
+  nnoremap <buffer><silent> <CR>  <Cmd>close<CR>
+  nnoremap <buffer><silent> q     <Cmd>close<CR>
+  nnoremap <buffer><silent> <Esc> <Cmd>close<CR>
+endfunction
