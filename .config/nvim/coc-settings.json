@@ -32,7 +32,7 @@
       "filetypes": ["satysfi"]
     },
     "satysfi-ls": {
-        "command": "/Users/monaqa/ghq/github.com/monaqa/satysfi-language-server/target/debug/satysfi-language-server",
+        "command": "satysfi-language-server",
         "args": [],
         "filetypes": ["satysfi"],
         "trace.server": "verbose"

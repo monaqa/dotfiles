@@ -1,8 +1,3 @@
-if exists('b:loaded_ftplugin_html')
-  finish
-endif
-
-let b:loaded_ftplugin_html = 1
-
-inoremap <buffer> </ </<C-x><C-o>
-setlocal shiftwidth=2
+" なぜか Markdown でも読まれて悪影響を及ぼす
+" inoremap <buffer> </ </<C-x><C-o>
+" setlocal shiftwidth=2

@@ -18,7 +18,7 @@ function! s:toggle_column() abort
   endif
 endfunction
 
-nnoremap <silent> zz zz<Cmd>call <SID>temporal_attention()<CR>
+" nnoremap <silent> zz zz<Cmd>call <SID>temporal_attention()<CR>
 function! s:temporal_attention() abort
   setlocal cursorline
   setlocal cursorcolumn
