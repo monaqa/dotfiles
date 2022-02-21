@@ -62,10 +62,10 @@
 [
   (emphasis_delimiter)
   (code_span_delimiter)
-  (fenced_code_block_delimiter)
+  ; (fenced_code_block_delimiter)
 ] @punctuation.delimiter
 
-(code_fence_content) @none
+; (code_fence_content) @none
 
 (emphasis) @text.emphasis
 
