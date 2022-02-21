@@ -51,7 +51,6 @@ function! PackInit() abort
   call minpac#add('xolox/vim-misc')
   call minpac#add('xolox/vim-session')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
-  call minpac#add('thinca/vim-partedit')
 
   " telescope
   call minpac#add('nvim-lua/popup.nvim')
@@ -109,6 +108,7 @@ function! PackInit() abort
   call minpac#add('monaqa/modesearch.vim')
   call minpac#add('monaqa/colordinate.vim')
   call minpac#add('monaqa/pretty-fold.nvim', { 'branch': 'for_stable_neovim' })
+  call minpac#add('monaqa/vim-partedit', { 'branch': 'feat-prefix_pattern' })
 
 endfunction
 

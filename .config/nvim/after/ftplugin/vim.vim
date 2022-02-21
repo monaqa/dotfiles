@@ -11,5 +11,4 @@ nnoremap <buffer> K K
 setlocal keywordprg=:help
 
 setlocal formatoptions-=ro
-let b:partedit_prefix = ''
 let b:partedit_filetype = 'lua'

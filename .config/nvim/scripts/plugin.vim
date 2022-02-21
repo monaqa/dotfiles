@@ -983,7 +983,7 @@ nnoremap _ /
 
 " §§1 Plugin settings for partedit
 let g:partedit#opener = ":vsplit"
-let g:partedit#auto_prefix = v:false
+let g:partedit#prefix_pattern = '\v\s*'
 
 command! -range ParteditCodeblock call s:partedit_code_block(<line1>, <line2>)
 function! s:partedit_code_block(line1, line2)
