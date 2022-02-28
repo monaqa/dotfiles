@@ -101,7 +101,7 @@ function! PackInit() abort
   call minpac#add('vito-c/jq.vim')
 
   " My packages
-  call minpac#add('monaqa/dial.nvim', {'branch': 'renew'})
+  call minpac#add('monaqa/dial.nvim')
   call minpac#add('monaqa/peridot.vim')
   call minpac#add('monaqa/satysfi.vim')
   call minpac#add('monaqa/smooth-scroll.vim')
