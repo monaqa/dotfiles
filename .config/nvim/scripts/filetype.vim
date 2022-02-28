@@ -59,3 +59,7 @@ augroup END
 augroup vimrc
   autocmd BufRead,BufNewFile *.todome setfiletype todome
 augroup END
+
+augroup vimrc
+  autocmd BufRead,BufNewFile *.mmd setfiletype mermaid
+augroup END

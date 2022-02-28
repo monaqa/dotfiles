@@ -7,7 +7,7 @@ function! PackInit() abort
   call minpac#add('k-takata/minpac', {'type': 'opt'})
 
   " call minpac#add('kevinhwang91/nvim-hlslens')
-  call minpac#add('Konfekt/FastFold')
+  " call minpac#add('Konfekt/FastFold')
   call minpac#add('Shougo/vimproc.vim')
   call minpac#add('Vimjas/vim-python-pep8-indent')
   call minpac#add('bps/vim-textobj-python')
@@ -17,6 +17,7 @@ function! PackInit() abort
   call minpac#add('habamax/vim-gruvbit')
   call minpac#add('haya14busa/vim-asterisk')
   call minpac#add('itchyny/vim-qfedit')
+  call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
   call minpac#add('kana/vim-altr')
   call minpac#add('kana/vim-operator-user')
   call minpac#add('kana/vim-textobj-user')
@@ -95,7 +96,7 @@ function! PackInit() abort
   call minpac#add('wlangstroth/vim-racket')
   call minpac#add('aklt/plantuml-syntax')
   call minpac#add('bfontaine/Brewfile.vim')
-  call minpac#add('mracos/mermaid.vim')
+  " call minpac#add('mracos/mermaid.vim')
   call minpac#add('chr4/nginx.vim')
   call minpac#add('vito-c/jq.vim')
 

@@ -1055,3 +1055,8 @@ function! s:ddu_filter_my_settings() abort
   nnoremap <buffer><silent> q     <Cmd>close<CR>
   nnoremap <buffer><silent> <Esc> <Cmd>close<CR>
 endfunction
+
+" §§1 Plugin settings for markdown-preview.nvim
+" let g:mkdp_markdown_css = expand('~/Downloads/markdown.css')
+" let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/markdown.css')
+" let g:mkdp_highlight_css = expand('~/.config/nvim/scripts/resource/markdown.css')

@@ -3,10 +3,10 @@
  (image)
 ] @attribute
 
-[
- (indented_code_block)
- (fenced_code_block)
- ] @text.literal
+; [
+;  (indented_code_block)
+;  (fenced_code_block)
+;  ] @text.literal
 
 (block_quote) @Quote
 
@@ -55,8 +55,8 @@
 [
   (code_span)
   (link_title)
-  (indented_code_block)
-  (fenced_code_block)
+  ; (indented_code_block)
+  ; (fenced_code_block)
 ] @text.literal
 
 [
