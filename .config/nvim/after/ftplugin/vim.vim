@@ -1,9 +1,3 @@
-if exists('b:loaded_ftplugin_vim')
-  finish
-endif
-
-let b:loaded_ftplugin_vim = 1
-
 let g:vim_indent_cont = 0
 
 setlocal shiftwidth=2

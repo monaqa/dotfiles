@@ -1,9 +1,3 @@
-if exists('b:loaded_ftplugin_rst')
-  finish
-endif
-
-let b:loaded_ftplugin_rst = 1
-
 function! s:reSTTitle(punc)
   let line = getline('.')
   sil! exe row 'foldopen!'

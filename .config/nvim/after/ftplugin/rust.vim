@@ -1,9 +1,3 @@
-if exists('b:loaded_ftplugin_rust')
-  finish
-endif
-
-let b:loaded_ftplugin_rust = 1
-
 setlocal foldmethod=expr
 setlocal foldexpr=nvim_treesitter#foldexpr()
 " setlocal foldmethod=syntax

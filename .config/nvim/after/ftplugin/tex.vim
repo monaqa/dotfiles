@@ -1,9 +1,3 @@
-if exists('b:loaded_ftplugin_tex')
-  finish
-endif
-
-let b:loaded_ftplugin_tex = 1
-
 let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '@line @pdf @tex'
 

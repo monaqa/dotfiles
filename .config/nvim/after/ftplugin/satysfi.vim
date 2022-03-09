@@ -1,9 +1,3 @@
-if exists('b:loaded_ftplugin_satysfi')
-  finish
-endif
-
-let b:loaded_ftplugin_satysfi = 1
-
 setlocal path+=/usr/local/share/satysfi/dist/packages,$HOME/.satysfi/dist/packages,$HOME/.satysfi/local/packages
 setlocal shiftwidth=2
 setlocal suffixesadd+=.saty,.satyh,.satyg
