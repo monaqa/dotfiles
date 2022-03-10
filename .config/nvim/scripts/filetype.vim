@@ -63,3 +63,9 @@ augroup END
 augroup vimrc
   autocmd BufRead,BufNewFile *.mmd setfiletype mermaid
 augroup END
+
+" §§1 todome
+augroup vimrc
+  autocmd BufRead,BufNewFile *.html inoremap <buffer> </ </<C-x><C-o>
+  autocmd BufRead,BufNewFile *.html setlocal shiftwidth=2
+augroup END

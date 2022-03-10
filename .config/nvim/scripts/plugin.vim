@@ -372,6 +372,9 @@ augroup rc_gina
   autocmd FileType gina-status nnoremap <buffer> <C-l> <Cmd>e<CR>
 
   autocmd FileType gina-log nmap <buffer><nowait> c <Plug>(gina-changes-between)
+
+  autocmd FileType gina-log nmap <buffer><nowait> } <Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'W')<CR>
+  autocmd FileType gina-log nmap <buffer><nowait> { <Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'Wb')<CR>
 augroup END
 
 let g:gina#command#blame#formatter#format = '%su%=|%au %ti %ma%in'
@@ -935,10 +938,21 @@ nnoremap sw <Cmd>BufferClose<CR>
 "   nmap gc "c<Plug>(dps-dial-increment)
 " endfunction
 " 
-" if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dps-dial.vim')
-"   call DialConfig()
-"   echom 'general config of dps-dial.vim is loaded.'
-" endif
+function! DialConfig()
+  packadd dial.nvim
+lua <<EOL
+  vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
+  vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
+  vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
+  vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
+  vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
+  vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
+EOL
+endfunction
+if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dial.nvim')
+  call DialConfig()
+  echom 'general config of dps-dial.vim is loaded.'
+endif
 
 " §§1 Plugin settings for telescope.nvim
 nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>

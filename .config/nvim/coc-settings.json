@@ -18,10 +18,12 @@
   "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.procMacro.enable": true,
 
-  "deno.enable": true,
+  "deno.enable": false,
   "deno.lint": true,
   "deno.codeLens.references": true,
   "deno.codeLens.referencesAllFunctions": true,
+
+  "tsserver.enable": true,
 
   "highlight.colorNames.enable": false,
 

@@ -8,5 +8,5 @@ nnoremap <buffer> ; m`A;<Esc>``
 let g:rustfmt_autosave = 1
 
 setlocal formatoptions-=ro
-let b:partedit_pattern = '\v\s*//[!/]?\s*'
+let b:partedit_prefix_pattern = '\v\s*//[!/]?\s*'
 let b:partedit_filetype = 'markdown'

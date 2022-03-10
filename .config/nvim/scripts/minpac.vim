@@ -38,7 +38,7 @@ function! PackInit() abort
   call minpac#add('mhinz/vim-signify')
   call minpac#add('neoclide/coc.nvim', {'branch': 'release'})
   call minpac#add('nvim-lualine/lualine.nvim')
-  call minpac#add('previm/previm')
+  " call minpac#add('previm/previm')
   call minpac#add('rafcamlet/coc-nvim-lua')
   call minpac#add('rhysd/rust-doc.vim')
   call minpac#add('romgrk/barbar.nvim')
@@ -101,7 +101,7 @@ function! PackInit() abort
   call minpac#add('vito-c/jq.vim')
 
   " My packages
-  call minpac#add('monaqa/dial.nvim')
+  call minpac#add('monaqa/dial.nvim', {'type': 'opt'})
   call minpac#add('monaqa/peridot.vim')
   call minpac#add('monaqa/satysfi.vim')
   call minpac#add('monaqa/smooth-scroll.vim')
