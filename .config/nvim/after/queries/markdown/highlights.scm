@@ -23,6 +23,12 @@
  )
 
 (fenced_code_block
+ (fenced_code_block_delimiter) @text.literal
+ .
+ (fenced_code_block_delimiter) @text.literal
+ )
+
+(fenced_code_block
  (fenced_code_block_delimiter) @punctuation.delimiter
  (info_string) @punctuation.delimiter
  (fenced_code_block_delimiter) @punctuation.delimiter
