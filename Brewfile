@@ -23,6 +23,8 @@ brew "tree"
 brew "vim"
 brew "wget"
 
+brew "cmigemo"
+brew "swift"
 brew "ripgrep"
 brew "exa"
 brew "fd"

@@ -32,6 +32,8 @@
 
     default = !basename "$(git symbolic-ref --short refs/remotes/origin/HEAD)"
 
+    vacuum = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|main'|xargs git branch -d; git fetch --prune; };f"
+
 [push]
     default = current
 [pull]

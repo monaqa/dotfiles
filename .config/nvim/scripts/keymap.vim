@@ -205,7 +205,8 @@ function! s:openTerminal()
     split
   endif
   " edit term://fish
-  terminal fish
+  " terminal fish
+  terminal
   let g:current_terminal_job_id = b:terminal_job_id
 endfunction
 
