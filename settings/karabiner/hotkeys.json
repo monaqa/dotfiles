@@ -1,0 +1,35 @@
+{
+    "title": "hotkeys to switch app",
+    "rules":
+    [
+        {
+            "description": "command-space to wezterm",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "spacebar",
+                        "modifiers": {
+                            "mandatory": [
+                                "command"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "shell_command": "open -a 'wezterm'"
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "type": "frontmost_application_unless",
+                            "bundle_identifiers": [
+                                "^com\\.github\\.wez\\.wezterm$"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -45,25 +45,31 @@ zplug "zplug/zplug", hook-build:'zplug --self-manage'
 # zplug "peterhurford/git-aliases.zsh"
 
 # 入力途中に候補をうっすら表示
+# 不具合あり: https://github.com/zsh-users/zsh-syntax-highlighting/issues/857
 zplug "zsh-users/zsh-autosuggestions"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#666666,bg=#222222,underline"
 
 # コマンドを種類ごとに色付け
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
+# zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-syntax-highlighting"
+
 
 # ヒストリの補完を強化する
 # zplug "zsh-users/zsh-history-substring-search", defer:3
 
 zplug "momo-lab/zsh-abbrev-alias"
 
+zplug "dracula/zsh", as:theme
+
 # インストールしてないプラグインはインストール
 # 遅いらしいのでコメントアウト
 
-# if ! zplug check --verbose; then
-#     printf "Install? [y/N]: "
-#     if read -q; then
-#         echo; zplug install
-#     fi
-# fi
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
 
 # コマンドをリンクして、PATH に追加し、プラグインは読み込む
 # zplug load --verbose
@@ -95,6 +101,7 @@ abbrev-alias -c rmvs="rm .vimsessions/*"
 abbrev-alias -c ta="tig --all"
 abbrev-alias -c tn="tmux new-session -A -s"
 abbrev-alias -c v="nvim"
+abbrev-alias -c rafnew="cd \$(raf new)"
 
 if type "exa" > /dev/null 2>&1; then
     abbrev-alias -c j="exa -a --icons --group-directories-first --long --time-style=long-iso"
