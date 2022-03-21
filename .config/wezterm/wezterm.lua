@@ -5,11 +5,19 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     ---@type string
     local current_ps = pane.foreground_process_name
     local current_dir = pane.current_working_dir
-    local rev_ps = current_ps:reverse()
-    local ps_name = rev_ps:sub(1, rev_ps:find("/", 1, true) - 1):reverse()
+    local ps_name = nil
+    if current_ps:find("/", 1, true) ~= nil then
+        local rev_ps = current_ps:reverse()
+        ps_name = rev_ps:sub(1, rev_ps:find("/", 1, true) - 1):reverse()
+    end
     local rev_dir = current_dir:reverse()
     local dir_name = rev_dir:sub(1, rev_dir:find("/", 1, true) - 1):reverse()
-    local tab_title = ([[[%s] %s]]):format(ps_name, dir_name)
+    local tab_title
+    if ps_name == nil then
+        tab_title = ([[@ %s/]]):format(dir_name)
+    else
+        tab_title = ([[%s @ %s/]]):format(ps_name, dir_name)
+    end
 
     if tab.is_active then
         return {
@@ -21,7 +29,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 end)
 
 wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
-    local scrollback = pane:get_lines_as_text(10000)
+    local scrollback = pane:get_logical_lines_as_text(10000)
     local name = os.tmpname()
     local f = io.open(name, "w+")
     f:write(scrollback)
@@ -40,31 +48,53 @@ wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
     os.remove(name)
 end)
 
+-- color theme
+local scheme = wezterm.get_builtin_color_schemes()["Gruvbox Dark"]
+scheme.compose_cursor = "gray"
+
 return {
     -- font config
     -- /Users/monaqa/Library/Fonts/Hack Regular Nerd Font Complete.ttf, CoreText
-    font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
+    -- font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
+    font = wezterm.font_with_fallback({
+        {family="Hack Nerd Font", weight="Regular", stretch="Normal", italic=false},
+        {family="YuGothic", weight="Regular", stretch="Normal"},
+        -- {family="Noto Sans Mono CJK JP", weight="Regular", stretch="Normal"},
+    }),
     font_size = 11.0,
-    use_ime = true, -- wezは日本人じゃないのでこれがないとIME動かない
+    use_ime = true,
 
-    color_scheme = "Gruvbox Dark", -- 自分の好きなテーマ探す https://wezfurlong.org/wezterm/colorschemes/index.html
+    -- colors
+    color_schemes = {
+        ["Gruvbox-monaqa-oriented"] = scheme,
+    },
+    color_scheme = "Gruvbox-monaqa-oriented",
 
     -- tab
-    window_frame = {
-        font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
-        font_size = 10.0,
-    },
+    -- window_decolations = "TITLE" | "RESIZE",
     hide_tab_bar_if_only_one_tab = false,
     -- use_fancy_tab_bar = false,
-    tab_max_width = 20,
-    -- send_composed_key_when_left_alt_is_pressed=true,
-    -- send_composed_key_when_right_alt_is_pressed=true,
+    -- tab_max_width = 20,
+    window_frame = {
+        font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
+        font_size = 11.0,
+    },
+    -- tab_bar_at_bottom = true,
+
+    -- window
     adjust_window_size_when_changing_font_size = false,
     window_background_opacity = 0.85,
-    -- text_background_opacity = 0.3,
+    window_padding = {
+        left = "1cell",
+        right = "1cell",
+        -- top = "2.5cell",
+        top = "0.4cell",
+        bottom = "0cell",
+    },
 
     -- key mappings
     -- disable_default_key_bindings = true,
+    send_composed_key_when_left_alt_is_pressed=false,
     leader = { key = "s", mods = "CTRL", timeout_milliseconds=1000 },
     keys = {
         {key="Enter", mods="CMD", action="ToggleFullScreen"},
@@ -84,6 +114,7 @@ return {
         {key = "k", mods="LEADER", action=wezterm.action{ActivatePaneDirection="Up"}},
         {key = "l", mods="LEADER", action=wezterm.action{ActivatePaneDirection="Right"}},
         {key = "s", mods="LEADER", action="ShowTabNavigator"},
+        {key = "d", mods="LEADER", action="ShowDebugOverlay"},
         -- { key = "z", mods="LEADER", action="TogglePaneZoomState"},
     },
 
