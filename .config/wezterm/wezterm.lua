@@ -28,6 +28,16 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     return tab_title
 end)
 
+-- wezterm.on("update-right-status", function(window, pane)
+--     local compose = window:composition_status()
+--     if compose then
+--         compose = "COMPOSING: " .. compose
+--     else
+--         compose = ""
+--     end
+--     window:set_right_status(compose)
+-- end);
+
 wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
     local scrollback = pane:get_logical_lines_as_text(10000)
     local name = os.tmpname()
@@ -91,6 +101,7 @@ return {
         top = "0.4cell",
         bottom = "0cell",
     },
+    -- status_update_interval = 1000,
 
     -- key mappings
     -- disable_default_key_bindings = true,

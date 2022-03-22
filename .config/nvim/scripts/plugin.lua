@@ -75,6 +75,7 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = {'rust', 'lua', 'typescript', 'query', 'toml', 'python', 'bash'},
   highlight = {
       enable = true,
+      disable = {"rust"},
   },
   textobjects = {
     select = {

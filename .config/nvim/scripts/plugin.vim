@@ -81,6 +81,10 @@ function! s:setting_gruvbit() abort
   " nvim-treesitter
   hi! TSParameter ctermfg=14 guifg=#b3d5c8
   hi! TSField     ctermfg=14 guifg=#b3d5c8
+
+  " Rust
+  hi! rustCommentLineDoc   guifg=#968772
+
   " hi TypeBuiltin guifg=#fe8019 guibg=NONE gui=NONE cterm=NONE gui=bold
   " 
   " hi! link TSStrong    NONE
@@ -941,6 +945,25 @@ nnoremap sw <Cmd>BufferClose<CR>
 function! DialConfig()
   packadd dial.nvim
 lua <<EOL
+
+  local augend = require("dial.augend")
+  require("dial.config").augends:register_group{
+    default = {
+      augend.integer.alias.decimal,
+      augend.integer.alias.hex,
+      augend.integer.alias.binary,
+      augend.date.alias["%Y/%m/%d"],
+      augend.date.alias["%Y-%m-%d"],
+      augend.date.alias["%Y年%-m月%-d日(%ja)"],
+      augend.date.alias["%H:%M:%S"],
+      augend.date.alias["%-m/%-d"],
+      augend.constant.alias.ja_weekday,
+      augend.constant.alias.ja_weekday_full,
+      augend.hexcolor.new {case = "lower"},
+      augend.semver.alias.semver,
+    },
+  }
+
   vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
   vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
   vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
@@ -951,7 +974,7 @@ EOL
 endfunction
 if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dial.nvim')
   call DialConfig()
-  echom 'general config of dps-dial.vim is loaded.'
+  echom 'general config of dial.vim is loaded.'
 endif
 
 " §§1 Plugin settings for telescope.nvim
