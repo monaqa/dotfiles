@@ -730,9 +730,12 @@ command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call Coc
 let g:previm_open_cmd = "open -a 'Vivaldi'"
 let g:previm_custom_css_path = "~/.config/nvim/scripts/resource/markdown.css"
 
-" §§1 Plugin settings for rhysd/rust-doc.vim
 
+" §§1 Plugin settings for rhysd/rust-doc.vim
 let g:rust_doc#define_map_K = 0
+
+" §§1 Plugin settings for rust-lang/rust.vim
+let g:rustfmt_autosave = 1
 
 " §§1 Plugin settings for sheerun/vim-polyglot
 
