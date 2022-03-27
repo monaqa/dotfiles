@@ -1,6 +1,24 @@
 local wezterm = require 'wezterm';
 
+-- The filled in variant of the < symbol
+local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
+
+-- The filled in variant of the > symbol
+local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
+
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+    local edge_background = "#3c3836"
+    local background = "#504945"
+    local foreground = "#a89984"
+    if tab.is_active then
+        background = "#665c54"
+        foreground = "#ebdbb2"
+        -- elseif hover then
+        --   background = "#3b3052"
+        --   foreground = "#909090"
+    end
+    local edge_foreground = background
+
     local pane = tab.active_pane
     ---@type string
     local current_ps = pane.foreground_process_name
@@ -13,19 +31,35 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     local rev_dir = current_dir:reverse()
     local dir_name = rev_dir:sub(1, rev_dir:find("/", 1, true) - 1):reverse()
     local tab_title
-    if ps_name == nil then
-        tab_title = ([[@ %s/]]):format(dir_name)
+    if ps_name == nil or ps_name == "fish" then
+        tab_title = ([[%s/]]):format(dir_name)
     else
-        tab_title = ([[%s @ %s/]]):format(ps_name, dir_name)
+        tab_title = ([[(%s)%s/]]):format(ps_name, dir_name)
     end
 
-    if tab.is_active then
-        return {
-            {Background={Color="#575757"}},
-            {Text=tab_title},
-        }
+    local title = wezterm.truncate_right(tab_title, max_width - 2)
+
+    return {
+        {Background={Color=edge_background}},
+        {Foreground={Color=edge_foreground}},
+        {Text=SOLID_LEFT_ARROW},
+        {Background={Color=background}},
+        {Foreground={Color=foreground}},
+        {Text=title},
+        {Background={Color=edge_background}},
+        {Foreground={Color=edge_foreground}},
+        {Text=SOLID_RIGHT_ARROW},
+    }
+end)
+
+wezterm.on("toggle-bg-opacity", function(window, pane)
+    local overrides = window:get_config_overrides() or {}
+    if not overrides.window_background_opacity then
+        overrides.window_background_opacity = 1.0
+    else
+        overrides.window_background_opacity = nil
     end
-    return tab_title
+    window:set_config_overrides(overrides)
 end)
 
 -- wezterm.on("update-right-status", function(window, pane)
@@ -68,11 +102,14 @@ return {
     -- font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
     font = wezterm.font_with_fallback({
         {family="Hack Nerd Font", weight="Regular", stretch="Normal", italic=false},
-        {family="YuGothic", weight="Regular", stretch="Normal"},
-        -- {family="Noto Sans Mono CJK JP", weight="Regular", stretch="Normal"},
+        -- {family="YuGothic", weight="Regular", stretch="Normal"},
+        {family="Noto Sans CJK JP", weight="Regular", stretch="Normal"},
+        -- {family="BIZ UDPGothic", weight="Regular", stretch="Normal"},
+        -- {family="IBM Plex Sans JP", weight="Regular", stretch="Normal"},
     }),
-    font_size = 11.0,
+    font_size = 12.0,
     use_ime = true,
+    freetype_load_flags = "NO_HINTING",
 
     -- colors
     color_schemes = {
@@ -83,8 +120,8 @@ return {
     -- tab
     -- window_decolations = "TITLE" | "RESIZE",
     hide_tab_bar_if_only_one_tab = false,
-    -- use_fancy_tab_bar = false,
-    -- tab_max_width = 20,
+    use_fancy_tab_bar = false,
+    tab_max_width = 20,
     window_frame = {
         font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
         font_size = 11.0,
@@ -98,7 +135,7 @@ return {
         left = "1cell",
         right = "1cell",
         -- top = "2.5cell",
-        top = "0.4cell",
+        top = "0.3cell",
         bottom = "0cell",
     },
     -- status_update_interval = 1000,
@@ -106,27 +143,37 @@ return {
     -- key mappings
     -- disable_default_key_bindings = true,
     send_composed_key_when_left_alt_is_pressed=false,
-    leader = { key = "s", mods = "CTRL", timeout_milliseconds=1000 },
+    -- leader = { key = "s", mods = "CTRL", timeout_milliseconds=1000 },
     keys = {
-        {key="Enter", mods="CMD", action="ToggleFullScreen"},
+        -- {key="Enter", mods="CMD", action="ToggleFullScreen"},
         {key=" ", mods="CMD", action="HideApplication"},
         { key = ";", mods="CMD|SHIFT", action="IncreaseFontSize"},
         { key = "-", mods="CMD|SHIFT", action="ResetFontSize"},
 
-        {key="y", mods="LEADER", action=wezterm.action{EmitEvent="trigger-nvim-with-scrollback"}},
-        {key="n", mods="LEADER", action=wezterm.action{ActivateTabRelative=1}},
-        {key="p", mods="LEADER", action=wezterm.action{ActivateTabRelative=-1}},
-        {key="_", mods="LEADER", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
-        {key="v", mods="LEADER", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
-        {key="q", mods="LEADER", action=wezterm.action{CloseCurrentPane={confirm=false}}},
-        {key="c", mods="LEADER", action=wezterm.action{SpawnCommandInNewTab={cwd = "/Users/monaqa"}}},
-        {key = "h", mods="LEADER", action=wezterm.action{ActivatePaneDirection="Left"}},
-        {key = "j", mods="LEADER", action=wezterm.action{ActivatePaneDirection="Down"}},
-        {key = "k", mods="LEADER", action=wezterm.action{ActivatePaneDirection="Up"}},
-        {key = "l", mods="LEADER", action=wezterm.action{ActivatePaneDirection="Right"}},
-        {key = "s", mods="LEADER", action="ShowTabNavigator"},
-        {key = "d", mods="LEADER", action="ShowDebugOverlay"},
-        -- { key = "z", mods="LEADER", action="TogglePaneZoomState"},
+        -- タブの生成、移動、削除
+        {key = "t", mods="CMD", action=wezterm.action{SpawnCommandInNewTab={cwd = "/Users/monaqa"}}},
+        {key = "t", mods="CMD|SHIFT", action=wezterm.action{ActivateTabRelative=1}},
+        {key = "l", mods="CMD", action=wezterm.action{ActivateTabRelative=1}},
+        {key = "h", mods="CMD", action=wezterm.action{ActivateTabRelative=-1}},
+        {key = "l", mods="CMD|SHIFT", action=wezterm.action{MoveTabRelative=1}},
+        {key = "h", mods="CMD|SHIFT", action=wezterm.action{MoveTabRelative=-1}},
+        {key = "q", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
+        {key = "d", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
+        {key = "s", mods="CMD", action="ShowTabNavigator"},
+
+        -- window の分割、移動
+        {key = "_", mods="ALT", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
+        {key = "v", mods="ALT", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
+        {key = "h", mods="ALT", action=wezterm.action{ActivatePaneDirection="Left"}},
+        {key = "j", mods="ALT", action=wezterm.action{ActivatePaneDirection="Down"}},
+        {key = "k", mods="ALT", action=wezterm.action{ActivatePaneDirection="Up"}},
+        {key = "l", mods="ALT", action=wezterm.action{ActivatePaneDirection="Right"}},
+
+        {key = "y", mods="CMD", action=wezterm.action{EmitEvent="trigger-nvim-with-scrollback"}},
+
+        {key = "u", mods="CMD", action=wezterm.action{EmitEvent="toggle-bg-opacity"}},
+        -- {key = "d", mods="CMD", action="ShowDebugOverlay"},
+        -- { key = "z", mods="CMD", action="TogglePaneZoomState"},
     },
 
 }
