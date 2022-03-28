@@ -6,8 +6,21 @@ local SOLID_LEFT_ARROW = utf8.char(0xe0ba)
 -- The filled in variant of the > symbol
 local SOLID_RIGHT_ARROW = utf8.char(0xe0b8)
 
+local MAX_TAB_WIDTH = 25
+
+---@param dir_name string
+---@return string
+local function stem(dir_name)
+    if dir_name:find("/", 1, true) == nil then
+        return dir_name
+    end
+    local rev_dir = dir_name:reverse()
+    return rev_dir:sub(1, rev_dir:find("/", 1, true) - 1):reverse()
+end
+
 ---@param text string
 ---@param max_len integer
+---@return string
 local function trim_middle(text, max_len)
     if #text <= max_len then
         return text
@@ -17,7 +30,22 @@ local function trim_middle(text, max_len)
     return text:sub(1, len_start) .. "…" .. text:sub(#text - len_end + 1, #text)
 end
 
-local MAX_TAB_WIDTH = 25
+---@param home_dir string
+---@return string{}
+local function path_env(home_dir)
+    return {
+        "/opt/homebrew/bin",
+        "/opt/homebrew/sbin",
+        "/usr/local/bin",
+        "/usr/bin",
+        "/bin",
+        "/usr/sbin",
+        "/sbin",
+        ("%s/.local/bin"):format(home_dir),
+        ("%s/.cargo/bin"):format(home_dir),
+        ("%s/.deno/bin"):format(home_dir),
+    }
+end
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
     local edge_background = "#3c3836"
@@ -33,24 +61,16 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     local edge_foreground = background
 
     local pane = tab.active_pane
-    ---@type string
-    local current_ps = pane.foreground_process_name
-    local current_dir = pane.current_working_dir
-    local ps_name = nil
-    if current_ps:find("/", 1, true) ~= nil then
-        local rev_ps = current_ps:reverse()
-        ps_name = rev_ps:sub(1, rev_ps:find("/", 1, true) - 1):reverse()
-    end
-    local rev_dir = current_dir:reverse()
-    local dir_name = rev_dir:sub(1, rev_dir:find("/", 1, true) - 1):reverse()
+    local current_ps = stem(pane.foreground_process_name)
+    local current_dir = stem(pane.current_working_dir)
 
     local ps_title
-    if ps_name == nil or ps_name == "fish" then
+    if current_ps == nil or current_ps == "fish" then
         ps_title = ""
     else
-        ps_title = ([[(%s)]]):format(trim_middle(ps_name, 8))
+        ps_title = ([[(%s)]]):format(trim_middle(current_ps, 8))
     end
-    local dir_title = trim_middle(dir_name, MAX_TAB_WIDTH - #ps_title)
+    local dir_title = trim_middle(current_dir, MAX_TAB_WIDTH - #ps_title)
 
     return {
         {Background={Color=edge_background}},
@@ -99,7 +119,7 @@ wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
     window:perform_action(
     wezterm.action{
         SpawnCommandInNewTab = {
-            set_environment_variables = { PATH = "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/monaqa/.local/bin:/Users/monaqa/.cargo/bin" },
+            set_environment_variables = { PATH = table.concat(path_env("monaqa"), ":")},
             args = { "nvim", name },
         }
     },
