@@ -1,17 +1,30 @@
 local wezterm = require 'wezterm';
 
 -- The filled in variant of the < symbol
-local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
+local SOLID_LEFT_ARROW = utf8.char(0xe0ba)
 
 -- The filled in variant of the > symbol
-local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
+local SOLID_RIGHT_ARROW = utf8.char(0xe0b8)
+
+---@param text string
+---@param max_len integer
+local function trim_middle(text, max_len)
+    if #text <= max_len then
+        return text
+    end
+    local len_start = max_len // 2
+    local len_end = max_len - len_start - 1
+    return text:sub(1, len_start) .. "…" .. text:sub(#text - len_end + 1, #text)
+end
+
+local MAX_TAB_WIDTH = 25
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
     local edge_background = "#3c3836"
     local background = "#504945"
-    local foreground = "#a89984"
+    local foreground = "#948570"
     if tab.is_active then
-        background = "#665c54"
+        background = "#7a7068"
         foreground = "#ebdbb2"
         -- elseif hover then
         --   background = "#3b3052"
@@ -30,14 +43,14 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     end
     local rev_dir = current_dir:reverse()
     local dir_name = rev_dir:sub(1, rev_dir:find("/", 1, true) - 1):reverse()
-    local tab_title
-    if ps_name == nil or ps_name == "fish" then
-        tab_title = ([[%s/]]):format(dir_name)
-    else
-        tab_title = ([[(%s)%s/]]):format(ps_name, dir_name)
-    end
 
-    local title = wezterm.truncate_right(tab_title, max_width - 2)
+    local ps_title
+    if ps_name == nil or ps_name == "fish" then
+        ps_title = ""
+    else
+        ps_title = ([[(%s)]]):format(trim_middle(ps_name, 8))
+    end
+    local dir_title = trim_middle(dir_name, MAX_TAB_WIDTH - #ps_title)
 
     return {
         {Background={Color=edge_background}},
@@ -45,7 +58,11 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
         {Text=SOLID_LEFT_ARROW},
         {Background={Color=background}},
         {Foreground={Color=foreground}},
-        {Text=title},
+        {Attribute={Intensity="Normal"}},
+        {Text=ps_title},
+        {Attribute={Intensity="Bold"}},
+        {Text=dir_title},
+        {Attribute={Intensity="Normal"}},
         {Background={Color=edge_background}},
         {Foreground={Color=edge_foreground}},
         {Text=SOLID_RIGHT_ARROW},
@@ -121,7 +138,7 @@ return {
     -- window_decolations = "TITLE" | "RESIZE",
     hide_tab_bar_if_only_one_tab = false,
     use_fancy_tab_bar = false,
-    tab_max_width = 20,
+    tab_max_width = MAX_TAB_WIDTH + 2,
     window_frame = {
         font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
         font_size = 11.0,
