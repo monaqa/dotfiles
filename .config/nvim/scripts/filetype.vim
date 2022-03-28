@@ -69,3 +69,8 @@ augroup vimrc
   autocmd BufRead,BufNewFile *.html inoremap <buffer> </ </<C-x><C-o>
   autocmd BufRead,BufNewFile *.html setlocal shiftwidth=2
 augroup END
+
+" §§1 LICENSE
+augroup vimrc
+  autocmd BufRead,BufNewFile LICENSE setfiletype license
+augroup END

@@ -83,7 +83,7 @@ function! s:setting_gruvbit() abort
   hi! TSField     ctermfg=14 guifg=#b3d5c8
 
   " Rust
-  hi! rustCommentLineDoc   guifg=#968772
+  hi! rustCommentLineDoc   guifg=#a6a182
 
   " hi TypeBuiltin guifg=#fe8019 guibg=NONE gui=NONE cterm=NONE gui=bold
   " 
@@ -944,7 +944,7 @@ nnoremap sw <Cmd>BufferClose<CR>
 "   let g:dps_dial#augends#register#c = [ 'case' ]
 "   nmap gc "c<Plug>(dps-dial-increment)
 " endfunction
-" 
+
 function! DialConfig()
   packadd dial.nvim
 lua <<EOL
@@ -965,6 +965,21 @@ lua <<EOL
       augend.hexcolor.new {case = "lower"},
       augend.semver.alias.semver,
     },
+    markdown = {
+      augend.integer.alias.decimal,
+      augend.integer.alias.hex,
+      augend.integer.alias.binary,
+      augend.date.alias["%Y/%m/%d"],
+      augend.date.alias["%Y-%m-%d"],
+      augend.date.alias["%Y年%-m月%-d日(%ja)"],
+      augend.date.alias["%H:%M:%S"],
+      augend.date.alias["%-m/%-d"],
+      augend.constant.alias.ja_weekday,
+      augend.constant.alias.ja_weekday_full,
+      augend.hexcolor.new {case = "lower"},
+      augend.semver.alias.semver,
+      augend.misc.alias.markdown_header,
+    },
   }
 
   vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
@@ -974,7 +989,18 @@ lua <<EOL
   vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
   vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
 EOL
+
+  augroup vimrc
+    autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-a>",   require("dial.map").inc_normal("markdown"), {noremap = true})
+    autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-x>",   require("dial.map").dec_normal("markdown"), {noremap = true})
+    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-a>",   require("dial.map").inc_visual("markdown"), {noremap = true})
+    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-x>",   require("dial.map").dec_visual("markdown"), {noremap = true})
+    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual("markdown"), {noremap = true})
+    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual("markdown"), {noremap = true})
+  augroup END
+
 endfunction
+
 if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dial.nvim')
   call DialConfig()
   echom 'general config of dial.vim is loaded.'
