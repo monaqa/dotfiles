@@ -211,9 +211,9 @@ function! s:openTerminal()
 endfunction
 
 " §§2 send string to terminal buffer
-nnoremap <Space>t <Cmd>set opfunc=<SID>op_send_terminal<CR>g@
-nnoremap <nowait> <Space>tt <Cmd>set opfunc=<SID>op_send_terminal<CR>g@_
-vnoremap <Space>t <Cmd>set opfunc=<SID>op_send_terminal<CR>g@
+nnoremap S <Cmd>set opfunc=<SID>op_send_terminal<CR>g@
+nnoremap <nowait> SS <Cmd>set opfunc=<SID>op_send_terminal<CR>g@_
+vnoremap S <Cmd>set opfunc=<SID>op_send_terminal<CR>g@
 
 function! s:op_send_terminal(type)
   let sel_save = &selection
@@ -244,6 +244,51 @@ function! s:reformat_cmdstring(str)
     let s = s .. "\n"
   endif
   return s
+endfunction
+
+" §§2 send string to Wezterm
+
+let g:wezterm_bracketed_pate_mode = 1
+command! WeztermNewPane let g:wezterm_terminal_pane_id = system("wezterm cli split-pane --horizontal")
+command! WeztermNewWindow let g:wezterm_terminal_pane_id = system("wezterm cli spawn --new-window --cwd " .. getcwd())
+command! WeztermUnlinkPane unlet g:wezterm_terminal_pane_id
+
+" nnoremap S <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@
+" nnoremap <nowait> SS <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@_
+" nnoremap <silent><nowait> S: <Cmd>call SendWezterm(input("Wezterm>"))<CR>
+" vnoremap S <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@
+
+function! s:op_send_wezterm(type)
+  if get(g:, "wezterm_terminal_pane_id") == 0
+    echoerr "There is no active wezterm pane to send. execute :WeztermNewPane to spawn new pane."
+    return
+  endif
+
+  let sel_save = &selection
+  let &selection = "inclusive"
+  let m_reg = @m
+
+  if a:type == 'line'
+    let visual_range = "'[V']"
+  else
+    let visual_range = "`[v`]"
+  endif
+  exe "normal!" visual_range .. '"my'
+  call SendWezterm(@m)
+endfunction
+
+function! SendWezterm(cmd)
+  let cmd = "wezterm cli send-text --pane-id " .. g:wezterm_terminal_pane_id
+  call system(cmd, s:reformat_cmdstring_bracketed(a:cmd))
+endfunction
+
+function! s:reformat_cmdstring_bracketed(str)
+  let s = trim(a:str)
+  if g:wezterm_bracketed_pate_mode
+    return s .. "\e[201~\n\e[200~"
+  else
+    return s .. "\n"
+  endif
 endfunction
 
 " §§1 input Japanese character
