@@ -99,6 +99,20 @@ wezterm.on("toggle-bg-opacity", function(window, pane)
     window:set_config_overrides(overrides)
 end)
 
+wezterm.on("toggle-mode-screenshare", function(window, pane)
+    local overrides = window:get_config_overrides() or {}
+    if not overrides.font_size then
+        overrides.window_background_opacity = 1.0
+        overrides.font_size = 12.0 * 2
+        overrides.enable_tab_bar = false
+    else
+        overrides.window_background_opacity = nil
+        overrides.font_size = nil
+        overrides.enable_tab_bar = nil
+    end
+    window:set_config_overrides(overrides)
+end)
+
 -- wezterm.on("update-right-status", function(window, pane)
 --     local compose = window:composition_status()
 --     if compose then
@@ -176,13 +190,15 @@ return {
         bottom = "0cell",
     },
     -- status_update_interval = 1000,
+    canonicalize_pasted_newlines = false,
 
     -- key mappings
     -- disable_default_key_bindings = true,
     send_composed_key_when_left_alt_is_pressed=false,
     -- leader = { key = "s", mods = "CTRL", timeout_milliseconds=1000 },
     keys = {
-        -- {key="Enter", mods="CMD", action="ToggleFullScreen"},
+        {key="Enter", mods="CMD", action="ToggleFullScreen"},
+        {key="q", mods="CTRL", action=wezterm.action{SendString="\x11"}},
         {key=" ", mods="CMD", action="HideApplication"},
         { key = ";", mods="CMD|SHIFT", action="IncreaseFontSize"},
         { key = "-", mods="CMD|SHIFT", action="ResetFontSize"},
@@ -209,6 +225,7 @@ return {
         {key = "y", mods="CMD", action=wezterm.action{EmitEvent="trigger-nvim-with-scrollback"}},
 
         {key = "u", mods="CMD", action=wezterm.action{EmitEvent="toggle-bg-opacity"}},
+        {key = "z", mods="CMD", action=wezterm.action{EmitEvent="toggle-mode-screenshare"}},
         -- {key = "d", mods="CMD", action="ShowDebugOverlay"},
         -- { key = "z", mods="CMD", action="TogglePaneZoomState"},
     },

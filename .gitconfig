@@ -30,7 +30,8 @@
 
     swim = "!git branches | sk | awk '{if($1==\"remote\"){print substr($2,match($2,\"/\")+1)}else{print $2}}' | xargs git switch"
 
-    default = !basename "$(git symbolic-ref --short refs/remotes/origin/HEAD)"
+    # master or main
+    mom = !basename "$(git symbolic-ref --short refs/remotes/origin/HEAD)"
 
     vacuum = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|main'|xargs git branch -d; git fetch --prune; };f"
 

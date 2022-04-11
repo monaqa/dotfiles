@@ -293,7 +293,7 @@ nnoremap s_ :<C-u>sp<CR>
 nnoremap s<Bar> :<C-u>vs<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap <silent><expr> ss <SID>isWideWindow('.') ? ':<C-u>vs<CR>' : ':<C-u>sp<CR>'
-nnoremap sq :<C-u>q<CR>
+nnoremap sq :<C-u>close<CR>
 " バッファ間移動
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
