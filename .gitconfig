@@ -1,6 +1,7 @@
 [user]
     email = cmonaqa@gmail.com
     name = monaqa
+    signingkey = 3DA17E3708BBD0FD
 [github]
     user = monaqa
 
@@ -8,6 +9,7 @@
 
 [commit]
     template = /Users/monaqa/.commit_template
+    gpgsign = true
 [core]
     editor = nvim
 [alias]
@@ -46,3 +48,5 @@
 
 [diff]
     algorithm = histogram
+[gpg]
+    program = /opt/homebrew/bin/gpg
