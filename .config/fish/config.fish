@@ -13,6 +13,8 @@ set -x PATH "$HOME/.local/bin" $PATH
 # SATySFi
 export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi
 
+export GPG_TTY=(tty)
+
 # opam configuration
 source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
