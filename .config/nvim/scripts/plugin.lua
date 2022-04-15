@@ -29,8 +29,18 @@ require('lualine').setup {
     theme = 'tomorrow',
     section_separators = {'', ''},
     component_separators = {'', ''},
+    globalstatus = true,
   },
 }
+-- vim.opt.fillchars = {
+--   horiz = '━',
+--   horizup = '┻',
+--   horizdown = '┳',
+--   vert = '┃',
+--   vertleft  = '┫',
+--   vertright = '┣',
+--   verthoriz = '╋',
+-- }
 
 -- §§1 Plugin settings for hlslens
 -- require'hlslens'.setup{

@@ -23,7 +23,7 @@ set matchpairs+=（:）,「:」,『:』,【:】
 
 " 下
 set showcmd
-set laststatus=2
+set laststatus=3
 
 " 左
 set number
