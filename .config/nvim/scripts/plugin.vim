@@ -1123,6 +1123,19 @@ function! s:ddu_filter_my_settings() abort
 endfunction
 
 " §§1 Plugin settings for markdown-preview.nvim
-" let g:mkdp_markdown_css = expand('~/Downloads/markdown.css')
-" let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/markdown.css')
-" let g:mkdp_highlight_css = expand('~/.config/nvim/scripts/resource/markdown.css')
+let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
+let g:mkdp_highlight_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
+let g:mkdp_auto_close = 1
+let g:mkdp_preview_options = {
+    "\ 'mkit': {},
+    "\ 'katex': {},
+    "\ 'uml': {},
+    "\ 'maid': {},
+    \ 'disable_sync_scroll': 1,
+    "\ 'sync_scroll_type': 'middle',
+    "\ 'hide_yaml_meta': 1,
+    "\ 'sequence_diagrams': {},
+    "\ 'flowchart_diagrams': {},
+    "\ 'content_editable': v:false,
+    "\ 'disable_filename': 0
+    \ }
