@@ -52,6 +52,7 @@ function! PackInit() abort
   call minpac#add('xolox/vim-misc')
   call minpac#add('xolox/vim-session')
   call minpac#add('yasukotelin/shirotelin', {'type': 'opt'})
+  call minpac#add('powerman/vim-plugin-AnsiEsc')
 
   " telescope
   call minpac#add('nvim-lua/popup.nvim')

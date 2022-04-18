@@ -376,6 +376,7 @@ augroup rc_gina
   autocmd FileType gina-status nnoremap <buffer> <C-l> <Cmd>e<CR>
 
   autocmd FileType gina-log nmap <buffer><nowait> c <Plug>(gina-changes-between)
+  autocmd FileType gina-log nmap <buffer><nowait> C <Plug>(gina-commit-checkout)
 
   autocmd FileType gina-log nmap <buffer><nowait> } <Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'W')<CR>
   autocmd FileType gina-log nmap <buffer><nowait> { <Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'Wb')<CR>
@@ -1124,7 +1125,7 @@ endfunction
 
 " §§1 Plugin settings for markdown-preview.nvim
 let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
-let g:mkdp_highlight_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
+" let g:mkdp_highlight_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
 let g:mkdp_auto_close = 1
 let g:mkdp_preview_options = {
     "\ 'mkit': {},

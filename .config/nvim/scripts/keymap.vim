@@ -211,6 +211,8 @@ function! s:openTerminal()
 endfunction
 
 " §§2 send string to terminal buffer
+let g:bracketed_paste_mode = 1
+
 nnoremap S <Cmd>set opfunc=<SID>op_send_terminal<CR>g@
 nnoremap <nowait> SS <Cmd>set opfunc=<SID>op_send_terminal<CR>g@_
 vnoremap S <Cmd>set opfunc=<SID>op_send_terminal<CR>g@
@@ -238,12 +240,18 @@ endfunction
 
 function! s:reformat_cmdstring(str)
   " 空行の削除
-  let s = substitute(a:str, '\n\n', '\n', 'g')
-  " （なければ）最後に改行を付ける
-  if s !~# '\n$'
-    let s = s .. "\n"
+  " let s = substitute(a:str, '\n\n', '\n', 'g')
+  " " （なければ）最後に改行を付ける
+  " if s !~# '\n$'
+  "   let s = s .. "\n"
+  " endif
+  " return s
+  let s = trim(a:str)
+  if g:bracketed_paste_mode
+    return "\e[200~" .. s .. "\n\e[201~\n"
+  else
+    return s .. "\n"
   endif
-  return s
 endfunction
 
 " §§2 send string to Wezterm
