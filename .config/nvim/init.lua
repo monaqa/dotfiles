@@ -1,4 +1,4 @@
-vim.cmd ([[
+vim.cmd [[
   set encoding=utf-8
 
   augroup vimrc
@@ -9,10 +9,13 @@ vim.cmd ([[
   " https://wiredool.hatenadiary.org/entry/20120618/1340019962
   filetype off
   filetype plugin indent off
+]]
 
+require("rc.plugin_beforeload")
+require("rc.minpac")
+
+vim.cmd [[
   " load plugins/their settings
-  source ~/.config/nvim/scripts/plugin_beforeload.vim
-  source ~/.config/nvim/scripts/minpac.vim
   source ~/.config/nvim/scripts/plugin.vim
 
   " load other settings
@@ -26,4 +29,4 @@ vim.cmd ([[
 
   filetype plugin indent on
   syntax enable
-]])
+]]
