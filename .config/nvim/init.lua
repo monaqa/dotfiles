@@ -12,7 +12,7 @@ vim.cmd [[
 ]]
 
 require("rc.plugin_beforeload")
-require("rc.minpac")
+require("rc.jetpack")
 
 vim.cmd [[
   " load plugins/their settings
