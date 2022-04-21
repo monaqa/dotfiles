@@ -195,6 +195,7 @@ return {
     -- key mappings
     -- disable_default_key_bindings = true,
     send_composed_key_when_left_alt_is_pressed=false,
+    key_map_preference = "Physical",
     -- leader = { key = "s", mods = "CTRL", timeout_milliseconds=1000 },
     keys = {
         {key="Enter", mods="CMD", action="ToggleFullScreen"},
@@ -220,7 +221,8 @@ return {
 
         -- window の分割、移動
         {key = "_", mods="CMD", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
-        {key = "v", mods="CMD", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
+        -- CMD + | で縦分割
+        {key = "raw:93", mods="CMD|SHIFT", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
         {key = "h", mods="CMD", action=wezterm.action{ActivatePaneDirection="Left"}},
         {key = "j", mods="CMD", action=wezterm.action{ActivatePaneDirection="Down"}},
         {key = "k", mods="CMD", action=wezterm.action{ActivatePaneDirection="Up"}},
