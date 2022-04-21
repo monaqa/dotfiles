@@ -8,6 +8,9 @@ augroup vimrc
   autocmd BufLeave,FocusLost,InsertEnter * setlocal nocursorline
   autocmd BufLeave,FocusLost,InsertEnter * setlocal nocursorcolumn
   autocmd BufLeave,FocusLost,InsertEnter * setlocal norelativenumber
+
+  " syntax
+  autocmd Syntax * syn sync minlines=500 maxlines=1000
 augroup END
 
 " 全角スペース強調
