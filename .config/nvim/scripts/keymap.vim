@@ -256,15 +256,15 @@ endfunction
 
 " §§2 send string to Wezterm
 
-let g:wezterm_bracketed_pate_mode = 1
+let g:wezterm_bracketed_paste_mode = 1
 command! WeztermNewPane let g:wezterm_terminal_pane_id = system("wezterm cli split-pane --horizontal")
 command! WeztermNewWindow let g:wezterm_terminal_pane_id = system("wezterm cli spawn --new-window --cwd " .. getcwd())
 command! WeztermUnlinkPane unlet g:wezterm_terminal_pane_id
 
-" nnoremap S <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@
-" nnoremap <nowait> SS <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@_
-" nnoremap <silent><nowait> S: <Cmd>call SendWezterm(input("Wezterm>"))<CR>
-" vnoremap S <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@
+nnoremap T <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@
+nnoremap <nowait> TT <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@_
+nnoremap <silent><nowait> T: <Cmd>call SendWezterm(input("Wezterm>"))<CR>
+vnoremap T <Cmd>set opfunc=<SID>op_send_wezterm<CR>g@
 
 function! s:op_send_wezterm(type)
   if get(g:, "wezterm_terminal_pane_id") == 0
@@ -292,7 +292,7 @@ endfunction
 
 function! s:reformat_cmdstring_bracketed(str)
   let s = trim(a:str)
-  if g:wezterm_bracketed_pate_mode
+  if g:wezterm_bracketed_paste_mode
     return s .. "\e[201~\n\e[200~"
   else
     return s .. "\n"
