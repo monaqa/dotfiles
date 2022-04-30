@@ -32,8 +32,8 @@ function(use)
     use"mbbill/undotree"
     use"mhinz/vim-signify"
     use{"neoclide/coc.nvim", branch = "release"}
-    use"nvim-lualine/lualine.nvim"
     use"rafcamlet/coc-nvim-lua"
+    use"nvim-lualine/lualine.nvim"
     use"rhysd/rust-doc.vim"
     use"romgrk/barbar.nvim"
     use"thinca/vim-qfreplace"

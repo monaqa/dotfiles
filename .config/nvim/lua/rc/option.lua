@@ -63,11 +63,6 @@ vim.opt.isfname = vim.opt.isfname - "="
 vim.o.backup = false
 vim.o.swapfile = false
 
-vim.api.nvim_create_autocmd("StdinReadPost", {
-    group = "vimrc",
-    command = "set nomodified",
-})
-
 vim.o.autoread = true
 vim.o.confirm = true
 vim.o.modeline = true

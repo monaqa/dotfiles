@@ -21,7 +21,7 @@ augroup vimrc
   autocmd VimEnter,WinEnter * match UnicodeSpaces /[\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/
 augroup END
 
-" window/buffer
+" " window/buffer
 augroup vimrc
   autocmd VimResized * exe "normal \<c-w>="
 augroup END
@@ -46,6 +46,7 @@ autocmd vimrc InsertLeave * set nopaste
 
 " Automatically create missing directories
 " thanks to lambdalisue
+
 autocmd vimrc BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 function! s:auto_mkdir(dir, force) abort
   if empty(a:dir) || a:dir =~# '^\w\+://' || isdirectory(a:dir) || a:dir =~# '^suda:'
@@ -56,9 +57,9 @@ function! s:auto_mkdir(dir, force) abort
     call inputsave()
     try
       let result = input(
-            \ printf('"%s" does not exist. Create? [y/N]', a:dir),
-            \ '',
-            \)
+           \ printf('"%s" does not exist. Create? [y/N]', a:dir),
+           \ '',
+           \)
       if empty(result)
         echohl WarningMsg
         echo 'Canceled'
@@ -101,8 +102,8 @@ cnoremap <C-c> <C-f>
 
 " 特定の文字を入力したら自動でコマンドラインウィンドウに切り替わるようにする
 " → abbrev が効かなくなるので一旦保留
-" cnoremap <expr> <Space> getcmdtype() ==# ":" ? "\<Space>\<C-f>" : "\<Space>"
-" cnoremap <expr> \ (getcmdtype() ==# "/" <Bar><Bar> getcmdtype() ==# "?") ? "\\<C-f>" : '\'
+cnoremap <expr> <Space> getcmdtype() ==# ":" ? "\<Space>\<C-f>" : "\<Space>"
+cnoremap <expr> \ (getcmdtype() ==# "/" <Bar><Bar> getcmdtype() ==# "?") ? "\\<C-f>" : '\'
 
 augroup vimrc
   autocmd CmdwinEnter * setlocal nonumber
@@ -130,7 +131,7 @@ augroup vimrc
   autocmd CursorMoved,CursorHold * call <SID>visual_match()
 augroup END
 xnoremap <Esc> <Esc><Cmd>call <SID>free_visual_match()<CR>
-" なぜか SELECT モードでは <Cmd> がうまく動かない
+なぜか SELECT モードでは <Cmd> がうまく動かない
 snoremap <silent> <Esc> <Esc>:<C-u>call <SID>free_visual_match()<CR>
 
 function! s:visual_match()

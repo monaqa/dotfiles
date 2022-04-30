@@ -30,8 +30,7 @@ omap im <Plug>(textobj-comment-i)
 
 " §§1 Plugin settings for habamax/vim-gruvbit
 
-augroup vimrc_colorscheme
-  autocmd!
+augroup vimrc
   autocmd ColorScheme gruvbit call s:setting_gruvbit()
   autocmd ColorScheme gruvbox-material call s:setting_gruvbox_material()
 augroup END

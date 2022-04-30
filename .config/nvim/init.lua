@@ -22,13 +22,14 @@ vim.cmd [[
   source ~/.config/nvim/scripts/plugin.vim
 ]]
 
+require("rc.autocmd")
 require("rc.option")
+require("rc.abbr")
 
 vim.cmd [[
   " load other settings
   source ~/.config/nvim/scripts/keymap.vim
   source ~/.config/nvim/scripts/abbr.vim
-  source ~/.config/nvim/scripts/autocmd.vim
   source ~/.config/nvim/scripts/command.vim
 
   source ~/.config/nvim/scripts/filetype.vim
