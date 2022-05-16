@@ -1,18 +1,14 @@
 -- vim:fdm=marker:fmr=§§,■■
 
--- §§1 表示設定
-local function register_autocmd(event)
-    return function (opts)
-        opts["group"] = "vimrc"
-        vim.api.nvim_create_autocmd(event, opts)
-    end
-end
+local util = require("rc.util")
 
-register_autocmd("StdinReadPost"){
+-- §§1 表示設定
+
+util.autocmd_vimrc("StdinReadPost"){
     command = "set nomodified",
 }
 
-register_autocmd{"BufLeave", "FocusLost", "InsertEnter"}{
+util.autocmd_vimrc{"BufLeave", "FocusLost", "InsertEnter"}{
     desc = "temporal attention の設定初期化",
     callback = function ()
         vim.wo.cursorline = false
@@ -21,24 +17,24 @@ register_autocmd{"BufLeave", "FocusLost", "InsertEnter"}{
     end
 }
 
-register_autocmd("Syntax"){
+util.autocmd_vimrc("Syntax"){
     desc = "minlines と maxlines の設定",
     command = "syn sync minlines=500 maxlines=1000"
 }
 
-register_autocmd{"VimEnter", "WinEnter"}{
+util.autocmd_vimrc{"VimEnter", "WinEnter"}{
     desc = "全角スペースハイライト (https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776)",
     command = [[
         highlight link UnicodeSpaces Error
         match UnicodeSpaces /[\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/
     ]]
 }
-register_autocmd("ColorScheme"){
+util.autocmd_vimrc("ColorScheme"){
     desc = "UnicodeSpaces を Error 色にハイライトする",
     command = "highlight link UnicodeSpaces Error"
 }
 
-register_autocmd("VimResized"){
+util.autocmd_vimrc("VimResized"){
     desc = "ウィンドウの画面幅を揃える",
     command = [[normal \<c-w>=]]
 }
@@ -56,13 +52,13 @@ local function eval_vimrc_local()
     end
 end
 
-register_autocmd("VimEnter"){
+util.autocmd_vimrc("VimEnter"){
     callback = eval_vimrc_local
 }
 
 -- §§1 editor の機能
 
-register_autocmd("InsertLeave"){
+util.autocmd_vimrc("InsertLeave"){
     desc = "挿入モードを抜けたら paste モードを off にする",
     callback = function ()
         vim.o.paste = false
@@ -96,39 +92,40 @@ local function auto_mkdir()
     vim.fn.inputrestore()
 end
 
-register_autocmd("BufWritePre"){
+util.autocmd_vimrc("BufWritePre"){
     desc = "保存時に必要があれば自動で mkdir する",
     callback = auto_mkdir
 }
 
-register_autocmd("TextYankPost"){
+util.autocmd_vimrc("TextYankPost"){
     desc = "無名レジスタへの yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）",
     callback = function ()
         local event = vim.v.event
+        vim.pretty_print(event)
         if event.operator == "y" and event.regname == "" then
-            vim.fn.setreg("+", vim.fn.getreg("+", nil, nil))
+            vim.fn.setreg("+", vim.fn.getreg('"', nil, nil))
         end
     end
 }
 
-register_autocmd("VimEnter"){
+util.autocmd_vimrc("VimEnter"){
     desc = "マクロ用のレジスタを消去",
     callback = function ()
         vim.fn.setreg("q", "")
     end
 }
 
-register_autocmd("QuickfixCmdPost"){
+util.autocmd_vimrc("QuickfixCmdPost"){
     pattern = {"l*"},
     command = "lwin"
 }
 
-register_autocmd("QuickfixCmdPost"){
+util.autocmd_vimrc("QuickfixCmdPost"){
     pattern = {"[^l]*"},
     command = "cwin"
 }
 
-register_autocmd("CmdwinEnter"){
+util.autocmd_vimrc("CmdwinEnter"){
     callback = function (meta)
         local buf = meta.buf
         vim.wo.number = false
@@ -174,12 +171,12 @@ local function visual_match()
     end
 end
 
-register_autocmd("WinLeave"){
+util.autocmd_vimrc("WinLeave"){
     desc = "Free instant visual highlight",
     callback = free_visual_match
 }
 
-register_autocmd{"CursorMoved", "CursorHold"}{
+util.autocmd_vimrc{"CursorMoved", "CursorHold"}{
     desc = "Free instant visual highlight",
     callback = visual_match
 }

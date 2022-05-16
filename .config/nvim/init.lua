@@ -1,5 +1,10 @@
 ---@type integer
 local augroup = vim.api.nvim_create_augroup("vimrc", {clear = true})
+---vimrc 専用の属性を格納するテーブル
+_G.vimrc = {
+    -- operator
+    op = {}
+}
 
 local function register_autocmd(event, opts)
     opts["augroup"] = augroup
@@ -25,10 +30,10 @@ vim.cmd [[
 require("rc.autocmd")
 require("rc.option")
 require("rc.abbr")
+require("rc.keymap")
 
 vim.cmd [[
   " load other settings
-  source ~/.config/nvim/scripts/keymap.vim
   source ~/.config/nvim/scripts/abbr.vim
   source ~/.config/nvim/scripts/command.vim
 
