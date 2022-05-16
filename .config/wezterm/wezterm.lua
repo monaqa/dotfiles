@@ -158,7 +158,7 @@ return {
         -- {family="BIZ UDPGothic", weight="Regular", stretch="Normal"},
         -- {family="IBM Plex Sans JP", weight="Regular", stretch="Normal"},
     }),
-    font_size = 12.0,
+    font_size = 16.0,
     use_ime = true,
     freetype_load_flags = "NO_HINTING",
 
@@ -175,7 +175,6 @@ return {
     tab_max_width = MAX_TAB_WIDTH + 2,
     window_frame = {
         font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
-        font_size = 11.0,
     },
     -- tab_bar_at_bottom = true,
 
@@ -218,6 +217,8 @@ return {
         {key = "d", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
         {key = "s", mods="CMD", action="ShowTabNavigator"},
         {key = "w", mods="CMD", action="SpawnWindow"},
+        {key = "Tab", mods="CTRL", action="DisableDefaultAssignment"},
+        {key = "Tab", mods="CTRL|SHIFT", action="DisableDefaultAssignment"},
 
         -- window の分割、移動
         {key = "_", mods="CMD", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},

@@ -47,6 +47,7 @@ function(use)
     use"xolox/vim-session"
     use{"yasukotelin/shirotelin", opt = true}
     use"powerman/vim-plugin-AnsiEsc"
+    use"nvim-neorg/neorg"
 
     -- telescope
     use"nvim-lua/popup.nvim"

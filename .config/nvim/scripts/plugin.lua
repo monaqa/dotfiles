@@ -94,7 +94,7 @@ require'nvim-treesitter.configs'.setup {
   },
   highlight = {
       enable = true,
-      disable = {"rust",},
+      -- disable = {"rust",},
   },
   textobjects = {
     select = {
@@ -185,3 +185,9 @@ require('pretty-fold').setup{
 -- 
 --     }
 -- }
+
+require('neorg').setup {
+    load = {
+        ["core.defaults"] = {}
+    }
+}

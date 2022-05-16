@@ -65,3 +65,21 @@ endsnippet
 snippet cnoremap "vim.keymap.set (normal)" b
 vim.keymap.set("c", "$1", "$2")
 endsnippet
+
+snippet xnoremap "vim.keymap.set (normal)" b
+vim.keymap.set("x", "$1", "$2")
+endsnippet
+
+snippet onoremap "vim.keymap.set (normal)" b
+vim.keymap.set("o", "$1", "$2")
+endsnippet
+
+snippet noremap "vim.keymap.set (normal)" b
+vim.keymap.set({"n", "x", "o"}, "$1", "$2")
+endsnippet
+
+snippet command "Description" b
+vim.api.nvim_create_user_command("$1", function ()
+	$0
+end, {})
+endsnippet
