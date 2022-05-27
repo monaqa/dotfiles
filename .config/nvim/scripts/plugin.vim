@@ -2,7 +2,7 @@
 " Package を load した後に設定するもの．
 
 " Lua の設定の読み込み
-call execute('luafile ' .. expand("<sfile>:p:h") .. '/plugin.lua')
+" call execute('luafile ' .. expand("<sfile>:p:h") .. '/plugin.lua')
 
 " §§1 Plugin settings for cohama/lexima.vim
 

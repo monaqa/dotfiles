@@ -148,6 +148,7 @@ local scheme = wezterm.get_builtin_color_schemes()["Gruvbox Dark"]
 scheme.compose_cursor = "gray"
 
 return {
+    default_prog = {"/opt/homebrew/bin/fish", "-l"},
     -- font config
     -- /Users/monaqa/Library/Fonts/Hack Regular Nerd Font Complete.ttf, CoreText
     -- font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),

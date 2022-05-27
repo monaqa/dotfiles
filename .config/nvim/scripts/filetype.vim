@@ -2,7 +2,7 @@
 
 " §§1 SATySFi
 augroup vimrc
-  autocmd BufRead,BufNewFile *.satyg setfiletype satysfi
+  " autocmd BufRead,BufNewFile *.satyg setfiletype satysfi
   autocmd BufRead,BufNewFile Satyristes setfiletype lisp
   autocmd BufRead,BufNewFile *.saty nnoremap <buffer> @o :!open %:r.pdf<CR>
   autocmd BufRead,BufNewFile *.saty nnoremap <buffer> @q :!satysfi %<CR>
@@ -73,4 +73,9 @@ augroup END
 " §§1 LICENSE
 augroup vimrc
   autocmd BufRead,BufNewFile LICENSE setfiletype license
+augroup END
+
+" §§1 .init.lua.local
+augroup vimrc
+  autocmd BufRead,BufNewFile .init.lua.local setfiletype lua
 augroup END

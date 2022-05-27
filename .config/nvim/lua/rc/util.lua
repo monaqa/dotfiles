@@ -7,6 +7,19 @@ function M.trim(text)
     return text:gsub("^%s*(.-)%s*$", "%1")
 end
 
+---ある要素を n 回繰り返した array を返す。
+---@generic T
+---@param x T
+---@param n integer
+---@return array<T>
+function M.rep_elem(x, n)
+    local tbl = {}
+    for _ = 1, n, 1 do
+        table.insert(tbl, x)
+    end
+    return tbl
+end
+
 function M.autocmd_vimrc(event)
     return function (opts)
         opts["group"] = "vimrc"
@@ -44,6 +57,7 @@ end
 ---@param condition boolean
 ---@param true_clause T
 ---@param false_clause T
+---@return T
 function M.ifexpr(condition, true_clause, false_clause)
     if condition then
         return true_clause

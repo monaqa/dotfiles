@@ -19,8 +19,7 @@ vim.cmd [[
   filetype plugin indent off
 ]]
 
-require("rc.plugin_beforeload")
-require("rc.jetpack")
+require("rc.plugin")
 
 -- load plugins/their settings
 vim.cmd [[
@@ -31,6 +30,7 @@ require("rc.autocmd")
 require("rc.option")
 require("rc.abbr")
 require("rc.keymap")
+require("rc.command")
 
 vim.cmd [[
   " load other settings

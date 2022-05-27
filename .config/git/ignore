@@ -6,6 +6,7 @@ Icon
 .vim/
 .vimsessions/
 .vimrc.local
+.init.lua.local
 
 .mypy_cache/
 

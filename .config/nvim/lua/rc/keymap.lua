@@ -160,7 +160,8 @@ local function terminal_init()
     vim.wo.foldcolumn = "0"
 end
 util.autocmd_vimrc("TermOpen"){
-    callback = terminal_init
+    callback = terminal_init,
+    -- buffer = true
 }
 
 local function open_terminal()
@@ -362,9 +363,11 @@ vim.keymap.set("n", "-", "<C-^>")
 
 vim.keymap.set("n", "srb", "<Nop>", {nowait = true})
 
+-- §§1 operator/text editing
+
 -- どうせ空行1行なんて put するようなもんじゃないし、空行で上書きされるの嫌よね
 vim.keymap.set("n", "dd", function ()
-    if vim.v.count1 == 1 and vim.v.register == [["]] and vim.fn.getline(".", nil) == "" then
+    if vim.v.count1 == 1 and vim.v.register == [["]] and vim.fn.getline(".") == "" then
         return [["_dd]]
     else
         return "dd"
@@ -395,10 +398,49 @@ vim.keymap.set("x", "p", visual_replace('"'), {})
 
 vim.keymap.set("n", "R", "gR", {})
 
-vim.keymap.set("n", "j", function () if vim.v.count == 0 then return "gj" else return "j" end end, {expr = true})
-vim.keymap.set("n", "k", function () if vim.v.count == 0 then return "gk" else return "k" end end, {expr = true})
-vim.keymap.set("x", "j", function () if vim.v.count == 0 and vim.fn.mode(0) == "v" then return "gj" else return "j" end end, {expr = true})
-vim.keymap.set("x", "k", function () if vim.v.count == 0 and vim.fn.mode(0) == "v" then return "gk" else return "k" end end, {expr = true})
+vim.keymap.set("n", "<Space><CR>", "a<CR><Esc>")
+
+-- 改行だけを入力する dot-repeatable なマッピング
+local function append_new_lines(offset_line)
+    return require("peridot").repeatable_edit(function (ctx)
+        local curpos = vim.fn.line(".")
+        local pos_line = curpos + offset_line
+        local n_lines = ctx.count1
+        local lines = util.rep_elem("", n_lines)
+        vim.fn.append(pos_line, lines)
+    end)
+end
+vim.keymap.set("n", "<Space>o", append_new_lines(0), {expr = true})
+vim.keymap.set("n", "<Space>O", append_new_lines(-1), {expr = true})
+
+local function increment_char(forward)
+    return require("peridot").repeatable_edit(function(ctx)
+        local direction = util.ifexpr(forward, 1, -1)
+        vim.cmd[[normal! v"my]]
+        local char = vim.fn.getreg("m", nil, nil)
+        local num = vim.fn.char2nr(char)
+        vim.fn.setreg("m", vim.fn.nr2char(num + direction * ctx.count1))
+        vim.cmd[[normal! gv"mp]]
+    end)
+end
+vim.keymap.set("n", "<Space>a", increment_char(1), {expr = true})
+vim.keymap.set("n", "<Space>x", increment_char(-1), {expr = true})
+
+-- local function increment_char(direction)
+--     return function()
+--         vim.cmd[[normal! v"my]]
+--         local char = vim.fn.getreg("m", nil, nil)
+--         local num = vim.fn.char2nr(char)
+--         vim.fn.setreg("m", vim.fn.nr2char(num + direction * vim.v.count1))
+--         vim.cmd[[normal! gv"mp]]
+--     end
+-- end
+-- vim.keymap.set("n", "<Space>a", increment_char(1))
+-- vim.keymap.set("n", "<Space>x", increment_char(-1))
+
+-- §§1 motion/text object
+
+-- §§2 charwise motion
 
 vim.keymap.set("i", "<C-b>", "<C-g>U<Left>")
 vim.keymap.set("i", "<C-f>", "<C-g>U<Right>")
@@ -406,9 +448,9 @@ vim.keymap.set("i", "<C-Space>", "<Space>")
 
 vim.keymap.set("i", "<C-Space>", "<Space>")
 
--- smart home
+-- smart home/end
 vim.keymap.set( {"n", "x"} , "<Space>h", function ()
-    local str_before_cursor = vim.fn.strpart(vim.fn.getline(".", nil)[1], 0, vim.fn.col(".") - 1)
+    local str_before_cursor = vim.fn.strpart(vim.fn.getline("."), 0, vim.fn.col(".") - 1)
     local move_cmd
     -- カーソル前がインデントしかないかどうかでコマンドを変える
     if vim.regex([[^\s*$]]):match_str(str_before_cursor) then
@@ -473,7 +515,25 @@ vim.keymap.set({"x", "o"}, [[m']], [[a']])
 vim.keymap.set({"x", "o"}, [[m"]], [[a"]])
 vim.keymap.set({"x", "o"}, [[m`]], [[a`]])
 
--- §§2. Vertical WORD (vWORD) 単位での移動
+-- Command mode mapping
+
+vim.keymap.set("c", "<C-a>", "<Home>")
+vim.keymap.set("c", "<C-b>", "<Left>")
+vim.keymap.set("c", "<C-f>", "<Right>")
+vim.keymap.set("c", "<C-p>", "<Up>")
+vim.keymap.set("c", "<C-n>", "<Down>")
+vim.keymap.set("c", "<Up>", "<C-p>")
+vim.keymap.set("c", "<Down>", "<C-n>")
+
+
+-- §§2 linewise motion
+
+vim.keymap.set("n", "j", function () if vim.v.count == 0 then return "gj" else return "j" end end, {expr = true})
+vim.keymap.set("n", "k", function () if vim.v.count == 0 then return "gk" else return "k" end end, {expr = true})
+vim.keymap.set("x", "j", function () if vim.v.count == 0 and vim.fn.mode(0) == "v" then return "gj" else return "j" end end, {expr = true})
+vim.keymap.set("x", "k", function () if vim.v.count == 0 and vim.fn.mode(0) == "v" then return "gk" else return "k" end end, {expr = true})
+
+-- Vertical WORD (vWORD) 単位での移動
 _G.vimrc.par_motion_continuous = false
 util.autocmd_vimrc("CursorMoved"){
     callback = function ()
@@ -499,17 +559,66 @@ vim.keymap.set({"n", "x", "o"}, "<C-k>",
     .. util.cmdcr"lua _G.vimrc.par_motion_continuous = true"
 )
 
--- §§2. Command mode mapping
+-- vertical f motion
+local vertical_f_char
+local vertical_f_pattern
 
-vim.keymap.set("c", "<C-a>", "<Home>")
-vim.keymap.set("c", "<C-b>", "<Left>")
-vim.keymap.set("c", "<C-f>", "<Right>")
-vim.keymap.set("c", "<C-p>", "<Up>")
-vim.keymap.set("c", "<C-n>", "<Down>")
-vim.keymap.set("c", "<Up>", "<C-p>")
-vim.keymap.set("c", "<Down>", "<C-n>")
+local function vertical_f(ctx, forward)
+    local pattern
+    if forward then
+        pattern = [[^\%>.l\s*\zs]]
+    else
+        pattern = [[^\%<.l\s*\zs]]
+    end
 
--- §§1. Macros
+    local visual_match_id = vim.fn.matchadd("VisualBlue", pattern .. ".")
+    vim.wo.cursorline = true
+    vim.cmd"redraw"
+    local char
+    if ctx.repeated then
+        char = vertical_f_char
+    else
+        char = vim.fn.nr2char(vim.fn.getchar())
+        vertical_f_char = char
+    end
+    vertical_f_pattern = pattern .. vim.fn.escape(char, [[\/]])
+    vim.fn.matchdelete(visual_match_id)
+    vim.wo.cursorline = false
+    local flag = "W"
+    if not forward then
+        flag = flag .. "b"
+    end
+    for _ = 1, ctx.count1, 1 do
+        vim.fn.search(vertical_f_pattern, flag)
+    end
+end
+
+local function get_initial_ctx()
+    return {
+        repeated = false,
+        count = vim.v.count,
+        count1 = vim.v.count1,
+        set_count = vim.v.count == vim.v.count1,
+    }
+end
+
+vim.keymap.set({"n", "x"}, "<Space>f", function() vertical_f(get_initial_ctx(), true) end)
+vim.keymap.set(
+    "o", "<Space>f",
+    require("peridot").repeatable_textobj(function(ctx) vertical_f(ctx, true) end),
+    {expr = true}
+)
+
+vim.keymap.set({"n", "x"}, "<Space>F", function() vertical_f(get_initial_ctx(), false) end)
+vim.keymap.set(
+    "o", "<Space>F",
+    require("peridot").repeatable_textobj(function(ctx) vertical_f(ctx, false) end),
+    {expr = true}
+)
+
+-- vim.keymap.set({"n", "x"}, "<Space>F", vertical_f(false), {expr = true})
+
+-- §§1 Macros
 
 -- マクロの記録レジスタは "aq のような一般のレジスタを指定するのと同様の
 -- インターフェースで変更するようにし、デフォルトの記録レジスタを q とする。
@@ -587,34 +696,6 @@ vim.keymap.set({"n", "x", "o"}, "<Space>", "<Nop>")
 vim.keymap.set({"n", "x", "o"}, "<CR>", "<Nop>")
 
 -- §§1 その他
--- 改行だけを入力する dot-repeatable なマッピング
-vim.cmd[[
-nnoremap <expr> <Space>o peridot#repeatable_function("VimrcAppendNewLines", [0])
-nnoremap <expr> <Space>O peridot#repeatable_function("VimrcAppendNewLines", [-1])
-
-function! VimrcAppendNewLines(ctx, offset_line)
-  let curpos = line(".")
-  let pos_line = curpos + a:offset_line
-  let n_lines = a:ctx['set_count'] ? a:ctx['count'] : 1
-  let lines = repeat([""], n_lines)
-  call append(pos_line, lines)
-endfunction
-]]
-
-vim.keymap.set("n", "<Space><CR>", "a<CR><Esc>")
-
-local function increment_char(direction)
-    return function()
-        vim.cmd[[normal! v"my]]
-        local char = vim.fn.getreg("m", nil, nil)
-        local num = vim.fn.char2nr(char)
-        vim.fn.setreg("m", vim.fn.nr2char(num + direction * vim.v.count1))
-        vim.cmd[[normal! gv"mp]]
-    end
-end
-vim.keymap.set("n", "<Space>a", increment_char(1))
-vim.keymap.set("n", "<Space>x", increment_char(-1))
-
 vim.keymap.set("n", "<C-h>", "g;")
 vim.keymap.set("n", "<C-g>", "g,")
 
