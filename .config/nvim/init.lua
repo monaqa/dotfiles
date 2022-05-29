@@ -31,13 +31,11 @@ require("rc.option")
 require("rc.abbr")
 require("rc.keymap")
 require("rc.command")
+require("rc.filetype")
 
 vim.cmd [[
   " load other settings
   source ~/.config/nvim/scripts/abbr.vim
-  source ~/.config/nvim/scripts/command.vim
-
-  source ~/.config/nvim/scripts/filetype.vim
 
   filetype plugin indent on
   syntax enable

@@ -6,19 +6,19 @@
 
 " §§1 Plugin settings for cohama/lexima.vim
 
-let g:lexima_no_default_rules = 1
-call lexima#set_default_rules()
-call lexima#add_rule({'at': '\%#[-0-9a-zA-Z_]', 'char': '{', 'input': '{'})
-call lexima#add_rule({'at': '\%#\\', 'char': '{', 'input': '{', 'filetype': ['latex', 'tex']})
-call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': ['latex', 'tex']})
-call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': ['latex', 'tex']})
-call lexima#add_rule({'char': '$', 'input': '${', 'input_after': '}', 'filetype': ['satysfi']})
-call lexima#add_rule({'char': '$', 'at': '\\\%#', 'leave': 1, 'filetype': ['satysfi']})
-call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': ['latex', 'tex']})
-call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex', 'satysfi']})
-call lexima#add_rule({'char': '``', 'input_after': '``', 'filetype': ['rst']})
-
-inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
+" let g:lexima_no_default_rules = 1
+" call lexima#set_default_rules()
+" call lexima#add_rule({'at': '\%#[-0-9a-zA-Z_]', 'char': '{', 'input': '{'})
+" call lexima#add_rule({'at': '\%#\\', 'char': '{', 'input': '{', 'filetype': ['latex', 'tex']})
+" call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': ['latex', 'tex']})
+" call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': ['latex', 'tex']})
+" call lexima#add_rule({'char': '$', 'input': '${', 'input_after': '}', 'filetype': ['satysfi']})
+" call lexima#add_rule({'char': '$', 'at': '\\\%#', 'leave': 1, 'filetype': ['satysfi']})
+" call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': ['latex', 'tex']})
+" call lexima#add_rule({'char': "'", 'input':  "'", 'filetype': ['latex', 'tex', 'satysfi']})
+" call lexima#add_rule({'char': '``', 'input_after': '``', 'filetype': ['rst']})
+" 
+" inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
 
 " §§1 Plugin settings for glts/vim-textobj-comment
 
@@ -443,169 +443,169 @@ let g:textobj_functioncall_patterns = [
 
 " §§1 Plugin settings for machakann/vim-sandwich
 
-call operator#sandwich#set('all', 'all', 'highlight', 0)
+" call operator#sandwich#set('all', 'all', 'highlight', 0)
 
 " 従来のキーマッピングを保存
-nmap ds <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
-nmap dsb <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
-nmap cs <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
-nmap csb <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
+" nmap ds <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
+" nmap dsb <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
+" nmap cs <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)
+" nmap csb <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
 
-let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+" let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 " runtime macros/sandwich/keymap/surround.vim
 
 " 開きカッコを指定したときの挙動を自分好みに
-let g:sandwich#recipes += [
-\   {'buns': [' {', '} '], 'nesting': 1, 'match_syntax': 1,
-\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
-\
-\   {'buns': [' [', '] '], 'nesting': 1, 'match_syntax': 1,
-\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
-\
-\   {'buns': [' (', ') '], 'nesting': 1, 'match_syntax': 1,
-\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
-\
-\   {'buns': ['\s*{', '}\s*'],   'nesting': 1, 'regex': 1,
-\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-\    'action': ['delete'], 'input': ['{']},
-\
-\   {'buns': ['\s*\[', '\]\s*'], 'nesting': 1, 'regex': 1,
-\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-\    'action': ['delete'], 'input': ['[']},
-\
-\   {'buns': ['\s*(', ')\s*'],   'nesting': 1, 'regex': 1,
-\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-\    'action': ['delete'], 'input': ['(']},
-\ ]
+" let g:sandwich#recipes += [
+"\   {'buns': [' {', '} '], 'nesting': 1, 'match_syntax': 1,
+"\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
+"\
+"\   {'buns': [' [', '] '], 'nesting': 1, 'match_syntax': 1,
+"\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
+"\
+"\   {'buns': [' (', ') '], 'nesting': 1, 'match_syntax': 1,
+"\    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
+"\
+"\   {'buns': ['\s*{', '}\s*'],   'nesting': 1, 'regex': 1,
+"\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+"\    'action': ['delete'], 'input': ['{']},
+"\
+"\   {'buns': ['\s*\[', '\]\s*'], 'nesting': 1, 'regex': 1,
+"\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+"\    'action': ['delete'], 'input': ['[']},
+"\
+"\   {'buns': ['\s*(', ')\s*'],   'nesting': 1, 'regex': 1,
+"\    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+"\    'action': ['delete'], 'input': ['(']},
+"\ ]
+" 
+" " 日本語のカッコ
+" let g:sandwich#recipes += [
+"\   {'buns': ['（', '）'], 'nesting': 1, 'input': ['j(', 'j)', 'jp']},
+"\   {'buns': ['「', '」'], 'nesting': 1, 'input': ['j[', 'j]', 'jb']},
+"\   {'buns': ['『', '』'], 'nesting': 1, 'input': ['j{', 'j}', 'jB']},
+"\   {'buns': ['【', '】'], 'nesting': 1, 'input': ['j<', 'j>', 'jk']},
+"\   {'buns': ['“', '”'], 'nesting': 1, 'input': ['j"' ]},
+"\   {'buns': ['‘', '’'], 'nesting': 1, 'input': ["j'" ]},
+"\ ]
+" 
+" " Escaped parens
+" let g:sandwich#recipes += [
+"\   {'buns': ['\{', '\}'], 'nesting': 1, 'input': ['\{', '\}']},
+"\   {'buns': ['\(', '\)'], 'nesting': 1, 'input': ['\(', '\)']},
+"\   {'buns': ['\[', '\]'], 'nesting': 1, 'input': ['\[', '\]']},
+"\ ]
+" 
+" " リンク記法
+" let g:sandwich#recipes += [
+"\   {'buns': ['`', ' <>`_'], 'nesting': 0, 'input': ['l'], 'filetype': ['rst']},
+"\   {'buns': ['` <', '>`_'], 'nesting': 0, 'input': ['L'], 'filetype': ['rst']},
+"\   {'buns': ['[', ']()'], 'nesting': 0, 'input': ['l'], 'filetype': ['markdown']},
+"\   {'buns': ['[](', ')'], 'nesting': 0, 'input': ['L'], 'filetype': ['markdown']},
+"\ ]
+" 
+" " Markdown のコードブロック
+" let g:sandwich#recipes += [
+"\ {
+"\   'filetype' : ['markdown'],
+"\   'buns'     : ['SandwichMarkdownCodeSnippet()', '"```"' ],
+"\   'expr'     : 1,
+"\   'input'    : ['C', ],
+"\   'kind'     : ['add'],
+"\   'linewise' : 1,
+"\   'command'  : ["']s/^\\s*//"],
+"\ },
+"\ {
+"\   'filetype' : ['markdown'],
+"\   'buns'     : ['```', '```' ],
+"\   'input'    : ['c', ],
+"\   'kind'     : ['add'],
+"\   'linewise' : 1,
+"\   'command'  : ["']s/^\\s*//"],
+"\ },
+"\ ]
+" 
+" function! SandwichMarkdownCodeSnippet() abort
+"   let lang_name = input('language: ', '')
+"   return '```' .. lang_name
+" endfunction
+" 
+" " generics
+" let g:textobj_functioncall_generics_patterns = [
+"\ {
+"\   'header' : '\<\%(\h\k*\.\)*\h\k*',
+"\   'bra'    : '<',
+"\   'ket'    : '>',
+"\   'footer' : '',
+"\ },
+"\ ]
+" 
+" onoremap <silent> <Plug>(textobj-functioncall-generics-i) :<C-u>call textobj#functioncall#ip('o', g:textobj_functioncall_generics_patterns)<CR>
+" xnoremap <silent> <Plug>(textobj-functioncall-generics-i) :<C-u>call textobj#functioncall#ip('x', g:textobj_functioncall_generics_patterns)<CR>
+" onoremap <silent> <Plug>(textobj-functioncall-generics-a) :<C-u>call textobj#functioncall#i('o', g:textobj_functioncall_generics_patterns)<CR>
+" xnoremap <silent> <Plug>(textobj-functioncall-generics-a) :<C-u>call textobj#functioncall#i('x', g:textobj_functioncall_generics_patterns)<CR>
+" 
+" let g:sandwich#recipes += [
+"\ {
+"\   'buns': ['SandwichGenericsName()', '">"'],
+"\   'expr': 1,
+"\   'cursor': 'inner_tail',
+"\   'kind': ['add', 'replace'],
+"\   'action': ['add'],
+"\   'input': ['g']
+"\ },
+"\ {
+"\   'external': ['i<', "\<Plug>(textobj-functioncall-generics-a)"],
+"\   'noremap': 0,
+"\   'kind': ['delete', 'replace', 'query'],
+"\   'input': ['g']
+"\ },
+"\ ]
+" 
+" function! SandwichGenericsName() abort
+"   let genericsname = input('generics name: ', '')
+"   if genericsname ==# ''
+"     throw 'OperatorSandwichCancel'
+"   endif
+"   return genericsname . '<'
+" endfunction
 
-" 日本語のカッコ
-let g:sandwich#recipes += [
-\   {'buns': ['（', '）'], 'nesting': 1, 'input': ['j(', 'j)', 'jp']},
-\   {'buns': ['「', '」'], 'nesting': 1, 'input': ['j[', 'j]', 'jb']},
-\   {'buns': ['『', '』'], 'nesting': 1, 'input': ['j{', 'j}', 'jB']},
-\   {'buns': ['【', '】'], 'nesting': 1, 'input': ['j<', 'j>', 'jk']},
-\   {'buns': ['“', '”'], 'nesting': 1, 'input': ['j"' ]},
-\   {'buns': ['‘', '’'], 'nesting': 1, 'input': ["j'" ]},
-\ ]
-
-" Escaped parens
-let g:sandwich#recipes += [
-\   {'buns': ['\{', '\}'], 'nesting': 1, 'input': ['\{', '\}']},
-\   {'buns': ['\(', '\)'], 'nesting': 1, 'input': ['\(', '\)']},
-\   {'buns': ['\[', '\]'], 'nesting': 1, 'input': ['\[', '\]']},
-\ ]
-
-" リンク記法
-let g:sandwich#recipes += [
-\   {'buns': ['`', ' <>`_'], 'nesting': 0, 'input': ['l'], 'filetype': ['rst']},
-\   {'buns': ['` <', '>`_'], 'nesting': 0, 'input': ['L'], 'filetype': ['rst']},
-\   {'buns': ['[', ']()'], 'nesting': 0, 'input': ['l'], 'filetype': ['markdown']},
-\   {'buns': ['[](', ')'], 'nesting': 0, 'input': ['L'], 'filetype': ['markdown']},
-\ ]
-
-" Markdown のコードブロック
-let g:sandwich#recipes += [
-\ {
-\   'filetype' : ['markdown'],
-\   'buns'     : ['SandwichMarkdownCodeSnippet()', '"```"' ],
-\   'expr'     : 1,
-\   'input'    : ['C', ],
-\   'kind'     : ['add'],
-\   'linewise' : 1,
-\   'command'  : ["']s/^\\s*//"],
-\ },
-\ {
-\   'filetype' : ['markdown'],
-\   'buns'     : ['```', '```' ],
-\   'input'    : ['c', ],
-\   'kind'     : ['add'],
-\   'linewise' : 1,
-\   'command'  : ["']s/^\\s*//"],
-\ },
-\ ]
-
-function! SandwichMarkdownCodeSnippet() abort
-  let lang_name = input('language: ', '')
-  return '```' .. lang_name
-endfunction
-
-" generics
-let g:textobj_functioncall_generics_patterns = [
-\ {
-\   'header' : '\<\%(\h\k*\.\)*\h\k*',
-\   'bra'    : '<',
-\   'ket'    : '>',
-\   'footer' : '',
-\ },
-\ ]
-
-onoremap <silent> <Plug>(textobj-functioncall-generics-i) :<C-u>call textobj#functioncall#ip('o', g:textobj_functioncall_generics_patterns)<CR>
-xnoremap <silent> <Plug>(textobj-functioncall-generics-i) :<C-u>call textobj#functioncall#ip('x', g:textobj_functioncall_generics_patterns)<CR>
-onoremap <silent> <Plug>(textobj-functioncall-generics-a) :<C-u>call textobj#functioncall#i('o', g:textobj_functioncall_generics_patterns)<CR>
-xnoremap <silent> <Plug>(textobj-functioncall-generics-a) :<C-u>call textobj#functioncall#i('x', g:textobj_functioncall_generics_patterns)<CR>
-
-let g:sandwich#recipes += [
-\ {
-\   'buns': ['SandwichGenericsName()', '">"'],
-\   'expr': 1,
-\   'cursor': 'inner_tail',
-\   'kind': ['add', 'replace'],
-\   'action': ['add'],
-\   'input': ['g']
-\ },
-\ {
-\   'external': ['i<', "\<Plug>(textobj-functioncall-generics-a)"],
-\   'noremap': 0,
-\   'kind': ['delete', 'replace', 'query'],
-\   'input': ['g']
-\ },
-\ ]
-
-function! SandwichGenericsName() abort
-  let genericsname = input('generics name: ', '')
-  if genericsname ==# ''
-    throw 'OperatorSandwichCancel'
-  endif
-  return genericsname . '<'
-endfunction
-
-let g:sandwich#recipes += [
-\ {
-\   'buns': ['InlineCommandName()', '"}"'],
-\   'expr': 1,
-\   'cursor': 'inner_tail',
-\   'kind': ['add', 'replace'],
-\   'action': ['add'],
-\   'input': ['c'],
-\   'filetype': ['satysfi']
-\ },
-\ {
-\   'buns': ['BlockCommandName()', '">"'],
-\   'expr': 1,
-\   'linewise' : 1,
-\   'cursor': 'inner_tail',
-\   'kind': ['add', 'replace'],
-\   'action': ['add'],
-\   'input': ['+'],
-\   'filetype': ['satysfi']
-\ },
-\ ]
-
-function! InlineCommandName() abort
-  let cmdname = input('inline-cmd name: ', '')
-  if cmdname ==# ''
-    throw 'OperatorSandwichCancel'
-  endif
-  return '\' . cmdname . '{'
-endfunction
-
-function! BlockCommandName() abort
-  let cmdname = input('block-cmd name: ', '')
-  if cmdname ==# ''
-    throw 'OperatorSandwichCancel'
-  endif
-  return '+' . cmdname . '<'
-endfunction
+" let g:sandwich#recipes += [
+"\ {
+"\   'buns': ['InlineCommandName()', '"}"'],
+"\   'expr': 1,
+"\   'cursor': 'inner_tail',
+"\   'kind': ['add', 'replace'],
+"\   'action': ['add'],
+"\   'input': ['c'],
+"\   'filetype': ['satysfi']
+"\ },
+"\ {
+"\   'buns': ['BlockCommandName()', '">"'],
+"\   'expr': 1,
+"\   'linewise' : 1,
+"\   'cursor': 'inner_tail',
+"\   'kind': ['add', 'replace'],
+"\   'action': ['add'],
+"\   'input': ['+'],
+"\   'filetype': ['satysfi']
+"\ },
+"\ ]
+" 
+" function! InlineCommandName() abort
+"   let cmdname = input('inline-cmd name: ', '')
+"   if cmdname ==# ''
+"     throw 'OperatorSandwichCancel'
+"   endif
+"   return '\' . cmdname . '{'
+" endfunction
+" 
+" function! BlockCommandName() abort
+"   let cmdname = input('block-cmd name: ', '')
+"   if cmdname ==# ''
+"     throw 'OperatorSandwichCancel'
+"   endif
+"   return '+' . cmdname . '<'
+" endfunction
 
 " §§2 between mappings
 omap m <Plug>(textobj-sandwich-literal-query-i)

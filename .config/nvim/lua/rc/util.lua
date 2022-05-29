@@ -11,13 +11,36 @@ end
 ---@generic T
 ---@param x T
 ---@param n integer
----@return array<T>
+---@return T[]
 function M.rep_elem(x, n)
     local tbl = {}
     for _ = 1, n, 1 do
         table.insert(tbl, x)
     end
     return tbl
+end
+
+---複数の array を concat した array を返す。
+---@generic T
+---@param arys T[][]
+---@return T[]
+function M.list_concat(arys)
+    local tbl = {}
+    for _, ary in ipairs(arys) do
+        vim.list_extend(tbl, ary)
+    end
+    return tbl
+end
+
+---各要素を変換する高階関数を返す。
+---@generic T
+---@generic U
+---@param func fun(x: T): U
+---@return fun(xs: T[]): U[]
+function M.map(func)
+    return function (xs)
+        vim.tbl_map(func, xs)
+    end
 end
 
 function M.autocmd_vimrc(event)

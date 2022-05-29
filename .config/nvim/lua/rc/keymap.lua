@@ -375,6 +375,15 @@ vim.keymap.set("n", "dd", function ()
 end, {expr = true})
 
 vim.keymap.set("i", "<C-r><C-r>", [[<C-g>u<C-r>"]], {})
+-- vim.keymap.set({"i"}, "<C-r><C-r>", function ()
+--     vim.pretty_print(vim.fn.pumvisible())
+--     if vim.fn.pumvisible() ~= 0 then
+--         return "<C-e>"
+--     else
+--         return [[<C-g>u<C-r>"]]
+--     end
+-- end, {expr = true})
+
 vim.keymap.set("i", "<C-r><CR>", [[<C-g>u<C-r>0]], {})
 vim.keymap.set("i", "<C-r><Space>", [[<C-g>u<C-r>+]], {})
 vim.keymap.set("c", "<C-r><C-r>", [[<C-r>"]], {})
