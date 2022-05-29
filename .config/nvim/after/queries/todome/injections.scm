@@ -1,0 +1,1 @@
+/Users/monaqa/ghq/github.com/monaqa/tree-sitter-todome/queries/injections.scm

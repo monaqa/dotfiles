@@ -159,7 +159,7 @@ return {
         -- {family="BIZ UDPGothic", weight="Regular", stretch="Normal"},
         -- {family="IBM Plex Sans JP", weight="Regular", stretch="Normal"},
     }),
-    font_size = 16.0,
+    font_size = 14.0,
     use_ime = true,
     freetype_load_flags = "NO_HINTING",
 
