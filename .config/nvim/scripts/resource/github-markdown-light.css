@@ -120,6 +120,7 @@ main {
 .markdown-body samp {
   font-family: monospace,monospace;
   font-size: 1em;
+  color: #383d43;
 }
 
 .markdown-body figure {

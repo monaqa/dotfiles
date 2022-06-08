@@ -33,6 +33,11 @@
       "args": [],
       "filetypes": ["satysfi"]
     },
+    "elmLS": {
+      "command": "elm-language-server",
+      "filetypes": ["elm"],
+      "rootPatterns": ["elm.json"]
+    },
     "satysfi-ls": {
         "command": "satysfi-language-server",
         "args": [],

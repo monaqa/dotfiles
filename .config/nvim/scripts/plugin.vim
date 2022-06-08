@@ -22,11 +22,11 @@
 
 " §§1 Plugin settings for glts/vim-textobj-comment
 
-let g:textobj_comment_no_default_key_mappings = 1
-xmap am <Plug>(textobj-comment-a)
-omap am <Plug>(textobj-comment-a)
-xmap im <Plug>(textobj-comment-i)
-omap im <Plug>(textobj-comment-i)
+" let g:textobj_comment_no_default_key_mappings = 1
+" xmap am <Plug>(textobj-comment-a)
+" omap am <Plug>(textobj-comment-a)
+" xmap im <Plug>(textobj-comment-i)
+" omap im <Plug>(textobj-comment-i)
 
 " §§1 Plugin settings for habamax/vim-gruvbit
 
@@ -196,174 +196,174 @@ nmap <Space>^ <Plug>(altr-forward)
 
 " §§1 Plugin settings for kana/vim-textobj-user
 
-call textobj#user#plugin('line', {
-\   '-': {
-\     'select-a-function': 'CurrentLineA',
-\     'select-a': 'al',
-\     'select-i-function': 'CurrentLineI',
-\     'select-i': 'il',
-\   },
-\ })
+" call textobj#user#plugin('line', {
+"\   '-': {
+"\     'select-a-function': 'CurrentLineA',
+"\     'select-a': 'al',
+"\     'select-i-function': 'CurrentLineI',
+"\     'select-i': 'il',
+"\   },
+"\ })
 
-function! CurrentLineA()
-  normal! 0
-  let head_pos = getpos('.')
-  normal! $
-  let tail_pos = getpos('.')
-  return ['v', head_pos, tail_pos]
-endfunction
+" function! CurrentLineA()
+"   normal! 0
+"   let head_pos = getpos('.')
+"   normal! $
+"   let tail_pos = getpos('.')
+"   return ['v', head_pos, tail_pos]
+" endfunction
+" 
+" function! CurrentLineI()
+"   normal! ^
+"   let head_pos = getpos('.')
+"   normal! g_
+"   let tail_pos = getpos('.')
+"   let non_blank_char_exists_p = getline('.')[head_pos[2] - 1] !~# '\s'
+"   return
+"  \ non_blank_char_exists_p
+"  \ ? ['v', head_pos, tail_pos]
+"  \ : 0
+" endfunction
 
-function! CurrentLineI()
-  normal! ^
-  let head_pos = getpos('.')
-  normal! g_
-  let tail_pos = getpos('.')
-  let non_blank_char_exists_p = getline('.')[head_pos[2] - 1] !~# '\s'
-  return
-  \ non_blank_char_exists_p
-  \ ? ['v', head_pos, tail_pos]
-  \ : 0
-endfunction
+" call textobj#user#plugin('jbraces', {
+"      \   'parens': {
+"      \       'pattern': ['（', '）'],
+"      \       'select-a': 'aj)', 'select-i': 'ij)'
+"      \  },
+"      \   'braces': {
+"      \       'pattern': ['「', '」'],
+"      \       'select-a': 'aj[', 'select-i': 'ij]'
+"      \  },
+"      \  'double-braces': {
+"      \       'pattern': ['『', '』'],
+"      \       'select-a': 'aj{', 'select-i': 'ij}'
+"      \  },
+"      \  'lenticular-bracket': {
+"      \       'pattern': ['【', '】'],
+"      \       'select-a': 'aj<', 'select-i': 'ij>'
+"      \  },
+"      \})
 
-call textobj#user#plugin('jbraces', {
-      \   'parens': {
-      \       'pattern': ['（', '）'],
-      \       'select-a': 'aj)', 'select-i': 'ij)'
-      \  },
-      \   'braces': {
-      \       'pattern': ['「', '」'],
-      \       'select-a': 'aj[', 'select-i': 'ij]'
-      \  },
-      \  'double-braces': {
-      \       'pattern': ['『', '』'],
-      \       'select-a': 'aj{', 'select-i': 'ij}'
-      \  },
-      \  'lenticular-bracket': {
-      \       'pattern': ['【', '】'],
-      \       'select-a': 'aj<', 'select-i': 'ij>'
-      \  },
-      \})
-
-augroup rc_textobj_user
-  autocmd!
-  autocmd filetype tex call textobj#user#plugin('texquote', {
-        \   'signle': {
-        \     'pattern': ['`', "'"],
-        \     'select-a': 'aq', 'select-i': 'iq'
-        \   },
-        \   'double': {
-        \     'pattern': ['``', "''"],
-        \     'select-a': 'aQ', 'select-i': 'iQ'
-        \   },
-        \ })
-  autocmd filetype satysfi call textobj#user#plugin('satyblock', {
-        \   'block': {
-        \     'pattern': ['<%', '>%'],
-        \     'select-a': 'a>', 'select-i': 'i>',
-        \   },
-        \ })
-augroup END
+" augroup rc_textobj_user
+"   autocmd!
+"   autocmd filetype tex call textobj#user#plugin('texquote', {
+"        \   'signle': {
+"        \     'pattern': ['`', "'"],
+"        \     'select-a': 'aq', 'select-i': 'iq'
+"        \   },
+"        \   'double': {
+"        \     'pattern': ['``', "''"],
+"        \     'select-a': 'aQ', 'select-i': 'iQ'
+"        \   },
+"        \ })
+"   autocmd filetype satysfi call textobj#user#plugin('satyblock', {
+"        \   'block': {
+"        \     'pattern': ['<%', '>%'],
+"        \     'select-a': 'a>', 'select-i': 'i>',
+"        \   },
+"        \ })
+" augroup END
 
 " §§1 Plugin settings for lambdalisue/fern.vim
 
-let s:exclude_files = [
-\   '.*\.egg-info',
-\   '.*\.pyc',
-\   '\.DS_Store',
-\   '\.git',
-\   '\.mypy_cache',
-\   '\.pytest_cache',
-\   '\.vim',
-\   '\.vimsessions',
-\   '\.worktree',
-\   '__pycache__',
-\   'sumneko-lua-.*',
-\   'Cargo.lock',
-\   'poetry.lock',
-\ ]
+" let s:exclude_files = [
+"\   '.*\.egg-info',
+"\   '.*\.pyc',
+"\   '\.DS_Store',
+"\   '\.git',
+"\   '\.mypy_cache',
+"\   '\.pytest_cache',
+"\   '\.vim',
+"\   '\.vimsessions',
+"\   '\.worktree',
+"\   '__pycache__',
+"\   'sumneko-lua-.*',
+"\   'Cargo.lock',
+"\   'poetry.lock',
+"\ ]
+" 
+" let g:fern#default_exclude = '^\%(' .. join(s:exclude_files, '\|') .. '\)$'
+" 
+" let g:fern#renderer = 'nerdfont'
+" nnoremap sf <Cmd>Fern . -reveal=%:p<CR>
+" nnoremap sz <Cmd>Fern . -drawer -toggle<CR>
 
-let g:fern#default_exclude = '^\%(' .. join(s:exclude_files, '\|') .. '\)$'
-
-let g:fern#renderer = 'nerdfont'
-nnoremap sf <Cmd>Fern . -reveal=%:p<CR>
-nnoremap sz <Cmd>Fern . -drawer -toggle<CR>
-
-augroup rc_fern
-  autocmd!
-  autocmd FileType fern setlocal nonumber
-  autocmd FileType fern setlocal signcolumn=no
-  autocmd FileType fern setlocal foldcolumn=0
-  autocmd FileType fern call s:fern_settings()
-augroup END
-
-function s:fern_settings()
-  nmap <buffer><expr>
-  \ <Plug>(fern-expand-or-enter)
-  \ fern#smart#drawer(
-  \   "\<Plug>(fern-action-expand)",
-  \   "\<Plug>(fern-action-enter)",
-  \ )
-  nmap <buffer><expr>
-  \ <Plug>(fern-open-or-enter)
-  \ fern#smart#leaf(
-  \   "\<Plug>(fern-action-open)",
-  \   "\<Plug>(fern-action-enter)",
-  \ )
-  nmap <buffer><expr>
-  \ <Plug>(fern-open-or-expand)
-  \ fern#smart#leaf(
-  \   "\<Plug>(fern-action-open)",
-  \   "\<Plug>(fern-action-expand)",
-  \ )
-  nmap <silent><buffer><expr> <Plug>(fern-expand-or-collapse)
-  \ fern#smart#leaf(
-  \   "\<Plug>(fern-action-collapse)",
-  \   "\<Plug>(fern-action-expand)",
-  \   "\<Plug>(fern-action-collapse)",
-  \ )
-
-  " move cwd, open file
-  nmap <buffer> l <Plug>(fern-open-or-expand)
-  nmap <buffer> <C-h> <Plug>(fern-action-leave)
-  nmap <nowait><buffer> <CR> <Plug>(fern-open-or-enter)
-  nmap <buffer> e <Plug>(fern-action-open)
-  nmap <buffer> <BS> <Plug>(fern-action-leave)
-  nmap <nowait><buffer> <Space> <Plug>(fern-action-mark)
-
-  " expand/collapse tree
-  nmap <nowait><buffer> t <Plug>(fern-expand-or-collapse)
-  nmap <nowait><buffer> T <Plug>(fern-action-collapse)
-
-  " new
-  nmap <buffer> o <Plug>(fern-action-new-file)
-  nmap <buffer> O <Plug>(fern-action-new-dir)
-
-  " move, remove, copy...
-  nmap <nowait><buffer> d <Plug>(fern-action-trash)
-  nmap <nowait><buffer> r <Plug>(fern-action-rename)
-  nmap <nowait><buffer> c <Plug>(fern-action-copy)
-  nmap <nowait><buffer> m <Plug>(fern-action-move)
-
-  " other
-  nmap <buffer> <C-l> <Plug>(fern-action-redraw)
-
-  " toggle exclusion
-  " nmap <nowait><buffer> ! <Plug>(fern-action-hidden-toggle)
-  let s:fern_excluded = v:true
-
-  function! s:fern_exclude_toggle()
-    if s:fern_excluded
-      let s:fern_excluded = v:false
-      return "\<Plug>(fern-action-exclude=)\<C-u>\<CR>"
-    endif
-    let s:fern_excluded = v:true
-    return "\<Plug>(fern-action-exclude=)\<C-u>" .. g:fern#default_exclude .. "\<CR>"
-  endfunction
-  nmap <expr><buffer> <Plug>(fern-exclude-toggle) <SID>fern_exclude_toggle()
-
-  nmap <nowait><buffer> ! <Plug>(fern-exclude-toggle)
-
-endfunction
+" augroup rc_fern
+"   autocmd!
+"   autocmd FileType fern setlocal nonumber
+"   autocmd FileType fern setlocal signcolumn=no
+"   autocmd FileType fern setlocal foldcolumn=0
+"   autocmd FileType fern call s:fern_settings()
+" augroup END
+" 
+" function s:fern_settings()
+"   nmap <buffer><expr>
+"  \ <Plug>(fern-expand-or-enter)
+"  \ fern#smart#drawer(
+"  \   "\<Plug>(fern-action-expand)",
+"  \   "\<Plug>(fern-action-enter)",
+"  \ )
+"   nmap <buffer><expr>
+"  \ <Plug>(fern-open-or-enter)
+"  \ fern#smart#leaf(
+"  \   "\<Plug>(fern-action-open)",
+"  \   "\<Plug>(fern-action-enter)",
+"  \ )
+"   nmap <buffer><expr>
+"  \ <Plug>(fern-open-or-expand)
+"  \ fern#smart#leaf(
+"  \   "\<Plug>(fern-action-open)",
+"  \   "\<Plug>(fern-action-expand)",
+"  \ )
+"   nmap <silent><buffer><expr> <Plug>(fern-expand-or-collapse)
+"  \ fern#smart#leaf(
+"  \   "\<Plug>(fern-action-collapse)",
+"  \   "\<Plug>(fern-action-expand)",
+"  \   "\<Plug>(fern-action-collapse)",
+"  \ )
+" 
+"   " move cwd, open file
+"   nmap <buffer> l <Plug>(fern-open-or-expand)
+"   nmap <buffer> <C-h> <Plug>(fern-action-leave)
+"   nmap <nowait><buffer> <CR> <Plug>(fern-open-or-enter)
+"   nmap <buffer> e <Plug>(fern-action-open)
+"   nmap <buffer> <BS> <Plug>(fern-action-leave)
+"   nmap <nowait><buffer> <Space> <Plug>(fern-action-mark)
+" 
+"   " expand/collapse tree
+"   nmap <nowait><buffer> t <Plug>(fern-expand-or-collapse)
+"   nmap <nowait><buffer> T <Plug>(fern-action-collapse)
+" 
+"   " new
+"   nmap <buffer> o <Plug>(fern-action-new-file)
+"   nmap <buffer> O <Plug>(fern-action-new-dir)
+" 
+"   " move, remove, copy...
+"   nmap <nowait><buffer> d <Plug>(fern-action-trash)
+"   nmap <nowait><buffer> r <Plug>(fern-action-rename)
+"   nmap <nowait><buffer> c <Plug>(fern-action-copy)
+"   nmap <nowait><buffer> m <Plug>(fern-action-move)
+" 
+"   " other
+"   nmap <buffer> <C-l> <Plug>(fern-action-redraw)
+" 
+"   " toggle exclusion
+"   " nmap <nowait><buffer> ! <Plug>(fern-action-hidden-toggle)
+"   let s:fern_excluded = v:true
+" 
+"   function! s:fern_exclude_toggle()
+"     if s:fern_excluded
+"       let s:fern_excluded = v:false
+"       return "\<Plug>(fern-action-exclude=)\<C-u>\<CR>"
+"     endif
+"     let s:fern_excluded = v:true
+"     return "\<Plug>(fern-action-exclude=)\<C-u>" .. g:fern#default_exclude .. "\<CR>"
+"   endfunction
+"   nmap <expr><buffer> <Plug>(fern-exclude-toggle) <SID>fern_exclude_toggle()
+" 
+"   nmap <nowait><buffer> ! <Plug>(fern-exclude-toggle)
+" 
+" endfunction
 
 " §§1 Plugin settings for lambdalisue/gina.vim
 

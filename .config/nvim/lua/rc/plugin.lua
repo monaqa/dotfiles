@@ -113,6 +113,7 @@ end
 
 require("rc.plugin.general")
 require("rc.plugin.paren")
+require("rc.plugin.textedit")
 require("rc.plugin.coc")
 require("rc.plugin.telescope")
 require("rc.plugin.denops")

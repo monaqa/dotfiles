@@ -491,7 +491,24 @@ vim.keymap.set( "n" , "<Space>l", function ()
     end
 end)
 vim.keymap.set("x", "<Space>l", "$h")
-vim.keymap.set("o", "<Space>l", "$")
+-- vim.keymap.set("o", "<Space>l", "$")
+-- vim.keymap.set("o", "<Space>l", function ()
+--     vim.cmd"normal! m["
+--     vim.cmd"normal! $"
+--     if vim.v.count == vim.v.count1 then
+--         vim.cmd(("normal! %sh"):format(vim.v.count))
+--     end
+--     vim.cmd"normal! m]"
+-- end)
+vim.keymap.set("o", "<Space>l",
+    require("peridot").repeatable_textobj(function(ctx)
+        vim.cmd"normal! v$h"
+        if ctx.set_count then
+            vim.cmd(("normal! %sh"):format(ctx.count))
+        end
+    end),
+    {expr = true}
+)
 
 vim.keymap.set("o", "u", "t_")
 vim.keymap.set("o", "U", function ()
@@ -636,11 +653,12 @@ vim.keymap.set(
 -- デフォルトのレジスタ @q は Vim の開始ごとに初期化される。
 
 local function keymap_toggle_macro()
-    if vim.fn.reg_recording() then
+    if util.to_bool(vim.fn.reg_recording()) then
         -- 既に記録中の時は止める
         return "q"
     end
     -- 無名レジスタには格納できないようにする & デフォルトを q にする
+
     local register = vim.v.register
     if register == [["]] then
         register = "q"
@@ -686,7 +704,7 @@ end
 
 vim.keymap.set("n", "Q", keymap_toggle_macro, {expr = true})
 vim.keymap.set("n", "<C-q>", function ()
-    if vim.fn.reg_recording() then
+    if vim.fn.reg_recording() == "" then
         return keymap_play_macro()
     else
         return keymap_cancel_macro()

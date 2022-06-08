@@ -44,10 +44,10 @@ local function eval_vimrc_local()
     local cwd = vim.fn.getcwd()
     local vimrc_local = ("%s/.vimrc.local"):format(cwd)
     local init_lua_local = ("%s/.init.lua.local"):format(cwd)
-    if vim.fn.filereadable(vimrc_local) == 1 then
+    if util.to_bool(vim.fn.filereadable(vimrc_local)) then
         vim.cmd(([[source %s]]):format(vimrc_local))
     end
-    if vim.fn.filereadable(init_lua_local)  == 1 then
+    if util.to_bool(vim.fn.filereadable(init_lua_local)) then
         vim.cmd(([[luafile %s]]):format(init_lua_local))
     end
 end
@@ -73,7 +73,7 @@ local function auto_mkdir()
     if is_empty or is_url or is_directory then
         return
     end
-    if vim.v.cmdbang == 1 then
+    if util.to_bool(vim.v.cmdbang) then
         vim.fn.mkdir(dir, "p")
         return
     end
@@ -142,7 +142,7 @@ util.autocmd_vimrc("CmdwinEnter"){
 }
 
 local function free_visual_match()
-    if vim.fn.exists("w:visual_match_id") == 1 then
+    if util.to_bool(vim.fn.exists("w:visual_match_id")) then
         vim.fn.matchdelete(vim.w.visual_match_id)
         vim.api.nvim_win_del_var(0, "visual_match_id")
     end

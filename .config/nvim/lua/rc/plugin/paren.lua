@@ -251,3 +251,6 @@ function! BlockCommandName() abort
   return '+' . cmdname . '<'
 endfunction
 ]]
+
+vim.keymap.set({"x", "o"}, "m", "<Plug>(textobj-sandwich-literal-query-i)", {remap = true})
+vim.keymap.set({"x", "o"}, "M", "<Plug>(textobj-sandwich-literal-query-a)", {remap = true})

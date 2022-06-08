@@ -34,9 +34,6 @@ require("rc.command")
 require("rc.filetype")
 
 vim.cmd [[
-  " load other settings
-  source ~/.config/nvim/scripts/abbr.vim
-
   filetype plugin indent on
   syntax enable
 ]]
