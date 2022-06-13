@@ -101,7 +101,6 @@ util.autocmd_vimrc("TextYankPost"){
     desc = "無名レジスタへの yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）",
     callback = function ()
         local event = vim.v.event
-        vim.pretty_print(event)
         if event.operator == "y" and event.regname == "" then
             vim.fn.setreg("+", vim.fn.getreg('"', nil, nil))
         end

@@ -114,15 +114,15 @@ local exclude_files = {
 }
 
 vim.g["fern#default_exclude"] = [[^\%(]] .. table.concat(exclude_files, [[\|]]) .. [[\)$]]
-vim.g["fern#rendered"] = "nerdfont"
+vim.g["fern#renderer"] = "nerdfont"
 
 vim.keymap.set("n", "sf", "<Cmd>Fern . -reveal=%:p<CR>")
 vim.keymap.set("n", "sz", "<Cmd>Fern . -drawer -toggle<CR>")
 
 local function fern_buffer_config()
-    vim.wo.number = false
-    vim.wo.signcolumn = "no"
-    vim.wo.foldcolumn = "0"
+    vim.opt_local.number = false
+    vim.opt_local.signcolumn = "no"
+    vim.opt_local.foldcolumn = "0"
 
     vim.cmd[[
     nmap <buffer><expr>
@@ -204,3 +204,120 @@ util.autocmd_vimrc("FileType"){
     pattern = "fern",
     callback = fern_buffer_config
 }
+
+-- §§1 Plugin settings for lualine.nvim
+vim.cmd[[
+nnoremap U :<C-u>UndotreeToggle<CR>
+]]
+
+-- §§1 Plugin settings for rhysd/rust-doc.vim
+vim.g["rust_doc#define_map_K"] = 0
+
+-- §§1 Plugin settings for rust-lang/rust.vim
+vim.g["rustfmt_autosave"] = 1
+
+-- §§1 Plugin settings for thinca/vim-submode
+vim.cmd[[
+call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
+call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
+call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
+call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
+call submode#map('bufmove', 'n', '', '>', '<C-w>>')
+call submode#map('bufmove', 'n', '', '<', '<C-w><')
+call submode#map('bufmove', 'n', '', '+', '<C-w>+')
+call submode#map('bufmove', 'n', '', '-', '<C-w>-')
+
+call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':LineSameSearch<CR>')
+call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':LineBackSameSearch<CR>')
+call submode#map('vertjmp', 'n', '', ';', ':LineSameSearch<CR>')
+call submode#map('vertjmp', 'n', '', ',', ':LineBackSameSearch<CR>')
+call submode#leave_with('vertjmp', 'n', '', '<Space>')
+]]
+
+-- §§1 Plugin settings for tpope/vim-capslock
+vim.cmd[[
+inoremap <C-l> <Nop>
+]]
+
+-- §§1 Plugin settings for tyru/caw.vim
+vim.cmd[[
+nmap , <Plug>(caw:hatpos:toggle:operator)
+nmap ,, ,_
+vmap , <Plug>(caw:hatpos:toggle)
+
+augroup vimrc
+  autocmd FileType pest let b:caw_oneline_comment = '//'
+augroup END
+]]
+
+-- §§1 Plugin settings for tyru/open-browser
+vim.cmd[[
+nmap gb <Plug>(openbrowser-smart-search)
+xmap gb <Plug>(openbrowser-smart-search)
+]]
+
+-- §§1 Plugin settings for tyru/open-browser
+vim.cmd[[
+let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
+" 存在すれば
+if isdirectory(s:local_session_directory)
+  " session保存ディレクトリをそのディレクトリの設定
+  let g:session_directory = s:local_session_directory
+  " vimを辞める時に自動保存
+  let g:session_autosave = 'yes'
+  " 引数なしでvimを起動した時にsession保存ディレクトリのdefault.vimを開く
+  let g:session_autoload = 'yes'
+  " 1分間に1回自動保存
+  " let g:session_autosave_periodic = 1
+else
+  let g:session_autosave = 'no'
+  let g:session_autoload = 'no'
+endif
+unlet s:local_session_directory
+]]
+
+-- §§1 Plugin settings for barbar.nvim
+vim.cmd[[
+nnoremap sp <Cmd>BufferPrevious<CR>
+nnoremap sn <Cmd>BufferNext<CR>
+nnoremap s1 <Cmd>BufferGoto 1<CR>
+nnoremap s2 <Cmd>BufferGoto 2<CR>
+nnoremap s3 <Cmd>BufferGoto 3<CR>
+nnoremap s4 <Cmd>BufferGoto 4<CR>
+nnoremap s5 <Cmd>BufferGoto 5<CR>
+nnoremap s6 <Cmd>BufferGoto 6<CR>
+nnoremap s7 <Cmd>BufferGoto 7<CR>
+nnoremap s8 <Cmd>BufferGoto 8<CR>
+nnoremap s9 <Cmd>BufferGoto 9<CR>
+nnoremap sP <Cmd>BufferMovePrevious<CR>
+nnoremap sN <Cmd>BufferMoveNext<CR>
+
+nnoremap sw <Cmd>BufferClose<CR>
+]]
+
+-- §§1 Plugin settings for asterisk
+vim.cmd[[
+nmap *  <Plug>(asterisk-z*)
+nmap #  <Plug>(asterisk-z#)
+nmap g* <Plug>(asterisk-gz*)
+nmap g# <Plug>(asterisk-gz*)
+]]
+
+-- §§1 Plugin settings for markdown-preview.nvim
+vim.cmd[[
+let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
+let g:mkdp_auto_close = 1
+let g:mkdp_preview_options = {
+    "\ 'mkit': {},
+    "\ 'katex': {},
+    "\ 'uml': {},
+    "\ 'maid': {},
+    \ 'disable_sync_scroll': 1,
+    "\ 'sync_scroll_type': 'middle',
+    "\ 'hide_yaml_meta': 1,
+    "\ 'sequence_diagrams': {},
+    "\ 'flowchart_diagrams': {},
+    "\ 'content_editable': v:false,
+    "\ 'disable_filename': 0
+    \ }
+]]

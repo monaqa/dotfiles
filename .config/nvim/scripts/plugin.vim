@@ -608,268 +608,261 @@ let g:textobj_functioncall_patterns = [
 " endfunction
 
 " §§2 between mappings
-omap m <Plug>(textobj-sandwich-literal-query-i)
-vmap m <Plug>(textobj-sandwich-literal-query-i)
-omap M <Plug>(textobj-sandwich-literal-query-a)
-vmap M <Plug>(textobj-sandwich-literal-query-a)
+" omap m <Plug>(textobj-sandwich-literal-query-i)
+" vmap m <Plug>(textobj-sandwich-literal-query-i)
+" omap M <Plug>(textobj-sandwich-literal-query-a)
+" vmap M <Plug>(textobj-sandwich-literal-query-a)
 
 " §§1 Plugin settings for machakann/vim-swap
 
-omap i, <Plug>(swap-textobject-i)
-xmap i, <Plug>(swap-textobject-i)
-omap a, <Plug>(swap-textobject-a)
-xmap a, <Plug>(swap-textobject-a)
+" omap i, <Plug>(swap-textobject-i)
+" xmap i, <Plug>(swap-textobject-i)
+" omap a, <Plug>(swap-textobject-a)
+" xmap a, <Plug>(swap-textobject-a)
 
 " §§1 Plugin settings for mbbill/undotree
 
-nnoremap U :<C-u>UndotreeToggle<CR>
+" nnoremap U :<C-u>UndotreeToggle<CR>
 
 " §§1 Plugin settings for monaqa/smooth-scroll.vim
 
-let g:smooth_scroll_no_default_key_mappings = 1
-let g:smooth_scroll_interval = 1000.0 / 40
-let g:smooth_scroll_scrollkind = "quintic"
-let g:smooth_scroll_add_jumplist = v:true
+" let g:smooth_scroll_no_default_key_mappings = 1
+" let g:smooth_scroll_interval = 1000.0 / 40
+" let g:smooth_scroll_scrollkind = "quintic"
+" let g:smooth_scroll_add_jumplist = v:true
+" 
+" nnoremap <C-d> <Cmd>call smooth_scroll#flick( v:count1 * &scroll     , 15, 'j', 'k')<CR>
+" nnoremap <C-u> <Cmd>call smooth_scroll#flick(-v:count1 * &scroll     , 15, 'j', 'k')<CR>
+" nnoremap <C-f> <Cmd>call smooth_scroll#flick( v:count1 * winheight(0), 25, 'j', 'k')<CR>
+" nnoremap <C-b> <Cmd>call smooth_scroll#flick(-v:count1 * winheight(0), 25, 'j', 'k')<CR>
+" vnoremap <C-d> <Cmd>call smooth_scroll#flick( v:count1 * &scroll     , 15, 'j', 'k')<CR>
+" vnoremap <C-u> <Cmd>call smooth_scroll#flick(-v:count1 * &scroll     , 15, 'j', 'k')<CR>
+" vnoremap <C-f> <Cmd>call smooth_scroll#flick( v:count1 * winheight(0), 25, 'j', 'k')<CR>
+" vnoremap <C-b> <Cmd>call smooth_scroll#flick(-v:count1 * winheight(0), 25, 'j', 'k')<CR>
+" 
+" nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
+" nnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+" nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
 
-nnoremap <C-d> <Cmd>call smooth_scroll#flick( v:count1 * &scroll     , 15, 'j', 'k')<CR>
-nnoremap <C-u> <Cmd>call smooth_scroll#flick(-v:count1 * &scroll     , 15, 'j', 'k')<CR>
-nnoremap <C-f> <Cmd>call smooth_scroll#flick( v:count1 * winheight(0), 25, 'j', 'k')<CR>
-nnoremap <C-b> <Cmd>call smooth_scroll#flick(-v:count1 * winheight(0), 25, 'j', 'k')<CR>
-vnoremap <C-d> <Cmd>call smooth_scroll#flick( v:count1 * &scroll     , 15, 'j', 'k')<CR>
-vnoremap <C-u> <Cmd>call smooth_scroll#flick(-v:count1 * &scroll     , 15, 'j', 'k')<CR>
-vnoremap <C-f> <Cmd>call smooth_scroll#flick( v:count1 * winheight(0), 25, 'j', 'k')<CR>
-vnoremap <C-b> <Cmd>call smooth_scroll#flick(-v:count1 * winheight(0), 25, 'j', 'k')<CR>
-
-nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
-nnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
-nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
 " §§1 Plugin settings for monaqa/vim-edgemotion
 
-nmap <C-n> m`<Plug>(edgemotion-j)
-nmap <C-p> m`<Plug>(edgemotion-k)
-vmap <C-n> <Plug>(edgemotion-j)
-vmap <C-p> <Plug>(edgemotion-k)
+" nmap <C-n> m`<Plug>(edgemotion-j)
+" nmap <C-p> m`<Plug>(edgemotion-k)
+" vmap <C-n> <Plug>(edgemotion-j)
+" vmap <C-p> <Plug>(edgemotion-k)
 
 " §§1 Plugin settings for neoclide/coc.nvim
 
-set tagfunc=CocTagFunc
-
-let g:coc_global_extensions = [
-\ 'coc-snippets',
-\ 'coc-marketplace',
-\ 'coc-actions',
-\ 'coc-rust-analyzer',
-\ 'coc-pyright',
-\ 'coc-json',
-\ 'coc-deno',
-\]
-
-nnoremap t <Nop>
-" t を prefix にする
-nmap <silent> td <Cmd>Telescope coc definitions<CR>
-" nmap <silent> gd <Cmd>Telescope coc definitions<CR>
-nmap <silent> gd <C-]>
-nmap <silent> ti <Cmd>Telescope coc implementations<CR>
-nmap <silent> ty <Cmd>Telescope coc type_definitions<CR>
-nmap <silent> tr <Cmd>Telescope coc references<CR>
-" nmap <silent> td <Plug>(coc-definition)
-" nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> ti <Plug>(coc-implementation)
-" nmap <silent> ty <Plug>(coc-type-definition)
-" nmap <silent> tr <Plug>(coc-references)
-nmap <silent> tn <Plug>(coc-rename)
-nnoremap <silent> K :call CocAction('doHover')<CR>
-nnoremap <silent> <Space>j :call CocAction('diagnosticNext')<CR>
-nnoremap <silent> <Space>k :call CocAction('diagnosticPrevious')<CR>
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-" let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<C-g><C-j>'
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<C-g><C-k>'
-
-" Remap for do codeAction of selected region
-" function! s:cocActionsOpenFromSelected(type) abort
-"   execute 'CocCommand actions.open ' . a:type
+" set tagfunc=CocTagFunc
+" 
+" let g:coc_global_extensions = [
+"\ 'coc-snippets',
+"\ 'coc-marketplace',
+"\ 'coc-actions',
+"\ 'coc-rust-analyzer',
+"\ 'coc-pyright',
+"\ 'coc-json',
+"\ 'coc-deno',
+"\]
+" 
+" nnoremap t <Nop>
+" " t を prefix にする
+" nmap <silent> td <Cmd>Telescope coc definitions<CR>
+" " nmap <silent> gd <Cmd>Telescope coc definitions<CR>
+" nmap <silent> gd <C-]>
+" nmap <silent> ti <Cmd>Telescope coc implementations<CR>
+" nmap <silent> ty <Cmd>Telescope coc type_definitions<CR>
+" nmap <silent> tr <Cmd>Telescope coc references<CR>
+" " nmap <silent> td <Plug>(coc-definition)
+" " nmap <silent> gd <Plug>(coc-definition)
+" " nmap <silent> ti <Plug>(coc-implementation)
+" " nmap <silent> ty <Plug>(coc-type-definition)
+" " nmap <silent> tr <Plug>(coc-references)
+" nmap <silent> tn <Plug>(coc-rename)
+" nnoremap <silent> K :call CocAction('doHover')<CR>
+" nnoremap <silent> <Space>j :call CocAction('diagnosticNext')<CR>
+" nnoremap <silent> <Space>k :call CocAction('diagnosticPrevious')<CR>
+" 
+" inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" 
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
 " endfunction
-" xnoremap <silent> ma :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-" nnoremap <silent> ma :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@l
-xmap <silent> ta <Plug>(coc-codeaction-selected)
-nmap <silent> ta <Plug>(coc-codeaction-selected)l
-
-function! CocServiceNames(ArgLead, CmdLine, CursorPos)
-  let actions = map(CocAction('services'), {idx, d -> d['id']})
-  return actions
-endfunction
-
-command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call CocAction('toggleService', <q-args>)
-
-" §§2 fzf-preview
-" let g:fzf_preview_floating_window_rate = 0.8
-" let g:fzf_preview_grep_cmd = 'rg --line-number --no-heading --color=never --hidden'
-" nnoremap sb :<C-u>CocCommand fzf-preview.AllBuffers<CR>
-" nnoremap sg :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
-" nnoremap so :<C-u>CocCommand fzf-preview.DirectoryFiles <CR>
-" ■■
+" 
+" " let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+" " let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+" 
+" " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+" let g:coc_snippet_next = '<C-g><C-j>'
+" " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" let g:coc_snippet_prev = '<C-g><C-k>'
+" 
+" " Remap for do codeAction of selected region
+" " function! s:cocActionsOpenFromSelected(type) abort
+" "   execute 'CocCommand actions.open ' . a:type
+" " endfunction
+" " xnoremap <silent> ma :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+" " nnoremap <silent> ma :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@l
+" xmap <silent> ta <Plug>(coc-codeaction-selected)
+" nmap <silent> ta <Plug>(coc-codeaction-selected)l
+" 
+" function! CocServiceNames(ArgLead, CmdLine, CursorPos)
+"   let actions = map(CocAction('services'), {idx, d -> d['id']})
+"   return actions
+" endfunction
+" 
+" command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call CocAction('toggleService', <q-args>)
 
 " §§1 Plugin settings for previm/previm
 
-let g:previm_open_cmd = "open -a 'Vivaldi'"
-let g:previm_custom_css_path = "~/.config/nvim/scripts/resource/markdown.css"
+" let g:previm_open_cmd = "open -a 'Vivaldi'"
+" let g:previm_custom_css_path = "~/.config/nvim/scripts/resource/markdown.css"
 
 
 " §§1 Plugin settings for rhysd/rust-doc.vim
-let g:rust_doc#define_map_K = 0
+" let g:rust_doc#define_map_K = 0
 
 " §§1 Plugin settings for rust-lang/rust.vim
-let g:rustfmt_autosave = 1
+" let g:rustfmt_autosave = 1
 
 " §§1 Plugin settings for sheerun/vim-polyglot
-
-let g:rst_fold_enabled = 1
+" let g:rst_fold_enabled = 1
 
 " §§1 Plugin settings for thinca/vim-quickrun
 
-let g:quickrun_config = get(g:, 'quickrun_config', {})
-let g:quickrun_config._ = {
-\ 'runner': 'vimproc',
-\ 'runner/vimproc/updatetime': 40,
-\ 'outputter': 'error',
-\ 'outputter/error/success': 'buffer',
-\ 'outputter/error/error': 'quickfix',
-\ 'hook/close_quickfix/enable_exit': 1,
-\ 'hook/shebang/enable': 0,
-\ }
+" let g:quickrun_config = get(g:, 'quickrun_config', {})
+" let g:quickrun_config._ = {
+"\ 'runner': 'vimproc',
+"\ 'runner/vimproc/updatetime': 40,
+"\ 'outputter': 'error',
+"\ 'outputter/error/success': 'buffer',
+"\ 'outputter/error/error': 'quickfix',
+"\ 'hook/close_quickfix/enable_exit': 1,
+"\ 'hook/shebang/enable': 0,
+"\ }
+" 
+" let quickrun_config['jupytext'] = {
+"\ 'command': 'jupytext',
+"\ 'exec': '%c %o %a',
+"\ 'cmdopt': '--update --to notebook',
+"\ 'outputter/error/success': 'null',
+"\ 'outputter/error/error': 'buffer',
+"\ }
+" 
+" let quickrun_config['satysfi'] = {
+"\ 'command': 'satysfi',
+"\ 'exec': '%c %a',
+"\ 'outputter/error/success': 'null',
+"\ 'outputter/error/error': 'buffer',
+"\ }
+" 
+" let quickrun_config['satysfi-debug'] = {
+"\ 'command': 'satysfi',
+"\ 'exec': '%c %a %o',
+"\ 'cmdopt': '--debug-show-bbox --debug-show-space --debug-show-block-bbox --debug-show-block-space',
+"\ 'outputter/error/success': 'null',
+"\ 'outputter/error/error': 'buffer',
+"\ }
+" 
+" " example; :QuickRun rsync -args /Users/mogami/work/path-of-project remote:work/sync-mac
+" let g:quickrun_config['rsync'] = {
+"\ 'command': 'rsync',
+"\ 'cmdopt': '-C --filter=":- .gitignore" --exclude ".git" -acvz --delete -e ssh',
+"\ 'exec': '%c %o %a',
+"\ 'outputter/error/success': 'null',
+"\ }
 
-let quickrun_config['jupytext'] = {
-\ 'command': 'jupytext',
-\ 'exec': '%c %o %a',
-\ 'cmdopt': '--update --to notebook',
-\ 'outputter/error/success': 'null',
-\ 'outputter/error/error': 'buffer',
-\ }
 
-let quickrun_config['satysfi'] = {
-\ 'command': 'satysfi',
-\ 'exec': '%c %a',
-\ 'outputter/error/success': 'null',
-\ 'outputter/error/error': 'buffer',
-\ }
-
-let quickrun_config['satysfi-debug'] = {
-\ 'command': 'satysfi',
-\ 'exec': '%c %a %o',
-\ 'cmdopt': '--debug-show-bbox --debug-show-space --debug-show-block-bbox --debug-show-block-space',
-\ 'outputter/error/success': 'null',
-\ 'outputter/error/error': 'buffer',
-\ }
-
-" example; :QuickRun rsync -args /Users/mogami/work/path-of-project remote:work/sync-mac
-let g:quickrun_config['rsync'] = {
-\ 'command': 'rsync',
-\ 'cmdopt': '-C --filter=":- .gitignore" --exclude ".git" -acvz --delete -e ssh',
-\ 'exec': '%c %o %a',
-\ 'outputter/error/success': 'null',
-\ }
-
-
-augroup rc_quickrun
-  autocmd!
-  " autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>q :QuickRun satysfi -args %{expand("%")}<CR>
-  " autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>Q :QuickRun satysfi-debug -args %{expand("%")}<CR>
-  " autocmd FileType python nnoremap <buffer> <CR>q :QuickRun jupytext -args %{expand("%")}<CR>
-augroup END
+" augroup rc_quickrun
+"   autocmd!
+"   " autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>q :QuickRun satysfi -args %{expand("%")}<CR>
+"   " autocmd BufRead,BufNewFile *.saty nnoremap <buffer> <CR>Q :QuickRun satysfi-debug -args %{expand("%")}<CR>
+"   " autocmd FileType python nnoremap <buffer> <CR>q :QuickRun jupytext -args %{expand("%")}<CR>
+" augroup END
 
 " §§1 Plugin settings for thinca/vim-submode
 
-call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
-call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
-call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
-call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
-call submode#map('bufmove', 'n', '', '>', '<C-w>>')
-call submode#map('bufmove', 'n', '', '<', '<C-w><')
-call submode#map('bufmove', 'n', '', '+', '<C-w>+')
-call submode#map('bufmove', 'n', '', '-', '<C-w>-')
-
-call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':LineSameSearch<CR>')
-call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':LineBackSameSearch<CR>')
-call submode#map('vertjmp', 'n', '', ';', ':LineSameSearch<CR>')
-call submode#map('vertjmp', 'n', '', ',', ':LineBackSameSearch<CR>')
-call submode#leave_with('vertjmp', 'n', '', '<Space>')
+" call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
+" call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
+" call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
+" call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
+" call submode#map('bufmove', 'n', '', '>', '<C-w>>')
+" call submode#map('bufmove', 'n', '', '<', '<C-w><')
+" call submode#map('bufmove', 'n', '', '+', '<C-w>+')
+" call submode#map('bufmove', 'n', '', '-', '<C-w>-')
+" 
+" call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':LineSameSearch<CR>')
+" call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':LineBackSameSearch<CR>')
+" call submode#map('vertjmp', 'n', '', ';', ':LineSameSearch<CR>')
+" call submode#map('vertjmp', 'n', '', ',', ':LineBackSameSearch<CR>')
+" call submode#leave_with('vertjmp', 'n', '', '<Space>')
 
 " §§1 Plugin settings for tpope/vim-capslock
 
-inoremap <C-l> <Nop>
+" inoremap <C-l> <Nop>
 
 " §§1 Plugin settings for tyru/caw.vim
 " toggle comment を , に割り当てる。
-nmap , <Plug>(caw:hatpos:toggle:operator)
-nmap ,, ,_
-vmap , <Plug>(caw:hatpos:toggle)
-
-augroup vimrc
-  autocmd FileType pest let b:caw_oneline_comment = '//'
-  autocmd FileType todo6 let b:caw_oneline_comment = 'x'
-augroup END
+" nmap , <Plug>(caw:hatpos:toggle:operator)
+" nmap ,, ,_
+" vmap , <Plug>(caw:hatpos:toggle)
+" 
+" augroup vimrc
+"   autocmd FileType pest let b:caw_oneline_comment = '//'
+"   autocmd FileType todo6 let b:caw_oneline_comment = 'x'
+" augroup END
 
 " §§1 Plugin settings for open-browser
-nmap gb <Plug>(openbrowser-smart-search)
-xmap gb <Plug>(openbrowser-smart-search)
+
+" nmap gb <Plug>(openbrowser-smart-search)
+" xmap gb <Plug>(openbrowser-smart-search)
 
 " §§1 Plugin settings for xolox/vim-session
 
-let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
-" 存在すれば
-if isdirectory(s:local_session_directory)
-  " session保存ディレクトリをそのディレクトリの設定
-  let g:session_directory = s:local_session_directory
-  " vimを辞める時に自動保存
-  let g:session_autosave = 'yes'
-  " 引数なしでvimを起動した時にsession保存ディレクトリのdefault.vimを開く
-  let g:session_autoload = 'yes'
-  " 1分間に1回自動保存
-  " let g:session_autosave_periodic = 1
-else
-  let g:session_autosave = 'no'
-  let g:session_autoload = 'no'
-endif
-unlet s:local_session_directory
+" let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
+" " 存在すれば
+" if isdirectory(s:local_session_directory)
+"   " session保存ディレクトリをそのディレクトリの設定
+"   let g:session_directory = s:local_session_directory
+"   " vimを辞める時に自動保存
+"   let g:session_autosave = 'yes'
+"   " 引数なしでvimを起動した時にsession保存ディレクトリのdefault.vimを開く
+"   let g:session_autoload = 'yes'
+"   " 1分間に1回自動保存
+"   " let g:session_autosave_periodic = 1
+" else
+"   let g:session_autosave = 'no'
+"   let g:session_autoload = 'no'
+" endif
+" unlet s:local_session_directory
 
 " §§1 Plugin settings for ghost.vim
-augroup vimrc
-  autocmd BufNewFile,BufRead *ghost-github.com* setlocal filetype=markdown
-augroup END
+" augroup vimrc
+"   autocmd BufNewFile,BufRead *ghost-github.com* setlocal filetype=markdown
+" augroup END
 
 " §§1 Plugin settings for barbar.nvim
 
-nnoremap sp <Cmd>BufferPrevious<CR>
-nnoremap sn <Cmd>BufferNext<CR>
-nnoremap s1 <Cmd>BufferGoto 1<CR>
-nnoremap s2 <Cmd>BufferGoto 2<CR>
-nnoremap s3 <Cmd>BufferGoto 3<CR>
-nnoremap s4 <Cmd>BufferGoto 4<CR>
-nnoremap s5 <Cmd>BufferGoto 5<CR>
-nnoremap s6 <Cmd>BufferGoto 6<CR>
-nnoremap s7 <Cmd>BufferGoto 7<CR>
-nnoremap s8 <Cmd>BufferGoto 8<CR>
-nnoremap s9 <Cmd>BufferGoto 9<CR>
-nnoremap sP <Cmd>BufferMovePrevious<CR>
-nnoremap sN <Cmd>BufferMoveNext<CR>
-
-nnoremap sw <Cmd>BufferClose<CR>
+" nnoremap sp <Cmd>BufferPrevious<CR>
+" nnoremap sn <Cmd>BufferNext<CR>
+" nnoremap s1 <Cmd>BufferGoto 1<CR>
+" nnoremap s2 <Cmd>BufferGoto 2<CR>
+" nnoremap s3 <Cmd>BufferGoto 3<CR>
+" nnoremap s4 <Cmd>BufferGoto 4<CR>
+" nnoremap s5 <Cmd>BufferGoto 5<CR>
+" nnoremap s6 <Cmd>BufferGoto 6<CR>
+" nnoremap s7 <Cmd>BufferGoto 7<CR>
+" nnoremap s8 <Cmd>BufferGoto 8<CR>
+" nnoremap s9 <Cmd>BufferGoto 9<CR>
+" nnoremap sP <Cmd>BufferMovePrevious<CR>
+" nnoremap sN <Cmd>BufferMoveNext<CR>
+" 
+" nnoremap sw <Cmd>BufferClose<CR>
 
 " §§1 Plugin settings for dial.nvim
 
@@ -945,72 +938,72 @@ nnoremap sw <Cmd>BufferClose<CR>
 "   nmap gc "c<Plug>(dps-dial-increment)
 " endfunction
 
-function! DialConfig()
-  packadd dial.nvim
-lua <<EOL
-
-  local augend = require("dial.augend")
-  require("dial.config").augends:register_group{
-    default = {
-      augend.integer.alias.decimal,
-      augend.integer.alias.hex,
-      augend.integer.alias.binary,
-      augend.date.alias["%Y/%m/%d"],
-      augend.date.alias["%Y-%m-%d"],
-      augend.date.alias["%Y年%-m月%-d日(%ja)"],
-      augend.date.alias["%H:%M:%S"],
-      augend.date.alias["%-m/%-d"],
-      augend.constant.alias.ja_weekday,
-      augend.constant.alias.ja_weekday_full,
-      augend.hexcolor.new {case = "lower"},
-      augend.semver.alias.semver,
-    },
-    markdown = {
-      augend.integer.alias.decimal,
-      augend.integer.alias.hex,
-      augend.integer.alias.binary,
-      augend.date.alias["%Y/%m/%d"],
-      augend.date.alias["%Y-%m-%d"],
-      augend.date.alias["%Y年%-m月%-d日(%ja)"],
-      augend.date.alias["%H:%M:%S"],
-      augend.date.alias["%-m/%-d"],
-      augend.constant.alias.ja_weekday,
-      augend.constant.alias.ja_weekday_full,
-      augend.hexcolor.new {case = "lower"},
-      augend.semver.alias.semver,
-      augend.misc.alias.markdown_header,
-    },
-  }
-
-  vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
-  vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
-  vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
-  vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
-  vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
-  vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
-EOL
-
-  augroup vimrc
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-a>",   require("dial.map").inc_normal("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-x>",   require("dial.map").dec_normal("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-a>",   require("dial.map").inc_visual("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-x>",   require("dial.map").dec_visual("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual("markdown"), {noremap = true})
-  augroup END
-
-endfunction
-
-if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dial.nvim')
-  call DialConfig()
-  echom 'general config of dial.vim is loaded.'
-endif
+" function! DialConfig()
+"   packadd dial.nvim
+" lua <<EOL
+" 
+"   local augend = require("dial.augend")
+"   require("dial.config").augends:register_group{
+"     default = {
+"       augend.integer.alias.decimal,
+"       augend.integer.alias.hex,
+"       augend.integer.alias.binary,
+"       augend.date.alias["%Y/%m/%d"],
+"       augend.date.alias["%Y-%m-%d"],
+"       augend.date.alias["%Y年%-m月%-d日(%ja)"],
+"       augend.date.alias["%H:%M:%S"],
+"       augend.date.alias["%-m/%-d"],
+"       augend.constant.alias.ja_weekday,
+"       augend.constant.alias.ja_weekday_full,
+"       augend.hexcolor.new {case = "lower"},
+"       augend.semver.alias.semver,
+"     },
+"     markdown = {
+"       augend.integer.alias.decimal,
+"       augend.integer.alias.hex,
+"       augend.integer.alias.binary,
+"       augend.date.alias["%Y/%m/%d"],
+"       augend.date.alias["%Y-%m-%d"],
+"       augend.date.alias["%Y年%-m月%-d日(%ja)"],
+"       augend.date.alias["%H:%M:%S"],
+"       augend.date.alias["%-m/%-d"],
+"       augend.constant.alias.ja_weekday,
+"       augend.constant.alias.ja_weekday_full,
+"       augend.hexcolor.new {case = "lower"},
+"       augend.semver.alias.semver,
+"       augend.misc.alias.markdown_header,
+"     },
+"   }
+" 
+"   vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
+"   vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
+"   vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
+"   vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
+"   vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
+"   vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
+" EOL
+" 
+"   augroup vimrc
+"     autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-a>",   require("dial.map").inc_normal("markdown"), {noremap = true})
+"     autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-x>",   require("dial.map").dec_normal("markdown"), {noremap = true})
+"     autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-a>",   require("dial.map").inc_visual("markdown"), {noremap = true})
+"     autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-x>",   require("dial.map").dec_visual("markdown"), {noremap = true})
+"     autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual("markdown"), {noremap = true})
+"     autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual("markdown"), {noremap = true})
+"   augroup END
+" 
+" endfunction
+" 
+" if (getcwd() !=# '/Users/monaqa/ghq/github.com/monaqa/dial.nvim')
+"   call DialConfig()
+"   echom 'general config of dial.vim is loaded.'
+" endif
 
 " §§1 Plugin settings for telescope.nvim
-nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
-nnoremap sg <Cmd>Telescope live_grep prompt_prefix=𝜸<CR>
-nnoremap sb <Cmd>Telescope buffers prompt_prefix=𝜷<CR>
-nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
+" nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
+" nnoremap sg <Cmd>Telescope live_grep prompt_prefix=𝜸<CR>
+" nnoremap sb <Cmd>Telescope buffers prompt_prefix=𝜷<CR>
+" nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
 
 " §§1 Plugin settings for nvim-treesitter
 nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
@@ -1036,106 +1029,107 @@ call s:override_query('markdown', 'highlights')
 " §§1 Plugin settings for nvim-hlslens
 " noremap <silent> n n<Cmd>lua require('hlslens').start()<CR>
 " noremap <silent> N N<Cmd>lua require('hlslens').start()<CR>
-nmap *  <Plug>(asterisk-z*)
-nmap #  <Plug>(asterisk-z#)
-nmap g* <Plug>(asterisk-gz*)
-nmap g# <Plug>(asterisk-gz*)
+
+" nmap *  <Plug>(asterisk-z*)
+" nmap #  <Plug>(asterisk-z#)
+" nmap g* <Plug>(asterisk-gz*)
+" nmap g# <Plug>(asterisk-gz*)
 
 " §§1 Plugin settings for modesearch
-nmap / <Plug>(modesearch-slash-rawstr)
-nmap ? <Plug>(modesearch-slash-regexp)
-cmap <C-x> <Plug>(modesearch-toggle-mode)
-nnoremap _ /
+" nmap / <Plug>(modesearch-slash-rawstr)
+" nmap ? <Plug>(modesearch-slash-regexp)
+" cmap <C-x> <Plug>(modesearch-toggle-mode)
+" nnoremap _ /
 
 " §§1 Plugin settings for partedit
-let g:partedit#opener = ":vsplit"
-let g:partedit#prefix_pattern = '\v\s*'
-
-command! -range ParteditCodeblock call s:partedit_code_block(<line1>, <line2>)
-function! s:partedit_code_block(line1, line2)
-  let line_codeblock_start = getline(a:line1 - 1)
-  let filetype = matchstr(line_codeblock_start, '\v```\zs[-a-zA-Z0-9]+\ze')
-  let options = { "filetype": filetype }
-  call partedit#start(a:line1, a:line2, options)
-endfunction
+" let g:partedit#opener = ":vsplit"
+" let g:partedit#prefix_pattern = '\v\s*'
+" 
+" command! -range ParteditCodeblock call s:partedit_code_block(<line1>, <line2>)
+" function! s:partedit_code_block(line1, line2)
+"   let line_codeblock_start = getline(a:line1 - 1)
+"   let filetype = matchstr(line_codeblock_start, '\v```\zs[-a-zA-Z0-9]+\ze')
+"   let options = { "filetype": filetype }
+"   call partedit#start(a:line1, a:line2, options)
+" endfunction
 
 " §§1 Plugin settings for colordinate
-let g:colordinate_save_path = expand("~/.config/nvim/colors")
+" let g:colordinate_save_path = expand("~/.config/nvim/colors")
 
 " §§1 Plugin settings for ddu.vim
-call ddu#custom#patch_global({
-    \   'ui': 'ff',
-    \   'uiParams': {
-    \     'ff': {
-    \       'split': 'floating',
-    \     }
-    \   },
-    \   'sources': [
-    \      {'name': 'file_rec', 'params': {}},
-    \   ],
-    \   'sourceOptions': {
-    \     '_': {
-    \       'matchers': ['matcher_substring'],
-    \     },
-    \     'rg' : {
-    \       'args': ['--column', '--no-heading', '--color', 'never'],
-    \     },
-    \   },
-    \   'kindOptions': {
-    \     'file': {
-    \       'defaultAction': 'open',
-    \     },
-    \   }
-    \ })
-
-call ddu#custom#patch_global({
-    \   'sourceParams' : {
-    \     'rg' : {
-    \       'args': ['--column', '--no-heading', '--color=never', '--hidden'],
-    \     },
-    \   },
-    \ })
-
-call ddu#custom#patch_global('sourceParams', {
-      \ 'file_external': {'cmd': ['fd', '.', '-H', '-E', '__pycache__', '-t', 'f']}
-      \ })
-
-nnoremap @o <Cmd>call ddu#start({'sources': [{'name': 'file_external', 'params': {}}]})<CR>
-nnoremap @m <Cmd>call ddu#start({'sources': [{'name': 'mr', 'params': {'kind': 'mru'}}]})<CR>
-nnoremap @g <Cmd>call ddu_rg#find()<CR>
-
-autocmd FileType ddu-ff call s:ddu_my_settings()
-function! s:ddu_my_settings() abort
-  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
-  nnoremap <buffer><silent> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-  nnoremap <buffer><silent> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  nnoremap <buffer><silent> <Esc>   <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-endfunction
-
-autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
-function! s:ddu_filter_my_settings() abort
-  inoremap <buffer><silent> <CR> <Esc><Cmd>close<CR>
-
-  nnoremap <buffer><silent> <CR>  <Cmd>close<CR>
-  nnoremap <buffer><silent> q     <Cmd>close<CR>
-  nnoremap <buffer><silent> <Esc> <Cmd>close<CR>
-endfunction
+" call ddu#custom#patch_global({
+"    \   'ui': 'ff',
+"    \   'uiParams': {
+"    \     'ff': {
+"    \       'split': 'floating',
+"    \     }
+"    \   },
+"    \   'sources': [
+"    \      {'name': 'file_rec', 'params': {}},
+"    \   ],
+"    \   'sourceOptions': {
+"    \     '_': {
+"    \       'matchers': ['matcher_substring'],
+"    \     },
+"    \     'rg' : {
+"    \       'args': ['--column', '--no-heading', '--color', 'never'],
+"    \     },
+"    \   },
+"    \   'kindOptions': {
+"    \     'file': {
+"    \       'defaultAction': 'open',
+"    \     },
+"    \   }
+"    \ })
+" 
+" call ddu#custom#patch_global({
+"    \   'sourceParams' : {
+"    \     'rg' : {
+"    \       'args': ['--column', '--no-heading', '--color=never', '--hidden'],
+"    \     },
+"    \   },
+"    \ })
+" 
+" call ddu#custom#patch_global('sourceParams', {
+"      \ 'file_external': {'cmd': ['fd', '.', '-H', '-E', '__pycache__', '-t', 'f']}
+"      \ })
+" 
+" nnoremap @o <Cmd>call ddu#start({'sources': [{'name': 'file_external', 'params': {}}]})<CR>
+" nnoremap @m <Cmd>call ddu#start({'sources': [{'name': 'mr', 'params': {'kind': 'mru'}}]})<CR>
+" nnoremap @g <Cmd>call ddu_rg#find()<CR>
+" 
+" autocmd FileType ddu-ff call s:ddu_my_settings()
+" function! s:ddu_my_settings() abort
+"   nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+"   nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
+"   nnoremap <buffer><silent> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+"   nnoremap <buffer><silent> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+"   nnoremap <buffer><silent> <Esc>   <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+" endfunction
+" 
+" autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
+" function! s:ddu_filter_my_settings() abort
+"   inoremap <buffer><silent> <CR> <Esc><Cmd>close<CR>
+" 
+"   nnoremap <buffer><silent> <CR>  <Cmd>close<CR>
+"   nnoremap <buffer><silent> q     <Cmd>close<CR>
+"   nnoremap <buffer><silent> <Esc> <Cmd>close<CR>
+" endfunction
 
 " §§1 Plugin settings for markdown-preview.nvim
-let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
-" let g:mkdp_highlight_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
-let g:mkdp_auto_close = 1
-let g:mkdp_preview_options = {
-    "\ 'mkit': {},
-    "\ 'katex': {},
-    "\ 'uml': {},
-    "\ 'maid': {},
-    \ 'disable_sync_scroll': 1,
-    "\ 'sync_scroll_type': 'middle',
-    "\ 'hide_yaml_meta': 1,
-    "\ 'sequence_diagrams': {},
-    "\ 'flowchart_diagrams': {},
-    "\ 'content_editable': v:false,
-    "\ 'disable_filename': 0
-    \ }
+
+" let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
+" let g:mkdp_auto_close = 1
+" let g:mkdp_preview_options = {
+"     "\ 'mkit': {},
+"     "\ 'katex': {},
+"     "\ 'uml': {},
+"     "\ 'maid': {},
+"    \ 'disable_sync_scroll': 1,
+"     "\ 'sync_scroll_type': 'middle',
+"     "\ 'hide_yaml_meta': 1,
+"     "\ 'sequence_diagrams': {},
+"     "\ 'flowchart_diagrams': {},
+"     "\ 'content_editable': v:false,
+"     "\ 'disable_filename': 0
+"    \ }

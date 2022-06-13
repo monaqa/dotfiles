@@ -64,3 +64,19 @@ parser_config.satysfi = {
   filetype = "satysfi", -- if filetype does not agrees with parser name
 }
 
+-- vim.pretty_print{sfile = vim.fn.expand("<sfile>:p", nil, nil)}
+
+-- vim.cmd[[
+-- nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
+-- 
+-- let s:query_dir = expand("<sfile>:p:h:h:h") .. '/after/queries/'
+-- 
+-- function! TreeSitterOverrideQuery(filetype, query_type)
+--   let query_file = s:query_dir .. a:filetype .. '/' .. a:query_type .. '.scm'
+--   let query = join(readfile(query_file), "\n")
+--   call luaeval('require("vim.treesitter.query").set_query(_A[1], _A[2], _A[3])', [a:filetype, a:query_type, query])
+-- endfunction
+-- 
+-- call TreeSitterOverrideQuery('bash', 'highlights')
+-- call TreeSitterOverrideQuery('markdown', 'highlights')
+-- ]]

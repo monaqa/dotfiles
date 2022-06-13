@@ -190,7 +190,7 @@ return {
         bottom = "0cell",
     },
     -- status_update_interval = 1000,
-    canonicalize_pasted_newlines = false,
+    canonicalize_pasted_newlines = "None",
 
     -- key mappings
     -- disable_default_key_bindings = true,

@@ -31,3 +31,9 @@ require('telescope').setup{
   }
 }
 
+vim.cmd[[
+nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
+nnoremap sg <Cmd>Telescope live_grep prompt_prefix=𝜸<CR>
+nnoremap sb <Cmd>Telescope buffers prompt_prefix=𝜷<CR>
+nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
+]]

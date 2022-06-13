@@ -33,6 +33,9 @@ set -x HAXE_STD_PATH "/usr/local/lib/haxe/std"
 # deno
 set -x PATH $HOME/.deno/bin $PATH
 
+# Rust sccache
+set -x RUSTC_WRAPPER (which sccache)
+
 eval (starship init fish)
 # }}}
 

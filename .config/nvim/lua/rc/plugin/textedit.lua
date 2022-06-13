@@ -95,3 +95,11 @@ util.autocmd_vimrc("FileType"){
         })
     end
 }
+
+-- §§1 Plugin settings for machakann/vim-swap
+vim.cmd[[
+omap i, <Plug>(swap-textobject-i)
+xmap i, <Plug>(swap-textobject-i)
+omap a, <Plug>(swap-textobject-a)
+xmap a, <Plug>(swap-textobject-a)
+]]

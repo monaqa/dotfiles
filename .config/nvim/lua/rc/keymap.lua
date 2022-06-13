@@ -15,12 +15,12 @@ vim.keymap.set("n", "ZZ", "<Nop>")
 vim.keymap.set("n", "ZQ", "<Nop>")
 
 local function toggle_column()
-    if vim.wo.signcolumn == "yes:2" and vim.wo.foldcolumn == "0" then
-        vim.wo.foldcolumn = "4"
-        vim.wo.signcolumn = "no"
+    if vim.opt_local.signcolumn == "yes:2" and vim.opt_local.foldcolumn == "0" then
+        vim.opt_local.foldcolumn = "4"
+        vim.opt_local.signcolumn = "no"
     else
-        vim.wo.foldcolumn = "0"
-        vim.wo.signcolumn = "yes:2"
+        vim.opt_local.foldcolumn = "0"
+        vim.opt_local.signcolumn = "yes:2"
     end
 end
 
@@ -29,25 +29,25 @@ vim.keymap.set("n", "Z", toggle_column, { silent = true, nowait = true })
 vim.api.nvim_create_augroup("vimrc_temporal", {clear = true})
 
 function M.temporal_attention()
-    vim.wo.cursorline = true
-    vim.wo.cursorcolumn = true
+    vim.opt_local.cursorline = true
+    vim.opt_local.cursorcolumn = true
     vim.api.nvim_create_autocmd("CursorMoved", {
         once = true,
         group = "vimrc_temporal",
         callback = function ()
-            vim.wo.cursorline = false
-            vim.wo.cursorcolumn = false
+            vim.opt_local.cursorline = false
+            vim.opt_local.cursorcolumn = false
         end
     })
 end
 
 function M.temporal_relnum()
-    vim.wo.relativenumber = true
+    vim.opt_local.relativenumber = true
     vim.api.nvim_create_autocmd("CursorMoved", {
         once = true,
         group = "vimrc_temporal",
         callback = function ()
-            vim.wo.relativenumber = false
+            vim.opt_local.relativenumber = false
         end
     })
 end
@@ -154,11 +154,16 @@ local function terminal_init()
         {buffer = true, expr = true}
     )
 
-    vim.wo.wrap = true
-    vim.wo.number = false
-    vim.wo.signcolumn = "no"
-    vim.wo.foldcolumn = "0"
+    -- vim.opt_local.wrap = true
+    -- vim.opt_local.number = false
+    -- vim.opt_local.signcolumn = "no"
+    -- vim.opt_local.foldcolumn = "0"
+    vim.opt_local.wrap = true
+    vim.opt_local.number = false
+    vim.opt_local.signcolumn = "no"
+    vim.opt_local.foldcolumn = "0"
 end
+
 util.autocmd_vimrc("TermOpen"){
     callback = terminal_init,
     -- buffer = true
@@ -598,7 +603,7 @@ local function vertical_f(ctx, forward)
     end
 
     local visual_match_id = vim.fn.matchadd("VisualBlue", pattern .. ".")
-    vim.wo.cursorline = true
+    vim.opt_local.cursorline = true
     vim.cmd"redraw"
     local char
     if ctx.repeated then
@@ -607,9 +612,9 @@ local function vertical_f(ctx, forward)
         char = vim.fn.nr2char(vim.fn.getchar())
         vertical_f_char = char
     end
-    vertical_f_pattern = pattern .. vim.fn.escape(char, [[\/]])
+    vertical_f_pattern = pattern .. [[\V]] .. vim.fn.escape(char, [[\/]])
     vim.fn.matchdelete(visual_match_id)
-    vim.wo.cursorline = false
+    vim.opt_local.cursorline = false
     local flag = "W"
     if not forward then
         flag = flag .. "b"
