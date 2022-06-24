@@ -29,8 +29,8 @@ nmap <silent> tr <Cmd>Telescope coc references<CR>
 " nmap <silent> tr <Plug>(coc-references)
 nmap <silent> tn <Plug>(coc-rename)
 nnoremap <silent> K :call CocAction('doHover')<CR>
-nnoremap <silent> <Space>j :call CocAction('diagnosticNext')<CR>
-nnoremap <silent> <Space>k :call CocAction('diagnosticPrevious')<CR>
+nnoremap <silent> <C-n> :call CocAction('diagnosticNext')<CR>
+nnoremap <silent> <C-p> :call CocAction('diagnosticPrevious')<CR>
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :

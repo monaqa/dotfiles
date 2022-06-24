@@ -103,12 +103,10 @@ nnoremap H <Cmd>call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", 
 
 -- §§1 Plugin settings for monaqa/vim-edgemotion
 
--- vim.cmd[[
--- nmap <C-n> m`<Plug>(edgemotion-j)
--- nmap <C-p> m`<Plug>(edgemotion-k)
--- vmap <C-n> <Plug>(edgemotion-j)
--- vmap <C-p> <Plug>(edgemotion-k)
--- ]]
+vim.keymap.set("n", "<Space>j", "m`<Plug>(edgemotion-j)")
+vim.keymap.set("n", "<Space>k", "m`<Plug>(edgemotion-k)")
+vim.keymap.set("x", "<Space>j", "<Plug>(edgemotion-j)")
+vim.keymap.set("x", "<Space>k", "<Plug>(edgemotion-k)")
 
 -- §§1 Plugin settings for modesearch.vim
 vim.cmd[[
