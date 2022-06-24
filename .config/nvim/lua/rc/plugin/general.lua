@@ -179,10 +179,10 @@ local function fern_buffer_config()
     vim.keymap.set("n", "o", "<Plug>(fern-action-new-file)", {remap = true, buffer = true})
     vim.keymap.set("n", "O", "<Plug>(fern-action-new-dir)", {remap = true, buffer = true})
 
-    vim.keymap.set("n", "d", "<Plug>(fern-action-trash)", {remap = true, buffer = true})
-    vim.keymap.set("n", "r", "<Plug>(fern-action-rename)", {remap = true, buffer = true})
-    vim.keymap.set("n", "c", "<Plug>(fern-action-copy)", {remap = true, buffer = true})
-    vim.keymap.set("n", "m", "<Plug>(fern-action-move)", {remap = true, buffer = true})
+    vim.keymap.set("n", "d", "<Plug>(fern-action-trash)", {remap = true, buffer = true, nowait = true})
+    vim.keymap.set("n", "r", "<Plug>(fern-action-rename)", {remap = true, buffer = true, nowait = true})
+    vim.keymap.set("n", "c", "<Plug>(fern-action-copy)", {remap = true, buffer = true, nowait = true})
+    vim.keymap.set("n", "m", "<Plug>(fern-action-move)", {remap = true, buffer = true, nowait = true})
 
     vim.keymap.set("n", "<C-l>", "<Plug>(fern-action-redraw)", {remap = true, buffer = true})
 
@@ -321,3 +321,17 @@ let g:mkdp_preview_options = {
     "\ 'disable_filename': 0
     \ }
 ]]
+
+-- §§1 Plugin settings for emmet.vim
+
+vim.g["user_emmet_mode"] = "n"
+vim.g["emmet_html5"] = 0
+vim.g["user_emmet_install_global"] = 0
+-- util.autocmd_vimrc{"FileType"}{
+--     pattern = {
+--         "html",
+--         "css",
+--         "svelte",
+--     },
+--     command = "EmmetInstall",
+-- }

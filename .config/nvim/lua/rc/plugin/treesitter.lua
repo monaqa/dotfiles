@@ -1,45 +1,5 @@
 -- vim:fdm=marker:fmr=§§,■■
 -- §§1 Plugin settings for nvim-treesitter.nvim
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = {
-      'bash',
-      'lua',
-      'markdown',
-      'python',
-      'query',
-      'rust',
-      'toml',
-      'typescript',
-      -- 'satysfi',
-      -- 'todome',
-      -- 'mermaid',
-  },
-  highlight = {
-      enable = true,
-      -- disable = {"rust",},
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-
-        -- Or you can define your own textobjects like this
-
-        -- ["iF"] = {
-        --   python = "(function_definition) @function",
-        --   cpp = "(function_definition) @function",
-        --   c = "(function_definition) @function",
-        --   java = "(method_declaration) @function",
-        -- },
-      },
-    },
-  },
-}
 
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.todome = {
@@ -62,6 +22,77 @@ parser_config.satysfi = {
     files = {"src/parser.c", "src/scanner.c"}
   },
   filetype = "satysfi", -- if filetype does not agrees with parser name
+}
+
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {
+      'bash',
+      'css',
+      'html',
+      'json',
+      'lua',
+      'markdown',
+      'python',
+      'query',
+      'rust',
+      'svelte',
+      'toml',
+      'typescript',
+      'yaml',
+
+      -- custom grammar
+      'mermaid',
+      'satysfi',
+      'todome',
+  },
+  highlight = {
+      enable = true,
+      -- disable = {"rust",},
+  },
+  indent = {
+      enable = true,
+      disable = {
+      'bash',
+      'css',
+      'html',
+      'json',
+      'lua',
+      'markdown',
+      'python',
+      'query',
+      'rust',
+      -- 'svelte',
+      'toml',
+      'typescript',
+      'yaml',
+
+      -- custom grammar
+      'mermaid',
+      'satysfi',
+      'todome',
+      },
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+
+        -- Or you can define your own textobjects like this
+
+        -- ["iF"] = {
+        --   python = "(function_definition) @function",
+        --   cpp = "(function_definition) @function",
+        --   c = "(function_definition) @function",
+        --   java = "(method_declaration) @function",
+        -- },
+      },
+    },
+  },
 }
 
 -- vim.pretty_print{sfile = vim.fn.expand("<sfile>:p", nil, nil)}

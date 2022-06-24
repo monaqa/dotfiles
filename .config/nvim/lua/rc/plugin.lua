@@ -1,5 +1,7 @@
 -- vim:fdm=marker:fmr=§§,■■
 
+local util = require("rc.util")
+
 require("rc.plugin.before")
 
 require("jetpack").startup(
@@ -31,6 +33,7 @@ function(use)
     use{"machakann/vim-swap"}
     use{"machakann/vim-textobj-functioncall"}
     use{"mattn/vim-maketable"}
+    use{"mattn/emmet-vim"}
     use{"mbbill/undotree"}
     use{"mhinz/vim-signify"}
     use{"nvim-lualine/lualine.nvim"}
@@ -76,7 +79,7 @@ function(use)
     use{"vim-denops/denops.vim"}
 
     -- tree-sitter
-    use{"nvim-treesitter/nvim-treesitter"}
+    use{"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
     use{"nvim-treesitter/playground"}
     use{"sainnhe/gruvbox-material"}
 
@@ -87,15 +90,17 @@ function(use)
     use{"cespare/vim-toml"}
     use{"chr4/nginx.vim"}
     use{"ekalinin/Dockerfile.vim"}
+    use{"evanleck/vim-svelte"}
     use{"leafgarland/typescript-vim"}
     use{"ocaml/vim-ocaml"}
     use{"pangloss/vim-javascript"}
     use{"pest-parser/pest.vim"}
+    use{"qnighy/satysfi.vim"}
     use{"rust-lang/rust.vim"}
     use{"vim-python/python-syntax"}
     use{"vito-c/jq.vim"}
     use{"wlangstroth/vim-racket"}
-    use{"qnighy/satysfi.vim"}
+    use{"othree/html5.vim"}
 
     -- monaqa
     use{"monaqa/colordinate.vim", opt = true}
@@ -110,6 +115,13 @@ function(use)
 
 end
 )
+
+for _, name in ipairs(vim.fn["jetpack#names"]()) do
+    if not util.to_bool(vim.fn["jetpack#tap"](name)) then
+        vim.fn["jetpack#sync"]()
+        break
+    end
+end
 
 require("rc.plugin.general")
 require("rc.plugin.paren")

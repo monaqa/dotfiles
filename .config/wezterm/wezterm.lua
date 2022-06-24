@@ -6,13 +6,17 @@ local SOLID_LEFT_ARROW = utf8.char(0xe0ba)
 -- The filled in variant of the > symbol
 local SOLID_RIGHT_ARROW = utf8.char(0xe0b8)
 
-local MAX_TAB_WIDTH = 25
+local MAX_TAB_WIDTH = 60
 
 ---@param dir_name string
 ---@return string
 local function stem(dir_name)
     if dir_name:find("/", 1, true) == nil then
         return dir_name
+    end
+    if dir_name:find("/.worktree/", 1, true) ~= nil then
+        local idx = dir_name:find("/.worktree/", 1, true)
+        return dir_name:sub(idx + 11)
     end
     local rev_dir = dir_name:reverse()
     return rev_dir:sub(1, rev_dir:find("/", 1, true) - 1):reverse()
@@ -28,6 +32,16 @@ local function trim_middle(text, max_len)
     local len_start = max_len // 2
     local len_end = max_len - len_start - 1
     return text:sub(1, len_start) .. "…" .. text:sub(#text - len_end + 1, #text)
+end
+
+local function align_spaces(text, width)
+    if #text >= width then
+        return "", ""
+    end
+    local left_n_spaces = (width - #text) // 2
+    local left_spaces = (" "):rep(left_n_spaces)
+    local right_spaces = (" "):rep(width - #text - left_n_spaces)
+    return left_spaces, right_spaces
 end
 
 ---@param home_dir string
@@ -48,6 +62,7 @@ local function path_env(home_dir)
 end
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+    local max_text_width = max_width - 2
     local edge_background = "#3c3836"
     local background = "#504945"
     local foreground = "#948570"
@@ -68,9 +83,13 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     if current_ps == nil or current_ps == "fish" then
         ps_title = ""
     else
-        ps_title = ([[(%s)]]):format(trim_middle(current_ps, 8))
+        ps_title = ([[(%s) ]]):format(trim_middle(current_ps, 8))
     end
-    local dir_title = trim_middle(current_dir, MAX_TAB_WIDTH - #ps_title)
+    -- local dir_title = trim_middle(current_dir, MAX_TAB_WIDTH - #ps_title)
+
+    local title_width = max_text_width - #ps_title
+    local dir_title = trim_middle(current_dir, title_width)
+    local left_spaces, right_spaces = align_spaces(ps_title .. dir_title, max_text_width)
 
     return {
         {Background={Color=edge_background}},
@@ -79,9 +98,11 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
         {Background={Color=background}},
         {Foreground={Color=foreground}},
         {Attribute={Intensity="Normal"}},
+        {Text=left_spaces},
         {Text=ps_title},
         {Attribute={Intensity="Bold"}},
         {Text=dir_title},
+        {Text=right_spaces},
         {Attribute={Intensity="Normal"}},
         {Background={Color=edge_background}},
         {Foreground={Color=edge_foreground}},

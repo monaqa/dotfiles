@@ -1,5 +1,7 @@
 -- vim:fdm=marker:fmr=§§,■■
 
+local util = require("rc.util")
+
 -- §§1 Plugin settings for dial.nvim
 vim.fn["DialConfig"] = function ()
     vim.cmd[[packadd dial.nvim]]
@@ -44,16 +46,29 @@ vim.fn["DialConfig"] = function ()
     vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
     vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
 
-    vim.cmd[[
-  augroup vimrc
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-a>",   require("dial.map").inc_normal("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-x>",   require("dial.map").dec_normal("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-a>",   require("dial.map").inc_visual("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-x>",   require("dial.map").dec_visual("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual("markdown"), {noremap = true})
-    autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual("markdown"), {noremap = true})
-  augroup END
-    ]]
+
+    util.autocmd_vimrc{"FileType"}{
+        pattern = "markdown",
+        callback = function ()
+            vim.api.nvim_set_keymap("n", "<C-a>",   require("dial.map").inc_normal("markdown"), {noremap = true})
+            vim.api.nvim_set_keymap("n", "<C-x>",   require("dial.map").dec_normal("markdown"), {noremap = true})
+            vim.api.nvim_set_keymap("v", "<C-a>",   require("dial.map").inc_visual("markdown"), {noremap = true})
+            vim.api.nvim_set_keymap("v", "<C-x>",   require("dial.map").dec_visual("markdown"), {noremap = true})
+            vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual("markdown"), {noremap = true})
+            vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual("markdown"), {noremap = true})
+        end
+    }
+
+  --   vim.cmd[[
+  -- augroup vimrc
+  --   autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-a>",   require("dial.map").inc_normal("markdown"), {noremap = true})
+  --   autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-x>",   require("dial.map").dec_normal("markdown"), {noremap = true})
+  --   autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-a>",   require("dial.map").inc_visual("markdown"), {noremap = true})
+  --   autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-x>",   require("dial.map").dec_visual("markdown"), {noremap = true})
+  --   autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual("markdown"), {noremap = true})
+  --   autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual("markdown"), {noremap = true})
+  -- augroup END
+  --   ]]
 end
 
 if vim.fn.getcwd() ~= '/Users/monaqa/ghq/github.com/monaqa/dial.nvim' then
@@ -63,35 +78,37 @@ end
 
 -- §§1 Plugin settings for monaqa/smooth-scroll.vim
 
+vim.g["smooth_scroll_no_default_key_mappings"] = 1
+vim.g["smooth_scroll_interval"] = 1000.0 / 40.0
+vim.g["smooth_scroll_scrollkind"] = "quintic"
+vim.g["smooth_scroll_add_jumplist"] = true
+
+vim.keymap.set({"n", "v"}, "<C-d>", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.o.scroll, 15, 'j', 'k') end)
+vim.keymap.set({"n", "v"}, "<C-u>", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.o.scroll, 15, 'j', 'k') end)
+vim.keymap.set({"n", "v"}, "<C-f>", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.fn.winheight(0), 25, 'j', 'k') end)
+vim.keymap.set({"n", "v"}, "<C-b>", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winheight(0), 25, 'j', 'k') end)
+
+-- vim.keymap.set({"n", "v"}, "L", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
+-- vim.keymap.set({"n", "v"}, "H", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
+
 vim.cmd[[
-let g:smooth_scroll_no_default_key_mappings = 1
-let g:smooth_scroll_interval = 1000.0 / 40
-let g:smooth_scroll_scrollkind = "quintic"
-let g:smooth_scroll_add_jumplist = v:true
-
-nnoremap <C-d> <Cmd>call smooth_scroll#flick( v:count1 * &scroll     , 15, 'j', 'k')<CR>
-nnoremap <C-u> <Cmd>call smooth_scroll#flick(-v:count1 * &scroll     , 15, 'j', 'k')<CR>
-nnoremap <C-f> <Cmd>call smooth_scroll#flick( v:count1 * winheight(0), 25, 'j', 'k')<CR>
-nnoremap <C-b> <Cmd>call smooth_scroll#flick(-v:count1 * winheight(0), 25, 'j', 'k')<CR>
-vnoremap <C-d> <Cmd>call smooth_scroll#flick( v:count1 * &scroll     , 15, 'j', 'k')<CR>
-vnoremap <C-u> <Cmd>call smooth_scroll#flick(-v:count1 * &scroll     , 15, 'j', 'k')<CR>
-vnoremap <C-f> <Cmd>call smooth_scroll#flick( v:count1 * winheight(0), 25, 'j', 'k')<CR>
-vnoremap <C-b> <Cmd>call smooth_scroll#flick(-v:count1 * winheight(0), 25, 'j', 'k')<CR>
-
 nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
 nnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
 nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+
+nnoremap L <Cmd>call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
+nnoremap H <Cmd>call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
 ]]
 
 
 -- §§1 Plugin settings for monaqa/vim-edgemotion
 
-vim.cmd[[
-nmap <C-n> m`<Plug>(edgemotion-j)
-nmap <C-p> m`<Plug>(edgemotion-k)
-vmap <C-n> <Plug>(edgemotion-j)
-vmap <C-p> <Plug>(edgemotion-k)
-]]
+-- vim.cmd[[
+-- nmap <C-n> m`<Plug>(edgemotion-j)
+-- nmap <C-p> m`<Plug>(edgemotion-k)
+-- vmap <C-n> <Plug>(edgemotion-j)
+-- vmap <C-p> <Plug>(edgemotion-k)
+-- ]]
 
 -- §§1 Plugin settings for modesearch.vim
 vim.cmd[[
@@ -102,15 +119,26 @@ nnoremap _ /
 ]]
 
 -- §§1 Plugin settings for partedit
-vim.cmd[[
-let g:partedit#opener = ":vsplit"
-let g:partedit#prefix_pattern = '\v\s*'
 
-command! -range ParteditCodeblock call s:partedit_code_block(<line1>, <line2>)
-function! s:partedit_code_block(line1, line2)
-  let line_codeblock_start = getline(a:line1 - 1)
-  let filetype = matchstr(line_codeblock_start, '\v```\zs[-a-zA-Z0-9]+\ze')
-  let options = { "filetype": filetype }
-  call partedit#start(a:line1, a:line2, options)
-endfunction
-]]
+vim.g["partedit#opener"] = ":vsplit"
+vim.g["partedit#prefix_pattern"] = [[\v\s*]]
+
+vim.api.nvim_create_user_command("ParteditCodeblock", function (meta)
+    local line_codeblock_start = vim.fn.getline(meta.line1 - 1)
+    local filetype = vim.fn.matchstr(line_codeblock_start, [[\v```\zs[-a-zA-Z0-9]+\ze]])
+    local options = { filetype = filetype }
+    vim.fn["partedit#start"](meta.line1, meta.line2, options)
+end, {range = true})
+
+-- vim.cmd[[
+-- let g:partedit#opener = ":vsplit"
+-- let g:partedit#prefix_pattern = '\v\s*'
+-- 
+-- command! -range ParteditCodeblock call s:partedit_code_block(<line1>, <line2>)
+-- function! s:partedit_code_block(line1, line2)
+--   let line_codeblock_start = getline(a:line1 - 1)
+--   let filetype = matchstr(line_codeblock_start, '\v```\zs[-a-zA-Z0-9]+\ze')
+--   let options = { "filetype": filetype }
+--   call partedit#start(a:line1, a:line2, options)
+-- endfunction
+-- ]]

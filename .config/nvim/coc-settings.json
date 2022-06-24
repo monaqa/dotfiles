@@ -18,6 +18,8 @@
   "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.procMacro.enable": true,
 
+  "svelte.plugin.html.completions.enable": true,
+
   "deno.enable": false,
   "deno.lint": true,
   "deno.codeLens.references": true,
@@ -79,5 +81,6 @@
   "list.insertMappings": {
     "<C-j>": "normal:j",
     "<C-k>": "normal:k"
-  }
+  },
+  "svelte.enable-ts-plugin": true
 }

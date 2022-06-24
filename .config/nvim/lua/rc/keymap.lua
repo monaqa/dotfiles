@@ -14,17 +14,23 @@ vim.keymap.set("c", "<C-c>", "<C-f>")
 vim.keymap.set("n", "ZZ", "<Nop>")
 vim.keymap.set("n", "ZQ", "<Nop>")
 
-local function toggle_column()
-    if vim.opt_local.signcolumn == "yes:2" and vim.opt_local.foldcolumn == "0" then
-        vim.opt_local.foldcolumn = "4"
-        vim.opt_local.signcolumn = "no"
-    else
-        vim.opt_local.foldcolumn = "0"
-        vim.opt_local.signcolumn = "yes:2"
-    end
+-- local function toggle_column()
+--     if vim.opt_local.signcolumn == "yes:2" and vim.opt_local.foldcolumn == "0" then
+--         vim.opt_local.foldcolumn = "4"
+--         vim.opt_local.signcolumn = "no"
+--     else
+--         vim.opt_local.foldcolumn = "0"
+--         vim.opt_local.signcolumn = "yes:2"
+--     end
+-- end
+-- 
+-- vim.keymap.set("n", "Z", toggle_column, { silent = true, nowait = true })
+
+local function toggle_wrap()
+    vim.o.wrap = not vim.o.wrap
 end
 
-vim.keymap.set("n", "Z", toggle_column, { silent = true, nowait = true })
+vim.keymap.set("n", "Z", toggle_wrap, { silent = true, nowait = true })
 
 vim.api.nvim_create_augroup("vimrc_temporal", {clear = true})
 
@@ -301,10 +307,10 @@ end
 
 -- §§1 input Japanese character
 
-vim.keymap.set("n", "fj", "f<C-k>j", {})
-vim.keymap.set("n", "tj", "t<C-k>j", {})
-vim.keymap.set("n", "Fj", "F<C-k>j", {})
-vim.keymap.set("n", "Tj", "T<C-k>j", {})
+vim.keymap.set({"n", "x", "o"}, "fj", "f<C-k>j", {})
+vim.keymap.set({"n", "x", "o"}, "tj", "t<C-k>j", {})
+vim.keymap.set({"n", "x", "o"}, "Fj", "F<C-k>j", {})
+vim.keymap.set({"n", "x", "o"}, "Tj", "T<C-k>j", {})
 
 ---digraph を登録する。
 ---@param key_pair string
