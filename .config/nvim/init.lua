@@ -21,11 +21,6 @@ vim.cmd [[
 
 require("rc.plugin")
 
--- load plugins/their settings
-vim.cmd [[
-  source ~/.config/nvim/scripts/plugin.vim
-]]
-
 require("rc.autocmd")
 require("rc.option")
 require("rc.abbr")

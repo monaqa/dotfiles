@@ -171,7 +171,7 @@ local function fern_buffer_config()
     vim.keymap.set("n", "<CR>", "<Plug>(fern-open-or-enter)", {remap = true, buffer = true, nowait = true})
     vim.keymap.set("n", "e", "<Plug>(fern-action-open)", {remap = true, buffer = true})
     vim.keymap.set("n", "<BS>", "<Plug>(fern-action-leave)", {remap = true, buffer = true})
-    vim.keymap.set("n", "<Space>", "<Plug>(fern-open-mark)", {remap = true, buffer = true, nowait = true})
+    vim.keymap.set("n", "<Space>", "<Plug>(fern-action-mark)", {remap = true, buffer = true, nowait = true})
 
     vim.keymap.set("n", "t", "<Plug>(fern-expand-or-collapse)", {remap = true, buffer = true, nowait = true})
     vim.keymap.set("n", "T", "<Plug>(fern-action-collapse)", {remap = true, buffer = true, nowait = true})
@@ -204,6 +204,44 @@ util.autocmd_vimrc("FileType"){
     pattern = "fern",
     callback = fern_buffer_config
 }
+
+-- §§1 Plugin settings for gina.vim
+
+util.autocmd_vimrc{"FileType"}{
+    pattern = "gina-blame",
+    callback = function ()
+        vim.opt_local.number = false
+        vim.opt_local.signcolumn = "no"
+        vim.opt_local.foldcolumn = "0"
+    end
+}
+
+util.autocmd_vimrc{"FileType"}{
+    pattern = "gina-status",
+    callback = function ()
+        vim.keymap.set("n", "<C-l>", "<Cmd>e<CR>", {buffer = true})
+    end
+}
+
+util.autocmd_vimrc{"FileType"}{
+    pattern = "gina-log",
+    callback = function ()
+        vim.keymap.set("n", "c", "<Plug>(gina-changes-between)", {buffer = true, nowait = true})
+        vim.keymap.set("n", "C", "<Plug>(gina-commit-checkout)", {buffer = true, nowait = true})
+        vim.keymap.set("n", "}", [[<Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'W')<CR>]], {buffer = true, nowait = true})
+        vim.keymap.set("n", "{", [[<Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'Wb')<CR>]], {buffer = true, nowait = true})
+    end
+}
+
+vim.g["gina#command#blame#formatter#format"] = '%su%=|%au %ti %ma%in'
+
+vim.api.nvim_create_user_command("GinaBrowseYank", function (meta)
+    vim.cmd(([[%d,%dGina browse --exact --yank :]]):format(meta.line1, meta.line2))
+    vim.cmd[[
+      let @+ = @"
+      echo @+
+    ]]
+end, {range = "%"})
 
 -- §§1 Plugin settings for lualine.nvim
 vim.cmd[[
@@ -321,6 +359,21 @@ let g:mkdp_preview_options = {
     "\ 'disable_filename': 0
     \ }
 ]]
+
+-- §§1 Plugin settings for altr
+
+vim.keymap.set("n", "<Space>^", "<Plug>(altr-forward)", {remap = true})
+
+-- §§1 Plugin settings for vista
+vim.keymap.set("n", "sm", ":<C-u>Vista!!<CR>", {silent = true})
+
+util.autocmd_vimrc{"FileType"}{
+    pattern = "vista",
+    callback = function ()
+        vim.keymap.set("n", "<C-]>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
+        vim.keymap.set("n", "<CR>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
+    end
+}
 
 -- §§1 Plugin settings for emmet.vim
 

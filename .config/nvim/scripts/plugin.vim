@@ -30,169 +30,169 @@
 
 " §§1 Plugin settings for habamax/vim-gruvbit
 
-augroup vimrc
-  autocmd ColorScheme gruvbit call s:setting_gruvbit()
-  autocmd ColorScheme gruvbox-material call s:setting_gruvbox_material()
-augroup END
-
-function! s:setting_gruvbit() abort
-  hi! FoldColumn guibg=#303030
-  hi! NonText    guifg=#496da9
-  hi! CocHintFloat guibg=#444444 guifg=#45daef
-  hi! link CocRustChainingHint CocHintFloat
-  " Diff に関しては前のバージョン
-  " (https://github.com/habamax/vim-gruvbit/commit/a19259a1f02bbfff37d72eebef6b5d5d22f22248)
-  " のほうが好みだったので。
-  hi! DiffChange guifg=NONE guibg=#314a5c gui=NONE cterm=NONE
-  hi! DiffDelete guifg=#968772 guibg=#5c3728 gui=NONE cterm=NONE
-  hi! MatchParen guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
-
-  " hi! WeakTitle  cterm=bold ctermfg=225 gui=bold guifg=#fabd2f
-  " hi! WeakTitle  gui=nocombine,NONE guifg=#e69393
-  hi! WeakTitle  guifg=#fad57f
-  hi! Quote      guifg=#c6b7a2
-
-  hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
-  hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
-  hi! VisualBlue guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
-  hi! Pmenu      guibg=#505064
-
-  hi! CursorLine           guifg=NONE    guibg=#535657
-  hi! CursorColumn         guifg=NONE    guibg=#535657
-  hi! QuickFixLine         guifg=NONE    guibg=#4d569e
-
-  hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
-  hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
-  hi! BufferCurrentSign    guifg=#e9593d guibg=#444444 gui=bold
-  hi! BufferCurrentTarget  guifg=red     guibg=#444444 gui=bold
-  hi! BufferInactive       guifg=#bbbbbb guibg=#777777
-  hi! BufferInactiveMod    guifg=#dc9656 guibg=#777777
-  hi! BufferInactiveSign   guifg=#444444 guibg=#777777
-  hi! BufferInactiveTarget guifg=red     guibg=#777777
-  hi! BufferVisible        guifg=#888888 guibg=#444444
-  hi! BufferVisibleMod     guifg=#dc9656 guibg=#444444
-  hi! BufferVisibleSign    guifg=#888888 guibg=#444444
-  hi! BufferVisibleTarget  guifg=red     guibg=#444444
-  hi! BufferTabpages       guifg=#e9593d guibg=#444444 gui=bold
-  hi! BufferTabpageFill    guifg=#888888 guibg=#c8c8c8
-  hi! TabLineFill          guibg=#c8c8c8
-
-  " nvim-treesitter
-  hi! TSParameter ctermfg=14 guifg=#b3d5c8
-  hi! TSField     ctermfg=14 guifg=#b3d5c8
-
-  " Rust
-  hi! rustCommentLineDoc   guifg=#a6a182
-
-  " hi TypeBuiltin guifg=#fe8019 guibg=NONE gui=NONE cterm=NONE gui=bold
-  " 
-  " hi! link TSStrong    NONE
-  " hi! link TSEmphasis  NONE
-  " hi! link TSUnderline NONE
-  " hi! link TSNote      NONE
-  " hi! link TSWarning   WarningMsg
-  " hi! link TSDanger    ErrorMsg
-  " 
-  " hi! link TSAnnotation Constant
-  " hi! link TSAttribute Constant
-  " hi! link TSBoolean Constant
-  " hi! link TSCharacter String
-  " hi! link TSComment Comment
-  " hi! link TSConditional Statement
-  " hi! link TSConstBuiltin Constant
-  " hi! link TSConstMacro Constant
-  " hi! link TSConstant Constant
-  " hi! link TSConstructor Normal
-  " hi! link TSException Statement
-  " hi! link TSField Normal
-  " hi! link TSFloat Constant
-  " hi! link TSFuncBuiltin Normal
-  " hi! link TSFuncMacro Normal
-  " hi! link TSFunction Normal
-  " hi! link TSInclude Statement
-  " hi! link TSKeyword Statement
-  " hi! link TSKeywordFunction Statement
-  " hi! link TSKeywordOperator SpellRare
-  " hi! link TSLabel SpellRare
-  " hi! link TSMethod Normal
-  " hi! link TSNamespace Type
-  " hi! link TSNone Normal
-  " hi! link TSNumber Constant
-  " hi! link TSOperator SpellRare
-  " hi! link TSParameterReference Normal
-  " hi! link TSProperty String
-  " hi! link TSPunctBracket Normal
-  " hi! link TSPunctDelimiter Comment
-  " hi! link TSPunctSpecial Special
-  " hi! link TSRepeat Statement
-  " hi! link TSString String
-  " hi! link TSStringEscape String
-  " hi! link TSStringRegex String
-  " hi! link TSStructure BlueItalic
-  " hi! link TSSymbol Normal
-  " hi! link TSTag SpellRare
-  " hi! link TSTagDelimiter String
-  " hi! link TSText String
-  " hi! link TSStrike Comment
-  " hi! link TSMath String
-  " hi! link TSType Type
-  " hi! link TSTypeBuiltin TypeBuiltin
-  " hi! link TSURI String
-  " hi! link TSVariable Normal
-  " hi! link TSVariableBuiltin Identifier
-
-endfunction
-
-function! s:setting_gruvbox_material() abort
-  hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
-  hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
-  hi! BufferCurrentSign    guifg=#e9593d guibg=#444444 gui=bold
-  hi! BufferCurrentTarget  guifg=red     guibg=#444444 gui=bold
-  hi! BufferInactive       guifg=#bbbbbb guibg=#777777
-  hi! BufferInactiveMod    guifg=#dc9656 guibg=#777777
-  hi! BufferInactiveSign   guifg=#444444 guibg=#777777
-  hi! BufferInactiveTarget guifg=red     guibg=#777777
-  hi! BufferVisible        guifg=#888888 guibg=#444444
-  hi! BufferVisibleMod     guifg=#dc9656 guibg=#444444
-  hi! BufferVisibleSign    guifg=#888888 guibg=#444444
-  hi! BufferVisibleTarget  guifg=red     guibg=#444444
-  hi! BufferTabpages       guifg=#e9593d guibg=#444444 gui=bold
-  hi! BufferTabpageFill    guifg=#888888 guibg=#c8c8c8
-  hi! TabLineFill          guibg=#c8c8c8
-
-  hi! LineNr       guifg=#888888
-  hi! CursorLineNr guifg=#ebdbb2 guibg=#535657    gui=bold
-  hi! CursorLine   guifg=NONE    guibg=#535657
-  hi! CursorColumn guifg=NONE    guibg=#535657
-  hi! QuickFixLine guifg=NONE    guibg=#4d569e
-  hi! NonText      guifg=#496da9
-  hi! WhiteSpace   guifg=#496da9
-  hi! SpecialKey   guifg=#496da9
-  hi! Folded       guifg=#9e8f7a guibg=#535657 gui=NONE cterm=NONE
-  hi! VertSplit    guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
-  hi! MatchParen   guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
-
-  hi! Visual       guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
-  hi! VisualBlue   guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
-
-  hi! link IncSearch Search
-  " hi! IncSearch    ctermfg=234 ctermbg=142 guifg=#1d2021 guibg=#a9b665
-  " hi! link Search VisualBlue
-
-  hi! Pmenu            guibg=#505064
-  hi! NormalFloat      guibg=#505064
-  hi! CocRustHintFloat guibg=#444444 guifg=#258aaf
-  hi! link CocRustChainingHint CocRustHintFloat
-  hi! link CocRustTypeHint     CocRustHintFloat
-
-  hi! link TSField Normal
-endfunction
+" augroup vimrc
+"   autocmd ColorScheme gruvbit call s:setting_gruvbit()
+"   autocmd ColorScheme gruvbox-material call s:setting_gruvbox_material()
+" augroup END
+" 
+" function! s:setting_gruvbit() abort
+"   hi! FoldColumn guibg=#303030
+"   hi! NonText    guifg=#496da9
+"   hi! CocHintFloat guibg=#444444 guifg=#45daef
+"   hi! link CocRustChainingHint CocHintFloat
+"   " Diff に関しては前のバージョン
+"   " (https://github.com/habamax/vim-gruvbit/commit/a19259a1f02bbfff37d72eebef6b5d5d22f22248)
+"   " のほうが好みだったので。
+"   hi! DiffChange guifg=NONE guibg=#314a5c gui=NONE cterm=NONE
+"   hi! DiffDelete guifg=#968772 guibg=#5c3728 gui=NONE cterm=NONE
+"   hi! MatchParen guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
+" 
+"   " hi! WeakTitle  cterm=bold ctermfg=225 gui=bold guifg=#fabd2f
+"   " hi! WeakTitle  gui=nocombine,NONE guifg=#e69393
+"   hi! WeakTitle  guifg=#fad57f
+"   hi! Quote      guifg=#c6b7a2
+" 
+"   hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
+"   hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
+"   hi! VisualBlue guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
+"   hi! Pmenu      guibg=#505064
+" 
+"   hi! CursorLine           guifg=NONE    guibg=#535657
+"   hi! CursorColumn         guifg=NONE    guibg=#535657
+"   hi! QuickFixLine         guifg=NONE    guibg=#4d569e
+" 
+"   hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
+"   hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
+"   hi! BufferCurrentSign    guifg=#e9593d guibg=#444444 gui=bold
+"   hi! BufferCurrentTarget  guifg=red     guibg=#444444 gui=bold
+"   hi! BufferInactive       guifg=#bbbbbb guibg=#777777
+"   hi! BufferInactiveMod    guifg=#dc9656 guibg=#777777
+"   hi! BufferInactiveSign   guifg=#444444 guibg=#777777
+"   hi! BufferInactiveTarget guifg=red     guibg=#777777
+"   hi! BufferVisible        guifg=#888888 guibg=#444444
+"   hi! BufferVisibleMod     guifg=#dc9656 guibg=#444444
+"   hi! BufferVisibleSign    guifg=#888888 guibg=#444444
+"   hi! BufferVisibleTarget  guifg=red     guibg=#444444
+"   hi! BufferTabpages       guifg=#e9593d guibg=#444444 gui=bold
+"   hi! BufferTabpageFill    guifg=#888888 guibg=#c8c8c8
+"   hi! TabLineFill          guibg=#c8c8c8
+" 
+"   " nvim-treesitter
+"   hi! TSParameter ctermfg=14 guifg=#b3d5c8
+"   hi! TSField     ctermfg=14 guifg=#b3d5c8
+" 
+"   " Rust
+"   hi! rustCommentLineDoc   guifg=#a6a182
+" 
+"   " hi TypeBuiltin guifg=#fe8019 guibg=NONE gui=NONE cterm=NONE gui=bold
+"   " 
+"   " hi! link TSStrong    NONE
+"   " hi! link TSEmphasis  NONE
+"   " hi! link TSUnderline NONE
+"   " hi! link TSNote      NONE
+"   " hi! link TSWarning   WarningMsg
+"   " hi! link TSDanger    ErrorMsg
+"   " 
+"   " hi! link TSAnnotation Constant
+"   " hi! link TSAttribute Constant
+"   " hi! link TSBoolean Constant
+"   " hi! link TSCharacter String
+"   " hi! link TSComment Comment
+"   " hi! link TSConditional Statement
+"   " hi! link TSConstBuiltin Constant
+"   " hi! link TSConstMacro Constant
+"   " hi! link TSConstant Constant
+"   " hi! link TSConstructor Normal
+"   " hi! link TSException Statement
+"   " hi! link TSField Normal
+"   " hi! link TSFloat Constant
+"   " hi! link TSFuncBuiltin Normal
+"   " hi! link TSFuncMacro Normal
+"   " hi! link TSFunction Normal
+"   " hi! link TSInclude Statement
+"   " hi! link TSKeyword Statement
+"   " hi! link TSKeywordFunction Statement
+"   " hi! link TSKeywordOperator SpellRare
+"   " hi! link TSLabel SpellRare
+"   " hi! link TSMethod Normal
+"   " hi! link TSNamespace Type
+"   " hi! link TSNone Normal
+"   " hi! link TSNumber Constant
+"   " hi! link TSOperator SpellRare
+"   " hi! link TSParameterReference Normal
+"   " hi! link TSProperty String
+"   " hi! link TSPunctBracket Normal
+"   " hi! link TSPunctDelimiter Comment
+"   " hi! link TSPunctSpecial Special
+"   " hi! link TSRepeat Statement
+"   " hi! link TSString String
+"   " hi! link TSStringEscape String
+"   " hi! link TSStringRegex String
+"   " hi! link TSStructure BlueItalic
+"   " hi! link TSSymbol Normal
+"   " hi! link TSTag SpellRare
+"   " hi! link TSTagDelimiter String
+"   " hi! link TSText String
+"   " hi! link TSStrike Comment
+"   " hi! link TSMath String
+"   " hi! link TSType Type
+"   " hi! link TSTypeBuiltin TypeBuiltin
+"   " hi! link TSURI String
+"   " hi! link TSVariable Normal
+"   " hi! link TSVariableBuiltin Identifier
+" 
+" endfunction
+" 
+" function! s:setting_gruvbox_material() abort
+"   hi! BufferCurrent        guifg=#ebdbb2 guibg=#444444 gui=bold
+"   hi! BufferCurrentMod     guifg=#dc9656 guibg=#444444 gui=bold
+"   hi! BufferCurrentSign    guifg=#e9593d guibg=#444444 gui=bold
+"   hi! BufferCurrentTarget  guifg=red     guibg=#444444 gui=bold
+"   hi! BufferInactive       guifg=#bbbbbb guibg=#777777
+"   hi! BufferInactiveMod    guifg=#dc9656 guibg=#777777
+"   hi! BufferInactiveSign   guifg=#444444 guibg=#777777
+"   hi! BufferInactiveTarget guifg=red     guibg=#777777
+"   hi! BufferVisible        guifg=#888888 guibg=#444444
+"   hi! BufferVisibleMod     guifg=#dc9656 guibg=#444444
+"   hi! BufferVisibleSign    guifg=#888888 guibg=#444444
+"   hi! BufferVisibleTarget  guifg=red     guibg=#444444
+"   hi! BufferTabpages       guifg=#e9593d guibg=#444444 gui=bold
+"   hi! BufferTabpageFill    guifg=#888888 guibg=#c8c8c8
+"   hi! TabLineFill          guibg=#c8c8c8
+" 
+"   hi! LineNr       guifg=#888888
+"   hi! CursorLineNr guifg=#ebdbb2 guibg=#535657    gui=bold
+"   hi! CursorLine   guifg=NONE    guibg=#535657
+"   hi! CursorColumn guifg=NONE    guibg=#535657
+"   hi! QuickFixLine guifg=NONE    guibg=#4d569e
+"   hi! NonText      guifg=#496da9
+"   hi! WhiteSpace   guifg=#496da9
+"   hi! SpecialKey   guifg=#496da9
+"   hi! Folded       guifg=#9e8f7a guibg=#535657 gui=NONE cterm=NONE
+"   hi! VertSplit    guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
+"   hi! MatchParen   guifg=#ebdbb2 guibg=#51547d gui=NONE cterm=NONE
+" 
+"   hi! Visual       guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
+"   hi! VisualBlue   guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
+" 
+"   hi! link IncSearch Search
+"   " hi! IncSearch    ctermfg=234 ctermbg=142 guifg=#1d2021 guibg=#a9b665
+"   " hi! link Search VisualBlue
+" 
+"   hi! Pmenu            guibg=#505064
+"   hi! NormalFloat      guibg=#505064
+"   hi! CocRustHintFloat guibg=#444444 guifg=#258aaf
+"   hi! link CocRustChainingHint CocRustHintFloat
+"   hi! link CocRustTypeHint     CocRustHintFloat
+" 
+"   hi! link TSField Normal
+" endfunction
 
 
 
 " §§1 Plugin settings for kana/vim-altr
 
-nmap <Space>^ <Plug>(altr-forward)
+" nmap <Space>^ <Plug>(altr-forward)
 
 " §§1 Plugin settings for kana/vim-textobj-user
 
@@ -367,79 +367,79 @@ nmap <Space>^ <Plug>(altr-forward)
 
 " §§1 Plugin settings for lambdalisue/gina.vim
 
-augroup rc_gina
-  autocmd!
-  autocmd FileType gina-blame setlocal nonumber
-  autocmd FileType gina-blame setlocal signcolumn=no
-  autocmd FileType gina-blame setlocal foldcolumn=0
-  autocmd FileType gina-status nnoremap <buffer> <C-l> <Cmd>e<CR>
-
-  autocmd FileType gina-log nmap <buffer><nowait> c <Plug>(gina-changes-between)
-  autocmd FileType gina-log nmap <buffer><nowait> C <Plug>(gina-commit-checkout)
-
-  autocmd FileType gina-log nmap <buffer><nowait> } <Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'W')<CR>
-  autocmd FileType gina-log nmap <buffer><nowait> { <Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'Wb')<CR>
-augroup END
-
-let g:gina#command#blame#formatter#format = '%su%=|%au %ti %ma%in'
-
-let s:gina_custom_translation_patterns = [
-\   [
-\     '\vhttps?://(%domain)/(.{-})/(.{-})%(\.git)?$',
-\     '\vgit://(%domain)/(.{-})/(.{-})%(\.git)?$',
-\     '\vgit\@(%domain):(.{-})/(.{-})%(\.git)?$',
-\     '\vssh://git\@(%domain)/(.{-})/(.{-})%(\.git)?$',
-\   ], {
-\     'root':  'https://\1/\2/\3/tree/%r1/',
-\     '_':     'https://\1/\2/\3/blob/%r1/%pt%{#L|}ls%{-L}le',
-\     'exact': 'https://\1/\2/\3/blob/%h1/%pt%{#L|}ls%{-L}le',
-\   },
-\ ]
-
-command! -range=% GinaBrowseYank call s:gina_browse_yank(<line1>, <line2>)
-
-function! s:gina_browse_yank(line1, line2)
-  execute a:line1 .. ',' .. a:line2 .. 'Gina browse --exact --yank :'
-  let @+ = @"
-  echo @+
-endfunction
+" augroup rc_gina
+"   autocmd!
+"   autocmd FileType gina-blame setlocal nonumber
+"   autocmd FileType gina-blame setlocal signcolumn=no
+"   autocmd FileType gina-blame setlocal foldcolumn=0
+"   autocmd FileType gina-status nnoremap <buffer> <C-l> <Cmd>e<CR>
+" 
+"   autocmd FileType gina-log nmap <buffer><nowait> c <Plug>(gina-changes-between)
+"   autocmd FileType gina-log nmap <buffer><nowait> C <Plug>(gina-commit-checkout)
+" 
+"   autocmd FileType gina-log nmap <buffer><nowait> } <Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'W')<CR>
+"   autocmd FileType gina-log nmap <buffer><nowait> { <Cmd>call search('\v%^<Bar>%$<Bar>^(.*\x{7})@!.*$', 'Wb')<CR>
+" augroup END
+" 
+" let g:gina#command#blame#formatter#format = '%su%=|%au %ti %ma%in'
+" 
+" let s:gina_custom_translation_patterns = [
+"\   [
+"\     '\vhttps?://(%domain)/(.{-})/(.{-})%(\.git)?$',
+"\     '\vgit://(%domain)/(.{-})/(.{-})%(\.git)?$',
+"\     '\vgit\@(%domain):(.{-})/(.{-})%(\.git)?$',
+"\     '\vssh://git\@(%domain)/(.{-})/(.{-})%(\.git)?$',
+"\   ], {
+"\     'root':  'https://\1/\2/\3/tree/%r1/',
+"\     '_':     'https://\1/\2/\3/blob/%r1/%pt%{#L|}ls%{-L}le',
+"\     'exact': 'https://\1/\2/\3/blob/%h1/%pt%{#L|}ls%{-L}le',
+"\   },
+"\ ]
+" 
+" command! -range=% GinaBrowseYank call s:gina_browse_yank(<line1>, <line2>)
+" 
+" function! s:gina_browse_yank(line1, line2)
+"   execute a:line1 .. ',' .. a:line2 .. 'Gina browse --exact --yank :'
+"   let @+ = @"
+"   echo @+
+" endfunction
 
 " §§1 Plugin settings for lervag/vimtex
 
-let g:vimtex_compiler_latexmk = {'callback' : 0}
-let g:tex_flavor = "latex"
-let g:vimtex_fold_enabled = 1
-let g:vimtex_indent_ignored_envs = ['document', 'frame']
-let g:vimtex_imaps_leader = "@"
+" let g:vimtex_compiler_latexmk = {'callback' : 0}
+" let g:tex_flavor = "latex"
+" let g:vimtex_fold_enabled = 1
+" let g:vimtex_indent_ignored_envs = ['document', 'frame']
+" let g:vimtex_imaps_leader = "@"
 
 
 " §§1 Plugin settings for liuchengxu/vista.vim
 
-nnoremap <silent> sm :<C-u>Vista!!<CR>
-
-augroup vimrc
-  autocmd filetype vista nnoremap <buffer> <C-]> <Cmd>call vista#cursor#FoldOrJump()<CR>
-  autocmd filetype vista nnoremap <buffer><nowait> <CR> <Cmd>call vista#cursor#FoldOrJump()<CR>
-augroup END
+" nnoremap <silent> sm :<C-u>Vista!!<CR>
+" 
+" augroup vimrc
+"   autocmd filetype vista nnoremap <buffer> <C-]> <Cmd>call vista#cursor#FoldOrJump()<CR>
+"   autocmd filetype vista nnoremap <buffer><nowait> <CR> <Cmd>call vista#cursor#FoldOrJump()<CR>
+" augroup END
 
 " §§1 Plugin settings for machakann/vim-textobj-functioncall
 
-let g:textobj_functioncall_no_default_key_mappings = 1
-" ジェネリクスも関数呼び出しとして扱う
-let g:textobj_functioncall_patterns = [
-  \ {
-  \   'header' : '\<\%(\h\k*\.\)*\h\k*',
-  \   'bra'    : '(',
-  \   'ket'    : ')',
-  \   'footer' : '',
-  \ },
-  \ {
-  \   'header' : '\<\h\k*',
-  \   'bra'    : '<',
-  \   'ket'    : '>',
-  \   'footer' : '',
-  \ },
-  \ ]
+" let g:textobj_functioncall_no_default_key_mappings = 1
+" " ジェネリクスも関数呼び出しとして扱う
+" let g:textobj_functioncall_patterns = [
+"  \ {
+"  \   'header' : '\<\%(\h\k*\.\)*\h\k*',
+"  \   'bra'    : '(',
+"  \   'ket'    : ')',
+"  \   'footer' : '',
+"  \ },
+"  \ {
+"  \   'header' : '\<\h\k*',
+"  \   'bra'    : '<',
+"  \   'ket'    : '>',
+"  \   'footer' : '',
+"  \ },
+"  \ ]
 
 " §§1 Plugin settings for machakann/vim-sandwich
 
@@ -1006,18 +1006,18 @@ let g:textobj_functioncall_patterns = [
 " nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
 
 " §§1 Plugin settings for nvim-treesitter
-nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
+" nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
 
-let s:query_dir = expand("<sfile>:p:h:h") .. '/after/queries/'
-
-function! s:override_query(filetype, query_type)
-  let query_file = s:query_dir .. a:filetype .. '/' .. a:query_type .. '.scm'
-  let query = join(readfile(query_file), "\n")
-  call luaeval('require("vim.treesitter.query").set_query(_A[1], _A[2], _A[3])', [a:filetype, a:query_type, query])
-endfunction
-
-call s:override_query('bash', 'highlights')
-call s:override_query('markdown', 'highlights')
+" let s:query_dir = expand("<sfile>:p:h:h") .. '/after/queries/'
+" 
+" function! s:override_query(filetype, query_type)
+"   let query_file = s:query_dir .. a:filetype .. '/' .. a:query_type .. '.scm'
+"   let query = join(readfile(query_file), "\n")
+"   call luaeval('require("vim.treesitter.query").set_query(_A[1], _A[2], _A[3])', [a:filetype, a:query_type, query])
+" endfunction
+" 
+" call s:override_query('bash', 'highlights')
+" call s:override_query('markdown', 'highlights')
 
 " tree-sitter の fold を有効にしたい場合
 

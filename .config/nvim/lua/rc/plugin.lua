@@ -95,7 +95,7 @@ function(use)
     use{"ocaml/vim-ocaml"}
     use{"pangloss/vim-javascript"}
     use{"pest-parser/pest.vim"}
-    use{"qnighy/satysfi.vim"}
+    -- use{"qnighy/satysfi.vim"}
     use{"rust-lang/rust.vim"}
     use{"vim-python/python-syntax"}
     use{"vito-c/jq.vim"}
@@ -123,6 +123,7 @@ for _, name in ipairs(vim.fn["jetpack#names"]()) do
     end
 end
 
+require("rc.plugin.colorscheme")
 require("rc.plugin.general")
 require("rc.plugin.paren")
 require("rc.plugin.textedit")

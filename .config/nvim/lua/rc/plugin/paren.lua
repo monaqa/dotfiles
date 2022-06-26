@@ -254,3 +254,6 @@ endfunction
 
 vim.keymap.set({"x", "o"}, "m", "<Plug>(textobj-sandwich-literal-query-i)", {remap = true})
 vim.keymap.set({"x", "o"}, "M", "<Plug>(textobj-sandwich-literal-query-a)", {remap = true})
+
+-- §§1 Plugin settings for machakann/vim-textobj-functioncall
+vim.g["textobj_functioncall_no_default_key_mappings"] = 1

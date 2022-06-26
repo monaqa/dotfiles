@@ -8,6 +8,16 @@ util.autocmd_vimrc{"BufRead", "BufNewFile"}{
 }
 
 util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+    pattern = {
+        "*.saty",
+        "*.satyh",
+        "*.satyh-*",
+        "*.satyg",
+    },
+    command = "setlocal filetype=satysfi"
+}
+
+util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     pattern = "*.saty",
     callback = function ()
         vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", {buffer = true})

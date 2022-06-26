@@ -60,7 +60,7 @@ require'nvim-treesitter.configs'.setup {
       'markdown',
       'python',
       'query',
-      'rust',
+      -- 'rust',
       -- 'svelte',
       'toml',
       'typescript',
@@ -68,7 +68,7 @@ require'nvim-treesitter.configs'.setup {
 
       -- custom grammar
       'mermaid',
-      'satysfi',
+      -- 'satysfi',
       'todome',
       },
   },
@@ -111,3 +111,16 @@ require'nvim-treesitter.configs'.setup {
 -- call TreeSitterOverrideQuery('bash', 'highlights')
 -- call TreeSitterOverrideQuery('markdown', 'highlights')
 -- ]]
+
+vim.keymap.set("n", "ts", "<Cmd>TSHighlightCapturesUnderCursor<CR>")
+
+local query_dir = vim.fn.expand("~/.config/nvim/after/queries", nil, nil)
+
+local function override_query(filetype, query_type)
+    local query_file = ("%s/%s/%s.scm"):format(query_dir, filetype, query_type)
+    local query = vim.fn.join(vim.fn.readfile(query_file), "\n")
+    require("vim.treesitter.query").set_query(filetype, query_type, query)
+end
+
+override_query("bash", "highlights")
+override_query("markdown", "highlights")
