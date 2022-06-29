@@ -50,6 +50,7 @@ function(use)
     use{"xolox/vim-session"}
     use{"yasukotelin/shirotelin", opt = true}
     use{"kana/vim-textobj-entire"}
+    use{"andymass/vim-matchup"}
 
     -- paren
     use{"cohama/lexima.vim"}

@@ -93,6 +93,10 @@ require'nvim-treesitter.configs'.setup {
       },
     },
   },
+  matchup = {
+    enable = true,              -- mandatory, false will disable the whole extension
+    -- disable = { "c", "ruby" },  -- optional, list of language that will be disabled
+  },
 }
 
 -- vim.pretty_print{sfile = vim.fn.expand("<sfile>:p", nil, nil)}
