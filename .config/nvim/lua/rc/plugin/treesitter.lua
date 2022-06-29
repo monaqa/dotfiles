@@ -122,5 +122,5 @@ local function override_query(filetype, query_type)
     require("vim.treesitter.query").set_query(filetype, query_type, query)
 end
 
-override_query("bash", "highlights")
-override_query("markdown", "highlights")
+-- override_query("bash", "highlights")
+-- override_query("markdown", "highlights")

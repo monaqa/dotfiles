@@ -2,8 +2,6 @@
 
 local util = require("rc.util")
 
-require("rc.plugin.before")
-
 require("jetpack").startup(
 function(use)
 
@@ -51,6 +49,7 @@ function(use)
     use{"xolox/vim-misc"}
     use{"xolox/vim-session"}
     use{"yasukotelin/shirotelin", opt = true}
+    use{"kana/vim-textobj-entire"}
 
     -- paren
     use{"cohama/lexima.vim"}
@@ -119,18 +118,8 @@ end
 for _, name in ipairs(vim.fn["jetpack#names"]()) do
     if not util.to_bool(vim.fn["jetpack#tap"](name)) then
         vim.fn["jetpack#sync"]()
-        break
+        return false
     end
 end
 
-require("rc.plugin.colorscheme")
-require("rc.plugin.general")
-require("rc.plugin.paren")
-require("rc.plugin.textedit")
-require("rc.plugin.coc")
-require("rc.plugin.telescope")
-require("rc.plugin.denops")
-require("rc.plugin.treesitter")
-require("rc.plugin.filetype")
-require("rc.plugin.monaqa")
-
+return true

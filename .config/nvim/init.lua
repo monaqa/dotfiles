@@ -19,7 +19,9 @@ vim.cmd [[
   filetype plugin indent off
 ]]
 
-require("rc.plugin")
+require("rc.plugin.before")
+require("rc.plugin_loader")
+require("rc.plugin_config")
 
 require("rc.autocmd")
 require("rc.option")
@@ -27,6 +29,7 @@ require("rc.abbr")
 require("rc.keymap")
 require("rc.command")
 require("rc.filetype")
+
 
 vim.cmd [[
   filetype plugin indent on
