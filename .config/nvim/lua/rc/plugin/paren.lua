@@ -257,3 +257,6 @@ vim.keymap.set({"x", "o"}, "M", "<Plug>(textobj-sandwich-literal-query-a)", {rem
 
 -- §§1 Plugin settings for machakann/vim-textobj-functioncall
 vim.g["textobj_functioncall_no_default_key_mappings"] = 1
+
+-- §§1 Plugin settings for matchup
+vim.g["matchup_matchparen_offscreen"] = {}

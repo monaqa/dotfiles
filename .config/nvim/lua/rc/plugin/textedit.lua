@@ -103,3 +103,14 @@ xmap i, <Plug>(swap-textobject-i)
 omap a, <Plug>(swap-textobject-a)
 xmap a, <Plug>(swap-textobject-a)
 ]]
+
+-- §§1 Plugin settings for textobje-entire
+for _, op in ipairs({
+    "y",
+    "=",
+    "<",
+    ">",
+}) do
+    vim.keymap.set("n", op .. "ie", op .. "<Plug>(textobj-entire-i)<C-o>", {remap = true})
+    vim.keymap.set("n", op .. "ae", op .. "<Plug>(textobj-entire-a)<C-o>", {remap = true})
+end
