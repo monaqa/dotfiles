@@ -91,6 +91,12 @@ util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     end
 }
 
+-- §§1 jison
+util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+    pattern = "*.jison",
+    command = [[setfiletype yacc]]
+}
+
 -- §§1 LICENSE
 util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     pattern = "LICENSE",

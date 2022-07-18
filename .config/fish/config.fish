@@ -9,6 +9,7 @@ set -g fish_ambiguous_width 1
 set -x PATH "/opt/homebrew/bin" $PATH
 set -x PATH "$HOME/.cargo/bin" $PATH
 set -x PATH "$HOME/.local/bin" $PATH
+set -x PATH "$HOME/.nimble/bin" $PATH
 
 # SATySFi
 export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi

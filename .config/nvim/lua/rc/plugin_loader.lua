@@ -102,6 +102,7 @@ function(use)
     use{"wlangstroth/vim-racket"}
     use{"othree/html5.vim"}
     use{"preservim/vim-markdown"}
+    use{"justinmk/vim-syntax-extra"}
 
     -- monaqa
     use{"monaqa/colordinate.vim", opt = true}
