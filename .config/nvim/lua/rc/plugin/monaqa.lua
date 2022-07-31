@@ -98,6 +98,7 @@ nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "
 
 nnoremap L <Cmd>call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
 nnoremap H <Cmd>call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
+nnoremap M <Cmd>call smooth_scroll#flick(wincol() - winwidth(0) / 2, 10, "zl", "zh", v:true)<CR>
 ]]
 
 

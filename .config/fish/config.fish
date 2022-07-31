@@ -138,6 +138,10 @@ if test -n "$FUZZY_FINDER"
   abbr -a ghpv   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr view --web {}"
   abbr -a ghiv   "gh issue list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh issue view --web {}"
 
+  # downloads
+  abbr -a vdown  "exa -a -s created -r ~/Downloads/ | $FUZZY_FINDER | xargs -I{} nvim ~/Downloads/{}"
+  abbr -a odown  "exa -a -s created -r ~/Downloads/ | $FUZZY_FINDER | xargs -I{} open ~/Downloads/{}"
+
   # git swim worktree
   abbr -a gsw "cd (echo (git worktree list | $FUZZY_FINDER || pwd) | awk '{print \$1;}')"
 end
