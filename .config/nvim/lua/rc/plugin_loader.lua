@@ -22,7 +22,7 @@ function(use)
     use{"kyazdani42/nvim-web-devicons"}
     use{"lambdalisue/fern-hijack.vim"}
     use{"lambdalisue/fern-renderer-nerdfont.vim"}
-    use{"lambdalisue/fern.vim"}
+    use{"lambdalisue/fern.vim", branch = "main"}
     use{"lambdalisue/gina.vim"}
     use{"lambdalisue/nerdfont.vim"}
     use{"lervag/vimtex"}

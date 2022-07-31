@@ -91,6 +91,12 @@ util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     end
 }
 
+-- §§1 nim
+util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+    pattern = "*.nim",
+    command = [[setfiletype nim]]
+}
+
 -- §§1 jison
 util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     pattern = "*.jison",

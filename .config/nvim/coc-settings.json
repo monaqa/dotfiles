@@ -40,6 +40,10 @@
       "filetypes": ["elm"],
       "rootPatterns": ["elm.json"]
     },
+    "nim": {
+      "command": "nimlsp",
+      "filetypes": ["nim"]
+    },
     "satysfi-ls": {
         "command": "satysfi-language-server",
         "args": [],
