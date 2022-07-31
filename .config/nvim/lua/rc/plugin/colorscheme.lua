@@ -24,7 +24,8 @@ util.autocmd_vimrc{"ColorScheme"}{
             hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
             hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
             hi! VisualBlue guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
-            hi! Pmenu      guibg=#505064
+            hi! Pmenu      guibg=#404064
+            hi! CocMenuSel guibg=#303054
 
             hi! CursorLine           guifg=NONE    guibg=#535657
             hi! CursorColumn         guifg=NONE    guibg=#535657

@@ -70,6 +70,19 @@
   "diagnostic.infoSign": "ℹ️ ",
   "diagnostic.hintSign": "ℹ️ ",
 
+  "suggest.floatConfig": {
+    "winblend": 10
+  },
+
+  "diagnostic.floatConfig": {
+    "winblend": 15
+  },
+
+  "hover.floatConfig": {
+    "winblend": 10,
+    "shadow": false
+  },
+
   "suggest.snippetIndicator": "►",
   "suggest.acceptSuggestionOnCommitCharacter": false,
   "suggest.asciiCharactersOnly": true,

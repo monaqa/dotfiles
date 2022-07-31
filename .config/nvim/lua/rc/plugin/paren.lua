@@ -74,7 +74,8 @@ vim.fn["lexima#add_rule"]{
 -- end, {expr = true, silent = true})
 
 vim.cmd[[
-    inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
+    " inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
+    inoremap <expr> <CR> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
 ]]
 
 -- §§1 Plugin settings for machakann/vim-sandwich

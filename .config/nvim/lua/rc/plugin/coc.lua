@@ -18,7 +18,6 @@ vim.o.tagfunc="CocTagFunc"
 vim.g["coc_global_extensions"] = {
     "coc-snippets",
     "coc-marketplace",
-    -- "coc-actions",
     "coc-rust-analyzer",
     "coc-pyright",
     "coc-json",
@@ -38,32 +37,51 @@ vim.keymap.set("n", "<C-p>", "<Cmd>call CocAction('diagnosticPrevious')<CR>")
 vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)", {remap = true})
 vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)", {remap = true})
 
-local function coc_check_backspace()
-    local col = vim.fn.col(".") - 1
-    if not util.to_bool(col) then
-        return true
-    end
-    return vim.regex([[\s]]):match_str(vim.fn.getline(".")[col])
-end
+-- local function coc_check_backspace()
+--     local col = vim.fn.col(".") - 1
+--     if not util.to_bool(col) then
+--         return true
+--     end
+--     return vim.regex([[\s]]):match_str(vim.fn.getline(".")[col])
+-- end
+--
+-- vim.keymap.set("i", "<Tab>", function ()
+--     -- if util.to_bool(vim.fn.pumvisible()) then
+--     --     return "<C-n>"
+--     -- end
+--     if util.to_bool(vim.fn["coc#pum#visible"]()) then
+--         return vim.fn["coc#pum#next"](1)
+--     end
+--     if coc_check_backspace() then
+--         return "<Tab>"
+--     end
+--     return vim.fn["coc#refresh"]()
+-- end, {expr = true, silent = true})
+-- 
+-- vim.keymap.set("i", "<S-Tab>", function ()
+--     -- if util.to_bool(vim.fn.pumvisible()) then
+--     --     return "<C-p>"
+--     -- end
+--     if util.to_bool(vim.fn["coc#pum#visible"]()) then
+--         return vim.fn["coc#pum#next"](-1)
+--     end
+--     return "<C-h>"
+-- end, {expr = true})
 
-vim.keymap.set("i", "<Tab>", function ()
-    if util.to_bool(vim.fn.pumvisible()) then
-        return "<C-n>"
-    end
-    if coc_check_backspace() then
-        return "<Tab>"
-    end
-    return vim.fn["coc#refresh"]()
-end, {expr = true, silent = true})
+vim.cmd[[
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+  endfunction
 
-vim.keymap.set("i", "<S-Tab>", function ()
-    if util.to_bool(vim.fn.pumvisible()) then
-        return "<C-p>"
-    end
-    return "<C-h>"
-end, {expr = true})
+  " Insert <tab> when previous text is space, refresh completion if not.
+  inoremap <silent><expr> <TAB>
+    \ coc#pum#visible() ? coc#pum#next(1):
+    \ <SID>check_back_space() ? "\<Tab>" :
+    \ coc#refresh()
+  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+]]
 
 vim.g.coc_snippet_next = "<C-g><C-j>"
 vim.g.coc_snippet_prev = "<C-g><C-k>"
-
 
