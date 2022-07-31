@@ -94,6 +94,7 @@
       "\r",
       "\n"
   ],
+  "suggest.noselect": true,
 
   "list.insertMappings": {
     "<C-j>": "normal:j",
