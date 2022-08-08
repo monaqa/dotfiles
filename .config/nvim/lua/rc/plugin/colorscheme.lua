@@ -1,11 +1,48 @@
 local util = require("rc.util")
 
+---@alias tbl_hl {name: string, gui?: string, guifg?: string, guibg?: string, cterm?: string, ctermbg?: string, ctermfg?: string}
+---@alias tbl_link {name: string, link: string}
+
+---@param tbl tbl_hl | tbl_link
+local function sethl(tbl)
+    if tbl.link ~= nil then
+        vim.cmd(table.concat({
+            "highlight!",
+            "link",
+            tbl.name,
+            tbl.link,
+        }, " "))
+    else
+        local opts = {}
+        for _, key in ipairs{"gui", "guifg", "guibg", "cterm", "ctermfg", "ctermbg"} do
+            if tbl[key] ~= nil then
+                table.insert(opts, key .. "=" .. tbl[key])
+            end
+        end
+        local opts_str = table.concat(opts, " ")
+        vim.cmd(table.concat({
+            "highlight!",
+            tbl.name,
+            opts_str,
+        }, " "))
+    end
+end
+
 util.autocmd_vimrc{"ColorScheme"}{
     pattern = "gruvbit",
     callback = function ()
+        sethl{name = "FoldColumn", guibg="#303030"}
+        sethl{
+            name = "VertSplit",
+            guifg="#c8c8c8",
+            guibg="None",
+            -- gui="bold",
+        }
+        -- sethl{name="CocSearch", guifg="#45daef"}
+        sethl{name="CocSearch", guifg="#fabd2f"}
 
         vim.cmd [[
-            hi! FoldColumn guibg=#303030
+            " hi! FoldColumn guibg=#303030
             hi! NonText    guifg=#496da9
             hi! CocHintFloat guibg=#444444 guifg=#45daef
             hi! link CocRustChainingHint CocHintFloat
@@ -21,7 +58,7 @@ util.autocmd_vimrc{"ColorScheme"}{
             hi! WeakTitle  guifg=#fad57f
             hi! Quote      guifg=#c6b7a2
 
-            hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
+            " hi! VertSplit  guifg=#c8c8c8 guibg=None    gui=NONE cterm=NONE
             hi! Visual     guifg=NONE    guibg=#4d564e gui=NONE cterm=NONE
             hi! VisualBlue guifg=NONE    guibg=#4d569e gui=NONE cterm=NONE
             hi! Pmenu      guibg=#404064

@@ -83,10 +83,10 @@ vim.g["smooth_scroll_interval"] = 1000.0 / 40.0
 vim.g["smooth_scroll_scrollkind"] = "quintic"
 vim.g["smooth_scroll_add_jumplist"] = true
 
-vim.keymap.set({"n", "v"}, "<C-d>", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.o.scroll, 15, 'j', 'k') end)
-vim.keymap.set({"n", "v"}, "<C-u>", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.o.scroll, 15, 'j', 'k') end)
-vim.keymap.set({"n", "v"}, "<C-f>", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.fn.winheight(0), 25, 'j', 'k') end)
-vim.keymap.set({"n", "v"}, "<C-b>", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winheight(0), 25, 'j', 'k') end)
+vim.keymap.set({"n", "x"}, "<C-d>", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.o.scroll, 15, 'j', 'k') end)
+vim.keymap.set({"n", "x"}, "<C-u>", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.o.scroll, 15, 'j', 'k') end)
+vim.keymap.set({"n", "x"}, "<C-f>", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.fn.winheight(0), 25, 'j', 'k') end)
+vim.keymap.set({"n", "x"}, "<C-b>", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winheight(0), 25, 'j', 'k') end)
 
 -- vim.keymap.set({"n", "v"}, "L", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
 -- vim.keymap.set({"n", "v"}, "H", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
@@ -95,10 +95,16 @@ vim.cmd[[
 nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
 nnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
 nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+xnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
+xnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+xnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
 
 nnoremap L <Cmd>call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
 nnoremap H <Cmd>call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
 nnoremap M <Cmd>call smooth_scroll#flick(wincol() - winwidth(0) / 2, 10, "zl", "zh", v:true)<CR>
+xnoremap L <Cmd>call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
+xnoremap H <Cmd>call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
+xnoremap M <Cmd>call smooth_scroll#flick(wincol() - winwidth(0) / 2, 10, "zl", "zh", v:true)<CR>
 ]]
 
 

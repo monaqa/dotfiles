@@ -55,6 +55,7 @@ make_abbrev{
     {from = 'clc', to = 'CocLocalConfig'},
     {from = 'cr', to = 'CocRestart'},
     {from = 'em', to = 'Emmet'},
+    {from = 'fmt', to = 'call CocActionAsync("format")'},
     {from = 'gbl', to = 'Gina blame'},
     {from = 'gbr', to = 'GinaBrowseYank'},
     {from = 'gby', to = 'GinaBrowseYank'},

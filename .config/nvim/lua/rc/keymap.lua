@@ -112,14 +112,17 @@ vim.keymap.set("x", "R", table.concat{
 }, {})
 
 -- §§2 QuickFix search
-vim.keymap.set("n", "g/", table.concat({
-    [[":\<C-u>silent grep "]],
-    [[input('g/')]],
-    [[' %']],
-}, " .. "), {expr = true} )
+vim.keymap.set("n", "g/", function ()
+    local query = vim.fn.input("g/")
+    vim.fn.setreg("/", [[\v]] .. query)
+    -- hlsearch の有効化
+    vim.o.hlsearch = vim.o.hlsearch
 
-vim.keymap.set("n", "gj", util.cmdcr"cnext", {})
-vim.keymap.set("n", "gk", util.cmdcr"cprevious", {})
+    return [[:\<C-u>silent grep ]] .. vim.fn.string(query) .. [[ .]]
+end, {expr = true} )
+
+vim.keymap.set("n", "gj", util.cmdcr"cnext" .. "zz", {})
+vim.keymap.set("n", "gk", util.cmdcr"cprevious" .. "zz", {})
 
 -- https://qiita.com/lighttiger2505/items/166a4705f852e8d7cd0d
 -- Toggle QuickFix
