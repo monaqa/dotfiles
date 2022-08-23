@@ -1,1 +1,4 @@
-/Users/monaqa/ghq/github.com/monaqa/tree-sitter-satysfi/queries/matchup.scm
+(block_text
+  ["'<" "<"]  @open.block
+  ">"  @close.block
+  ) @scope.block
