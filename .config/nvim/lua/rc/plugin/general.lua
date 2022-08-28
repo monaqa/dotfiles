@@ -388,3 +388,6 @@ vim.g["user_emmet_install_global"] = 0
 --     },
 --     command = "EmmetInstall",
 -- }
+
+-- §§1 Plugin settings for scrollbar
+-- require("scrollbar").setup()

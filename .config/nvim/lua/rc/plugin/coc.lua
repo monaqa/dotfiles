@@ -37,6 +37,24 @@ vim.keymap.set("n", "<C-p>", "<Cmd>call CocAction('diagnosticPrevious')<CR>")
 vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)", {remap = true})
 vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)", {remap = true})
 
+-- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
+vim.cmd[[
+    inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()
+    inoremap <expr> <Plug>(vimrc-lexima-expand-cr) lexima#expand('<LT>CR>', 'i')
+]]
+
+vim.keymap.set("i", "<CR>", function ()
+    if util.to_bool(vim.fn["coc#pum#visible"]()) then
+        -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
+        -- （意図せず補完候補がセレクトされてしまうのを抑止）
+        if (vim.fn["coc#pum#info"]()["index"] >= 0) then
+            return "<Plug>(vimrc-coc-select-confirm)"
+        end
+        return "<C-y><Plug>(vimrc-lexima-expand-cr)"
+    end
+    return "<Plug>(vimrc-lexima-expand-cr)"
+end, {expr = true, remap = true})
+
 -- local function coc_check_backspace()
 --     local col = vim.fn.col(".") - 1
 --     if not util.to_bool(col) then

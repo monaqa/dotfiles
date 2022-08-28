@@ -51,6 +51,7 @@ function(use)
     use{"yasukotelin/shirotelin", opt = true}
     use{"kana/vim-textobj-entire"}
     use{"andymass/vim-matchup"}
+    -- use{"petertriho/nvim-scrollbar"}
 
     -- paren
     use{"cohama/lexima.vim"}

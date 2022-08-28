@@ -145,3 +145,5 @@ fi
 # starship {{{
 eval "$(starship init zsh)"
 # }}}
+
+export PATH="$HOME/.poetry/bin:$PATH"

@@ -14,7 +14,17 @@ util.autocmd_vimrc{"BufRead", "BufNewFile"}{
         "*.satyh-*",
         "*.satyg",
     },
-    command = "setlocal filetype=satysfi"
+    callback = function ()
+        if (vim.fn.getline(1) == "%SATySFi v0.1.0") then
+            vim.cmd[[
+                setfiletype satysfi_new
+            ]]
+        else
+            vim.cmd[[
+                setfiletype satysfi
+            ]]
+        end
+    end
 }
 
 util.autocmd_vimrc{"BufRead", "BufNewFile"}{
