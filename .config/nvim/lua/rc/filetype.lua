@@ -17,7 +17,7 @@ util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     callback = function ()
         if (vim.fn.getline(1) == "%SATySFi v0.1.0") then
             vim.cmd[[
-                setfiletype satysfi_new
+                setfiletype satysfi_v0_1_0
             ]]
         else
             vim.cmd[[

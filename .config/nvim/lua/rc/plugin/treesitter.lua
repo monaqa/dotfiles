@@ -19,17 +19,18 @@ parser_config.mermaid = {
 parser_config.satysfi = {
   install_info = {
     url = "https://github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
-    files = {"src/parser.c", "src/scanner.c"}
+    files = {"src/parser.c", "src/scanner.c"},
+    branch = "master",
   },
   filetype = "satysfi", -- if filetype does not agrees with parser name
 }
 
-parser_config.satysfi_new = {
+parser_config.satysfi_v0_1_0 = {
   install_info = {
     url = "~/ghq/github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
     files = {"src/parser.c", "src/scanner.c"}
   },
-  filetype = "satysfi_new", -- if filetype does not agrees with parser name
+  filetype = "satysfi_v0_1_0", -- if filetype does not agrees with parser name
 }
 
 require'nvim-treesitter.configs'.setup {
