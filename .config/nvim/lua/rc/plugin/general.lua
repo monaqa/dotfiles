@@ -363,6 +363,7 @@ let g:mkdp_preview_options = {
 -- §§1 Plugin settings for altr
 
 vim.keymap.set("n", "<Space>^", "<Plug>(altr-forward)", {remap = true})
+vim.keymap.set("n", "<Space>-", "<Plug>(altr-forward)", {remap = true})
 
 -- §§1 Plugin settings for vista
 vim.keymap.set("n", "sm", ":<C-u>Vista!!<CR>", {silent = true})

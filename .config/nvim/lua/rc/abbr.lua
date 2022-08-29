@@ -97,4 +97,6 @@ make_abbrev{
     {prepose_nospace = "'<,'>", from = 'gby', to = 'GinaBrowseYank'},
     {prepose_nospace = "'<,'>", from = 'p', to = 'Partedit'},
     {prepose_nospace = "'<,'>", from = 'pc', to = 'ParteditCodeblock'},
+
+    {from = "isort", to = "!isort --profile black %"}
 }

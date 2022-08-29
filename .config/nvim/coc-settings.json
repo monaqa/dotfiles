@@ -7,6 +7,7 @@
   "python.linting.mypyEnabled": true,
   "python.formatting.provider": "black",
   "python.formatting.blackdPath": "/opt/homebrew/bin/black",
+  "python.sortImports.path": "/opt/homebrew/bin/isort",
 
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.workspace.library": [
@@ -60,7 +61,7 @@
     }
   },
 
-  "coc.preferences.formatOnSaveFiletypes": ["javascript"],
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "python"],
 
   "codeLens.enable": true,
   "codeLens.position": "right_align",
