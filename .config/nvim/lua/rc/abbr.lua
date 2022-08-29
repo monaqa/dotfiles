@@ -80,6 +80,7 @@ make_abbrev{
     {from = 'tg', to = 'Telescope live_grep'},
     {from = 'tmp', to = 'Template'},
     {from = 'ssf', to = 'syntax sync fromstart'},
+    {from = 'sfs', to = 'setfiletype satysfi'},
     {prepose = 'CocCommand', from = 's', to = 'snippets.editSnippets'},
     {prepose = 'CocCommand', from = 'r', to = 'rust-analyzer.reload'},
     {prepose = 'CocList', from = 'e', to = 'extensions'},

@@ -65,6 +65,7 @@
 [
  ";"
  ":"
+ ":>"
  ","
  "."
  (inline_text_bullet_star)
@@ -110,6 +111,12 @@
 ;   )
 (bind_type_single "|" @operator.special)
 
+; ちょっとやりすぎ感
+(declaration_val
+  var: (var_name) @function
+  type: (type_function)
+  )
+
 ;; expr
 (expr_match "|" @operator.special)
 
@@ -144,8 +151,6 @@
 (variant_name) @type
 
 (label_name) @field
-
-
 
 ; (bind_val_single
 ;   . (var_name) @function
