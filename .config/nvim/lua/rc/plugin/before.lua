@@ -56,6 +56,6 @@ let g:python_highlight_all = 1
 
 " §§1 Plugin settings for plasticboy/vim-markdown
 
-let g:vim_markdown_new_list_item_indent = 2
+let g:vim_markdown_new_list_item_indent = 4
 
 ]]

@@ -18,7 +18,13 @@ require('lualine').setup {
     },
     lualine_y = {
       function()
-        return "" .. vim.fn["gina#component#repo#branch"]()
+          local branch = vim.fn["gina#component#repo#branch"]()
+          local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+          if branch == "" then
+              return cwd
+          else
+              return cwd .. " │ " .. vim.fn["gina#component#repo#branch"]()
+          end
       end
     },
     lualine_z = {

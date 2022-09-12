@@ -1,0 +1,54 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+snippet pyproject "Python project template using setuptools" b
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["${1:my_awesome_package}"]
+
+[project]
+name = "ble_optimizer"
+authors = [{name="$2", email="$3"}]
+description = """
+$0
+"""
+
+dynamic = ["version"]
+requires-python = ">=${4:3.9.0},<4.0.0"
+
+[project.optional-dependencies]
+develop = [
+	"black",
+	"isort",
+	"ipython",
+]
+
+[project.scripts]
+$1 = "$1.cli:main"
+endsnippet

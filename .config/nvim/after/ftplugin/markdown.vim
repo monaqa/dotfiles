@@ -1,7 +1,7 @@
 " YAML 形式の frontmatter があるときはそのシンタックスハイライトを有効にする
 let g:vim_markdown_frontmatter = 1
 
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal spell
 setlocal foldexpr=MarkdownLevel(v:lnum)
 setlocal foldmethod=expr

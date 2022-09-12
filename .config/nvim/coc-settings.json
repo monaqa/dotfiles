@@ -1,7 +1,7 @@
 {
   "prettier.trailingComma": "all",
 
-  "python.pythonPath": "/usr/local/bin/python3",
+  "python.pythonPath": "/opt/homebrew/bin/python3",
   "python.linting.mypyPath": "mypy",
   "python.linting.flake8Enabled": false,
   "python.linting.mypyEnabled": true,
@@ -18,7 +18,7 @@
 
   "rust-analyzer.lens.enable": false,
   "rust-analyzer.checkOnSave.command": "clippy",
-  "rust-analyzer.updates.channel": "nightly",
+  "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.procMacro.enable": true,
 
   "svelte.plugin.html.completions.enable": true,
