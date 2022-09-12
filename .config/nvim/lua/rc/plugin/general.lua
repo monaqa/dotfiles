@@ -315,23 +315,113 @@ unlet s:local_session_directory
 ]]
 
 -- §§1 Plugin settings for barbar.nvim
-vim.cmd[[
-nnoremap sp <Cmd>BufferPrevious<CR>
-nnoremap sn <Cmd>BufferNext<CR>
-nnoremap s1 <Cmd>BufferGoto 1<CR>
-nnoremap s2 <Cmd>BufferGoto 2<CR>
-nnoremap s3 <Cmd>BufferGoto 3<CR>
-nnoremap s4 <Cmd>BufferGoto 4<CR>
-nnoremap s5 <Cmd>BufferGoto 5<CR>
-nnoremap s6 <Cmd>BufferGoto 6<CR>
-nnoremap s7 <Cmd>BufferGoto 7<CR>
-nnoremap s8 <Cmd>BufferGoto 8<CR>
-nnoremap s9 <Cmd>BufferGoto 9<CR>
-nnoremap sP <Cmd>BufferMovePrevious<CR>
-nnoremap sN <Cmd>BufferMoveNext<CR>
+-- vim.cmd[[
+-- nnoremap sp <Cmd>BufferPrevious<CR>
+-- nnoremap sn <Cmd>BufferNext<CR>
+-- nnoremap s1 <Cmd>BufferGoto 1<CR>
+-- nnoremap s2 <Cmd>BufferGoto 2<CR>
+-- nnoremap s3 <Cmd>BufferGoto 3<CR>
+-- nnoremap s4 <Cmd>BufferGoto 4<CR>
+-- nnoremap s5 <Cmd>BufferGoto 5<CR>
+-- nnoremap s6 <Cmd>BufferGoto 6<CR>
+-- nnoremap s7 <Cmd>BufferGoto 7<CR>
+-- nnoremap s8 <Cmd>BufferGoto 8<CR>
+-- nnoremap s9 <Cmd>BufferGoto 9<CR>
+-- nnoremap sP <Cmd>BufferMovePrevious<CR>
+-- nnoremap sN <Cmd>BufferMoveNext<CR>
+-- 
+-- nnoremap sw <Cmd>BufferClose<CR>
+-- ]]
 
-nnoremap sw <Cmd>BufferClose<CR>
-]]
+
+-- §§1 Plugin settings for bufferline.nvim
+require("bufferline").setup{
+    options = {
+        diagnostics = "coc",
+        -- separator_style = "thin",
+        separator_style = "slant",
+        indicator = {
+            style = "none"
+            -- style = "underline"
+        },
+        left_trunc_marker = '',
+        right_trunc_marker = '',
+        diagnostics_indicator = function(count, level, diagnostics_dict, context)
+            if level == "error" then
+                return "🚨" .. count
+            elseif level == "warning" then
+                return "🐤" .. count
+            end
+            -- return "ℹ️ "
+            return ""
+        end,
+    },
+
+    highlights = {
+        background                  = { bg = "#666666", fg = "#bbbbbb" },
+        tab                         = { bg = "#666666", fg = "#bbbbbb" },
+        tab_selected                = { bg = "None"   , fg = "#ebdbb2" },
+        tab_close                   = { bg = "#666666", fg = "#bbbbbb" },
+        close_button                = { bg = "#666666", fg = "#bbbbbb" },
+        close_button_visible        = { bg = "#444444", fg = "#ebdbb2" },
+        close_button_selected       = { bg = "None"   , fg = "#ebdbb2" },
+        buffer_visible              = { bg = "#444444", fg = "#ebdbb2" },
+        buffer_selected             = { bg = "None"   , fg = "#ebdbb2" },
+        numbers                     = { bg = "#666666", fg = "#bbbbbb" },
+        numbers_visible             = { bg = "#444444", fg = "#ebdbb2" },
+        numbers_selected            = { bg = "None"   , fg = "#ebdbb2" },
+        diagnostic                  = { bg = "#666666",                },
+        diagnostic_visible          = { bg = "#444444",                },
+        diagnostic_selected         = { bg = "None"   ,                },
+        hint                        = { bg = "#666666", fg = "#bbbbbb" },
+        hint_visible                = { bg = "#444444", fg = "#ebdbb2" },
+        hint_selected               = { bg = "None"   , fg = "#ebdbb2" },
+        hint_diagnostic             = { bg = "#666666", fg = "#bbbbbb" },
+        hint_diagnostic_visible     = { bg = "#444444", fg = "#ebdbb2" },
+        hint_diagnostic_selected    = { bg = "None"   , fg = "#ebdbb2" },
+        info                        = { bg = "#666666", fg = "#bbbbbb" },
+        info_visible                = { bg = "#444444", fg = "#ebdbb2" },
+        info_selected               = { bg = "None"   , fg = "#ebdbb2" },
+        info_diagnostic             = { bg = "#666666", fg = "#bbbbbb" },
+        info_diagnostic_visible     = { bg = "#444444", fg = "#ebdbb2" },
+        info_diagnostic_selected    = { bg = "None"   , fg = "#ebdbb2" },
+        warning                     = { bg = "#666666",                },
+        warning_visible             = { bg = "#444444",                },
+        warning_selected            = { bg = "None"   ,                },
+        warning_diagnostic          = { bg = "#666666",                },
+        warning_diagnostic_visible  = { bg = "#444444",                },
+        warning_diagnostic_selected = { bg = "None"   ,                },
+        error                       = { bg = "#666666", fg = "#dd7777" },
+        error_visible               = { bg = "#444444", fg = "#dd4444" },
+        error_selected              = { bg = "None"   ,                },
+        error_diagnostic            = { bg = "#666666", fg = "#dd7777" },
+        error_diagnostic_visible    = { bg = "#444444", fg = "#dd4444" },
+        error_diagnostic_selected   = { bg = "None"   ,                },
+        modified                    = { bg = "#666666",                },
+        modified_visible            = { bg = "#444444",                },
+        modified_selected           = { bg = "None"   ,                },
+        duplicate_selected          = { bg = "None"   ,                },
+        duplicate_visible           = { bg = "#444444",                },
+        duplicate                   = { bg = "#666666",                },
+        indicator_selected          = { bg = "None"   , fg = "#ebdbb2" },
+        pick_selected               = { bg = "None"   , fg = "#ebdbb2" },
+        pick_visible                = { bg = "#444444", fg = "#ebdbb2" },
+        pick                        = { bg = "#666666", fg = "#bbbbbb" },
+        offset_separator            = { bg = "#666666", fg = "#ebdbb2" },
+
+        fill                        = { bg = "#c8c8c8" },
+        separator                   = { bg = "#666666", fg = "#c8c8c8" },
+        separator_visible           = { bg = "#444444", fg = "#c8c8c8" },
+        separator_selected          = { bg = "None"   , fg = "#c8c8c8" },
+    }
+
+}
+
+vim.keymap.set("n", "sn", "<Cmd>BufferLineCycleNext<CR>")
+vim.keymap.set("n", "sp", "<Cmd>BufferLineCyclePrev<CR>")
+vim.keymap.set("n", "sN", "<Cmd>BufferLineMoveNext<CR>")
+vim.keymap.set("n", "sP", "<Cmd>BufferLineMovePrev<CR>")
+vim.keymap.set("n", "sw", "<C-^><Cmd>bd! #<CR>")
 
 -- §§1 Plugin settings for asterisk
 vim.cmd[[
@@ -344,7 +434,7 @@ nmap g# <Plug>(asterisk-gz*)
 -- §§1 Plugin settings for markdown-preview.nvim
 vim.cmd[[
 let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
-let g:mkdp_auto_close = 1
+let g:mkdp_auto_close = 0
 let g:mkdp_preview_options = {
     "\ 'mkit': {},
     "\ 'katex': {},
@@ -358,37 +448,37 @@ let g:mkdp_preview_options = {
     "\ 'content_editable': v:false,
     "\ 'disable_filename': 0
     \ }
-]]
+    ]]
 
--- §§1 Plugin settings for altr
+    -- §§1 Plugin settings for altr
 
-vim.keymap.set("n", "<Space>^", "<Plug>(altr-forward)", {remap = true})
-vim.keymap.set("n", "<Space>-", "<Plug>(altr-forward)", {remap = true})
+    vim.keymap.set("n", "<Space>^", "<Plug>(altr-forward)", {remap = true})
+    vim.keymap.set("n", "<Space>-", "<Plug>(altr-forward)", {remap = true})
 
--- §§1 Plugin settings for vista
-vim.keymap.set("n", "sm", ":<C-u>Vista!!<CR>", {silent = true})
+    -- §§1 Plugin settings for vista
+    vim.keymap.set("n", "sm", ":<C-u>Vista!!<CR>", {silent = true})
 
-util.autocmd_vimrc{"FileType"}{
-    pattern = "vista",
-    callback = function ()
-        vim.keymap.set("n", "<C-]>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
-        vim.keymap.set("n", "<CR>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
-    end
-}
+    util.autocmd_vimrc{"FileType"}{
+        pattern = "vista",
+        callback = function ()
+            vim.keymap.set("n", "<C-]>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
+            vim.keymap.set("n", "<CR>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
+        end
+    }
 
--- §§1 Plugin settings for emmet.vim
+    -- §§1 Plugin settings for emmet.vim
 
-vim.g["user_emmet_mode"] = "n"
-vim.g["emmet_html5"] = 0
-vim.g["user_emmet_install_global"] = 0
--- util.autocmd_vimrc{"FileType"}{
---     pattern = {
---         "html",
---         "css",
---         "svelte",
---     },
---     command = "EmmetInstall",
--- }
+    vim.g["user_emmet_mode"] = "n"
+    vim.g["emmet_html5"] = 0
+    vim.g["user_emmet_install_global"] = 0
+    -- util.autocmd_vimrc{"FileType"}{
+        --     pattern = {
+            --         "html",
+            --         "css",
+            --         "svelte",
+            --     },
+            --     command = "EmmetInstall",
+            -- }
 
--- §§1 Plugin settings for scrollbar
--- require("scrollbar").setup()
+            -- §§1 Plugin settings for scrollbar
+            -- require("scrollbar").setup()

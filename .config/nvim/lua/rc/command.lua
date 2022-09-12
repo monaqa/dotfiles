@@ -1,3 +1,4 @@
+local util = require "rc.util"
 -- vim:fdm=marker:fmr=§§,■■
 
 -- §§1 highlight
@@ -96,3 +97,11 @@ end, {})
 vim.api.nvim_create_user_command("MemoFind", function ()
     require("telescope.builtin").live_grep{ cwd = "~/memo" }
 end, {})
+
+vim.api.nvim_create_user_command("Normal", function (tbl)
+    local code = vim.api.nvim_replace_termcodes(tbl.args, true, true, true)
+    local cmd = util.ifexpr(tbl.bang, "normal!", "normal")
+    for i = tbl.line1, tbl.line2, 1 do
+        vim.cmd(i .. cmd .. " " .. code)
+    end
+end, {range = true, nargs = 1, bang = true})

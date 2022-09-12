@@ -13,7 +13,7 @@ function(use)
     use{"glts/vim-textobj-comment"}
     use{"habamax/vim-gruvbit"}
     use{"haya14busa/vim-asterisk"}
-    use{"iamcco/markdown-preview.nvim", ["do"] = 'packloadall! | call mkdp#util#install()'}
+    use{"iamcco/markdown-preview.nvim", run = ':call mkdp#util#install()'}
     use{"itchyny/vim-qfedit"}
     use{"kana/vim-altr"}
     use{"kana/vim-operator-user"}
@@ -38,7 +38,8 @@ function(use)
     use{"nvim-neorg/neorg"}
     use{"powerman/vim-plugin-AnsiEsc"}
     use{"rhysd/rust-doc.vim"}
-    use{"romgrk/barbar.nvim"}
+    -- use{"romgrk/barbar.nvim"}
+    use{'akinsho/bufferline.nvim'}
     use{"thinca/vim-qfreplace"}
     use{"thinca/vim-quickrun"}
     use{"thinca/vim-submode"}

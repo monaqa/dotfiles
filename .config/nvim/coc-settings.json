@@ -6,7 +6,7 @@
   "python.linting.flake8Enabled": false,
   "python.linting.mypyEnabled": true,
   "python.formatting.provider": "black",
-  "python.formatting.blackdPath": "/opt/homebrew/bin/black",
+  "python.formatting.blackPath": "/opt/homebrew/bin/black",
   "python.sortImports.path": "/opt/homebrew/bin/isort",
 
   "sumneko-lua.enableNvimLuaDev": true,
