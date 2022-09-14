@@ -44,10 +44,10 @@ function M.map(func)
 end
 
 ---数値、文字列を Vim script 流スタイルで boolean に変換する。
----@param num number | string | nil
+---@param num number | string | boolean | nil
 ---@return boolean
 function M.to_bool(num)
-    if num == 0 or num == "" or num == nil then
+    if num == 0 or num == "" or num == false or num == nil then
         return false
     end
     return true

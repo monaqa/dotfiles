@@ -6,13 +6,13 @@ vim.cmd [[
 language messages en_US.UTF-8
 ]]
 
-vim.o.belloff = "all"
-vim.o.lazyredraw = true
-vim.o.ttyfast = true
-vim.o.ambiwidth = "single"
-vim.o.wrap = false
-vim.o.colorcolumn = "80"
-vim.o.list = true
+vim.opt.belloff = "all"
+vim.opt.lazyredraw = true
+vim.opt.ttyfast = true
+vim.opt.ambiwidth = "single"
+vim.opt.wrap = false
+vim.opt.colorcolumn = "80"
+vim.opt.list = true
 vim.opt.listchars = {
     tab = "▸▹┊",
     trail = "▫",
@@ -20,8 +20,8 @@ vim.opt.listchars = {
     precedes = "❮",
 }
 
-vim.o.scrolloff = 0
-vim.o.foldlevelstart = 99
+vim.opt.scrolloff = 0
+vim.opt.foldlevelstart = 99
 
 vim.opt.matchpairs = vim.opt.matchpairs + {
     "（:）",
@@ -31,65 +31,65 @@ vim.opt.matchpairs = vim.opt.matchpairs + {
 }
 
 -- 下
-vim.o.showcmd = true
-vim.o.laststatus = 3
+vim.opt.showcmd = true
+vim.opt.laststatus = 3
 
 -- 左
-vim.o.number = true
-vim.o.foldcolumn = "0"
-vim.o.signcolumn = "yes:2"
+vim.opt.number = true
+vim.opt.foldcolumn = "0"
+vim.opt.signcolumn = "yes:2"
 
 -- misc
-vim.o.splitright = true
-vim.o.splitbelow = true
+vim.opt.splitright = true
+vim.opt.splitbelow = true
 vim.opt.diffopt = vim.opt.diffopt + { "vertical", algorithm = "histgram" }
 
 -- §§1 表示設定
-vim.o.termguicolors = true
-vim.o.background = "dark"
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
 
 vim.cmd[[
 colorscheme gruvbit
 ]]
 
-vim.o.expandtab = true
-vim.o.tabstop = 4
-vim.o.shiftwidth = 4
-vim.o.breakindent = true
-vim.o.smartindent = false
-vim.o.virtualedit = "block"
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.breakindent = true
+vim.opt.smartindent = false
+vim.opt.virtualedit = "block"
 vim.opt.isfname = vim.opt.isfname - "="
 
-vim.o.backup = false
-vim.o.swapfile = false
+vim.opt.backup = false
+vim.opt.swapfile = false
 
-vim.o.autoread = true
-vim.o.confirm = true
-vim.o.modeline = true
-vim.o.modelines = 3
+vim.opt.autoread = true
+vim.opt.confirm = true
+vim.opt.modeline = true
+vim.opt.modelines = 3
 
-vim.o.hidden = true
+vim.opt.hidden = true
 vim.opt.spelllang = { "en", "cjk" }
 vim.opt.backspace = { "indent", "eol", "start" }
-vim.o.history = 10000
+vim.opt.history = 10000
 
-vim.o.mouse = "a"
+vim.opt.mouse = "a"
 -- 最後の4文字が "fish" だったら "sh" にする
-if vim.o.shell:sub(#vim.o.shell - 3) == "fish" then
-    vim.o.shell = "sh"
+if vim.opt.shell:get():sub(#vim.opt.shell - 3) == "fish" then
+    vim.opt.shell.set("sh")
 end
 
 if vim.fn.has("persistent_undo") then
-    vim.o.undofile = true
+    vim.opt.undofile = true
 end
 
 -- search
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.incsearch = true
-vim.o.wrapscan = true
-vim.o.hlsearch = true
-vim.o.inccommand = "split"
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.incsearch = true
+vim.opt.wrapscan = true
+vim.opt.hlsearch = true
+vim.opt.inccommand = "split"
 
 vim.opt.sessionoptions = {
     "buffers",
@@ -99,6 +99,6 @@ vim.opt.sessionoptions = {
 }
 
 if vim.fn.executable("rg") then
-    vim.o.grepprg = 'rg --vimgrep --hidden --glob ' .. "'!tags*'"
-    vim.o.grepformat = "%f:%l:%c:%m,%f:%l:%m"
+    vim.opt.grepprg = 'rg --vimgrep --hidden --glob ' .. "'!tags*'"
+    vim.opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
 end
