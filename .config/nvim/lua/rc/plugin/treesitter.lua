@@ -52,6 +52,7 @@ require'nvim-treesitter.configs'.setup {
       -- custom grammar
       'mermaid',
       'satysfi',
+      'satysfi_v0_1_0',
       'todome',
   },
   highlight = {
@@ -78,6 +79,7 @@ require'nvim-treesitter.configs'.setup {
       -- custom grammar
       'mermaid',
       -- 'satysfi',
+      -- 'satysfi_v0_1_0',
       'todome',
       },
   },

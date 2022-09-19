@@ -58,7 +58,7 @@ function(use)
     use{"kana/vim-textobj-entire"}
     use{"andymass/vim-matchup"}
     -- use{"petertriho/nvim-scrollbar"}
-    use{"nvim-orgmode/orgmode"}
+    -- use{"nvim-orgmode/orgmode"}
 
     -- paren
     use{"cohama/lexima.vim"}
