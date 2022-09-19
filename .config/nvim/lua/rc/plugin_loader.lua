@@ -2,10 +2,15 @@
 
 local util = require("rc.util")
 
+vim.cmd[[
+    packadd vim-jetpack
+]]
+
 require("jetpack").startup(
 function(use)
 
     -- general plugins
+    use{"tani/vim-jetpack", opt = 1} -- bootstrap
     use{"Shougo/vimproc.vim"}
     use{"Vimjas/vim-python-pep8-indent"}
     use{"bps/vim-textobj-python"}
