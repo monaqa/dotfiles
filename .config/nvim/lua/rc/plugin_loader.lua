@@ -36,7 +36,7 @@ function(use)
     use{"mhinz/vim-signify"}
     use{"nvim-lualine/lualine.nvim"}
     use{"nvim-neorg/neorg"}
-    use{"powerman/vim-plugin-AnsiEsc"}
+    -- use{"powerman/vim-plugin-AnsiEsc"}
     use{"rhysd/rust-doc.vim"}
     -- use{"romgrk/barbar.nvim"}
     use{'akinsho/bufferline.nvim'}
@@ -53,6 +53,7 @@ function(use)
     use{"kana/vim-textobj-entire"}
     use{"andymass/vim-matchup"}
     -- use{"petertriho/nvim-scrollbar"}
+    use{"nvim-orgmode/orgmode"}
 
     -- paren
     use{"cohama/lexima.vim"}

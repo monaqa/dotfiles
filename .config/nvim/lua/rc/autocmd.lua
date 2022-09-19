@@ -140,6 +140,18 @@ util.autocmd_vimrc("CmdwinEnter"){
     end
 }
 
+-- ESC 時に英数キーを送るのは Karabiner でできるが、検索コマンドからの離脱時にも送りたい
+-- https://rcmdnk.com/blog/2017/03/10/computer-mac-vim/
+util.autocmd_vimrc("CmdlineLeave"){
+    pattern = "/",
+    callback = function ()
+        -- 102: EISU
+        vim.fn.system[[
+            osascript -e "tell application \"System Events\" to key code 102"
+        ]]
+    end
+}
+
 local function free_visual_match()
     if util.to_bool(vim.fn.exists("w:visual_match_id")) then
         vim.fn.matchdelete(vim.w.visual_match_id)

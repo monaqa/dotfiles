@@ -427,7 +427,7 @@ vim.keymap.set("n", "sn", "<Cmd>BufferLineCycleNext<CR>")
 vim.keymap.set("n", "sp", "<Cmd>BufferLineCyclePrev<CR>")
 vim.keymap.set("n", "sN", "<Cmd>BufferLineMoveNext<CR>")
 vim.keymap.set("n", "sP", "<Cmd>BufferLineMovePrev<CR>")
-vim.keymap.set("n", "sw", "<C-^><Cmd>bd! #<CR>")
+vim.keymap.set("n", "sw", "<Cmd>BufferLineCyclePrev<CR><Cmd>bd! #<CR>")
 
 -- §§1 Plugin settings for asterisk
 vim.cmd[[

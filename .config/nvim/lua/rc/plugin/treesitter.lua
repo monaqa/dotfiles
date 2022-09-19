@@ -40,7 +40,7 @@ require'nvim-treesitter.configs'.setup {
       'html',
       'json',
       'lua',
-      -- 'markdown',
+      'markdown',
       'python',
       'query',
       'rust',
@@ -136,4 +136,4 @@ local function override_query(filetype, query_type)
 end
 
 override_query("bash", "highlights")
--- override_query("markdown", "highlights")
+override_query("markdown", "highlights")

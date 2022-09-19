@@ -45,7 +45,7 @@ local function align_spaces(text, width)
 end
 
 ---@param home_dir string
----@return string{}
+---@return string[]
 local function path_env(home_dir)
     return {
         "/opt/homebrew/bin",
