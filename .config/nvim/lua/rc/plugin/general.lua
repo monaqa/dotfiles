@@ -172,12 +172,19 @@ local function fern_buffer_config()
     --     vim.fn["fern#smart#leaf"]("<Plug>(fern-action-collapse)", "<Plug>(fern-action-expand)", "<Plug>(fern-action-collapse)")
     -- end, {expr = true, buffer = true})
 
-    vim.keymap.set("n", "l", "<Plug>(fern-open-or-expand)", {remap = true, buffer = true})
+    -- vim.keymap.set("n", "l", "<Plug>(fern-open-or-expand)", {remap = true, buffer = true})
     vim.keymap.set("n", "<C-h>", "<Plug>(fern-action-leave)", {remap = true, buffer = true})
     vim.keymap.set("n", "<CR>", "<Plug>(fern-open-or-enter)", {remap = true, buffer = true, nowait = true})
     vim.keymap.set("n", "e", "<Plug>(fern-action-open)", {remap = true, buffer = true})
     vim.keymap.set("n", "<BS>", "<Plug>(fern-action-leave)", {remap = true, buffer = true})
-    vim.keymap.set("n", "<Space>", "<Plug>(fern-action-mark)", {remap = true, buffer = true, nowait = true})
+
+    -- vim.keymap.set("n", "<Space>", "<Plug>(fern-action-mark)", {remap = true, buffer = true, nowait = true})
+
+    vim.keymap.set("n", ">>", "<Plug>(fern-action-mark:set)", {remap = true, buffer = true, nowait = true})
+    -- なぜか unset のときファイル末尾にジャンプしてしまうので <C-o> を付けた
+    vim.keymap.set("n", "<<", "<Plug>(fern-action-mark:unset)<C-o>", {remap = true, buffer = true, nowait = true})
+    vim.keymap.set("x", ">", "<Plug>(fern-action-mark:set)", {remap = true, buffer = true, nowait = true})
+    vim.keymap.set("x", "<", "<Plug>(fern-action-mark:unset)", {remap = true, buffer = true, nowait = true})
 
     vim.keymap.set("n", "t", "<Plug>(fern-expand-or-collapse)", {remap = true, buffer = true, nowait = true})
     vim.keymap.set("n", "T", "<Plug>(fern-action-collapse)", {remap = true, buffer = true, nowait = true})
@@ -361,6 +368,8 @@ require("bufferline").setup{
             -- return "ℹ️ "
             return ""
         end,
+        tab_size = 5,
+        max_name_length = 30,
     },
 
     highlights = {
