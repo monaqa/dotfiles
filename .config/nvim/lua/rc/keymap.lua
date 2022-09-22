@@ -504,7 +504,50 @@ vim.keymap.set( "n" , "<Space>l", function ()
         vim.cmd"normal! $"
     end
 end)
-vim.keymap.set("x", "<Space>l", "$h")
+
+
+-- vim.keymap.set("x", "<Space>l", "$h")
+-- VISUAL モードにおいても基本的には行末移動。ただし、
+-- 矩形選択時かつカーソルが既に行末にある時に限り、
+-- 選択した行範囲にあるすべての行末を覆えるような長方形とする。
+vim.keymap.set("x", "<Space>l", function ()
+    local cursor = vim.fn.getcurpos()
+    local lnum_cursor = cursor[2]
+    local col_cursor = cursor[3]
+    local line_cursor = vim.fn.getline(lnum_cursor)
+
+    -- 行末移動
+    vim.fn.cursor({lnum_cursor, #line_cursor})
+    local new_col_cursor = vim.fn.getcurpos()[3]
+    -- 行末移動によりカーソルの位置が変わっていたらそこで処理を終了する
+    if col_cursor ~= new_col_cursor then
+        return
+    end
+
+    -- 矩形選択、かつすでにカーソルが既に行末にある場合
+    if vim.fn.mode(1) == "\u{16}" then
+        local other_end = vim.fn.getpos("v")
+        local lnum_other = other_end[2]
+        local lnum_start = util.ifexpr(lnum_cursor > lnum_other, lnum_other, lnum_cursor)
+        local lnum_end = util.ifexpr(lnum_cursor > lnum_other, lnum_cursor, lnum_other)
+        local lines = vim.fn.getline(lnum_start, lnum_end)
+        local dispwidth_max = 0
+        for _, line in ipairs(lines) do
+            local dispwidth = vim.fn.strdisplaywidth(line)
+            if dispwidth_max < dispwidth then
+                dispwidth_max = dispwidth
+            end
+        end
+        local dispwidth_cursor = vim.fn.strdisplaywidth(vim.fn.getline(lnum_cursor))
+        vim.pretty_print{max=dispwidth_max, cur=dispwidth_cursor}
+        if dispwidth_max > dispwidth_cursor then
+            vim.pretty_print{#line_cursor, dispwidth_max - dispwidth_cursor}
+            vim.fn.cursor({lnum_cursor, #line_cursor, dispwidth_max - dispwidth_cursor, dispwidth_max})
+        end
+    end
+
+end)
+
 -- vim.keymap.set("o", "<Space>l", "$")
 -- vim.keymap.set("o", "<Space>l", function ()
 --     vim.cmd"normal! m["
