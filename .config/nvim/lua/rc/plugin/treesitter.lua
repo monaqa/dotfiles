@@ -41,6 +41,7 @@ require'nvim-treesitter.configs'.setup {
       'json',
       'lua',
       'markdown',
+      'markdown_inline',
       'python',
       'query',
       'rust',
@@ -108,6 +109,11 @@ require'nvim-treesitter.configs'.setup {
     enable = false,              -- mandatory, false will disable the whole extension
     -- disable = { "c", "ruby" },  -- optional, list of language that will be disabled
   },
+  query_linter = {
+    enable = true,
+    use_virtual_text = true,
+    lint_events = {"BufWrite", "CursorHold", "InsertLeave"},
+  },
 }
 
 -- vim.pretty_print{sfile = vim.fn.expand("<sfile>:p", nil, nil)}
@@ -139,3 +145,7 @@ end
 
 override_query("bash", "highlights")
 override_query("markdown", "highlights")
+override_query("markdown_inline", "highlights")
+
+vim.keymap.set("o", "q", ":<C-U>lua require('tsht').nodes()<CR>")
+vim.keymap.set("x", "q", ":lua require('tsht').nodes()<CR>")

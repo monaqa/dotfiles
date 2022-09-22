@@ -1,62 +1,81 @@
+local util = require "rc.util"
+
 -- §§1 Plugin settings for ddu.vim
-vim.cmd[[
-call ddu#custom#patch_global({
-    \   'ui': 'ff',
-    \   'uiParams': {
-    \     'ff': {
-    \       'split': 'floating',
-    \     }
-    \   },
-    \   'sources': [
-    \      {'name': 'file_rec', 'params': {}},
-    \   ],
-    \   'sourceOptions': {
-    \     '_': {
-    \       'matchers': ['matcher_substring'],
-    \     },
-    \     'rg' : {
-    \       'args': ['--column', '--no-heading', '--color', 'never'],
-    \     },
-    \   },
-    \   'kindOptions': {
-    \     'file': {
-    \       'defaultAction': 'open',
-    \     },
-    \   }
-    \ })
+vim.keymap.set("n", "sm", function ()
+    vim.fn["ddu#start"]{
+        sources = {
+            {name = "mr", params = { kind = "mru" }}
+        }
+    }
+end)
 
-call ddu#custom#patch_global({
-    \   'sourceParams' : {
-    \     'rg' : {
-    \       'args': ['--column', '--no-heading', '--color=never', '--hidden'],
-    \     },
-    \   },
-    \ })
+vim.keymap.set("n", "@o", function ()
+    vim.fn["ddu#start"]{
+        sources = {
+            {name = "file_external", params = {}}
+        }
+    }
+end)
 
-call ddu#custom#patch_global('sourceParams', {
-      \ 'file_external': {'cmd': ['fd', '.', '-H', '-E', '__pycache__', '-t', 'f']}
-      \ })
+vim.keymap.set("n", "@g", function ()
+    vim.fn["ddu_rg#find"]()
+end)
 
-nnoremap @o <Cmd>call ddu#start({'sources': [{'name': 'file_external', 'params': {}}]})<CR>
-nnoremap @m <Cmd>call ddu#start({'sources': [{'name': 'mr', 'params': {'kind': 'mru'}}]})<CR>
-nnoremap @g <Cmd>call ddu_rg#find()<CR>
+vim.fn["ddu#custom#patch_global"] {
+    ui = "ff",
+    uiParams = {
+        ff = { split = "floating" },
+    },
+    sources = {
+        { name = "file_rec", params = {} },
+    },
+    sourceOptions = {
+        ["_"] = {
+            matchers = {"matcher_substring"},
+        },
+        rg = {
+            args = {"--column", "--no-heading", "--color", "never"},
+        },
+    },
+    kindOptions = {
+        file = { defaultAction = "open" }
+    },
+    sourceParams = {
+        rg = {
+            args = {"--column", "--no-heading", "--color", "--hidden"},
+        },
+        file_external = {
+            cmd = {"fd", ".", "-H", "-E", "__pycache__", "-t", "f"}
+        }
+    }
+}
 
-autocmd FileType ddu-ff call s:ddu_my_settings()
-function! s:ddu_my_settings() abort
-  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
-  nnoremap <buffer><silent> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-  nnoremap <buffer><silent> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  nnoremap <buffer><silent> <Esc>   <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-endfunction
+local function nmap_action(lhs, action)
+    vim.keymap.set(
+        "n",
+        lhs,
+        [[<Cmd>call ddu#ui#ff#do_action(']] .. action .. [[')<CR>]],
+        {buffer = true, silent = true}
+    )
+end
 
-autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
-function! s:ddu_filter_my_settings() abort
-  inoremap <buffer><silent> <CR> <Esc><Cmd>close<CR>
+util.autocmd_vimrc("FileType"){
+    pattern = "ddu-ff",
+    callback = function ()
+        nmap_action("<CR>", "itemAction")
+        nmap_action("<Space>", "toggleSelectItem")
+        nmap_action("i", "openFilterWindow")
+        nmap_action("q", "quit")
+        nmap_action("<Esc>", "quit")
+    end
+}
 
-  nnoremap <buffer><silent> <CR>  <Cmd>close<CR>
-  nnoremap <buffer><silent> q     <Cmd>close<CR>
-  nnoremap <buffer><silent> <Esc> <Cmd>close<CR>
-endfunction
-
-]]
+util.autocmd_vimrc("FileType"){
+    pattern = "ddu-ff-filter",
+    callback = function ()
+        vim.keymap.set("i", "<CR>", "<Esc><Cmd>close<CR>", {buffer = true, silent = true})
+        vim.keymap.set("n", "<CR>", "<Cmd>close<CR>", {buffer = true, silent = true})
+        vim.keymap.set("n", "q", "<Cmd>close<CR>", {buffer = true, silent = true})
+        vim.keymap.set("n", "<Esc>", "<Cmd>close<CR>", {buffer = true, silent = true})
+    end
+}

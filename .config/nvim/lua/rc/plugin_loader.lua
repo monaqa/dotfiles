@@ -31,7 +31,7 @@ function(use)
     use{"lambdalisue/gina.vim"}
     use{"lambdalisue/nerdfont.vim"}
     use{"lervag/vimtex"}
-    use{"liuchengxu/vista.vim"}
+    -- use{"liuchengxu/vista.vim"}
     use{"machakann/vim-sandwich"}
     use{"machakann/vim-swap"}
     use{"machakann/vim-textobj-functioncall"}
@@ -87,9 +87,11 @@ function(use)
     use{"vim-denops/denops.vim"}
 
     -- tree-sitter
-    use{"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
+    -- use{"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
+    use{"nvim-treesitter/nvim-treesitter", opt = 1}
     use{"nvim-treesitter/playground"}
     use{"sainnhe/gruvbox-material"}
+    use{"mfussenegger/nvim-treehopper"}
 
     -- filetype
     use{"JuliaEditorSupport/julia-vim"}
@@ -132,5 +134,9 @@ for _, name in ipairs(vim.fn["jetpack#names"]()) do
         return false
     end
 end
+
+vim.cmd[[
+    packadd nvim-treesitter
+]]
 
 return true

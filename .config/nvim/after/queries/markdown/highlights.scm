@@ -97,10 +97,10 @@
   (backslash_escape)
 ] @string.escape
 
-([
-  (info_string)
-  (fenced_code_block_delimiter)
-] @conceal
-(#set! conceal ""))
+; ([
+;   (info_string)
+;   (fenced_code_block_delimiter)
+; ] @conceal
+; (#set! conceal ""))
 
 (inline) @spell

@@ -740,6 +740,9 @@ vim.keymap.set({"n", "x", "o"}, "<CR>", "<Nop>")
 vim.keymap.set("n", "<C-h>", "g;")
 vim.keymap.set("n", "<C-g>", "g,")
 
+-- <C-x> 絶妙に押しづらいから…
+vim.keymap.set("i", "<C-g>", "<C-x>")
+
 vim.keymap.set("v", "<C-a>", "<C-a>gv")
 vim.keymap.set("v", "<C-x>", "<C-x>gv")
 

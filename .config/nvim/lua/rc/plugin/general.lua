@@ -454,37 +454,37 @@ let g:mkdp_preview_options = {
     "\ 'content_editable': v:false,
     "\ 'disable_filename': 0
     \ }
-    ]]
+]]
 
-    -- §§1 Plugin settings for altr
+-- §§1 Plugin settings for altr
 
-    vim.keymap.set("n", "<Space>^", "<Plug>(altr-forward)", {remap = true})
-    vim.keymap.set("n", "<Space>-", "<Plug>(altr-forward)", {remap = true})
+vim.keymap.set("n", "<Space>^", "<Plug>(altr-forward)", {remap = true})
+vim.keymap.set("n", "<Space>-", "<Plug>(altr-forward)", {remap = true})
 
-    -- §§1 Plugin settings for vista
-    vim.keymap.set("n", "sm", ":<C-u>Vista!!<CR>", {silent = true})
+-- §§1 Plugin settings for vista
+-- vim.keymap.set("n", "sm", ":<C-u>Vista!!<CR>", {silent = true})
 
-    util.autocmd_vimrc{"FileType"}{
-        pattern = "vista",
-        callback = function ()
-            vim.keymap.set("n", "<C-]>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
-            vim.keymap.set("n", "<CR>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
-        end
-    }
+util.autocmd_vimrc{"FileType"}{
+    pattern = "vista",
+    callback = function ()
+        vim.keymap.set("n", "<C-]>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
+        vim.keymap.set("n", "<CR>", "<Cmd>call vista#cursor#FoldOrJump()<CR>", {buffer = true, nowait = true})
+    end
+}
 
-    -- §§1 Plugin settings for emmet.vim
+-- §§1 Plugin settings for emmet.vim
 
-    vim.g["user_emmet_mode"] = "n"
-    vim.g["emmet_html5"] = 0
-    vim.g["user_emmet_install_global"] = 0
-    -- util.autocmd_vimrc{"FileType"}{
-        --     pattern = {
-            --         "html",
-            --         "css",
-            --         "svelte",
-            --     },
-            --     command = "EmmetInstall",
-            -- }
+vim.g["user_emmet_mode"] = "n"
+vim.g["emmet_html5"] = 0
+vim.g["user_emmet_install_global"] = 0
+-- util.autocmd_vimrc{"FileType"}{
+    --     pattern = {
+        --         "html",
+        --         "css",
+        --         "svelte",
+        --     },
+        --     command = "EmmetInstall",
+        -- }
 
-            -- §§1 Plugin settings for scrollbar
-            -- require("scrollbar").setup()
+        -- §§1 Plugin settings for scrollbar
+        -- require("scrollbar").setup()

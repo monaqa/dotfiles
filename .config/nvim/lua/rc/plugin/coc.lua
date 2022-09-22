@@ -56,14 +56,16 @@ vim.keymap.set("i", "<CR>", function ()
     return "<Plug>(vimrc-lexima-expand-cr)"
 end, {expr = true, remap = true})
 
--- local function coc_check_backspace()
---     local col = vim.fn.col(".") - 1
---     if not util.to_bool(col) then
---         return true
---     end
---     return vim.regex([[\s]]):match_str(vim.fn.getline(".")[col])
--- end
---
+local function coc_check_backspace()
+    local col = vim.fn.col(".") - 1
+    if not util.to_bool(col) then
+        return true
+    end
+    return vim.regex([[\s]]):match_str(vim.fn.getline(".")[col])
+end
+
+-- coc#pum#next(1) などが Vim script 上でしか動かないっぽい
+
 -- vim.keymap.set("i", "<Tab>", function ()
 --     -- if util.to_bool(vim.fn.pumvisible()) then
 --     --     return "<C-n>"
@@ -96,9 +98,13 @@ vim.cmd[[
   " Insert <tab> when previous text is space, refresh completion if not.
   inoremap <silent><expr> <TAB>
     \ coc#pum#visible() ? coc#pum#next(1):
+    \ pumvisible() ? "\<C-n>":
     \ <SID>check_back_space() ? "\<Tab>" :
     \ coc#refresh()
-  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+  inoremap <expr><S-TAB>
+    \ coc#pum#visible() ? coc#pum#prev(1) :
+    \ pumvisible() ? "\<C-p>":
+    \ "\<C-h>"
 ]]
 
 vim.g.coc_snippet_next = "<C-g><C-j>"

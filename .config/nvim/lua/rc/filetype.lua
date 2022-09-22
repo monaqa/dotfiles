@@ -113,15 +113,22 @@ util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     command = [[setfiletype yacc]]
 }
 
--- §§1 LICENSE
 util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     pattern = "LICENSE",
-    command = [[setfiletype license]]
+    callback = function ()
+        vim.opt_local.filetype = "license"
+    end
 }
-
 -- §§1 .init.lua.local
 util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     pattern = [[.init.lua.local]],
     command = [[setfiletype lua]]
 }
 
+-- query
+util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+    pattern = [[*/queries/*/*.scm]],
+    callback = function ()
+        vim.opt_local.filetype = "query"
+    end
+}
