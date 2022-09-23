@@ -47,7 +47,7 @@ function(use)
     use{'akinsho/bufferline.nvim'}
     use{"thinca/vim-qfreplace"}
     use{"thinca/vim-quickrun"}
-    use{"thinca/vim-submode"}
+    -- use{"thinca/vim-submode"}
     use{"tpope/vim-capslock"}
     use{"tyru/capture.vim"}
     use{"tyru/caw.vim"}
@@ -90,7 +90,7 @@ function(use)
     -- use{"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
     use{"nvim-treesitter/nvim-treesitter", opt = 1}
     use{"nvim-treesitter/playground"}
-    use{"sainnhe/gruvbox-material"}
+    -- use{"sainnhe/gruvbox-material"}
     use{"mfussenegger/nvim-treehopper"}
 
     -- filetype

@@ -97,12 +97,8 @@ util.autocmd_vimrc("FileType"){
 }
 
 -- §§1 Plugin settings for machakann/vim-swap
-vim.cmd[[
-omap i, <Plug>(swap-textobject-i)
-xmap i, <Plug>(swap-textobject-i)
-omap a, <Plug>(swap-textobject-a)
-xmap a, <Plug>(swap-textobject-a)
-]]
+vim.keymap.set({"o", "x"}, "i,", "<Plug>(swap-textobject-i)")
+vim.keymap.set({"o", "x"}, "a,", "<Plug>(swap-textobject-a)")
 
 -- §§1 Plugin settings for textobje-entire
 for _, op in ipairs({

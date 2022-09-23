@@ -5,6 +5,7 @@
 local M = {}
 
 local util = require("rc.util")
+local submode = require("rc.submode")
 
 vim.keymap.set("c", "<C-c>", "<C-f>")
 
@@ -376,6 +377,16 @@ vim.keymap.set("n", "s/", "q/G")
 vim.keymap.set("n", "-", "<C-^>")
 
 vim.keymap.set("n", "srb", "<Nop>", {nowait = true})
+
+local mode_bufmove = submode.create_mode("bufmove", "s")
+mode_bufmove.register_mapping("n", "<Cmd>bn<CR>")
+mode_bufmove.register_mapping("p", "<Cmd>bp<CR>")
+
+local mode_winresize = submode.create_mode("winresize", "s")
+mode_winresize.register_mapping("+", "<C-w>+")
+mode_winresize.register_mapping("-", "<C-w>-")
+mode_winresize.register_mapping(">", "<C-w>>")
+mode_winresize.register_mapping("<", "<C-w><")
 
 -- §§1 operator/text editing
 

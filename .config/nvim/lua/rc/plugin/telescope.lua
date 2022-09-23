@@ -1,9 +1,11 @@
 -- vim:fdm=marker:fmr=§§,■■
 -- §§1 Plugin settings for telescope.nvim
 local actions = require('telescope.actions')
+local builtin = require("telescope.builtin")
+
 require('telescope').load_extension('coc')
+
 -- Global remapping
-------------------------------
 require('telescope').setup{
   defaults = {
     vimgrep_arguments = {
@@ -31,9 +33,7 @@ require('telescope').setup{
   }
 }
 
-vim.cmd[[
-nnoremap so <Cmd>Telescope git_files prompt_prefix=𝝋<CR>
-nnoremap sg <Cmd>Telescope live_grep prompt_prefix=𝜸<CR>
-nnoremap sb <Cmd>Telescope buffers prompt_prefix=𝜷<CR>
-nnoremap sO <Cmd>Telescope find_files prompt_prefix=𝝋<CR>
-]]
+vim.keymap.set("n", "so", function () builtin.git_files({prompt_prefix = "𝝋"}) end)
+vim.keymap.set("n", "sO", function () builtin.find_files({prompt_prefix = "𝝋"}) end)
+vim.keymap.set("n", "sb", function () builtin.buffers({prompt_prefix = "𝜷"}) end)
+vim.keymap.set("n", "sg", function () builtin.live_grep({prompt_prefix = "𝜸"}) end)

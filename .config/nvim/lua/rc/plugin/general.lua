@@ -257,9 +257,10 @@ vim.api.nvim_create_user_command("GinaBrowseYank", function (meta)
 end, {range = "%"})
 
 -- §§1 Plugin settings for lualine.nvim
-vim.cmd[[
-nnoremap U :<C-u>UndotreeToggle<CR>
-]]
+vim.keymap.set("n", "U", "<Cmd>UndotreeToggle<CR>")
+-- vim.cmd[[
+-- nnoremap U :<C-u>UndotreeToggle<CR>
+-- ]]
 
 -- §§1 Plugin settings for rhysd/rust-doc.vim
 vim.g["rust_doc#define_map_K"] = 0
@@ -267,85 +268,29 @@ vim.g["rust_doc#define_map_K"] = 0
 -- §§1 Plugin settings for rust-lang/rust.vim
 vim.g["rustfmt_autosave"] = 1
 
--- §§1 Plugin settings for thinca/vim-submode
-vim.cmd[[
-call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
-call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
-call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
-call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
-call submode#map('bufmove', 'n', '', '>', '<C-w>>')
-call submode#map('bufmove', 'n', '', '<', '<C-w><')
-call submode#map('bufmove', 'n', '', '+', '<C-w>+')
-call submode#map('bufmove', 'n', '', '-', '<C-w>-')
-
-call submode#enter_with('vertjmp', 'n', '', '<Space>;', ':LineSameSearch<CR>')
-call submode#enter_with('vertjmp', 'n', '', '<Space>,', ':LineBackSameSearch<CR>')
-call submode#map('vertjmp', 'n', '', ';', ':LineSameSearch<CR>')
-call submode#map('vertjmp', 'n', '', ',', ':LineBackSameSearch<CR>')
-call submode#leave_with('vertjmp', 'n', '', '<Space>')
-]]
-
 -- §§1 Plugin settings for tpope/vim-capslock
-vim.cmd[[
-inoremap <C-l> <Nop>
-]]
+vim.keymap.set("i", "<C-l>", "<Nop>")
 
 -- §§1 Plugin settings for tyru/caw.vim
-vim.cmd[[
-nmap , <Plug>(caw:hatpos:toggle:operator)
-nmap ,, ,_
-vmap , <Plug>(caw:hatpos:toggle)
-
-augroup vimrc
-  autocmd FileType pest let b:caw_oneline_comment = '//'
-augroup END
-]]
+vim.keymap.set("n", ",", "<Plug>(caw:hatpos:toggle:operator)")
+vim.keymap.set("n", ",,", ",_", {remap = true})
+vim.keymap.set("x", ",", "<Plug>(caw:hatpos:toggle)")
 
 -- §§1 Plugin settings for tyru/open-browser
-vim.cmd[[
-nmap gb <Plug>(openbrowser-smart-search)
-xmap gb <Plug>(openbrowser-smart-search)
-]]
+vim.keymap.set({"n", "x"}, "gb", "<Plug>(openbrowser-smart-search)")
 
--- §§1 Plugin settings for tyru/open-browser
-vim.cmd[[
-let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
-" 存在すれば
-if isdirectory(s:local_session_directory)
-  " session保存ディレクトリをそのディレクトリの設定
-  let g:session_directory = s:local_session_directory
-  " vimを辞める時に自動保存
-  let g:session_autosave = 'yes'
-  " 引数なしでvimを起動した時にsession保存ディレクトリのdefault.vimを開く
-  let g:session_autoload = 'yes'
-  " 1分間に1回自動保存
-  " let g:session_autosave_periodic = 1
+-- §§1 Plugin settings for vim-session
+
+local session_dir = vim.fn["xolox#misc#path#merge"](vim.fn.getcwd(), ".vimsessions")
+
+if util.to_bool(vim.fn.isdirectory(session_dir)) then
+    vim.g.session_directory = session_dir
+    vim.g.session_autosave = "yes"
+    vim.g.session_autoload = "yes"
 else
-  let g:session_autosave = 'no'
-  let g:session_autoload = 'no'
-endif
-unlet s:local_session_directory
-]]
-
--- §§1 Plugin settings for barbar.nvim
--- vim.cmd[[
--- nnoremap sp <Cmd>BufferPrevious<CR>
--- nnoremap sn <Cmd>BufferNext<CR>
--- nnoremap s1 <Cmd>BufferGoto 1<CR>
--- nnoremap s2 <Cmd>BufferGoto 2<CR>
--- nnoremap s3 <Cmd>BufferGoto 3<CR>
--- nnoremap s4 <Cmd>BufferGoto 4<CR>
--- nnoremap s5 <Cmd>BufferGoto 5<CR>
--- nnoremap s6 <Cmd>BufferGoto 6<CR>
--- nnoremap s7 <Cmd>BufferGoto 7<CR>
--- nnoremap s8 <Cmd>BufferGoto 8<CR>
--- nnoremap s9 <Cmd>BufferGoto 9<CR>
--- nnoremap sP <Cmd>BufferMovePrevious<CR>
--- nnoremap sN <Cmd>BufferMoveNext<CR>
--- 
--- nnoremap sw <Cmd>BufferClose<CR>
--- ]]
-
+    vim.g.session_autosave = "no"
+    vim.g.session_autoload = "no"
+end
 
 -- §§1 Plugin settings for bufferline.nvim
 require("bufferline").setup{
@@ -439,31 +384,18 @@ vim.keymap.set("n", "sP", "<Cmd>BufferLineMovePrev<CR>")
 vim.keymap.set("n", "sw", "<Cmd>BufferLineCyclePrev<CR><Cmd>bd! #<CR>")
 
 -- §§1 Plugin settings for asterisk
-vim.cmd[[
-nmap *  <Plug>(asterisk-z*)
-nmap #  <Plug>(asterisk-z#)
-nmap g* <Plug>(asterisk-gz*)
-nmap g# <Plug>(asterisk-gz*)
-]]
+vim.keymap.set("n", "*", "<Plug>(asterisk-z*)")
+vim.keymap.set("n", "#", "<Plug>(asterisk-z#)")
+vim.keymap.set("n", "g*", "<Plug>(asterisk-gz*)")
+vim.keymap.set("n", "g#", "<Plug>(asterisk-gz#)")
 
 -- §§1 Plugin settings for markdown-preview.nvim
-vim.cmd[[
-let g:mkdp_markdown_css = expand('~/.config/nvim/scripts/resource/github-markdown-light.css')
-let g:mkdp_auto_close = 0
-let g:mkdp_preview_options = {
-    "\ 'mkit': {},
-    "\ 'katex': {},
-    "\ 'uml': {},
-    "\ 'maid': {},
-    \ 'disable_sync_scroll': 1,
-    "\ 'sync_scroll_type': 'middle',
-    "\ 'hide_yaml_meta': 1,
-    "\ 'sequence_diagrams': {},
-    "\ 'flowchart_diagrams': {},
-    "\ 'content_editable': v:false,
-    "\ 'disable_filename': 0
-    \ }
-]]
+
+vim.g.mkdp_markdown_css = vim.fn.expand("~/.config/nvim/scripts/resource/github-markdown-light.css")
+vim.g.mkdp_auto_close = 0
+vim.g.mkdp_preview_options = {
+    disable_sync_scroll = 1,
+}
 
 -- §§1 Plugin settings for altr
 
