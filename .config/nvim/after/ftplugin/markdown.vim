@@ -7,6 +7,7 @@ setlocal foldexpr=MarkdownLevel(v:lnum)
 setlocal foldmethod=expr
 
 setlocal suffixesadd+=.md
+setlocal path+=/Users/monaqa/Documents/obsidian/mogamemo/note/
 
 " マークダウンのタイトルのパターンにマッチしたらそのタイトルの深さを返す。
 " マッチしなかったら -1 を返す。

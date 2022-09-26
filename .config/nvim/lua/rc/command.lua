@@ -1,27 +1,34 @@
 local util = require "rc.util"
 -- vim:fdm=marker:fmr=§§,■■
 
+local function create_cmd(name, impl, options)
+    if options == nil then
+        options = {}
+    end
+    vim.api.nvim_create_user_command(name, impl, options)
+end
+
 -- §§1 highlight
-vim.api.nvim_create_user_command("HighlightGroup", function ()
+create_cmd("HighlightGroup", function ()
     print(
     vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.synID(vim.fn.line("."), vim.fn.col("."), 1)), "name")
     )
-end, {})
-vim.api.nvim_create_user_command("HighlightItem", function ()
+end)
+create_cmd("HighlightItem", function ()
     print(
     vim.fn.synIDattr(vim.fn.synID(vim.fn.line("."), vim.fn.col("."), 1), "name")
     )
-end, {})
+end)
 
 -- §§1 encoding
-vim.api.nvim_create_user_command("Utf8", "edit ++enc=utf-8 %", {})
-vim.api.nvim_create_user_command("Cp932", "edit ++enc=cp932 %", {})
-vim.api.nvim_create_user_command("Unix", "edit ++enc=unix %", {})
-vim.api.nvim_create_user_command("Dos", "edit ++enc=dos %", {})
-vim.api.nvim_create_user_command("AsUtf8", "set fenc=utf-8|w", {})
+create_cmd("Utf8", "edit ++enc=utf-8 %")
+create_cmd("Cp932", "edit ++enc=cp932 %")
+create_cmd("Unix", "edit ++enc=unix %")
+create_cmd("Dos", "edit ++enc=dos %")
+create_cmd("AsUtf8", "set fenc=utf-8|w")
 
 -- §§1 diff
-vim.api.nvim_create_user_command("DiffThese", function ()
+create_cmd("DiffThese", function ()
     if vim.fn.winnr("$") == 2 then
         vim.cmd[[
             diffthis
@@ -32,11 +39,11 @@ vim.api.nvim_create_user_command("DiffThese", function ()
     else
         vim.cmd[[echomsg "Too many windows."]]
     end
-end, {})
+end)
 
 -- §§1 rename/delete file
 -- thanks to cohama
-vim.api.nvim_create_user_command("DeleteMe", function (meta)
+create_cmd("DeleteMe", function (meta)
     local force = meta.bang
     if force or not vim.bo.modified then
         local filename = vim.fn.expand("%", nil, nil)
@@ -47,7 +54,7 @@ vim.api.nvim_create_user_command("DeleteMe", function (meta)
     end
 end, {bang = true})
 
-vim.api.nvim_create_user_command("RenameMe", function (meta)
+create_cmd("RenameMe", function (meta)
     local new_fname = meta.args
     local current_fname = vim.fn.expand("%", nil, nil)
     vim.cmd("saveas " .. new_fname)
@@ -59,7 +66,7 @@ vim.cmd[[
 ]]
 
 -- §§1 行末の空白とか最終行の空行を削除
-vim.api.nvim_create_user_command("RemoveUnwantedSpaces", function (meta)
+create_cmd("RemoveUnwantedSpaces", function (meta)
     local pos_save = vim.fn.getpos(".")
     vim.cmd([[keeppatterns ]] .. meta.line1 .. "," .. meta.line2 .. [[s/\s\+$//e]])
     while true do
@@ -72,9 +79,9 @@ vim.api.nvim_create_user_command("RemoveUnwantedSpaces", function (meta)
     vim.fn.setpos(".", pos_save)
 end, {range = "%"})
 
-vim.api.nvim_create_user_command("YankCurrentFileName", [[let @+ = expand("%:p")]], {})
+create_cmd("YankCurrentFileName", [[let @+ = expand("%:p")]])
 
-vim.api.nvim_create_user_command("SubstituteCommaPeriod", function (meta)
+create_cmd("SubstituteCommaPeriod", function (meta)
     local invert = meta.bang
     if invert then
         vim.cmd[[
@@ -90,18 +97,33 @@ vim.api.nvim_create_user_command("SubstituteCommaPeriod", function (meta)
 end, {bang = true})
 
 -- §§1 memolist.vim + telescope
-vim.api.nvim_create_user_command("MemoFind", function ()
+create_cmd("MemoFind", function ()
     require("telescope.builtin").find_files{ cwd = "~/memo" }
-end, {})
+end)
 
-vim.api.nvim_create_user_command("MemoFind", function ()
+create_cmd("MemoFind", function ()
     require("telescope.builtin").live_grep{ cwd = "~/memo" }
-end, {})
+end)
 
-vim.api.nvim_create_user_command("Normal", function (tbl)
+create_cmd("Normal", function (tbl)
     local code = vim.api.nvim_replace_termcodes(tbl.args, true, true, true)
     local cmd = util.ifexpr(tbl.bang, "normal!", "normal")
     for i = tbl.line1, tbl.line2, 1 do
         vim.cmd(i .. cmd .. " " .. code)
     end
 end, {range = true, nargs = 1, bang = true})
+
+-- §§1 obsidian
+
+create_cmd("ObsidianOpenDiary", function ()
+    local diary_root = "/Users/monaqa/Documents/obsidian/mogamemo/diary/"
+    local today = vim.fn.strftime("%Y-%m-%d")
+    local diary_path = diary_root .. today .. ".md"
+    vim.cmd("e " .. diary_path)
+end)
+
+create_cmd("ObsidianList", function ()
+    local obs_root = "/Users/monaqa/Documents/obsidian/mogamemo/"
+    vim.cmd("Fern " .. obs_root .. " -reveal=note")
+end)
+

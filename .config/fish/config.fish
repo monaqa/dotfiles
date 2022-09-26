@@ -1,3 +1,9 @@
+# vim:fdm=marker
+
+# xonsh を試してみるよ！
+/opt/homebrew/bin/xonsh
+
+# xonsh が終了したら以下を fallback
 export EDITOR=nvim
 
 fish_default_key_bindings
@@ -40,7 +46,7 @@ set -x RUSTC_WRAPPER (which sccache)
 # Satyrographos
 set -x SATYROGRAPHOS_EXPERIMENTAL 1
 
-eval (starship init fish)
+# eval (starship init fish)
 # }}}
 
 # ls
@@ -166,4 +172,4 @@ function gitaddtree -a branch
   cd .worktree/$branch/$reponame
 end
 
-# vim:fdm=marker
+eval (starship init fish)

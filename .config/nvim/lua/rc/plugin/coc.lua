@@ -38,6 +38,8 @@ vim.keymap.set("n", "<C-p>", "<Plug>(coc-diagnostic-prev-error)")
 vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)", {remap = true})
 vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)", {remap = true})
 
+vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
+
 -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
 vim.cmd[[
     inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()

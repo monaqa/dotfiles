@@ -40,7 +40,7 @@ function(use)
     use{"mbbill/undotree"}
     use{"mhinz/vim-signify"}
     use{"nvim-lualine/lualine.nvim"}
-    use{"nvim-neorg/neorg"}
+    -- use{"nvim-neorg/neorg"}
     -- use{"powerman/vim-plugin-AnsiEsc"}
     use{"rhysd/rust-doc.vim"}
     -- use{"romgrk/barbar.nvim"}
@@ -87,8 +87,8 @@ function(use)
     use{"vim-denops/denops.vim"}
 
     -- tree-sitter
-    -- use{"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
-    use{"nvim-treesitter/nvim-treesitter", opt = 1}
+    use{"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
+    -- use{"nvim-treesitter/nvim-treesitter", opt = 1}
     use{"nvim-treesitter/playground"}
     -- use{"sainnhe/gruvbox-material"}
     use{"mfussenegger/nvim-treehopper"}
@@ -113,6 +113,7 @@ function(use)
     use{"othree/html5.vim"}
     use{"preservim/vim-markdown"}
     use{"justinmk/vim-syntax-extra"}
+    use{"abhishekmukherg/xonsh-vim"}
 
     -- monaqa
     use{"monaqa/colordinate.vim", opt = true}

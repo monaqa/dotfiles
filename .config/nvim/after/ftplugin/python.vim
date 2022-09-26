@@ -4,7 +4,7 @@ inoreabbrev <buffer> improt import
 setlocal nosmartindent
 setlocal foldmethod=indent
 
-if getline(1) ==# "# %% [markdown]"
+if getline(1) ==# "# %% [markdown]" || getline(1) ==# "# %% streamlit"
   setlocal fdm=expr
   setlocal foldexpr=HydrogenFoldOnlyCode(v:lnum)
   setlocal foldtext=HydrogenCustomFoldText()

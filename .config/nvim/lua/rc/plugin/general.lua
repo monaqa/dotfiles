@@ -95,11 +95,11 @@ require('pretty-fold').setup{
 -- require('pretty-fold.preview').setup_keybinding()
 
 -- §§1 Plugin settings for neorg.nvim
-require('neorg').setup {
-    load = {
-        ["core.defaults"] = {}
-    }
-}
+-- require('neorg').setup {
+--     load = {
+--         ["core.defaults"] = {}
+--     }
+-- }
 
 -- §§1 Plugin settings for lambdalisue/fern.vim
 
@@ -211,6 +211,8 @@ local function fern_buffer_config()
     end, {expr = true, buffer = true})
 
     vim.keymap.set("n", "!", "<Plug>(fern-exclude-toggle)", {remap = true, buffer = true, nowait = true})
+
+    vim.keymap.set("n", "sw", "<Cmd>bp<CR>", {buffer = true})
 end
 
 util.autocmd_vimrc("FileType"){
@@ -381,7 +383,11 @@ vim.keymap.set("n", "sn", "<Cmd>BufferLineCycleNext<CR>")
 vim.keymap.set("n", "sp", "<Cmd>BufferLineCyclePrev<CR>")
 vim.keymap.set("n", "sN", "<Cmd>BufferLineMoveNext<CR>")
 vim.keymap.set("n", "sP", "<Cmd>BufferLineMovePrev<CR>")
-vim.keymap.set("n", "sw", "<Cmd>BufferLineCyclePrev<CR><Cmd>bd! #<CR>")
+-- vim.keymap.set("n", "sw", "<Cmd>BufferLineCyclePrev<CR><Cmd>bd! #<CR>")
+-- vim.keymap.set("n", "sw", "<Cmd>bp<CR><Cmd>bd! #<CR>")
+
+-- https://stackoverflow.com/questions/1444322/how-can-i-close-a-buffer-without-closing-the-window
+vim.keymap.set("n", "sw", "<Cmd>bp | sp | bn | bd<CR>")
 
 -- §§1 Plugin settings for asterisk
 vim.keymap.set("n", "*", "<Plug>(asterisk-z*)")
