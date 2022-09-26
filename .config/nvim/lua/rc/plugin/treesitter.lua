@@ -33,6 +33,10 @@ parser_config.satysfi_v0_1_0 = {
   filetype = "satysfi_v0_1_0", -- if filetype does not agrees with parser name
 }
 
+local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
+
+ft_to_parser["obsidian"] = "markdown"
+
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {
       'bash',
@@ -59,6 +63,7 @@ require'nvim-treesitter.configs'.setup {
   highlight = {
       enable = true,
       -- disable = {"rust",},
+      additional_vim_regex_highlighting = false,
   },
   indent = {
       enable = true,

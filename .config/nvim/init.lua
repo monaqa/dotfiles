@@ -3,7 +3,8 @@ local augroup = vim.api.nvim_create_augroup("vimrc", {clear = true})
 ---vimrc 専用の属性を格納するテーブル
 _G.vimrc = {
     -- operator
-    op = {}
+    op = {},
+    omnifunc = {},
 }
 
 local function register_autocmd(event, opts)
@@ -29,7 +30,6 @@ require("rc.abbr")
 require("rc.keymap")
 require("rc.command")
 require("rc.filetype")
-
 
 vim.cmd [[
   filetype plugin indent on

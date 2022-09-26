@@ -1,4 +1,5 @@
 local util = require "rc.util"
+local obsidian = require "rc.obsidian"
 -- vim:fdm=marker:fmr=§§,■■
 
 local function create_cmd(name, impl, options)
@@ -113,17 +114,11 @@ create_cmd("Normal", function (tbl)
     end
 end, {range = true, nargs = 1, bang = true})
 
--- §§1 obsidian
-
-create_cmd("ObsidianOpenDiary", function ()
-    local diary_root = "/Users/monaqa/Documents/obsidian/mogamemo/diary/"
-    local today = vim.fn.strftime("%Y-%m-%d")
-    local diary_path = diary_root .. today .. ".md"
-    vim.cmd("e " .. diary_path)
+-- §§1 obsidian.vim
+create_cmd("ObsidianList", obsidian.open_fern)
+create_cmd("ObsidianOpenDiary", obsidian.open_diary)
+create_cmd("ObsidianGrep", function ()
+    vim.ui.input({prompt = "g/"}, function (kwd)
+        obsidian.grep_keyword(kwd)
+    end)
 end)
-
-create_cmd("ObsidianList", function ()
-    local obs_root = "/Users/monaqa/Documents/obsidian/mogamemo/"
-    vim.cmd("Fern " .. obs_root .. " -reveal=note")
-end)
-

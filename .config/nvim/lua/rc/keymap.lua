@@ -114,13 +114,37 @@ vim.keymap.set("x", "R", table.concat{
 
 -- §§2 QuickFix search
 vim.keymap.set("n", "g/", function ()
-    local query = vim.fn.input("g/")
+    local query
+    vim.ui.input({prompt = "g/"}, function (text)
+        query = text
+    end)
+    if query == nil then
+        return
+    end
+    local search_range
+    vim.ui.select(
+    {
+        "Current dirctory (default)",
+        "Current file"
+    }, {
+        prompt = "select grep range"
+    }, function (item, _)
+        if item == "Current dirctory (default)" then
+            search_range = "."
+        end
+        if item == "Current file" then
+            search_range = "%"
+        end
+        if item == nil then
+            search_range = "."
+        end
+    end)
     vim.fn.setreg("/", [[\v]] .. query)
     -- hlsearch の有効化
     vim.o.hlsearch = vim.o.hlsearch
 
-    return [[:\<C-u>silent grep ]] .. vim.fn.string(query) .. [[ .]]
-end, {expr = true} )
+    vim.cmd([[silent grep ]] .. vim.fn.string(query) .. " " .. search_range)
+end)
 
 vim.keymap.set("n", "gj", util.cmdcr"cnext" .. "zz", {})
 vim.keymap.set("n", "gk", util.cmdcr"cprevious" .. "zz", {})
@@ -312,9 +336,9 @@ end
 -- §§1 input Japanese character
 
 vim.keymap.set({"n", "x", "o"}, "fj", "f<C-k>j", {})
-vim.keymap.set({"n", "x", "o"}, "tj", "t<C-k>j", {})
+vim.keymap.set({"x", "o"}, "tj", "t<C-k>j", {})
 vim.keymap.set({"n", "x", "o"}, "Fj", "F<C-k>j", {})
-vim.keymap.set({"n", "x", "o"}, "Tj", "T<C-k>j", {})
+vim.keymap.set({"x", "o"}, "Tj", "T<C-k>j", {})
 
 ---digraph を登録する。
 ---@param key_pair string

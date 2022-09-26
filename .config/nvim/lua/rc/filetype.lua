@@ -1,5 +1,6 @@
 -- vim:fdm=marker:fmr=§§,■■
 local util = require("rc.util")
+local obsidian = require("rc.obsidian")
 
 -- §§1 SATySFi
 util.autocmd_vimrc{"BufRead", "BufNewFile"}{
@@ -130,5 +131,18 @@ util.autocmd_vimrc{"BufRead", "BufNewFile"}{
     pattern = [[*/queries/*/*.scm]],
     callback = function ()
         vim.opt_local.filetype = "query"
+    end
+}
+
+-- obsidian
+util.autocmd_vimrc{"BufEnter", "BufNewFile"}{
+    pattern = vim.tbl_map(
+        function (s)
+            return obsidian.root_dir .. s
+        end,
+        obsidian.file_pattern
+    ),
+    callback = function ()
+        vim.opt_local.filetype = "obsidian"
     end
 }

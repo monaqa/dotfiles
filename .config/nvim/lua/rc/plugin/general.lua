@@ -13,7 +13,7 @@ require('lualine').setup {
     },
     lualine_c = {
       function()
-        return vim.fn["coc#status"]()
+        return vim.pesc(vim.fn["coc#status"]())
       end
     },
     lualine_y = {

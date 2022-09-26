@@ -209,13 +209,13 @@ local recipe_escaped = {
 local recipe_link = {
     {filetype = {"rst"}, input = {"l"}, buns = {"`", " <>`_"}, nesting = 0},
     {filetype = {"rst"}, input = {"L"}, buns = {"` <", ">`_"}, nesting = 0},
-    {filetype = {"markdown"}, input = {"l"}, buns = {"[", "]()"}, nesting = 0},
-    {filetype = {"markdown"}, input = {"L"}, buns = {"[](", ")"}, nesting = 0},
+    {filetype = {"markdown", "obsidian"}, input = {"l"}, buns = {"[", "]()"}, nesting = 0},
+    {filetype = {"markdown", "obsidian"}, input = {"L"}, buns = {"[](", ")"}, nesting = 0},
 }
 
 local recipe_codeblock = {
     {
-        filetype = {"markdown"},
+        filetype = {"markdown", "obsidian"},
         input = {"c"},
         buns = {"```", "```"},
         kind = {"add"},
@@ -223,7 +223,7 @@ local recipe_codeblock = {
         command = { [[']s/^\s*//]] },
     },
     {
-        filetype = {"markdown"},
+        filetype = {"markdown", "obsidian"},
         input = {"C"},
         buns = {"SandwichMarkdownCodeSnippet()", [["```"]]},
         expr = 1,
