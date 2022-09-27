@@ -7,6 +7,12 @@ function M.trim(text)
     return text:gsub("^%s*(.-)%s*$", "%1")
 end
 
+---エラーとしてメッセージを出力する。
+---@param message any
+function M.print_error(message)
+    vim.api.nvim_echo({{message, "Error"}}, true, {})
+end
+
 ---ある要素を n 回繰り返した array を返す。
 ---@generic T
 ---@param x T

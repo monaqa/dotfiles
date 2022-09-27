@@ -28,12 +28,14 @@ local function sethl(tbl)
     end
 end
 
+-- TODO: foo
 util.autocmd_vimrc{"ColorScheme"}{
     pattern = "gruvbit",
     callback = function ()
         -- basic
         sethl{name = "FoldColumn", guibg="#303030"}
         sethl{name = "NonText", guifg="#496da9"}
+        sethl{name = "Todo", gui="bold", guibg="#444444", guifg = "#c6b7a2"}
 
         sethl{
             name = "VertSplit",

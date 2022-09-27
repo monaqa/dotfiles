@@ -2,6 +2,7 @@
 -- §§1 Plugin settings for telescope.nvim
 local actions = require('telescope.actions')
 local builtin = require("telescope.builtin")
+local util    = require("rc.util")
 
 require('telescope').load_extension('coc')
 
@@ -32,6 +33,16 @@ require('telescope').setup{
     },
   }
 }
+
+vim.keymap.set("n", "so", function ()
+    util.print_error"Local error: 'so' is deprecated. Use 'to' instead!"
+end)
+vim.keymap.set("n", "sO", function ()
+    util.print_error"Local error: 'sO' is deprecated. Use 'tO' instead!"
+end)
+vim.keymap.set("n", "sg", function ()
+    util.print_error"Local error: 'sg' is deprecated. Use 'tg' instead!"
+end)
 
 vim.keymap.set("n", "to", function () builtin.git_files({prompt_prefix = "𝝋"}) end)
 vim.keymap.set("n", "tO", function () builtin.find_files({prompt_prefix = "𝝋"}) end)
