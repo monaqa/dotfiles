@@ -59,6 +59,7 @@ function(use)
     use{"andymass/vim-matchup"}
     -- use{"petertriho/nvim-scrollbar"}
     -- use{"nvim-orgmode/orgmode"}
+    use{"uga-rosa/ccc.nvim"}
 
     -- paren
     use{"cohama/lexima.vim"}

@@ -33,8 +33,8 @@ vim.keymap.set("n", "tr", "<Cmd>Telescope coc references<CR>")
 vim.keymap.set("n", "ty", "<Cmd>Telescope coc type_definitions<CR>")
 vim.keymap.set("n", "tn", "<Plug>(coc-rename)", {remap = true})
 vim.keymap.set("n", "K", "<Cmd>call CocActionAsync('doHover')<CR>")
-vim.keymap.set("n", "<C-n>", "<Plug>(coc-diagnostic-next-error)")
-vim.keymap.set("n", "<C-p>", "<Plug>(coc-diagnostic-prev-error)")
+-- vim.keymap.set("n", "<C-n>", "<Plug>(coc-diagnostic-next-error)")
+-- vim.keymap.set("n", "<C-p>", "<Plug>(coc-diagnostic-prev-error)")
 vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)", {remap = true})
 vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)", {remap = true})
 
@@ -112,3 +112,33 @@ vim.cmd[[
 vim.g.coc_snippet_next = "<C-g><C-j>"
 vim.g.coc_snippet_prev = "<C-g><C-k>"
 
+local function coc_diag_to_quickfix()
+    local diags = vim.fn["CocAction"]("diagnosticList")
+    ---@type any[]
+    local entries = vim.tbl_map(function (diag)
+        return {
+            filename = diag.file,
+            lnum = diag.lnum,
+            end_lnum = diag.end_lnum,
+            col = diag.col,
+            end_col = diag.end_col,
+            text = diag.message,
+            type = diag.severity:sub(1, 1)
+        }
+    end, diags)
+
+    vim.fn.setqflist(entries)
+    vim.fn.setqflist({}, "a", { title = "Coc diagnostics" })
+end
+
+local function create_cmd(name, impl, options)
+    if options == nil then
+        options = {}
+    end
+    vim.api.nvim_create_user_command(name, impl, options)
+end
+
+create_cmd("CocQuickfix", function ()
+    coc_diag_to_quickfix()
+    vim.cmd[[cwindow]]
+end)

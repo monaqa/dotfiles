@@ -124,18 +124,16 @@ vim.keymap.set("n", "g/", function ()
     local search_range
     vim.ui.select(
     {
-        "Current dirctory (default)",
+        ("[default] Current dirctory (%s)"):format(vim.fn.getcwd()),
         "Current file"
     }, {
         prompt = "select grep range"
-    }, function (item, _)
-        if item == "Current dirctory (default)" then
+    }, function (item, idx)
+        if idx == 1 then
             search_range = "."
-        end
-        if item == "Current file" then
+        elseif idx == 2 then
             search_range = "%"
-        end
-        if item == nil then
+        else
             search_range = "."
         end
     end)
@@ -146,8 +144,8 @@ vim.keymap.set("n", "g/", function ()
     vim.cmd([[silent grep ]] .. vim.fn.string(query) .. " " .. search_range)
 end)
 
-vim.keymap.set("n", "gj", util.cmdcr"cnext" .. "zz", {})
-vim.keymap.set("n", "gk", util.cmdcr"cprevious" .. "zz", {})
+vim.keymap.set("n", "<C-n>", util.cmdcr"cnext" .. "zz", {})
+vim.keymap.set("n", "<C-p>", util.cmdcr"cprevious" .. "zz", {})
 
 -- https://qiita.com/lighttiger2505/items/166a4705f852e8d7cd0d
 -- Toggle QuickFix

@@ -49,10 +49,9 @@ end
 make_abbrev{
     {from = "c", to = "CocCommand"},
     {from = "cc", to = "CocConfig"},
-    {from = 'c', to = 'CocCommand'},
-    {from = 'cc', to = 'CocConfig'},
     {from = 'cl', to = 'CocList'},
     {from = 'clc', to = 'CocLocalConfig'},
+    {from = "cq", to = "CocQuickfix"},
     {from = 'cr', to = 'CocRestart'},
     {from = 'dia', to = 'ObsidianOpenDiary'},
     {from = 'em', to = 'Emmet'},

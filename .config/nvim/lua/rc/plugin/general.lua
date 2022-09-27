@@ -5,42 +5,53 @@ local util = require("rc.util")
 -- §§1 Plugin settings for lualine.nvim
 
 require('lualine').setup {
-  sections = {
-    lualine_b = {
-      function ()
-        return [[%f %m]]
-      end
+    sections = {
+        lualine_b = {
+            function ()
+                return [[%f %m]]
+            end
+        },
+        lualine_c = {
+            function()
+                return vim.pesc(vim.fn["coc#status"]())
+            end
+        },
+        lualine_y = {
+            function()
+                local branch = vim.fn["gina#component#repo#branch"]()
+                local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+                if branch == "" then
+                    return cwd
+                else
+                    return cwd .. " │ " .. vim.fn["gina#component#repo#branch"]()
+                end
+            end
+        },
+        lualine_z = {
+            function()
+                local n = #tostring(vim.fn.line("$"))
+                n = math.max(n, 3)
+                return "%" .. n .. [[l/%-3L:%-2c]]
+            end
+        }
     },
-    lualine_c = {
-      function()
-        return vim.pesc(vim.fn["coc#status"]())
-      end
+    -- winbar = {
+    --     lualine_c = {'filename'},
+    -- },
+    -- inactive_winbar = {
+    --     lualine_a = {},
+    --     lualine_b = {},
+    --     lualine_c = {'filename'},
+    --     lualine_x = {},
+    --     lualine_y = {},
+    --     lualine_z = {}
+    -- },
+    options = {
+        theme = 'tomorrow',
+        section_separators = {'', ''},
+        component_separators = {'', ''},
+        globalstatus = true,
     },
-    lualine_y = {
-      function()
-          local branch = vim.fn["gina#component#repo#branch"]()
-          local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-          if branch == "" then
-              return cwd
-          else
-              return cwd .. " │ " .. vim.fn["gina#component#repo#branch"]()
-          end
-      end
-    },
-    lualine_z = {
-      function()
-        local n = #tostring(vim.fn.line("$"))
-        n = math.max(n, 3)
-        return "%" .. n .. [[l/%-3L:%-2c]]
-      end
-    }
-  },
-  options = {
-    theme = 'tomorrow',
-    section_separators = {'', ''},
-    component_separators = {'', ''},
-    globalstatus = true,
-  },
 }
 -- vim.opt.fillchars = {
 --   horiz = '━',

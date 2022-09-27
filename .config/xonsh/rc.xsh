@@ -5,7 +5,18 @@ $HISTCONTROL = {
     "ignoredups",
     "ignoreerr",
 }
-$XONSH_COLOR_STYLE = "nord-darker"
+$XONSH_COLOR_STYLE = "native"
+
+# §§1 colorscheme
+from xonsh.tools import register_custom_style
+
+mystyle = {
+    "Token.PTK.Aborting": "#aaaaaa",
+    "Token.PTK.AutoSuggestion": "#aaaaaa",
+    "Token.Comment": "#888888"
+}
+register_custom_style("mystyle", mystyle, base="monokai")
+$XONSH_COLOR_STYLE="mystyle"
 # $XONSH_TRACE_SUBPROC = True
 
 # §§1 environment variables

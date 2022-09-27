@@ -30,6 +30,22 @@ function M.get_fnames()
     return relpaths
 end
 
+---@return string[]
+function M.get_omni_cands()
+    ---@type string[]
+    local relpaths = M.get_fnames()
+    local cands = vim.tbl_map(
+        ---@param s string
+        ---@return string
+        function (s)
+            local idx = s:find("/")
+            return s:sub(idx + 1)
+        end,
+        relpaths
+    )
+    return cands
+end
+
 function M.open_diary()
     local today = vim.fn.strftime("%Y-%m-%d")
     local diary_path = M.diary_dir .. today .. ".md"
@@ -84,9 +100,8 @@ function M.omnifunc(findstart, base)
         return vim.fn.col(".") - 1
     end
 
-    -- TODO: うまいことやんなきゃね
     ---@type string[]
-    local fnames = M.get_fnames()
+    local fnames = M.get_omni_cands()
     local resp = vim.tbl_map(function (s)
         return vim.split(s, ".", {plain = true})[1]
     end, fnames)

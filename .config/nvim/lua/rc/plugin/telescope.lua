@@ -34,18 +34,8 @@ require('telescope').setup{
   }
 }
 
-vim.keymap.set("n", "so", function ()
-    util.print_error"Local error: 'so' is deprecated. Use 'to' instead!"
-end)
-vim.keymap.set("n", "sO", function ()
-    util.print_error"Local error: 'sO' is deprecated. Use 'tO' instead!"
-end)
-vim.keymap.set("n", "sg", function ()
-    util.print_error"Local error: 'sg' is deprecated. Use 'tg' instead!"
-end)
-
-vim.keymap.set("n", "to", function () builtin.git_files({prompt_prefix = "𝝋"}) end)
-vim.keymap.set("n", "tO", function () builtin.find_files({prompt_prefix = "𝝋"}) end)
-vim.keymap.set("n", "tb", function () builtin.buffers({prompt_prefix = "𝜷"}) end)
-vim.keymap.set("n", "tg", function () builtin.live_grep({prompt_prefix = "𝜸"}) end)
+vim.keymap.set("n", "so", function () builtin.git_files({prompt_prefix = "𝝋"}) end)
+vim.keymap.set("n", "sO", function () builtin.find_files({prompt_prefix = "𝝋"}) end)
+vim.keymap.set("n", "sb", function () builtin.buffers({prompt_prefix = "𝜷"}) end)
+vim.keymap.set("n", "sg", function () builtin.live_grep({prompt_prefix = "𝜸"}) end)
 vim.keymap.set("n", "tq", function () builtin.quickfix({prompt_prefix = "𝝄"}) end)
