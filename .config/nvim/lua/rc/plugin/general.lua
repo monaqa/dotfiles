@@ -51,6 +51,11 @@ require('lualine').setup {
         section_separators = {'', ''},
         component_separators = {'', ''},
         globalstatus = true,
+        -- refresh = {
+        --     statusline = 10000,
+        --     tabline = 10000,
+        --     winbar = 10000,
+        -- }
     },
 }
 -- vim.opt.fillchars = {
