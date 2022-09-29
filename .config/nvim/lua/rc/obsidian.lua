@@ -14,6 +14,20 @@ M.file_pattern = {
         "*/*/*.md",
 }
 
+function M.diary_template()
+    local template = [[
+---
+tags: ["diary", ]
+alias: []
+---
+
+# To Do
+
+# Log
+]]
+    return vim.split(template.gsub("^%s*(.-)%s*$", "%1"), "\n", true)
+end
+
 ---@return string[]
 function M.get_fnames()
     ---@type string[]
@@ -46,9 +60,14 @@ function M.get_omni_cands()
     return cands
 end
 
-function M.open_diary()
-    local today = vim.fn.strftime("%Y-%m-%d")
-    local diary_path = M.diary_dir .. today .. ".md"
+function M.open_diary(arg)
+    local fname
+    if arg == "" then
+        fname = vim.fn.strftime("%Y-%m-%d")
+    else
+        fname = arg
+    end
+    local diary_path = M.diary_dir .. fname .. ".md"
     vim.cmd("e " .. diary_path)
     if not util.to_bool(vim.fn.filereadable(diary_path)) then
         vim.fn.setline(1, {
@@ -62,6 +81,19 @@ function M.open_diary()
             "# Log",
         })
     end
+end
+
+function M.open_diary_complete(arglead, cmdline, cursorpos)
+    local paths = vim.split(vim.fn.globpath(M.diary_dir, "*.md"), "\n", true)
+    local cands = vim.tbl_map(function (path)
+        local stem = vim.fn.fnamemodify(path, ":t:r")
+        if stem == vim.fn.strftime("%Y-%m-%d") then
+            return nil
+        end
+        return stem
+    end, paths)
+    cands = vim.fn.reverse(cands)
+    return cands
 end
 
 function M.open_fern()

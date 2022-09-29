@@ -116,7 +116,13 @@ end, {range = true, nargs = 1, bang = true})
 
 -- §§1 obsidian.vim
 create_cmd("ObsidianList", obsidian.open_fern)
-create_cmd("ObsidianOpenDiary", obsidian.open_diary)
+create_cmd(
+    "ObsidianOpenDiary",
+    function (meta)
+        obsidian.open_diary(meta.args)
+    end,
+    {nargs = "*", complete = obsidian.open_diary_complete}
+)
 create_cmd("ObsidianGrep", function ()
     vim.ui.input({prompt = "g/"}, function (kwd)
         obsidian.grep_keyword(kwd)
