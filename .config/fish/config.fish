@@ -1,9 +1,9 @@
 # vim:fdm=marker
 
 # xonsh を試してみるよ！
-if test -e /opt/homebrew/bin/xonsh
-  /opt/homebrew/bin/xonsh
-end
+# if test -e /opt/homebrew/bin/xonsh
+#   /opt/homebrew/bin/xonsh
+# end
 
 # xonsh が終了したら以下を fallback
 export EDITOR=nvim
