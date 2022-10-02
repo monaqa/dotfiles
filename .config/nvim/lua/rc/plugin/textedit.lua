@@ -1,26 +1,26 @@
 -- vim:fdm=marker:fmr=§§,■■
 -- operator や motion、 text object など。
 
-local util = require("rc.util")
+local util = require "rc.util"
 
 -- §§1 Plugin settings for glts/vim-textobj-comment
 
 vim.g["textobj_comment_no_default_key_mappings"] = 1
-vim.keymap.set({"x", "o"}, "im", "<Plug>(textobj-comment-i)", {remap = true})
-vim.keymap.set({"x", "o"}, "am", "<Plug>(textobj-comment-a)", {remap = true})
+vim.keymap.set({ "x", "o" }, "im", "<Plug>(textobj-comment-i)", { remap = true })
+vim.keymap.set({ "x", "o" }, "am", "<Plug>(textobj-comment-a)", { remap = true })
 
 -- §§1 Plugin settings for kana/vim-textobj-user
 
 vim.fn["textobj#user#plugin"]("line", {
     ["-"] = {
         ["select-a-function"] = "CurrentLineA",
-        ['select-a'] = 'al',
-        ['select-i-function'] = 'CurrentLineI',
-        ['select-i'] = 'il',
-    }
+        ["select-a"] = "al",
+        ["select-i-function"] = "CurrentLineI",
+        ["select-i"] = "il",
+    },
 })
 
-vim.cmd[[
+vim.cmd [[
 function! CurrentLineA()
   normal! 0
   let head_pos = getpos('.')
@@ -44,69 +44,69 @@ endfunction
 
 vim.fn["textobj#user#plugin"]("jbraces", {
     parens = {
-        pattern = {"（", "）"},
+        pattern = { "（", "）" },
         ["select-a"] = "aj)",
         ["select-i"] = "ij)",
     },
     braces = {
-        pattern = {"「", "」"},
+        pattern = { "「", "」" },
         ["select-a"] = "aj]",
         ["select-i"] = "ij]",
     },
     double_braces = {
-        pattern = {"『", "』"},
+        pattern = { "『", "』" },
         ["select-a"] = "aj}",
         ["select-i"] = "ij}",
     },
     lenticular_bracket = {
-        pattern = {"【", "】"},
+        pattern = { "【", "】" },
         ["select-a"] = "aj>",
         ["select-i"] = "ij>",
     },
 })
 
-util.autocmd_vimrc("FileType"){
+util.autocmd_vimrc "FileType" {
     pattern = "tex",
-    callback = function ()
+    callback = function()
         vim.fn["textobj#user#plugin"]("texquote", {
             single = {
-                pattern = {"`", "'"},
+                pattern = { "`", "'" },
                 ["select-a"] = "aq",
                 ["select-i"] = "iq",
             },
             double = {
-                pattern = {"``", "''"},
+                pattern = { "``", "''" },
                 ["select-a"] = "aQ",
                 ["select-i"] = "iQ",
             },
         })
-    end
+    end,
 }
 
-util.autocmd_vimrc("FileType"){
+util.autocmd_vimrc "FileType" {
     pattern = "satysfi",
-    callback = function ()
+    callback = function()
         vim.fn["textobj#user#plugin"]("satyblock", {
             block = {
-                pattern = {"<%", ">%"},
+                pattern = { "<%", ">%" },
                 ["select-a"] = "a>",
                 ["select-i"] = "i>",
             },
         })
-    end
+    end,
 }
 
 -- §§1 Plugin settings for machakann/vim-swap
-vim.keymap.set({"o", "x"}, "i,", "<Plug>(swap-textobject-i)")
-vim.keymap.set({"o", "x"}, "a,", "<Plug>(swap-textobject-a)")
+vim.keymap.set({ "o", "x" }, "i,", "<Plug>(swap-textobject-i)")
+vim.keymap.set({ "o", "x" }, "a,", "<Plug>(swap-textobject-a)")
 
 -- §§1 Plugin settings for textobje-entire
-for _, op in ipairs({
+for _, op in ipairs {
     "y",
     "=",
     "<",
     ">",
-}) do
-    vim.keymap.set("n", op .. "ie", op .. "<Plug>(textobj-entire-i)<C-o>", {remap = true})
-    vim.keymap.set("n", op .. "ae", op .. "<Plug>(textobj-entire-a)<C-o>", {remap = true})
+} do
+    vim.keymap.set("n", op .. "ie", op .. "<Plug>(textobj-entire-i)<C-o>", { remap = true })
+    vim.keymap.set("n", op .. "ae", op .. "<Plug>(textobj-entire-a)<C-o>", { remap = true })
 end

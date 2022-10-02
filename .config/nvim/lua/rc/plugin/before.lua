@@ -1,4 +1,4 @@
-vim.g.python3_host_prog = vim.fn.getenv("HOME") .. "/.local/share/nvim/venv/neovim/bin/python"
+vim.g.python3_host_prog = vim.fn.getenv "HOME" .. "/.local/share/nvim/venv/neovim/bin/python"
 
 local disable_plugins = {
     "netrw",

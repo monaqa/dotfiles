@@ -1,56 +1,61 @@
 -- vim:fdm=marker:fmr=§§,■■
-local util = require("rc.util")
-local obsidian = require("rc.obsidian")
+local util = require "rc.util"
+local obsidian = require "rc.obsidian"
 
 -- §§1 SATySFi
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "Satyristes",
-    command = [[setfiletype lisp]]
+    command = [[setfiletype lisp]],
 }
 
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = {
         "*.saty",
         "*.satyh",
         "*.satyh-*",
         "*.satyg",
     },
-    callback = function ()
-        if (vim.fn.getline(1) == "%SATySFi v0.1.0") then
-            vim.cmd[[
+    callback = function()
+        if vim.fn.getline(1) == "%SATySFi v0.1.0" then
+            vim.cmd [[
                 setfiletype satysfi_v0_1_0
             ]]
         else
-            vim.cmd[[
+            vim.cmd [[
                 setfiletype satysfi
             ]]
         end
-    end
+    end,
 }
 
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.saty",
-    callback = function ()
-        vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", {buffer = true})
-        vim.keymap.set("n", "@q", ":!satysfi %<CR>", {buffer = true})
-        vim.keymap.set("n", "@Q", ":!satysfi --debug-show-bbox --debug-show-space --debug-show-block-bbox --debug-show-block-space --debug-show-overfull %<CR>", {buffer = true})
-    end
+    callback = function()
+        vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", { buffer = true })
+        vim.keymap.set("n", "@q", ":!satysfi %<CR>", { buffer = true })
+        vim.keymap.set(
+            "n",
+            "@Q",
+            ":!satysfi --debug-show-bbox --debug-show-space --debug-show-block-bbox --debug-show-block-space --debug-show-overfull %<CR>",
+            { buffer = true }
+        )
+    end,
 }
 
 -- §§1 fish
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.fish",
-    command = [[setfiletype fish]]
+    command = [[setfiletype fish]],
 }
 
 -- §§1 mermaid
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.mmd",
-    command = [[setfiletype mermaid]]
+    command = [[setfiletype mermaid]],
 }
 
 -- §§1 hydrogen
-vim.cmd[[
+vim.cmd [[
 function HydrogenFoldOnlyCode(lnum) abort
   if getline(a:lnum + 1) =~ '^# %%'
     return '0'
@@ -76,73 +81,69 @@ function HydrogenCustomFoldText()
 endfunction
 ]]
 
-
 -- §§1 quickfix
-util.autocmd_vimrc("FileType"){
+util.autocmd_vimrc "FileType" {
     pattern = "qf",
-    callback = function ()
-        vim.keymap.set("n", "<CR>", "<CR>", {buffer = true})
-        vim.keymap.set("n", "j", "j", {buffer = true})
-        vim.keymap.set("n", "k", "k", {buffer = true})
-    end
+    callback = function()
+        vim.keymap.set("n", "<CR>", "<CR>", { buffer = true })
+        vim.keymap.set("n", "j", "j", { buffer = true })
+        vim.keymap.set("n", "k", "k", { buffer = true })
+    end,
 }
 
 -- §§1 todome
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.todome",
-    command = [[setfiletype todome]]
+    command = [[setfiletype todome]],
 }
 
 -- §§1 html
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.html",
-    callback = function ()
-        vim.keymap.set("i", "</", "</<C-x><C-o>", {buffer = true})
+    callback = function()
+        vim.keymap.set("i", "</", "</<C-x><C-o>", { buffer = true })
         vim.bo.shiftwidth = 2
-    end
+    end,
 }
 
 -- §§1 nim
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.nim",
-    command = [[setfiletype nim]]
+    command = [[setfiletype nim]],
 }
 
 -- §§1 jison
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.jison",
-    command = [[setfiletype yacc]]
+    command = [[setfiletype yacc]],
 }
 
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "LICENSE",
-    callback = function ()
+    callback = function()
         vim.opt_local.filetype = "license"
-    end
+    end,
 }
 -- §§1 .init.lua.local
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = [[.init.lua.local]],
-    command = [[setfiletype lua]]
+    command = [[setfiletype lua]],
 }
 
 -- query
-util.autocmd_vimrc{"BufRead", "BufNewFile"}{
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = [[*/queries/*/*.scm]],
-    callback = function ()
+    callback = function()
         vim.opt_local.filetype = "query"
-    end
+    end,
 }
 
 -- obsidian
-util.autocmd_vimrc{"BufEnter", "BufNewFile"}{
-    pattern = vim.tbl_map(
-        function (s)
-            return obsidian.root_dir .. s
-        end,
-        obsidian.file_pattern
-    ),
-    callback = function ()
+util.autocmd_vimrc { "BufEnter", "BufNewFile" } {
+    pattern = vim.tbl_map(function(s)
+        return obsidian.root_dir .. s
+    end, obsidian.file_pattern),
+    callback = function()
         vim.opt_local.filetype = "obsidian"
-    end
+    end,
 }

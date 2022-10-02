@@ -41,13 +41,13 @@
 -- --   vertright = '┣',
 -- --   verthoriz = '╋',
 -- -- }
--- 
+--
 -- -- §§1 Plugin settings for hlslens
 -- -- require'hlslens'.setup{
 -- --     nearest_only = true,
 -- --     -- nearest_float_when = 'always',
 -- -- }
--- 
+--
 -- -- §§1 Plugin settings for telescope.nvim
 -- local actions = require('telescope.actions')
 -- require('telescope').load_extension('coc')
@@ -79,7 +79,7 @@
 --     },
 --   }
 -- }
--- 
+--
 -- -- §§1 Plugin settings for nvim-treesitter.nvim
 -- require'nvim-treesitter.configs'.setup {
 --   ensure_installed = {
@@ -105,9 +105,9 @@
 --         ["if"] = "@function.inner",
 --         ["ac"] = "@class.outer",
 --         ["ic"] = "@class.inner",
--- 
+--
 --         -- Or you can define your own textobjects like this
--- 
+--
 --         -- ["iF"] = {
 --         --   python = "(function_definition) @function",
 --         --   cpp = "(function_definition) @function",
@@ -118,7 +118,7 @@
 --     },
 --   },
 -- }
--- 
+--
 -- local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 -- parser_config.todome = {
 --   install_info = {
@@ -134,9 +134,9 @@
 --   },
 --   filetype = "mermaid", -- if filetype does not agrees with parser name
 -- }
--- 
+--
 -- -- §§1 Plugin settings for pretty-fold.nvim
--- 
+--
 -- require('pretty-fold').setup{
 --     fill_char = '┄',
 --     sections = {
@@ -148,23 +148,23 @@
 --             function(config) return config.fill_char:rep(3) end
 --         }
 --     },
--- 
+--
 --     remove_fold_markers = true,
--- 
+--
 --     -- Keep the indentation of the content of the fold string.
 --     keep_indentation = true,
--- 
+--
 --     -- Possible values:
 --     -- "delete" : Delete all comment signs from the fold string.
 --     -- "spaces" : Replace all comment signs with equal number of spaces.
 --     -- false    : Do nothing with comment signs.
 --     comment_signs = 'spaces',
--- 
+--
 --     -- List of patterns that will be removed from content foldtext section.
 --     stop_words = {
 --         '@brief%s*', -- (for cpp) Remove '@brief' and all spaces after.
 --     },
--- 
+--
 --     add_close_pattern = true,
 --     matchup_patterns = {
 --         { '{', '}' },
@@ -176,16 +176,16 @@
 --     },
 -- }
 -- -- require('pretty-fold.preview').setup_keybinding()
--- 
+--
 -- -- §§1 Plugin settings for dial.nvim
--- 
+--
 -- -- local augend = require"dial.augend"
 -- -- require"dial.config".augends:register_group{
 -- --     default = {
--- -- 
+-- --
 -- --     }
 -- -- }
--- 
+--
 -- require('neorg').setup {
 --     load = {
 --         ["core.defaults"] = {}

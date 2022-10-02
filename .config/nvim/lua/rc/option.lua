@@ -1,6 +1,5 @@
 -- vim:fdm=marker:fmr=§§,■■
 
-
 -- §§1 表示設定
 vim.cmd [[
 language messages en_US.UTF-8
@@ -48,7 +47,7 @@ vim.opt.diffopt = vim.opt.diffopt + { "vertical", algorithm = "histgram" }
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd[[
+vim.cmd [[
 colorscheme gruvbit
 ]]
 
@@ -76,10 +75,10 @@ vim.opt.history = 10000
 vim.opt.mouse = "a"
 -- 最後の4文字が "fish" だったら "sh" にする
 if vim.opt.shell:get():sub(#vim.opt.shell - 3) == "fish" then
-    vim.opt.shell.set("sh")
+    vim.opt.shell.set "sh"
 end
 
-if vim.fn.has("persistent_undo") then
+if vim.fn.has "persistent_undo" then
     vim.opt.undofile = true
 end
 
@@ -98,7 +97,7 @@ vim.opt.sessionoptions = {
     "winsize",
 }
 
-if vim.fn.executable("rg") then
-    vim.opt.grepprg = 'rg --vimgrep --hidden --glob ' .. "'!tags*'"
+if vim.fn.executable "rg" then
+    vim.opt.grepprg = "rg --vimgrep --hidden --glob " .. "'!tags*'"
     vim.opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
 end

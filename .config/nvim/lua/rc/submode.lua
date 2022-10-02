@@ -1,7 +1,7 @@
 -- submode 相当の機能を提供する。
 
 -- 以下のようなマッピングを量産できる
--- 
+--
 -- vim.keymap.set("n", "s+", "<C-w>+<Plug>(vimrc-enter-pending)")
 -- vim.keymap.set("n", "<Plug>(vimrc-enter-pending)+", "<C-w>+<Plug>(vimrc-enter-pending)")
 -- vim.keymap.set("n", "<Plug>(vimrc-enter-pending)", "<Nop>")
@@ -17,7 +17,6 @@ local M = {}
 ---@param beforehook fun() | nil
 ---@param afterhook fun() | nil
 function M.create_mode(namespace, prefix, beforehook, afterhook)
-
     local plug_pending = ("<Plug>(submode-p-%s)"):format(namespace)
     local plug_before_hook = ("<Plug>(submode-b-%s)"):format(namespace)
     local plug_after_hook = ("<Plug>(submode-a-%s)"):format(namespace)
@@ -25,7 +24,7 @@ function M.create_mode(namespace, prefix, beforehook, afterhook)
     local timeoutlen
 
     if beforehook == nil then
-        beforehook = function ()
+        beforehook = function()
             timeoutlen = vim.opt.timeoutlen
             vim.opt.timeoutlen = 10000
             print("SUBMODE (" .. namespace .. ") IS ACTIVE!")
@@ -33,7 +32,7 @@ function M.create_mode(namespace, prefix, beforehook, afterhook)
     end
 
     if afterhook == nil then
-        afterhook = function ()
+        afterhook = function()
             vim.opt.timeoutlen = timeoutlen
             print("Submode (" .. namespace .. ") finished.")
         end
@@ -46,12 +45,11 @@ function M.create_mode(namespace, prefix, beforehook, afterhook)
     local mode = {
         ---@param repeater string
         ---@param action string
-        register_mapping = function (repeater, action)
+        register_mapping = function(repeater, action)
             vim.keymap.set("n", prefix .. repeater, plug_before_hook .. action .. plug_pending)
             vim.keymap.set("n", plug_pending .. repeater, action .. plug_pending)
-        end
+        end,
     }
-
 
     return mode
 end

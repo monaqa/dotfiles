@@ -10,7 +10,7 @@ end
 ---エラーとしてメッセージを出力する。
 ---@param message any
 function M.print_error(message)
-    vim.api.nvim_echo({{message, "Error"}}, true, {})
+    vim.api.nvim_echo({ { message, "Error" } }, true, {})
 end
 
 ---ある要素を n 回繰り返した array を返す。
@@ -44,7 +44,7 @@ end
 ---@param func fun(x: T): U
 ---@return fun(xs: T[]): U[]
 function M.map(func)
-    return function (xs)
+    return function(xs)
         vim.tbl_map(func, xs)
     end
 end
@@ -60,7 +60,7 @@ function M.to_bool(num)
 end
 
 function M.autocmd_vimrc(event)
-    return function (opts)
+    return function(opts)
         opts["group"] = "vimrc"
         vim.api.nvim_create_autocmd(event, opts)
     end
@@ -78,10 +78,10 @@ end
 
 ---横に広ければ鉛直に、縦に広ければ水平に分割する。
 function M.split_window()
-    if M.is_wide_window(".") then
-        vim.cmd[[vsplit]]
+    if M.is_wide_window "." then
+        vim.cmd [[vsplit]]
     else
-        vim.cmd[[split]]
+        vim.cmd [[split]]
     end
 end
 
@@ -89,7 +89,6 @@ end
 function M.esc(text)
     return "\u{1b}" .. text
 end
-
 
 --- Lua には三項演算子が "無い" ので。
 ---@generic T
