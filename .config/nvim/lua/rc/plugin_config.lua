@@ -1,6 +1,7 @@
 local M = {}
 
 local util = require "rc.util"
+local submode = require "rc.submode"
 
 -- §§1 general
 
@@ -92,8 +93,6 @@ function M.bufferline()
     vim.keymap.set("n", "sp", "<Cmd>BufferLineCyclePrev<CR>")
     vim.keymap.set("n", "sN", "<Cmd>BufferLineMoveNext<CR>")
     vim.keymap.set("n", "sP", "<Cmd>BufferLineMovePrev<CR>")
-    -- vim.keymap.set("n", "sw", "<Cmd>BufferLineCyclePrev<CR><Cmd>bd! #<CR>")
-    -- vim.keymap.set("n", "sw", "<Cmd>bp<CR><Cmd>bd! #<CR>")
 
     -- https://stackoverflow.com/questions/1444322/how-can-i-close-a-buffer-without-closing-the-window
     vim.keymap.set("n", "sw", "<Cmd>bp | sp | bn | bd<CR>")
@@ -192,13 +191,10 @@ function M.fern()
         --     vim.fn["fern#smart#leaf"]("<Plug>(fern-action-collapse)", "<Plug>(fern-action-expand)", "<Plug>(fern-action-collapse)")
         -- end, {expr = true, buffer = true})
 
-        -- vim.keymap.set("n", "l", "<Plug>(fern-open-or-expand)", {remap = true, buffer = true})
         vim.keymap.set("n", "<C-h>", "<Plug>(fern-action-leave)", { remap = true, buffer = true })
         vim.keymap.set("n", "<CR>", "<Plug>(fern-open-or-enter)", { remap = true, buffer = true, nowait = true })
         vim.keymap.set("n", "e", "<Plug>(fern-action-open)", { remap = true, buffer = true })
         vim.keymap.set("n", "<BS>", "<Plug>(fern-action-leave)", { remap = true, buffer = true })
-
-        -- vim.keymap.set("n", "<Space>", "<Plug>(fern-action-mark)", {remap = true, buffer = true, nowait = true})
 
         vim.keymap.set("n", ">>", "<Plug>(fern-action-mark:set)", { remap = true, buffer = true, nowait = true })
         -- なぜか unset のときファイル末尾にジャンプしてしまうので <C-o> を付けた
@@ -283,9 +279,9 @@ function M.gina()
     vim.api.nvim_create_user_command("GinaBrowseYank", function(meta)
         vim.cmd(([[%d,%dGina browse --exact --yank :]]):format(meta.line1, meta.line2))
         vim.cmd [[
-      let @+ = @"
-      echo @+
-    ]]
+            let @+ = @"
+            echo @+
+        ]]
     end, { range = "%" })
 end
 
@@ -549,11 +545,6 @@ function M.lexima()
     --         return [[<C-g>u]] .. vim.fn["lexima#expand"]("<CR>", "i")
     --     end
     -- end, {expr = true, silent = true})
-
-    -- coc.lua に移動
-    -- vim.cmd[[
-    --     inoremap <expr> <CR> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u" . lexima#expand('<LT>CR>', 'i')
-    -- ]]
 end
 
 function M.sandwich()
@@ -843,27 +834,43 @@ function M.textobj_user()
         },
     })
 
-    vim.cmd [[
-function! CurrentLineA()
-  normal! 0
-  let head_pos = getpos('.')
-  normal! $
-  let tail_pos = getpos('.')
-  return ['v', head_pos, tail_pos]
-endfunction
+    -- function vim.fn.CurrentLineA()
+    --     vim.cmd [[ normal! 0 ]]
+    --     local head_pos = vim.fn.getpos "."
+    --     vim.cmd [[ normal! $ ]]
+    --     local tail_pos = vim.fn.getpos "."
+    --     return { "v", head_pos, tail_pos }
+    -- end
+    --
+    -- function vim.fn.CurrentLineI()
+    --     vim.cmd [[ normal! ^ ]]
+    --     local head_pos = vim.fn.getpos "."
+    --     vim.cmd [[ normal! g_ ]]
+    --     local tail_pos = vim.fn.getpos "."
+    --     return { "v", head_pos, tail_pos }
+    -- end
 
-function! CurrentLineI()
-  normal! ^
-  let head_pos = getpos('.')
-  normal! g_
-  let tail_pos = getpos('.')
-  let non_blank_char_exists_p = getline('.')[head_pos[2] - 1] !~# '\s'
-  return
-  \ non_blank_char_exists_p
-  \ ? ['v', head_pos, tail_pos]
-  \ : 0
-endfunction
-]]
+    vim.cmd [[
+        function! CurrentLineA()
+          normal! 0
+          let head_pos = getpos('.')
+          normal! $
+          let tail_pos = getpos('.')
+          return ['v', head_pos, tail_pos]
+        endfunction
+
+        function! CurrentLineI()
+          normal! ^
+          let head_pos = getpos('.')
+          normal! g_
+          let tail_pos = getpos('.')
+          let non_blank_char_exists_p = getline('.')[head_pos[2] - 1] !~# '\s'
+          return
+          \ non_blank_char_exists_p
+          \ ? ['v', head_pos, tail_pos]
+          \ : 0
+        endfunction
+    ]]
 
     vim.fn["textobj#user#plugin"]("jbraces", {
         parens = {
@@ -963,24 +970,29 @@ end
 
 -- §§1 coc
 function M.coc()
-    vim.cmd [[
-function! CocServiceNames(ArgLead, CmdLine, CursorPos)
-  let actions = map(CocAction('services'), {idx, d -> d['id']})
-  return actions
-endfunction
+    local function coc_service_names(arglead, cmdline, cursorpos)
+        return vim.tbl_map(function(service)
+            return service["id"]
+        end, vim.fn.CocAction "services")
+    end
 
-command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call CocAction('toggleService', <q-args>)
-]]
+    util.create_cmd("CocToggleService", function(meta)
+        vim.fn.CocAction("toggleService", meta.args)
+    end, { nargs = 1, complete = coc_service_names })
 
-    vim.o.tagfunc = "CocTagFunc"
+    vim.opt.tagfunc = "CocTagFunc"
 
     vim.g["coc_global_extensions"] = {
-        "coc-snippets",
-        "coc-marketplace",
-        "coc-rust-analyzer",
-        "coc-pyright",
-        "coc-json",
         "coc-deno",
+        "coc-json",
+        "coc-marketplace",
+        "coc-pyright",
+        "coc-rust-analyzer",
+        "coc-snippets",
+        "coc-sumneko-lua",
+        "coc-toml",
+        -- "coc-tsserver",
+        "coc-yaml",
     }
 
     vim.keymap.set("n", "gd", "<C-]>")
@@ -992,18 +1004,20 @@ command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call Coc
     vim.keymap.set("n", "ty", "<Cmd>Telescope coc type_definitions<CR>")
     vim.keymap.set("n", "tn", "<Plug>(coc-rename)", { remap = true })
     vim.keymap.set("n", "K", "<Cmd>call CocActionAsync('doHover')<CR>")
-    -- vim.keymap.set("n", "<C-n>", "<Plug>(coc-diagnostic-next-error)")
-    -- vim.keymap.set("n", "<C-p>", "<Plug>(coc-diagnostic-prev-error)")
     vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)", { remap = true })
     vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)", { remap = true })
 
     vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
 
+    local submode_cocjump = submode.create_mode("cocjump", "t")
+    submode_cocjump.register_mapping("j", "<Plug>(coc-diagnostic-next-error)")
+    submode_cocjump.register_mapping("k", "<Plug>(coc-diagnostic-prev-error)")
+
     -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
     vim.cmd [[
-    inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()
-    inoremap <expr> <Plug>(vimrc-lexima-expand-cr) lexima#expand('<LT>CR>', 'i')
-]]
+        inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()
+        inoremap <expr> <Plug>(vimrc-lexima-expand-cr) lexima#expand('<LT>CR>', 'i')
+    ]]
 
     vim.keymap.set("i", "<CR>", function()
         if util.to_bool(vim.fn["coc#pum#visible"]()) then
@@ -1017,15 +1031,15 @@ command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call Coc
         return "<Plug>(vimrc-lexima-expand-cr)"
     end, { expr = true, remap = true })
 
-    local function coc_check_backspace()
-        local col = vim.fn.col "." - 1
-        if not util.to_bool(col) then
-            return true
-        end
-        return vim.regex([[\s]]):match_str(vim.fn.getline(".")[col])
-    end
-
     -- coc#pum#next(1) などが Vim script 上でしか動かないっぽい
+
+    -- local function coc_check_backspace()
+    --     local col = vim.fn.col "." - 1
+    --     if not util.to_bool(col) then
+    --         return true
+    --     end
+    --     return vim.regex([[\s]]):match_str(vim.fn.getline(".")[col])
+    -- end
 
     -- vim.keymap.set("i", "<Tab>", function ()
     --     -- if util.to_bool(vim.fn.pumvisible()) then
@@ -1051,26 +1065,27 @@ command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call Coc
     -- end, {expr = true})
 
     vim.cmd [[
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction
+      function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~ '\s'
+      endfunction
 
-  " Insert <tab> when previous text is space, refresh completion if not.
-  inoremap <silent><expr> <TAB>
-    \ coc#pum#visible() ? coc#pum#next(1):
-    \ pumvisible() ? "\<C-n>":
-    \ <SID>check_back_space() ? "\<Tab>" :
-    \ coc#refresh()
-  inoremap <expr><S-TAB>
-    \ coc#pum#visible() ? coc#pum#prev(1) :
-    \ pumvisible() ? "\<C-p>":
-    \ "\<C-h>"
-]]
+      " Insert <tab> when previous text is space, refresh completion if not.
+      inoremap <silent><expr> <TAB>
+        \ coc#pum#visible() ? coc#pum#next(1):
+        \ pumvisible() ? "\<C-n>":
+        \ <SID>check_back_space() ? "\<Tab>" :
+        \ coc#refresh()
+      inoremap <expr><S-TAB>
+        \ coc#pum#visible() ? coc#pum#prev(1) :
+        \ pumvisible() ? "\<C-p>":
+        \ "\<C-h>"
+    ]]
 
     vim.g.coc_snippet_next = "<C-g><C-j>"
     vim.g.coc_snippet_prev = "<C-g><C-k>"
 
+    -- coc の diagnostics の内容を QuiciFix に流し込む。
     local function coc_diag_to_quickfix()
         local diags = vim.fn["CocAction"] "diagnosticList"
         ---@type any[]
@@ -1090,14 +1105,7 @@ command! -nargs=1 -complete=customlist,CocServiceNames CocToggleService call Coc
         vim.fn.setqflist({}, "a", { title = "Coc diagnostics" })
     end
 
-    local function create_cmd(name, impl, options)
-        if options == nil then
-            options = {}
-        end
-        vim.api.nvim_create_user_command(name, impl, options)
-    end
-
-    create_cmd("CocQuickfix", function()
+    util.create_cmd("CocQuickfix", function()
         coc_diag_to_quickfix()
         vim.cmd [[cwindow]]
     end)
@@ -1350,6 +1358,7 @@ function M.treesitter()
                 },
             },
         },
+        -- matchup との連携はなんかうまくいかんかった（理由は忘れた）
         matchup = {
             enable = false, -- mandatory, false will disable the whole extension
             -- disable = { "c", "ruby" },  -- optional, list of language that will be disabled
@@ -1361,25 +1370,7 @@ function M.treesitter()
         },
     }
 
-    -- vim.pretty_print{sfile = vim.fn.expand("<sfile>:p", nil, nil)}
-
-    -- vim.cmd[[
-    -- nnoremap ts <Cmd> TSHighlightCapturesUnderCursor<CR>
-    --
-    -- let s:query_dir = expand("<sfile>:p:h:h:h") .. '/after/queries/'
-    --
-    -- function! TreeSitterOverrideQuery(filetype, query_type)
-    --   let query_file = s:query_dir .. a:filetype .. '/' .. a:query_type .. '.scm'
-    --   let query = join(readfile(query_file), "\n")
-    --   call luaeval('require("vim.treesitter.query").set_query(_A[1], _A[2], _A[3])', [a:filetype, a:query_type, query])
-    -- endfunction
-    --
-    -- call TreeSitterOverrideQuery('bash', 'highlights')
-    -- call TreeSitterOverrideQuery('markdown', 'highlights')
-    -- ]]
-
     vim.keymap.set("n", "ts", "<Cmd>TSHighlightCapturesUnderCursor<CR>")
-
     local query_dir = vim.fn.expand("~/.config/nvim/after/queries", nil, nil)
 
     local function override_query(filetype, query_type)
@@ -1388,11 +1379,14 @@ function M.treesitter()
         require("vim.treesitter.query").set_query(filetype, query_type, query)
     end
 
+    -- 本体でサポートされたので、たぶんもうじき消える
     override_query("bash", "highlights")
     override_query("markdown", "highlights")
     override_query("markdown_inline", "highlights")
     override_query("lua", "folds")
+end
 
+function M.treehopper()
     vim.keymap.set("o", "q", ":<C-U>lua require('tsht').nodes()<CR>")
     vim.keymap.set("x", "q", ":lua require('tsht').nodes()<CR>")
 end
@@ -1414,7 +1408,7 @@ end
 -- §§1 monaqa
 
 function M.dial()
-    vim.fn["DialConfig"] = function()
+    local function dial_config()
         vim.cmd [[packadd dial.nvim]]
 
         local augend = require "dial.augend"
@@ -1468,22 +1462,10 @@ function M.dial()
                 vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual "markdown", { noremap = true })
             end,
         }
-
-        --   vim.cmd[[
-        -- augroup vimrc
-        --   autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-a>",   require("dial.map").inc_normal("markdown"), {noremap = true})
-        --   autocmd FileType markdown lua vim.api.nvim_set_keymap("n", "<C-x>",   require("dial.map").dec_normal("markdown"), {noremap = true})
-        --   autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-a>",   require("dial.map").inc_visual("markdown"), {noremap = true})
-        --   autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "<C-x>",   require("dial.map").dec_visual("markdown"), {noremap = true})
-        --   autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual("markdown"), {noremap = true})
-        --   autocmd FileType markdown lua vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual("markdown"), {noremap = true})
-        -- augroup END
-        --   ]]
     end
 
     if vim.fn.getcwd() ~= "/Users/monaqa/ghq/github.com/monaqa/dial.nvim" then
-        vim.fn["DialConfig"]()
-        -- vim.cmd [[echom 'general config of dial.vim is loaded.']]
+        dial_config()
     end
 end
 
@@ -1510,23 +1492,26 @@ function M.smooth_scroll()
     -- vim.keymap.set({"n", "v"}, "H", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
 
     vim.cmd [[
-nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
-nnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
-nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
-xnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
-xnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
-xnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+        nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
+        nnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+        nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+        xnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
+        xnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+        xnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
+    ]]
 
-nnoremap L <Cmd>call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
-nnoremap H <Cmd>call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
-nnoremap M <Cmd>call smooth_scroll#flick(wincol() - winwidth(0) / 2, 10, "zl", "zh", v:true)<CR>
-xnoremap L <Cmd>call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
-xnoremap H <Cmd>call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>
-xnoremap M <Cmd>call smooth_scroll#flick(wincol() - winwidth(0) / 2, 10, "zl", "zh", v:true)<CR>
-]]
+    vim.keymap.set(
+        { "n", "x" },
+        "L",
+        util.cmdcr [[call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)]]
+    )
+    vim.keymap.set(
+        { "n", "x" },
+        "H",
+        util.cmdcr [[call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)]]
+    )
 
     -- §§1 Plugin settings for monaqa/vim-edgemotion
-
     vim.keymap.set("n", "<Space>j", "m`<Plug>(edgemotion-j)")
     vim.keymap.set("n", "<Space>k", "m`<Plug>(edgemotion-k)")
     vim.keymap.set("x", "<Space>j", "<Plug>(edgemotion-j)")
@@ -1534,19 +1519,17 @@ xnoremap M <Cmd>call smooth_scroll#flick(wincol() - winwidth(0) / 2, 10, "zl", "
 end
 
 function M.modesearch()
-    vim.cmd [[
-nmap / <Plug>(modesearch-slash-rawstr)
-nmap ? <Plug>(modesearch-slash-regexp)
-cmap <C-x> <Plug>(modesearch-toggle-mode)
-nnoremap _ /
-]]
+    vim.keymap.set({ "n", "x", "o" }, "/", "<Plug>(modesearch-slash-rawstr)")
+    vim.keymap.set({ "n", "x", "o" }, "?", "<Plug>(modesearch-slash-regexp)")
+    vim.keymap.set("c", "<C-x>", "<Plug>(modesearch-toggle-mode)")
+    vim.keymap.set("n", "_", "/")
 end
 
 function M.partedit()
     vim.g["partedit#opener"] = ":vsplit"
     vim.g["partedit#prefix_pattern"] = [[\v\s*]]
 
-    vim.api.nvim_create_user_command("ParteditCodeblock", function(meta)
+    util.create_cmd("ParteditCodeblock", function(meta)
         local line_codeblock_start = vim.fn.getline(meta.line1 - 1)
         local filetype = vim.fn.matchstr(line_codeblock_start, [[\v```\zs[-a-zA-Z0-9]+\ze]])
         local options = { filetype = filetype }

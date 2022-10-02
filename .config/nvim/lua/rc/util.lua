@@ -38,16 +38,16 @@ function M.list_concat(arys)
     return tbl
 end
 
----各要素を変換する高階関数を返す。
----@generic T
----@generic U
----@param func fun(x: T): U
----@return fun(xs: T[]): U[]
-function M.map(func)
-    return function(xs)
-        vim.tbl_map(func, xs)
-    end
-end
+-- ---各要素を変換する高階関数を返す。
+-- ---@generic T
+-- ---@generic U
+-- ---@param func fun(x: T): U
+-- ---@return fun(xs: T[]): U[]
+-- function M.map(func)
+--     return function(xs)
+--         vim.tbl_map(func, xs)
+--     end
+-- end
 
 ---数値、文字列を Vim script 流スタイルで boolean に変換する。
 ---@param num number | string | boolean | nil
@@ -106,6 +106,14 @@ end
 
 function M.cmdcr(text)
     return "<Cmd>" .. text .. "<CR>"
+end
+
+--- nvim_create_user_command って長ったらしいしオプション省略できないっぽいので。
+function M.create_cmd(name, impl, options)
+    if options == nil then
+        options = {}
+    end
+    vim.api.nvim_create_user_command(name, impl, options)
 end
 
 return M

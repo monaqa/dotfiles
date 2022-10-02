@@ -4,7 +4,9 @@ local augroup = vim.api.nvim_create_augroup("vimrc", { clear = true })
 _G.vimrc = {
     -- operator
     op = {},
+    motion = {},
     omnifunc = {},
+    state = {},
 }
 
 local function register_autocmd(event, opts)

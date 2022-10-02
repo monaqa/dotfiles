@@ -21,8 +21,6 @@
   "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.procMacro.enable": true,
 
-  "stylua.styluaPath": "/Users/monaqa/.cargo/bin/stylua",
-
   "svelte.plugin.html.completions.enable": true,
 
   "deno.enable": false,
@@ -63,7 +61,7 @@
     }
   },
 
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "python", "lua"],
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "python" ],
 
   "codeLens.enable": true,
   "codeLens.position": "right_align",

@@ -192,3 +192,14 @@ vim.keymap.set({ "x", "s" }, "<Esc>", function()
     free_visual_match()
     return "<Esc>"
 end, { expr = true })
+
+-- §§1 保存時のコマンド実行
+
+util.autocmd_vimrc "BufWritePost" {
+    pattern = "*.lua",
+    callback = function()
+        vim.fn.system([[stylua ]] .. vim.fn.expand "%:p")
+        vim.cmd [[edit]]
+    end,
+    desc = "execute stylua",
+}

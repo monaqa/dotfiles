@@ -11,7 +11,7 @@ vim.keymap.set("c", "<C-c>", "<C-f>")
 
 -- §§1 changing display
 
--- Z を signcolumn/foldcolumn の toggle に使う
+-- Z を表示の toggle に使う
 vim.keymap.set("n", "ZZ", "<Nop>")
 vim.keymap.set("n", "ZQ", "<Nop>")
 
@@ -27,11 +27,9 @@ vim.keymap.set("n", "ZQ", "<Nop>")
 --
 -- vim.keymap.set("n", "Z", toggle_column, { silent = true, nowait = true })
 
-local function toggle_wrap()
-    vim.o.wrap = not vim.o.wrap
-end
-
-vim.keymap.set("n", "Z", toggle_wrap, { silent = true, nowait = true })
+vim.keymap.set("n", "Z", function()
+    vim.opt_local.wrap = not vim.opt_local.wrap:get()
+end, { silent = true, nowait = true })
 
 vim.api.nvim_create_augroup("vimrc_temporal", { clear = true })
 
@@ -163,8 +161,11 @@ vim.keymap.set("n", "g/", function()
     vim.cmd([[silent grep ]] .. vim.fn.string(query) .. " " .. search_range)
 end)
 
-vim.keymap.set("n", "<C-n>", util.cmdcr "cnext" .. "zz", {})
-vim.keymap.set("n", "<C-p>", util.cmdcr "cprevious" .. "zz", {})
+vim.keymap.set("n", ")", util.cmdcr "cnext" .. "zz", {})
+vim.keymap.set("n", "(", util.cmdcr "cprevious" .. "zz", {})
+-- local mode_qfmove = submode.create_mode("qfmove", "g")
+-- mode_qfmove.register_mapping("j", util.cmdcr "cn" .. "zz")
+-- mode_qfmove.register_mapping("k", util.cmdcr "cp" .. "zz")
 
 -- https://qiita.com/lighttiger2505/items/166a4705f852e8d7cd0d
 -- Toggle QuickFix
@@ -176,6 +177,7 @@ local function toggle_quickfix()
         vim.cmd [[cclose]]
     end
 end
+
 vim.keymap.set("n", "q", toggle_quickfix, { script = true, silent = true })
 
 -- §§1 terminal
@@ -199,10 +201,6 @@ local function terminal_init()
     vim.keymap.set("n", "u", [["i" .. repeat("<Up>", v:count1) .. "<C-\><C-n>"]], { buffer = true, expr = true })
     vim.keymap.set("n", "<C-r>", [["i" .. repeat("<Down>", v:count1) .. "<C-\><C-n>"]], { buffer = true, expr = true })
 
-    -- vim.opt_local.wrap = true
-    -- vim.opt_local.number = false
-    -- vim.opt_local.signcolumn = "no"
-    -- vim.opt_local.foldcolumn = "0"
     vim.opt_local.wrap = true
     vim.opt_local.number = false
     vim.opt_local.signcolumn = "no"
@@ -236,12 +234,11 @@ vim.keymap.set("n", "st", open_term_window, {})
 
 ---ペースト時に bracketed paste mode を有効にする。
 ---@type boolean
-_G.vimrc.bracketed_paste_mode = true
-_G.vimrc.wezterm_bracketed_paste_mode = true
+_G.vimrc.state.bracketed_paste_mode = true
 
 vim.api.nvim_create_user_command("ToggleBracketedPasteMode", function()
-    _G.vimrc.bracketed_paste_mode = not _G.vimrc.bracketed_paste_mode
-    if _G.vimrc.bracketed_paste_mode then
+    _G.vimrc.state.bracketed_paste_mode = not _G.vimrc.state.bracketed_paste_mode
+    if _G.vimrc.state.bracketed_paste_mode then
         vim.api.nvim_echo({ { "bracketed_paste_mode: on", "Normal" } }, true, {})
     else
         vim.api.nvim_echo({ { "bracketed_paste_mode: off", "Normal" } }, true, {})
@@ -250,7 +247,7 @@ end, {})
 
 local function reformat_cmdstring(str)
     str = util.trim(str)
-    if _G.vimrc.bracketed_paste_mode then
+    if _G.vimrc.state.bracketed_paste_mode then
         return util.esc "[200~" .. str .. "\n" .. util.esc "[201~\n"
     else
         return str .. "\n"
@@ -287,14 +284,14 @@ vim.keymap.set({ "n" }, "SS", function()
 end, { expr = true, nowait = true })
 
 vim.api.nvim_create_user_command("WeztermNewPane", function()
-    _G.vimrc.wezterm_terminal_pane_id = vim.fn.system("wezterm cli split-pane --horizontal", nil)
+    _G.vimrc.state.wezterm_terminal_pane_id = vim.fn.system("wezterm cli split-pane --horizontal", nil)
 end, {})
 vim.api.nvim_create_user_command("WeztermNewWindow", function()
-    _G.vimrc.wezterm_terminal_pane_id =
+    _G.vimrc.state.wezterm_terminal_pane_id =
         vim.fn.system("wezterm cli spawn --new-window --cwd " .. vim.fn.getcwd(nil, nil), nil)
 end, {})
 vim.api.nvim_create_user_command("WeztermUnlinkPane", function()
-    _G.vimrc.wezterm_terminal_pane_id = nil
+    _G.vimrc.state.wezterm_terminal_pane_id = nil
 end, {})
 
 vim.keymap.set({ "n", "x" }, "T", function()
@@ -309,7 +306,7 @@ end, { expr = true, nowait = true })
 
 local function reformat_cmdstring_wezterm(str)
     str = util.trim(str)
-    if _G.vimrc.bracketed_paste_mode then
+    if _G.vimrc.state.bracketed_paste_mode then
         return str .. util.esc "[201~" .. "\n" .. util.esc "[200~\n"
     else
         return str .. "\n"
@@ -317,12 +314,12 @@ local function reformat_cmdstring_wezterm(str)
 end
 
 local function send_wezterm(text)
-    local command = "wezterm cli send-text --pane-id " .. _G.vimrc.wezterm_terminal_pane_id
+    local command = "wezterm cli send-text --pane-id " .. _G.vimrc.state.wezterm_terminal_pane_id
     vim.fn.system(command, reformat_cmdstring_wezterm(text))
 end
 
 function _G.vimrc.op.send_wezterm(type)
-    if _G.vimrc.wezterm_terminal_pane_id == nil then
+    if _G.vimrc.state.wezterm_terminal_pane_id == nil then
         vim.api.nvim_echo(
             { { "There is no active wezterm pane to send. execute :WeztermNewPane to spawn new pane.", "Error" } },
             true,
@@ -490,6 +487,7 @@ local function append_new_lines(offset_line)
         vim.fn.append(pos_line, lines)
     end)
 end
+
 vim.keymap.set("n", "<Space>o", append_new_lines(0), { expr = true })
 vim.keymap.set("n", "<Space>O", append_new_lines(-1), { expr = true })
 
@@ -503,6 +501,7 @@ local function increment_char(forward)
         vim.cmd [[normal! gv"mp]]
     end)
 end
+
 vim.keymap.set("n", "<Space>a", increment_char(1), { expr = true })
 vim.keymap.set("n", "<Space>x", increment_char(-1), { expr = true })
 
@@ -697,16 +696,18 @@ vim.keymap.set("x", "k", function()
 end, { expr = true })
 
 -- Vertical WORD (vWORD) 単位での移動
-_G.vimrc.par_motion_continuous = false
+_G.vimrc.state.par_motion_continuous = false
 util.autocmd_vimrc "CursorMoved" {
     callback = function()
-        _G.vimrc.par_motion_continuous = false
+        _G.vimrc.state.par_motion_continuous = false
     end,
 }
 
-function _G.vimrc.smart_par_motion(forward)
+-- <C-j>/<C-k> は基本的に `{` / `}` モーションと同じだが、
+-- 連続した <C-j>/<C-k> による移動では jumplist が更新されない
+function _G.vimrc.motion.smart_par(forward)
     vim.cmd(table.concat {
-        util.ifexpr(_G.vimrc.par_motion_continuous, "keepjumps ", ""),
+        util.ifexpr(_G.vimrc.state.par_motion_continuous, "keepjumps ", ""),
         "normal! ",
         tostring(vim.v.count1),
         util.ifexpr(forward, "}", "{"),
@@ -716,12 +717,14 @@ end
 vim.keymap.set(
     { "n", "x", "o" },
     "<C-j>",
-    util.cmdcr "call v:lua.vimrc.smart_par_motion(v:true)" .. util.cmdcr "lua _G.vimrc.par_motion_continuous = true"
+    util.cmdcr "call v:lua.vimrc.motion.smart_par(v:true)"
+        .. util.cmdcr "lua _G.vimrc.state.par_motion_continuous = true"
 )
 vim.keymap.set(
     { "n", "x", "o" },
     "<C-k>",
-    util.cmdcr "call v:lua.vimrc.smart_par_motion(v:false)" .. util.cmdcr "lua _G.vimrc.par_motion_continuous = true"
+    util.cmdcr "call v:lua.vimrc.motion.smart_par(v:false)"
+        .. util.cmdcr "lua _G.vimrc.state.par_motion_continuous = true"
 )
 
 -- vertical f motion
@@ -793,12 +796,18 @@ vim.keymap.set(
 
 -- vim.keymap.set({"n", "x"}, "<Space>F", vertical_f(false), {expr = true})
 
+-- local submode_diffjump = submode.create_mode("diffjump", "g")
+-- submode_diffjump.register_mapping("j", "<Plug>(signify-next-hunk)")
+-- submode_diffjump.register_mapping("k", "<Plug>(signify-prev-hunk)")
+vim.keymap.set("n", "gj", "<Plug>(signify-next-hunk)")
+vim.keymap.set("n", "gk", "<Plug>(signify-prev-hunk)")
+
 -- §§1 Macros
 
 -- マクロの記録レジスタは "aq のような一般のレジスタを指定するのと同様の
--- インターフェースで変更するようにし、デフォルトの記録レジスタを q とする。
--- マクロの自己再帰呼出しによるループや、マクロの中でマクロを呼び出すことは簡単にはできないようにしている。
--- （もちろんレジスタを直接書き換えれば可能）
+-- インターフェースで変更するようにし、デフォルトレジスタを q とする。
+-- マクロ自己再帰呼出しによるループや、マクロの中でマクロを呼び出すことは簡単にはできないようにしてある。
+-- （もちろんレジスタを直に書き換えれば可能）
 -- デフォルトのレジスタ @q は Vim の開始ごとに初期化される。
 
 local function keymap_toggle_macro()
@@ -815,16 +824,16 @@ local function keymap_toggle_macro()
     return "q" .. register
 end
 
-_G.vimrc.last_played_macro_register = "q"
+_G.vimrc.state.last_played_macro_register = "q"
 
 local function keymap_play_macro()
     -- 無名レジスタには格納できないようにする
     -- & デフォルトを前回再生したマクロにする
     local register = vim.v.register
     if register == [["]] then
-        register = _G.vimrc.last_played_macro_register
+        register = _G.vimrc.state.last_played_macro_register
     end
-    _G.vimrc.last_played_macro_register = register
+    _G.vimrc.state.last_played_macro_register = register
     if vim.fn.getreg(register, nil, nil) == "" then
         vim.api.nvim_echo({ { ("Register @%s is empty."):format(register), "Error" } }, true, {})
         return ""
