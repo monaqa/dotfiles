@@ -1,2 +1,0 @@
--- vim:fdm=marker:fmr=§§,■■
--- §§1 Plugin settings for nvim-treesitter.nvim
