@@ -101,3 +101,6 @@ if vim.fn.executable "rg" then
     vim.opt.grepprg = "rg --vimgrep --hidden --glob " .. "'!tags*'"
     vim.opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
 end
+
+-- 正確にはオプションではないがまあオプションっぽく扱おうということで
+vim.g.python3_host_prog = (vim.fn.getenv "HOME") .. "/.local/share/nvim/venv/neovim/bin/python"

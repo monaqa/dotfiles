@@ -19,9 +19,9 @@ vim.cmd [[
   filetype plugin indent off
 ]]
 
-require "rc.plugin.before"
+-- require "rc.plugin.before"
 require "rc.plugin_loader"
-require "rc.plugin_config"
+-- require "rc.plugin_config_old"
 
 require "rc.autocmd"
 require "rc.option"

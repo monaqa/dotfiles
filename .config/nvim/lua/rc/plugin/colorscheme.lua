@@ -1,8 +1,5 @@
 local util = require "rc.util"
 
----@alias tbl_hl {name: string, gui?: string, guifg?: string, guibg?: string, cterm?: string, ctermbg?: string, ctermfg?: string}
----@alias tbl_link {name: string, link: string}
-
 ---@param tbl tbl_hl | tbl_link
 local function sethl(tbl)
     if tbl.link ~= nil then

@@ -1,130 +1,150 @@
--- vim:fdm=marker:fmr=§§,■■
-
 local util = require "rc.util"
+local config = require "rc.plugin_config"
+
+local disable_plugins = {
+    "netrw",
+    "netrwPlugin",
+    "netrwSettings",
+    "netrwFileHandlers",
+}
+
+for _, name in ipairs(disable_plugins) do
+    vim.g["loaded_" .. name] = 1
+end
 
 vim.cmd [[
     packadd vim-jetpack
 ]]
 
+local callbacks = {}
 require("jetpack").startup(function(use)
+    ---`use` 関数を wrap して、hook 系が渡せるようにする
+    ---@param t {hook_before?: fun(), hook_after?: fun()}
+    local function add(t)
+        if t.hook_before ~= nil then
+            t.hook_before()
+        end
+        if t.hook_after ~= nil then
+            table.insert(callbacks, t.hook_after)
+        end
+        use(t)
+    end
+
     -- general plugins
-    use { "tani/vim-jetpack", opt = 1 } -- bootstrap
-    use { "Shougo/vimproc.vim" }
-    use { "Vimjas/vim-python-pep8-indent" }
-    use { "bps/vim-textobj-python" }
-    use { "glidenote/memolist.vim" }
-    use { "glts/vim-textobj-comment" }
-    use { "habamax/vim-gruvbit" }
-    use { "haya14busa/vim-asterisk" }
-    use { "iamcco/markdown-preview.nvim", run = ":call mkdp#util#install()" }
-    use { "itchyny/vim-qfedit" }
-    use { "kana/vim-altr" }
-    use { "kana/vim-operator-user" }
-    use { "kana/vim-textobj-user" }
-    use { "kkiyama117/zenn-vim" }
-    use { "kyazdani42/nvim-web-devicons" }
-    use { "lambdalisue/fern-hijack.vim" }
-    use { "lambdalisue/fern-renderer-nerdfont.vim" }
-    use { "lambdalisue/fern.vim", branch = "main" }
-    use { "lambdalisue/gina.vim" }
-    use { "lambdalisue/nerdfont.vim" }
-    use { "lervag/vimtex" }
-    -- use{"liuchengxu/vista.vim"}
-    use { "machakann/vim-sandwich" }
-    use { "machakann/vim-swap" }
-    use { "machakann/vim-textobj-functioncall" }
-    use { "mattn/vim-maketable" }
-    use { "mattn/emmet-vim" }
-    use { "mbbill/undotree" }
-    use { "mhinz/vim-signify" }
-    use { "nvim-lualine/lualine.nvim" }
-    -- use{"nvim-neorg/neorg"}
-    -- use{"powerman/vim-plugin-AnsiEsc"}
-    use { "rhysd/rust-doc.vim" }
-    -- use{"romgrk/barbar.nvim"}
-    use { "akinsho/bufferline.nvim" }
-    use { "thinca/vim-qfreplace" }
-    use { "thinca/vim-quickrun" }
-    -- use{"thinca/vim-submode"}
-    use { "tpope/vim-capslock" }
-    use { "tyru/capture.vim" }
-    use { "tyru/caw.vim" }
-    use { "tyru/open-browser.vim" }
-    use { "xolox/vim-misc" }
-    use { "xolox/vim-session" }
-    use { "yasukotelin/shirotelin", opt = true }
-    use { "kana/vim-textobj-entire" }
-    use { "andymass/vim-matchup" }
-    -- use{"petertriho/nvim-scrollbar"}
-    -- use{"nvim-orgmode/orgmode"}
-    use { "uga-rosa/ccc.nvim" }
+    add { "Shougo/vimproc.vim" }
+    add { "Vimjas/vim-python-pep8-indent" }
+    add { "akinsho/bufferline.nvim", hook_after = config.bufferline }
+    add { "glidenote/memolist.vim" }
+    add { "haya14busa/vim-asterisk", hook_after = config.asterisk }
+    add { "iamcco/markdown-preview.nvim", run = ":call mkdp#util#install()", hook_after = config.markdown_preview }
+    add { "itchyny/vim-qfedit" }
+    add { "kana/vim-altr", hook_after = config.altr }
+    add { "kana/vim-operator-user" }
+    add { "kkiyama117/zenn-vim" }
+    add { "kyazdani42/nvim-web-devicons" }
+    add { "lambdalisue/fern-hijack.vim" }
+    add { "lambdalisue/fern-renderer-nerdfont.vim" }
+    add { "lambdalisue/fern.vim", branch = "main", hook_after = config.fern }
+    add { "lambdalisue/gina.vim", hook_after = config.gina }
+    add { "lambdalisue/nerdfont.vim" }
+    add { "lervag/vimtex", hook_after = config.vimtex }
+    add { "mattn/emmet-vim", hook_after = config.emmet }
+    add { "mattn/vim-maketable" }
+    add { "mbbill/undotree", hook_after = config.undotree }
+    add { "mhinz/vim-signify" }
+    add { "nvim-lualine/lualine.nvim", hook_after = config.lualine }
+    add { "rhysd/rust-doc.vim", hook_after = config.rust_doc }
+    add { "tani/vim-jetpack", opt = 1 } -- bootstrap
+    add { "thinca/vim-qfreplace" }
+    add { "thinca/vim-quickrun" }
+    add { "tpope/vim-capslock", hook_after = config.capslock }
+    add { "tyru/capture.vim" }
+    add { "tyru/caw.vim", hook_after = config.caw }
+    add { "tyru/open-browser.vim", hook_after = config.open_browser }
+    add { "uga-rosa/ccc.nvim" }
+    add { "xolox/vim-misc" }
+    add { "xolox/vim-session", hook_after = config.session }
+
+    -- colorscheme
+    add { "habamax/vim-gruvbit", hook_after = config.gruvbit }
+    add { "yasukotelin/shirotelin", opt = true }
 
     -- paren
-    use { "cohama/lexima.vim" }
-    use { "machakann/vim-sandwich" }
+    add { "cohama/lexima.vim", hook_after = config.lexima }
+    add { "machakann/vim-sandwich", hook_after = config.sandwich }
+    add { "andymass/vim-matchup", hook_after = config.matchup }
+
+    -- textedit
+    add { "bps/vim-textobj-python" }
+    add { "glts/vim-textobj-comment", hook_after = config.textobj_comment }
+    add { "kana/vim-textobj-entire", hook_after = config.textobj_entire }
+    add { "kana/vim-textobj-user", hook_after = config.textobj_user }
+    add { "machakann/vim-swap", hook_after = config.swap }
+    add { "machakann/vim-textobj-functioncall", hook_after = config.textobj_functioncall }
 
     -- coc
-    use { "neoclide/coc.nvim", branch = "release" }
-    use { "rafcamlet/coc-nvim-lua" }
+    add { "neoclide/coc.nvim", branch = "release", hook_after = config.coc }
+    add { "rafcamlet/coc-nvim-lua" }
 
     -- telescope
-    use { "nvim-telescope/telescope.nvim" }
-    use { "nvim-lua/popup.nvim" }
-    use { "nvim-lua/plenary.nvim" }
-    use { "fannheyward/telescope-coc.nvim" }
+    add { "nvim-telescope/telescope.nvim", hook_after = config.telescope }
+    add { "nvim-lua/popup.nvim" }
+    add { "nvim-lua/plenary.nvim" }
+    add { "fannheyward/telescope-coc.nvim" }
 
     -- denops
-    use { "Shougo/ddu.vim" }
-    use { "Shougo/ddu-filter-matcher_substring" }
-    use { "Shougo/ddu-kind-file" }
-    use { "Shougo/ddu-source-file_rec" }
-    use { "Shougo/ddu-ui-ff" }
-    use { "kuuote/ddu-source-mr" }
-    use { "lambdalisue/mr.vim" }
-    use { "matsui54/ddu-source-file_external" }
-    use { "shun/ddu-source-rg" }
-    use { "vim-denops/denops.vim" }
+    add { "Shougo/ddu.vim", hook_after = config.ddu }
+    add { "Shougo/ddu-filter-matcher_substring" }
+    add { "Shougo/ddu-kind-file" }
+    add { "Shougo/ddu-source-file_rec" }
+    add { "Shougo/ddu-ui-ff" }
+    add { "kuuote/ddu-source-mr" }
+    add { "lambdalisue/mr.vim" }
+    add { "matsui54/ddu-source-file_external" }
+    add { "shun/ddu-source-rg" }
+    add { "vim-denops/denops.vim" }
 
     -- tree-sitter
-    use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
-    -- use{"nvim-treesitter/nvim-treesitter", opt = 1}
-    use { "nvim-treesitter/playground" }
-    -- use{"sainnhe/gruvbox-material"}
-    use { "mfussenegger/nvim-treehopper" }
+    add { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", hook_after = config.treesitter }
+    add { "nvim-treesitter/playground" }
+    add { "mfussenegger/nvim-treehopper" }
 
     -- filetype
-    use { "JuliaEditorSupport/julia-vim" }
-    use { "aklt/plantuml-syntax" }
-    use { "bfontaine/Brewfile.vim" }
-    use { "cespare/vim-toml" }
-    use { "chr4/nginx.vim" }
-    use { "ekalinin/Dockerfile.vim" }
-    use { "evanleck/vim-svelte" }
-    use { "leafgarland/typescript-vim" }
-    use { "ocaml/vim-ocaml" }
-    use { "pangloss/vim-javascript" }
-    use { "pest-parser/pest.vim" }
-    -- use{"qnighy/satysfi.vim"}
-    use { "rust-lang/rust.vim" }
-    use { "vim-python/python-syntax" }
-    use { "vito-c/jq.vim" }
-    use { "wlangstroth/vim-racket" }
-    use { "othree/html5.vim" }
-    use { "preservim/vim-markdown" }
-    use { "justinmk/vim-syntax-extra" }
-    use { "abhishekmukherg/xonsh-vim" }
+    add { "JuliaEditorSupport/julia-vim" }
+    add { "aklt/plantuml-syntax" }
+    add { "bfontaine/Brewfile.vim" }
+    add { "cespare/vim-toml" }
+    add { "chr4/nginx.vim" }
+    add { "ekalinin/Dockerfile.vim" }
+    add { "evanleck/vim-svelte" }
+    add { "leafgarland/typescript-vim" }
+    add { "ocaml/vim-ocaml" }
+    add { "pangloss/vim-javascript" }
+    add { "pest-parser/pest.vim" }
+    add { "rust-lang/rust.vim", hook_after = config.rust }
+    add { "vim-python/python-syntax", hook_after = config.python }
+    add { "vito-c/jq.vim" }
+    add { "wlangstroth/vim-racket" }
+    add { "othree/html5.vim" }
+    add { "preservim/vim-markdown", hook_after = config.markdown }
+    add { "justinmk/vim-syntax-extra" }
+    add { "abhishekmukherg/xonsh-vim" }
 
     -- monaqa
-    use { "monaqa/colordinate.vim", opt = true }
-    use { "monaqa/dial.nvim", opt = true }
-    use { "monaqa/modesearch.vim" }
-    use { "monaqa/peridot.vim" }
-    use { "monaqa/pretty-fold.nvim", branch = "for_stable_neovim" }
-    -- use{"monaqa/satysfi.vim"}
-    use { "monaqa/smooth-scroll.vim" }
-    use { "monaqa/vim-edgemotion" }
-    use { "monaqa/vim-partedit", branch = "feat-prefix_pattern" }
+    add { "monaqa/colordinate.vim", opt = true }
+    add { "monaqa/dial.nvim", opt = true, hook_after = config.dial }
+    add { "monaqa/modesearch.vim", hook_after = config.modesearch }
+    add { "monaqa/peridot.vim" }
+    add { "monaqa/pretty-fold.nvim", branch = "for_stable_neovim", hook_after = config.pretty_fold }
+    -- add{"monaqa/satysfi.vim"}
+    add { "monaqa/smooth-scroll.vim", hook_after = config.smooth_scroll }
+    add { "monaqa/vim-edgemotion" }
+    add { "monaqa/vim-partedit", branch = "feat-prefix_pattern", hook_after = config.partedit }
 end)
+
+for _, callback in ipairs(callbacks) do
+    callback()
+end
 
 for _, name in ipairs(vim.fn["jetpack#names"]()) do
     if not util.to_bool(vim.fn["jetpack#tap"](name)) then
@@ -132,9 +152,5 @@ for _, name in ipairs(vim.fn["jetpack#names"]()) do
         return false
     end
 end
-
-vim.cmd [[
-    packadd nvim-treesitter
-]]
 
 return true
