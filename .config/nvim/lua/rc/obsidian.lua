@@ -70,16 +70,7 @@ function M.open_diary(arg)
     local diary_path = M.diary_dir .. fname .. ".md"
     vim.cmd("e " .. diary_path)
     if not util.to_bool(vim.fn.filereadable(diary_path)) then
-        vim.fn.setline(1, {
-            "---",
-            "tags: []",
-            "alias: []",
-            "---",
-            "",
-            "# To Do",
-            "",
-            "# Log",
-        })
+        vim.fn.setline(1, M.diary_template())
     end
 end
 
