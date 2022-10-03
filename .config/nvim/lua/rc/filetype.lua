@@ -17,13 +17,9 @@ util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     },
     callback = function()
         if vim.fn.getline(1) == "%SATySFi v0.1.0" then
-            vim.cmd [[
-                setfiletype satysfi_v0_1_0
-            ]]
+            vim.opt_local.filetype = "satysfi_v0_1_0"
         else
-            vim.cmd [[
-                setfiletype satysfi
-            ]]
+            vim.opt_local.filetype = "satysfi"
         end
     end,
 }
@@ -45,13 +41,13 @@ util.autocmd_vimrc { "BufRead", "BufNewFile" } {
 -- §§1 fish
 util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.fish",
-    command = [[setfiletype fish]],
+    command = [[setlocal filetype=fish]],
 }
 
 -- §§1 mermaid
 util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.mmd",
-    command = [[setfiletype mermaid]],
+    command = [[setlocal filetype=mermaid]],
 }
 
 -- §§1 hydrogen
