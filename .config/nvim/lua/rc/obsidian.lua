@@ -25,7 +25,7 @@ alias: []
 
 # Log
 ]]
-    return vim.split(template.gsub("^%s*(.-)%s*$", "%1"), "\n", true)
+    return vim.split(template:gsub("^%s*(.-)%s*$", "%1"), "\n", true)
 end
 
 ---@return string[]

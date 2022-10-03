@@ -60,4 +60,3 @@ vim.opt_local.comments = {
 vim.opt_local.formatoptions:remove "c"
 vim.opt_local.formatoptions:append "j"
 vim.opt_local.formatoptions:append "r"
-vim.opt_local.formatoptions:append "o"

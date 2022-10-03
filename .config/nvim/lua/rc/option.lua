@@ -20,7 +20,7 @@ vim.opt.listchars = {
 }
 
 vim.opt.scrolloff = 0
-vim.opt.foldlevelstart = 0
+vim.opt.foldlevelstart = 99
 
 vim.opt.matchpairs = vim.opt.matchpairs + {
     "（:）",
