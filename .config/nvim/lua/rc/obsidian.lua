@@ -15,16 +15,14 @@ M.file_pattern = {
 }
 
 function M.diary_template()
-    local template = [[
----
-tags: ["diary", ]
-alias: []
----
+    local today = vim.fn.strftime "%Y年%m月%d日"
+    local template = ([[
+# %s
 
-# To Do
+## To Do
 
-# Log
-]]
+## Log
+]]):format(today)
     return vim.split(template:gsub("^%s*(.-)%s*$", "%1"), "\n", true)
 end
 

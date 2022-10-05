@@ -300,6 +300,7 @@ function M.undotree()
 end
 
 function M.lualine()
+    _G.debug_lualine = {}
     require("lualine").setup {
         sections = {
             lualine_b = {
@@ -309,12 +310,15 @@ function M.lualine()
             },
             lualine_c = {
                 function()
-                    return vim.pesc(vim.fn["coc#status"]())
+                    -- table.insert(_G.debug_lualine, vim.fn["coc#status"]())
+                    -- return vim.pesc(vim.fn["coc#status"]())
+                    return (vim.fn["coc#status"]()):gsub("%%", "%%%%")
                 end,
             },
             lualine_y = {
                 function()
                     local branch = vim.fn["gina#component#repo#branch"]()
+                    -- table.insert(_G.debug_lualine, branch)
                     local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
                     if branch == "" then
                         return cwd
@@ -347,11 +351,12 @@ function M.lualine()
             section_separators = { "", "" },
             component_separators = { "", "" },
             globalstatus = true,
-            -- refresh = {
-            --     statusline = 10000,
-            --     tabline = 10000,
-            --     winbar = 10000,
-            -- }
+            refresh = {
+                -- statusline = 10000,
+                statusline = 1000,
+                tabline = 10000,
+                winbar = 10000,
+            },
         },
     }
     -- vim.opt.fillchars = {

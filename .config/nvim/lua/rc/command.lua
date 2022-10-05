@@ -103,7 +103,7 @@ util.create_cmd("Normal", function(tbl)
     end
 end, { range = true, nargs = 1, bang = true })
 
--- §§1 obsidian.vim
+-- §§1 obsidian
 util.create_cmd("ObsidianList", obsidian.open_fern)
 util.create_cmd("ObsidianOpenDiary", function(meta)
     obsidian.open_diary(meta.args)

@@ -135,11 +135,11 @@ util.autocmd_vimrc { "BufRead", "BufNewFile" } {
 }
 
 -- obsidian
-util.autocmd_vimrc { "BufEnter", "BufNewFile" } {
-    pattern = vim.tbl_map(function(s)
-        return obsidian.root_dir .. s
-    end, obsidian.file_pattern),
-    callback = function()
-        vim.opt_local.filetype = "obsidian"
-    end,
-}
+-- util.autocmd_vimrc { "BufEnter", "BufNewFile" } {
+--     pattern = vim.tbl_map(function(s)
+--         return obsidian.root_dir .. s
+--     end, obsidian.file_pattern),
+--     callback = function()
+--         vim.opt_local.filetype = "obsidian"
+--     end,
+-- }
