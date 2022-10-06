@@ -30,6 +30,9 @@ require("jetpack").startup(function(use)
         use(t)
     end
 
+    -- bootstrap
+    add { "tani/vim-jetpack", opt = 1 }
+
     -- general plugins
     add { "Shougo/vimproc.vim" }
     add { "Vimjas/vim-python-pep8-indent" }
@@ -54,7 +57,6 @@ require("jetpack").startup(function(use)
     add { "mhinz/vim-signify" }
     add { "nvim-lualine/lualine.nvim", hook_after = config.lualine }
     add { "rhysd/rust-doc.vim", hook_after = config.rust_doc }
-    add { "tani/vim-jetpack", opt = 1 } -- bootstrap
     add { "thinca/vim-qfreplace" }
     add { "thinca/vim-quickrun" }
     add { "tpope/vim-capslock", hook_after = config.capslock }
@@ -105,7 +107,8 @@ require("jetpack").startup(function(use)
     add { "vim-denops/denops.vim" }
 
     -- tree-sitter
-    add { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", hook_after = config.treesitter }
+    -- add { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", hook_after = config.treesitter }
+    add { "nvim-treesitter/nvim-treesitter", hook_after = config.treesitter }
     add { "nvim-treesitter/playground" }
     add { "mfussenegger/nvim-treehopper", hook_after = config.treehopper }
 

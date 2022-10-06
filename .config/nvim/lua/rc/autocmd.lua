@@ -198,8 +198,10 @@ end, { expr = true })
 util.autocmd_vimrc "BufWritePost" {
     pattern = "*.lua",
     callback = function()
+        vim.cmd [[mkview]]
         vim.fn.system([[stylua ]] .. vim.fn.expand "%:p")
         vim.cmd [[edit]]
+        vim.cmd [[loadview]]
     end,
     desc = "execute stylua",
 }

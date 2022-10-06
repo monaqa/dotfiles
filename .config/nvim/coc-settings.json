@@ -11,8 +11,7 @@
 
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.workspace.library": [
-      "~/.config/nvim/pack/minpac/start/nvim-treesitter/lua",
-      "~/.config/nvim/pack/minpac/start/plenary.nvim/lua/plenary/busted.lua"
+      "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-treesitter/nvim-treesitter/lua"
   ],
   "Lua.telemetry.enable": false,
 
