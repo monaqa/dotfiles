@@ -728,8 +728,11 @@ vim.keymap.set(
 )
 
 -- vertical f motion
+-- TODO: プラグイン化したくなってきたのう
 local vertical_f_char
 local vertical_f_pattern
+
+local ns_id = vim.api.nvim_create_namespace "verticalf"
 
 local function vertical_f(ctx, forward)
     local pattern
@@ -739,7 +742,28 @@ local function vertical_f(ctx, forward)
         pattern = [[^\%<.l\s*\zs]]
     end
 
-    local visual_match_id = vim.fn.matchadd("VisualBlue", pattern .. ".")
+    local delta = util.ifexpr(forward, 1, -1)
+    local start_line = vim.fn.line "." + delta
+    local end_line = vim.fn.line(util.ifexpr(forward, "w$", "w0"))
+    local chars = {}
+    for line = start_line, end_line, delta do
+        ---@type string
+        local linestr = vim.fn.getline(line)
+        if #linestr ~= 0 then
+            local _, e = linestr:find "^%s*"
+            local char = linestr:sub(e + 1, e + 1)
+
+            if chars[char] == nil then
+                chars[char] = 1
+            else
+                chars[char] = chars[char] + 1
+            end
+            if chars[char] == ctx.count1 then
+                vim.api.nvim_buf_add_highlight(0, ns_id, "VisualBlue", line - 1, e, e + 1)
+            end
+        end
+    end
+
     vim.opt_local.cursorline = true
     vim.cmd "redraw"
     local char
@@ -749,9 +773,12 @@ local function vertical_f(ctx, forward)
         char = vim.fn.nr2char(vim.fn.getchar())
         vertical_f_char = char
     end
+
     vertical_f_pattern = pattern .. [[\V]] .. vim.fn.escape(char, [[\/]])
-    vim.fn.matchdelete(visual_match_id)
+
+    vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
     vim.opt_local.cursorline = false
+
     local flag = "W"
     if not forward then
         flag = flag .. "b"
@@ -760,6 +787,36 @@ local function vertical_f(ctx, forward)
         vim.fn.search(vertical_f_pattern, flag)
     end
 end
+
+-- local function vertical_f(ctx, forward)
+--     local pattern
+--     if forward then
+--         pattern = [[^\%>.l\s*\zs]]
+--     else
+--         pattern = [[^\%<.l\s*\zs]]
+--     end
+--
+--     local visual_match_id = vim.fn.matchadd("VisualBlue", pattern .. ".")
+--     vim.opt_local.cursorline = true
+--     vim.cmd "redraw"
+--     local char
+--     if ctx.repeated then
+--         char = vertical_f_char
+--     else
+--         char = vim.fn.nr2char(vim.fn.getchar())
+--         vertical_f_char = char
+--     end
+--     vertical_f_pattern = pattern .. [[\V]] .. vim.fn.escape(char, [[\/]])
+--     vim.fn.matchdelete(visual_match_id)
+--     vim.opt_local.cursorline = false
+--     local flag = "W"
+--     if not forward then
+--         flag = flag .. "b"
+--     end
+--     for _ = 1, ctx.count1, 1 do
+--         vim.fn.search(vertical_f_pattern, flag)
+--     end
+-- end
 
 local function get_initial_ctx()
     return {
