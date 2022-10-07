@@ -1,6 +1,5 @@
 -- vim:fdm=marker:fmr=§§,■■
 local util = require "rc.util"
-local obsidian = require "rc.obsidian"
 
 -- §§1 SATySFi
 util.autocmd_vimrc { "BufRead", "BufNewFile" } {
