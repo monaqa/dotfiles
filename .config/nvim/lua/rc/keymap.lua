@@ -538,27 +538,27 @@ vim.keymap.set({ "n", "x" }, "<Space>h", function()
         move_cmd = "^"
     end
 
-    local col_before = vim.fn.col "."
-    -- まずは表示行の範囲で行頭移動
-    vim.cmd("normal! g" .. move_cmd)
-    -- 移動前後でカーソル位置が変わらなかったら再度やり直す
-    local col_after = vim.fn.col "."
-    if col_before == col_after then
-        vim.cmd("normal! " .. move_cmd)
-    end
+    util.motion_autoselect {
+        function()
+            vim.cmd("normal! g" .. move_cmd)
+        end,
+        function()
+            vim.cmd("normal! " .. move_cmd)
+        end,
+    }
 end)
 vim.keymap.set("o", "<Space>h", "^")
 
 -- smart end
 vim.keymap.set("n", "<Space>l", function()
-    local col_before = vim.fn.col "."
-    -- まずは表示行の範囲で行頭移動
-    vim.cmd "normal! g$"
-    -- 移動前後でカーソル位置が変わらなかったら再度やり直す
-    local col_after = vim.fn.col "."
-    if col_before == col_after then
-        vim.cmd "normal! $"
-    end
+    util.motion_autoselect {
+        function()
+            vim.cmd "normal! g$"
+        end,
+        function()
+            vim.cmd "normal! $"
+        end,
+    }
 end)
 
 -- vim.keymap.set("x", "<Space>l", "$h")
@@ -665,6 +665,7 @@ vim.keymap.set("c", "<Up>", "<C-p>")
 vim.keymap.set("c", "<Down>", "<C-n>")
 
 -- §§2 linewise motion
+vim.keymap.set("n", "<Space>m", "<Plug>(matchup-%)")
 
 vim.keymap.set("n", "j", function()
     if vim.v.count == 0 then
