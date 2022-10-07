@@ -60,7 +60,7 @@
     }
   },
 
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "python" ],
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "python", "rust" ],
 
   "codeLens.enable": true,
   "codeLens.position": "right_align",

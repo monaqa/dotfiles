@@ -1428,7 +1428,8 @@ end
 -- §§1 filetype
 
 function M.rust()
-    vim.g["rustfmt_autosave"] = 1
+    -- なんかめちゃ重かった
+    vim.g["rustfmt_autosave"] = 0
 end
 
 function M.python()
