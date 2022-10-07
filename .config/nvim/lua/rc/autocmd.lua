@@ -40,20 +40,130 @@ util.autocmd_vimrc "VimResized" {
 }
 
 -- §§1 .vimrc.local
-local function eval_vimrc_local()
+---@class LocalrcList
+local LocalrcList = {
+    -- 実行しても安全なディレクトリパスを保存しておくところ。
+    whitelist = vim.fn.stdpath "data" .. "/localrc/whitelist",
+    blacklist = vim.fn.stdpath "data" .. "/localrc/blacklist",
+
+    create_root = function()
+        if vim.fn.filewritable(vim.fn.stdpath "data" .. "/localrc") ~= 2 then
+            vim.fn.mkdir(vim.fn.stdpath "data" .. "/localrc", "p")
+        end
+    end,
+
+    ---保存されたパスの一覧を取得する。
+    ---@param self LocalrcList
+    ---@return string[]
+    get_whitelist = function(self)
+        if util.to_bool(vim.fn.filereadable(self.whitelist)) then
+            return vim.fn.readfile(self.whitelist)
+        end
+        return {}
+    end,
+
+    ---保存されたパスの一覧を取得する。
+    ---@param self LocalrcList
+    ---@return string[]
+    get_blacklist = function(self)
+        if util.to_bool(vim.fn.filereadable(self.blacklist)) then
+            return vim.fn.readfile(self.blacklist)
+        end
+        return {}
+    end,
+
+    ---安全なパスを追加する。
+    ---@param self LocalrcList
+    ---@param dir string
+    append_whitelist = function(self, dir)
+        local fullpath = vim.fn.fnamemodify(dir, ":p")
+        self:create_root()
+        vim.fn.writefile({ fullpath }, self.whitelist, "a")
+    end,
+
+    ---危険なパスを追加する。
+    ---@param self LocalrcList
+    ---@param dir string
+    append_blacklist = function(self, dir)
+        local fullpath = vim.fn.fnamemodify(dir, ":p")
+        self:create_root()
+        vim.fn.writefile({ fullpath }, self.blacklist, "a")
+    end,
+
+    ---与えられたパスがホワイトリストに登録されていれば true を返す。
+    ---@param self LocalrcList
+    ---@param path string
+    ---@return boolean | nil
+    is_safe = function(self, path)
+        local fullpath = vim.fn.fnamemodify(path, ":p")
+        local black_dirs = self:get_blacklist()
+        for _, dir in ipairs(black_dirs) do
+            if dir == fullpath then
+                return false
+            end
+        end
+        local white_dirs = self:get_whitelist()
+        for _, dir in ipairs(white_dirs) do
+            if dir == fullpath then
+                return true
+            end
+        end
+        return nil
+    end,
+}
+
+local localrc_list = setmetatable({}, { __index = LocalrcList })
+
+local function try_eval_vimrc_local()
     local cwd = vim.fn.getcwd()
-    local vimrc_local = ("%s/.vimrc.local"):format(cwd)
     local init_lua_local = ("%s/.init.lua.local"):format(cwd)
-    if util.to_bool(vim.fn.filereadable(vimrc_local)) then
-        vim.cmd(([[source %s]]):format(vimrc_local))
+
+    -- 無けりゃあ用はないぜ
+    if not util.to_bool(vim.fn.filereadable(init_lua_local)) then
+        return
     end
-    if util.to_bool(vim.fn.filereadable(init_lua_local)) then
+
+    if localrc_list:is_safe(cwd) then
         vim.cmd(([[luafile %s]]):format(init_lua_local))
+        return
     end
+
+    if localrc_list:is_safe(cwd) == false then
+        util.print_error "This directory may contain malicious .init.lua.local file. Deleting the file is recommended."
+        return
+    end
+
+    vim.ui.select(
+        {
+            "Don't want to decide now (default)",
+            "Add to whitelist and execute .init.lua.local immediately",
+            "Add to whitelist but not execute .init.lua.local this time",
+            "Add to BLACKLIST",
+        },
+        {
+            prompt = ".init.lua.local file is found. How do you handle this?",
+        },
+        ---@param item string
+        ---@param idx integer
+        function(item, idx)
+            if idx == 1 then
+                return
+            elseif idx == 2 then
+                localrc_list:append_whitelist(cwd)
+                vim.cmd(([[luafile %s]]):format(init_lua_local))
+            elseif idx == 3 then
+                localrc_list:append_whitelist(cwd)
+            elseif idx == 4 then
+                localrc_list:append_blacklist(cwd)
+            else
+                return
+            end
+        end
+    )
 end
 
 util.autocmd_vimrc "VimEnter" {
-    callback = eval_vimrc_local,
+    callback = try_eval_vimrc_local,
 }
 
 -- §§1 editor の機能
