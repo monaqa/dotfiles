@@ -1014,9 +1014,16 @@ function M.coc()
 
     vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
 
-    local submode_cocjump = submode.create_mode("cocjump", "t")
-    submode_cocjump.register_mapping("j", "<Plug>(coc-diagnostic-next-error)")
-    submode_cocjump.register_mapping("k", "<Plug>(coc-diagnostic-prev-error)")
+    -- local submode_cocjump = submode.create_mode("cocjump", "t")
+    -- async なのがダメっぽい？
+    -- submode_cocjump.register_mapping("j", "<Plug>(coc-diagnostic-next-error)")
+    -- submode_cocjump.register_mapping("k", "<Plug>(coc-diagnostic-prev-error)")
+    -- カーソル位置が変なことになる
+    -- submode_cocjump.register_mapping("j", [[<Cmd>call CocAction("diagnosticNext", "error")<CR>]])
+    -- submode_cocjump.register_mapping("k", [[<Cmd>call CocAction("diagnosticPrev", "error")<CR>]])
+
+    vim.keymap.set("n", "tj", "<Plug>(coc-diagnostic-next-error)")
+    vim.keymap.set("n", "tk", "<Plug>(coc-diagnostic-prev-error)")
 
     -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
     vim.cmd [[
