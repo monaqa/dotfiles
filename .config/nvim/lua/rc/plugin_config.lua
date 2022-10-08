@@ -1003,16 +1003,15 @@ function M.coc()
     vim.keymap.set("n", "gd", "<C-]>")
 
     vim.keymap.set("n", "t", "<Nop>")
-    vim.keymap.set("n", "td", "<Cmd>Telescope coc definitions<CR>")
-    vim.keymap.set("n", "ti", "<Cmd>Telescope coc implementations<CR>")
-    vim.keymap.set("n", "tr", "<Cmd>Telescope coc references<CR>")
-    vim.keymap.set("n", "ty", "<Cmd>Telescope coc type_definitions<CR>")
-    vim.keymap.set("n", "tn", "<Plug>(coc-rename)", { remap = true })
-    vim.keymap.set("n", "K", "<Cmd>call CocActionAsync('doHover')<CR>")
-    vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)", { remap = true })
-    vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)", { remap = true })
-
+    vim.keymap.set("n", "td", util.cmdcr "Telescope coc definitions")
+    vim.keymap.set("n", "ti", util.cmdcr "Telescope coc implementations")
+    vim.keymap.set("n", "tr", util.cmdcr "Telescope coc references")
+    vim.keymap.set("n", "ty", util.cmdcr "Telescope coc type_definitions")
+    vim.keymap.set("n", "tn", "<Plug>(coc-rename)")
+    vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)")
+    vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)")
     vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
+    vim.keymap.set("n", "K", util.cmdcr "call CocActionAsync('doHover')")
 
     -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
     vim.cmd [[

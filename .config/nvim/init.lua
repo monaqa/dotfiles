@@ -9,11 +9,6 @@ _G.vimrc = {
     state = {},
 }
 
-local function register_autocmd(event, opts)
-    opts["augroup"] = augroup
-    local id = vim.api.nvim_create_autocmd(event, opts)
-end
-
 -- 正直このあたりよくわかってません
 -- https://wiredool.hatenadiary.org/entry/20120618/1340019962
 vim.cmd [[

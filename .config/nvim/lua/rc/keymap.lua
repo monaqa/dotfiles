@@ -422,8 +422,8 @@ vim.keymap.set("n", "-", "<C-^>")
 vim.keymap.set("n", "srb", "<Nop>", { nowait = true })
 
 local mode_bufmove = submode.create_mode("bufmove", "s")
-mode_bufmove.register_mapping("n", "<Cmd>bn<CR>")
-mode_bufmove.register_mapping("p", "<Cmd>bp<CR>")
+mode_bufmove.register_mapping("n", util.cmdcr "bn")
+mode_bufmove.register_mapping("p", util.cmdcr "bp")
 
 local mode_winresize = submode.create_mode("winresize", "s")
 mode_winresize.register_mapping("+", "<C-w>+")
@@ -443,15 +443,6 @@ vim.keymap.set("n", "dd", function()
 end, { expr = true })
 
 vim.keymap.set("i", "<C-r><C-r>", [[<C-g>u<C-r>"]], {})
--- vim.keymap.set({"i"}, "<C-r><C-r>", function ()
---     vim.pretty_print(vim.fn.pumvisible())
---     if vim.fn.pumvisible() ~= 0 then
---         return "<C-e>"
---     else
---         return [[<C-g>u<C-r>"]]
---     end
--- end, {expr = true})
-
 vim.keymap.set("i", "<C-r><CR>", [[<C-g>u<C-r>0]], {})
 vim.keymap.set("i", "<C-r><Space>", [[<C-g>u<C-r>+]], {})
 vim.keymap.set("c", "<C-r><C-r>", [[<C-r>"]], {})
@@ -504,18 +495,6 @@ end
 
 vim.keymap.set("n", "<Space>a", increment_char(1), { expr = true })
 vim.keymap.set("n", "<Space>x", increment_char(-1), { expr = true })
-
--- local function increment_char(direction)
---     return function()
---         vim.cmd[[normal! v"my]]
---         local char = vim.fn.getreg("m", nil, nil)
---         local num = vim.fn.char2nr(char)
---         vim.fn.setreg("m", vim.fn.nr2char(num + direction * vim.v.count1))
---         vim.cmd[[normal! gv"mp]]
---     end
--- end
--- vim.keymap.set("n", "<Space>a", increment_char(1))
--- vim.keymap.set("n", "<Space>x", increment_char(-1))
 
 -- §§1 motion/text object
 
@@ -789,36 +768,6 @@ local function vertical_f(ctx, forward)
     end
 end
 
--- local function vertical_f(ctx, forward)
---     local pattern
---     if forward then
---         pattern = [[^\%>.l\s*\zs]]
---     else
---         pattern = [[^\%<.l\s*\zs]]
---     end
---
---     local visual_match_id = vim.fn.matchadd("VisualBlue", pattern .. ".")
---     vim.opt_local.cursorline = true
---     vim.cmd "redraw"
---     local char
---     if ctx.repeated then
---         char = vertical_f_char
---     else
---         char = vim.fn.nr2char(vim.fn.getchar())
---         vertical_f_char = char
---     end
---     vertical_f_pattern = pattern .. [[\V]] .. vim.fn.escape(char, [[\/]])
---     vim.fn.matchdelete(visual_match_id)
---     vim.opt_local.cursorline = false
---     local flag = "W"
---     if not forward then
---         flag = flag .. "b"
---     end
---     for _ = 1, ctx.count1, 1 do
---         vim.fn.search(vertical_f_pattern, flag)
---     end
--- end
-
 local function get_initial_ctx()
     return {
         repeated = false,
@@ -851,8 +800,6 @@ vim.keymap.set(
     end),
     { expr = true }
 )
-
--- vim.keymap.set({"n", "x"}, "<Space>F", vertical_f(false), {expr = true})
 
 -- local submode_diffjump = submode.create_mode("diffjump", "g")
 -- submode_diffjump.register_mapping("j", "<Plug>(signify-next-hunk)")

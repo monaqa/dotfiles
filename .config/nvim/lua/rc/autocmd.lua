@@ -8,12 +8,12 @@ util.autocmd_vimrc "StdinReadPost" {
     command = "set nomodified",
 }
 
-util.autocmd_vimrc { "BufLeave", "FocusLost", "InsertEnter" } {
+util.autocmd_vimrc { "WinLeave", "FocusLost", "InsertEnter" } {
     desc = "temporal attention の設定初期化",
     callback = function()
-        vim.wo.cursorline = false
-        vim.wo.cursorcolumn = false
-        vim.wo.relativenumber = false
+        vim.opt_local.cursorline = false
+        vim.opt_local.cursorcolumn = false
+        vim.opt_local.relativenumber = false
     end,
 }
 
@@ -36,10 +36,10 @@ util.autocmd_vimrc "ColorScheme" {
 
 util.autocmd_vimrc "VimResized" {
     desc = "ウィンドウの画面幅を揃える",
-    command = [[normal \<c-w>=]],
+    command = [[normal! \<c-w>=]],
 }
 
--- §§1 .vimrc.local
+-- §§1 .init.lua.local
 ---@class LocalrcList
 local LocalrcList = {
     -- 実行しても安全なディレクトリパスを保存しておくところ。
@@ -114,7 +114,7 @@ local LocalrcList = {
 
 local localrc_list = setmetatable({}, { __index = LocalrcList })
 
-local function try_eval_vimrc_local()
+local function try_eval_init_lua_local()
     local cwd = vim.fn.getcwd()
     local init_lua_local = ("%s/.init.lua.local"):format(cwd)
 
@@ -163,7 +163,7 @@ local function try_eval_vimrc_local()
 end
 
 util.autocmd_vimrc "VimEnter" {
-    callback = try_eval_vimrc_local,
+    callback = try_eval_init_lua_local,
 }
 
 -- §§1 editor の機能
@@ -308,6 +308,7 @@ end, { expr = true })
 util.autocmd_vimrc "BufWritePost" {
     pattern = "*.lua",
     callback = function()
+        -- fold の状態を保持するために mkview と loadview を入れた
         vim.cmd [[mkview]]
         vim.fn.system([[stylua ]] .. vim.fn.expand "%:p")
         vim.cmd [[edit]]

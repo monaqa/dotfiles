@@ -1,8 +1,3 @@
----@param text string
-local function equals_cmdline(text)
-    return vim.fn.getcmdtype() .. vim.fn.getcmdline() == text
-end
-
 vim.cmd [==[
     cnoreabbrev <expr> w (getcmdtype() .. getcmdline() ==# ":'<,'>w") ? "\<C-u>w" : "w"
     cnoreabbrev <expr> w2 (getcmdtype() .. getcmdline() ==# ":w2") ? "w" : "w2"
