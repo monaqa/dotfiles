@@ -12,7 +12,6 @@ _G.vimrc = {
 -- 正直このあたりよくわかってません
 -- https://wiredool.hatenadiary.org/entry/20120618/1340019962
 vim.cmd [[
-  filetype off
   filetype plugin indent off
 ]]
 

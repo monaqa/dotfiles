@@ -36,7 +36,7 @@ util.autocmd_vimrc "ColorScheme" {
 
 util.autocmd_vimrc "VimResized" {
     desc = "ウィンドウの画面幅を揃える",
-    command = [[normal! \<c-w>=]],
+    command = [[Normal! <C-w>=]],
 }
 
 -- §§1 .init.lua.local

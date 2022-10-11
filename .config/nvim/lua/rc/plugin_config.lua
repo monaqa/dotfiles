@@ -352,8 +352,8 @@ function M.lualine()
             component_separators = { "", "" },
             globalstatus = true,
             refresh = {
-                -- statusline = 10000,
-                statusline = 1000,
+                statusline = 10000,
+                -- statusline = 1000,
                 tabline = 10000,
                 winbar = 10000,
             },

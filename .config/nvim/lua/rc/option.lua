@@ -22,7 +22,7 @@ vim.opt.listchars = {
 vim.opt.scrolloff = 0
 vim.opt.foldlevelstart = 99
 
-vim.opt.matchpairs = vim.opt.matchpairs + {
+vim.opt.matchpairs:append {
     "（:）",
     "「:」",
     "『:』",
@@ -41,7 +41,7 @@ vim.opt.signcolumn = "yes:2"
 -- misc
 vim.opt.splitright = true
 vim.opt.splitbelow = true
-vim.opt.diffopt = vim.opt.diffopt + { "vertical", algorithm = "histgram" }
+vim.opt.diffopt:append { "vertical", "algorithm:histogram" }
 
 -- §§1 表示設定
 vim.opt.termguicolors = true

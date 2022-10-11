@@ -360,6 +360,8 @@ local function register_digraph(key_pair, char)
     vim.cmd(("digraphs %s %s"):format(key_pair, vim.fn.char2nr(char, nil)))
 end
 
+-- TODO: digraph_setlist を使う
+
 -- これを設定することで， fjj を本来の fj と同じ効果にできる．
 register_digraph("jj", "j")
 

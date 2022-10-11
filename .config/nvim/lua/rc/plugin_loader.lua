@@ -48,6 +48,7 @@ require("jetpack").startup(function(use)
     add { "lambdalisue/fern-hijack.vim" }
     add { "lambdalisue/fern-renderer-nerdfont.vim" }
     add { "lambdalisue/fern.vim", branch = "main", hook_after = config.fern }
+    add { "lambdalisue/vim-protocol" }
     add { "lambdalisue/gina.vim", hook_after = config.gina }
     add { "lambdalisue/nerdfont.vim" }
     add { "lervag/vimtex", hook_after = config.vimtex }
@@ -120,7 +121,7 @@ require("jetpack").startup(function(use)
     add { "chr4/nginx.vim" }
     add { "ekalinin/Dockerfile.vim" }
     add { "evanleck/vim-svelte" }
-    add { "leafgarland/typescript-vim" }
+    -- add { "leafgarland/typescript-vim" }
     add { "ocaml/vim-ocaml" }
     add { "pangloss/vim-javascript" }
     add { "pest-parser/pest.vim" }
