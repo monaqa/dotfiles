@@ -1,4 +1,4 @@
--- vim:fdm=marker:fmr=§§,■■
+-- vim:fdm=marker:fmr=--\ Section,■■
 -- キーマッピング関連。
 -- そのキーマップが適切に動くようにするための関数や autocmd もここに載せる。
 
@@ -9,7 +9,7 @@ local submode = require "rc.submode"
 
 vim.keymap.set("c", "<C-c>", "<C-f>")
 
--- §§1 changing display
+-- Section1 changing display
 
 -- Z を表示の toggle に使う
 vim.keymap.set("n", "ZZ", "<Nop>")
@@ -65,13 +65,13 @@ end
 
 vim.keymap.set({ "n", "o", "x" }, "+", M.expr_temporal_attention, { expr = true })
 
--- §§1 fold
+-- Section1 fold
 
 -- 自分のいない level が 1 の fold だけたたむ
 -- vim.keymap.set("n", "<Space>z", "zMzA", {})
 vim.keymap.set("n", "<Space>z", "zx", {})
 
--- §§1 search
+-- Section1 search
 
 vim.keymap.set("n", "<C-l>", ":<C-u>nohlsearch<CR><C-l>", {})
 
@@ -130,7 +130,7 @@ vim.keymap.set(
     {}
 )
 
--- §§2 QuickFix search
+-- Section2 QuickFix search
 vim.keymap.set("n", "g/", function()
     local query
     vim.ui.input({ prompt = "g/" }, function(text)
@@ -180,7 +180,7 @@ end
 
 vim.keymap.set("n", "q", toggle_quickfix, { script = true, silent = true })
 
--- §§1 terminal
+-- Section1 terminal
 
 vim.keymap.set("t", "<C-]>", [[<C-\><C-n>]], {})
 
@@ -198,8 +198,20 @@ local function terminal_init()
     --     {buffer = true, expr = true}
     -- )
 
-    vim.keymap.set("n", "u", [["i" .. repeat("<Up>", v:count1) .. "<C-\><C-n>"]], { buffer = true, expr = true })
-    vim.keymap.set("n", "<C-r>", [["i" .. repeat("<Down>", v:count1) .. "<C-\><C-n>"]], { buffer = true, expr = true })
+    vim.keymap.set(
+        "n",
+        "u",
+        [["i" .. repeat("<Up>", v:count1) .. "<C-\><C-n>"]],
+        { buffer = true, expr = true, replace_keycodes = false }
+    )
+    -- vim.keymap.set("n", "u", [[i<Up><C-\><C-n>]], { buffer = true })
+    vim.keymap.set(
+        "n",
+        "<C-r>",
+        [["i" .. repeat("<Down>", v:count1) .. "<C-\><C-n>"]],
+        { buffer = true, expr = true, replace_keycodes = false }
+    )
+    -- vim.keymap.set("n", "<C-r>", [[i<Down><C-\><C-n>]], { buffer = true })
 
     vim.opt_local.wrap = true
     vim.opt_local.number = false
@@ -230,7 +242,7 @@ end
 
 vim.keymap.set("n", "st", open_term_window, {})
 
--- §§2 send string to terminal buffer
+-- Section2 send string to terminal buffer
 
 ---ペースト時に bracketed paste mode を有効にする。
 ---@type boolean
@@ -346,7 +358,7 @@ function _G.vimrc.op.send_wezterm(type)
     vim.fn.setreg("m", m_reg, nil)
 end
 
--- §§1 input Japanese character
+-- Section1 input Japanese character
 
 vim.keymap.set({ "n", "x", "o" }, "fj", "f<C-k>j", {})
 vim.keymap.set({ "x", "o" }, "tj", "t<C-k>j", {})
@@ -389,7 +401,7 @@ register_digraph("js", "␣")
 register_digraph("j ", "　")
 register_digraph("zs", "​")
 
--- §§1 window/buffer
+-- Section1 window/buffer
 
 vim.keymap.set("n", "s", "<Nop>", {})
 
@@ -433,7 +445,7 @@ mode_winresize.register_mapping("-", "<C-w>-")
 mode_winresize.register_mapping(">", "<C-w>>")
 mode_winresize.register_mapping("<", "<C-w><")
 
--- §§1 operator/text editing
+-- Section1 operator/text editing
 
 -- どうせ空行1行なんて put するようなもんじゃないし、空行で上書きされるの嫌よね
 vim.keymap.set("n", "dd", function()
@@ -498,9 +510,25 @@ end
 vim.keymap.set("n", "<Space>a", increment_char(1), { expr = true })
 vim.keymap.set("n", "<Space>x", increment_char(-1), { expr = true })
 
--- §§1 motion/text object
+vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
+    local stroke = "<Esc>"
+    vim.cmd [[redraw!]]
+    vim.ui.input({ prompt = "cmd:" }, function(cmd)
+        if cmd ~= nil then
+            -- gv を使うと、途中で '<, '> マークをいじるときにうまく動かない
+            -- stroke = ":Normal " .. cmd .. "<CR>gv<Plug>(vimrc-visual-successive-normal)"
+            -- mark なんて普段使わんしええやろの精神
+            stroke = "mpomqo:Normal " .. cmd .. "<CR>V'po'qo<Plug>(vimrc-visual-successive-normal)"
+        end
+    end)
+    return stroke
+end, { expr = true })
 
--- §§2 charwise motion
+vim.keymap.set("x", "C", "<Plug>(vimrc-visual-successive-normal)")
+
+-- Section1 motion/text object
+
+-- Section2 charwise motion
 
 vim.keymap.set("i", "<C-b>", "<C-g>U<Left>")
 vim.keymap.set("i", "<C-f>", "<C-g>U<Right>")
@@ -645,7 +673,7 @@ vim.keymap.set("c", "<C-n>", "<Down>")
 vim.keymap.set("c", "<Up>", "<C-p>")
 vim.keymap.set("c", "<Down>", "<C-n>")
 
--- §§2 linewise motion
+-- Section2 linewise motion
 vim.keymap.set("n", "<Space>m", "<Plug>(matchup-%)")
 
 vim.keymap.set("n", "j", function()
@@ -809,7 +837,7 @@ vim.keymap.set(
 vim.keymap.set("n", "gj", "<Plug>(signify-next-hunk)")
 vim.keymap.set("n", "gk", "<Plug>(signify-prev-hunk)")
 
--- §§1 Macros
+-- Section1 Macros
 
 -- マクロの記録レジスタは "aq のような一般のレジスタを指定するのと同様の
 -- インターフェースで変更するようにし、デフォルトレジスタを q とする。
@@ -878,7 +906,7 @@ end, { expr = true })
 vim.keymap.set("n", "@", "<Nop>")
 vim.keymap.set("n", "@:", "@:")
 
--- §§1 特殊キー
+-- Section1 特殊キー
 for i = 1, 12, 1 do
     vim.keymap.set({ "n", "x", "o" }, ("<F%s>"):format(i), "<Nop>")
 end
@@ -887,7 +915,7 @@ vim.keymap.set({ "i", "c", "s" }, "<F1>", "<Nop>")
 vim.keymap.set({ "n", "x", "o" }, "<Space>", "<Nop>")
 vim.keymap.set({ "n", "x", "o" }, "<CR>", "<Nop>")
 
--- §§1 その他
+-- Section1 その他
 vim.keymap.set("n", "<C-h>", "g;")
 vim.keymap.set("n", "<C-g>", "g,")
 

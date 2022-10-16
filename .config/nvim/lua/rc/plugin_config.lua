@@ -374,18 +374,20 @@ function M.capslock()
     vim.keymap.set("i", "<C-l>", "<Nop>")
 end
 
-function M.caw()
-    vim.keymap.set("n", ",", "<Plug>(caw:hatpos:toggle:operator)")
-    vim.keymap.set("n", ",,", ",_", { remap = true })
-    vim.keymap.set("x", ",", "<Plug>(caw:hatpos:toggle)")
-end
-
 function M.open_browser()
     vim.keymap.set({ "n", "x" }, "gb", "<Plug>(openbrowser-smart-search)")
 end
 
 function M.rust_doc()
     vim.g["rust_doc#define_map_K"] = 0
+end
+
+function M.nvim_comment()
+    require("nvim_comment").setup {
+        line_mapping = ",,",
+        operator_mapping = ",",
+        -- comment_chunk_text_object = "im",
+    }
 end
 
 function M.session()
@@ -1275,6 +1277,10 @@ function M.ddu()
     }
 end
 
+function M.denops_gitter()
+    vim.g["gitter#token"] = vim.fn.getenv "GITTER_TOKEN"
+end
+
 -- §§1 tree-sitter
 
 function M.treesitter()
@@ -1322,6 +1328,7 @@ function M.treesitter()
         ensure_installed = {
             "bash",
             "css",
+            "dot",
             "html",
             "json",
             "lua",
@@ -1343,7 +1350,7 @@ function M.treesitter()
         },
         highlight = {
             enable = true,
-            -- disable = {"rust",},
+            disable = { "rust", "help" },
             additional_vim_regex_highlighting = false,
         },
         indent = {

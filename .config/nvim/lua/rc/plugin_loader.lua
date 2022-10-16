@@ -48,9 +48,9 @@ require("jetpack").startup(function(use)
     add { "lambdalisue/fern-hijack.vim" }
     add { "lambdalisue/fern-renderer-nerdfont.vim" }
     add { "lambdalisue/fern.vim", branch = "main", hook_after = config.fern }
-    add { "lambdalisue/vim-protocol" }
     add { "lambdalisue/gina.vim", hook_after = config.gina }
     add { "lambdalisue/nerdfont.vim" }
+    add { "lambdalisue/vim-protocol" }
     add { "lervag/vimtex", hook_after = config.vimtex }
     add { "mattn/emmet-vim", hook_after = config.emmet }
     add { "mattn/vim-maketable" }
@@ -58,11 +58,11 @@ require("jetpack").startup(function(use)
     add { "mhinz/vim-signify" }
     add { "nvim-lualine/lualine.nvim", hook_after = config.lualine }
     add { "rhysd/rust-doc.vim", hook_after = config.rust_doc }
+    add { "terrortylor/nvim-comment", hook_after = config.nvim_comment }
     add { "thinca/vim-qfreplace" }
     add { "thinca/vim-quickrun" }
     add { "tpope/vim-capslock", hook_after = config.capslock }
     add { "tyru/capture.vim" }
-    add { "tyru/caw.vim", hook_after = config.caw }
     add { "tyru/open-browser.vim", hook_after = config.open_browser }
     add { "uga-rosa/ccc.nvim" }
     add { "xolox/vim-misc" }
@@ -106,6 +106,7 @@ require("jetpack").startup(function(use)
     add { "matsui54/ddu-source-file_external" }
     add { "shun/ddu-source-rg" }
     add { "vim-denops/denops.vim" }
+    add { "4513ECHO/denops-gitter.vim", hook_after = config.denops_gitter }
 
     -- tree-sitter
     -- add { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", hook_after = config.treesitter }

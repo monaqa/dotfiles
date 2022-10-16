@@ -11,7 +11,8 @@
 
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.workspace.library": [
-      "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-treesitter/nvim-treesitter/lua"
+      "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-treesitter/nvim-treesitter/lua",
+      "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-lua/plenary.nvim/lua/plenary/busted.lua"
   ],
   "Lua.telemetry.enable": false,
 
@@ -19,13 +20,16 @@
   "rust-analyzer.checkOnSave.command": "clippy",
   "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.completion.privateEditable.enable": true,
 
   "svelte.plugin.html.completions.enable": true,
 
-  "deno.enable": false,
+  "deno.enable": true,
   "deno.lint": true,
   "deno.codeLens.references": true,
   "deno.codeLens.referencesAllFunctions": true,
+
+  "tsdetect.mode": "auto",
 
   "tsserver.enable": true,
 
@@ -59,6 +63,8 @@
         "trace.server": "verbose"
     }
   },
+
+
 
   "coc.preferences.formatOnSaveFiletypes": ["javascript", "python", "rust" ],
 
