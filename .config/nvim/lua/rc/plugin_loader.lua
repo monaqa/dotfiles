@@ -109,7 +109,6 @@ require("jetpack").startup(function(use)
     add { "4513ECHO/denops-gitter.vim", hook_after = config.denops_gitter }
 
     -- tree-sitter
-    -- add { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", hook_after = config.treesitter }
     add { "nvim-treesitter/nvim-treesitter", hook_after = config.treesitter }
     add { "nvim-treesitter/playground" }
     add { "mfussenegger/nvim-treehopper", hook_after = config.treehopper }

@@ -1307,13 +1307,19 @@ function M.treesitter()
         },
         filetype = "satysfi", -- if filetype does not agrees with parser name
     }
-
     parser_config.satysfi_v0_1_0 = {
         install_info = {
             url = "~/ghq/github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
             files = { "src/parser.c", "src/scanner.c" },
         },
         filetype = "satysfi_v0_1_0", -- if filetype does not agrees with parser name
+    }
+    parser_config.jsonl = {
+        install_info = {
+            url = "https://github.com/monaqa/tree-sitter-jsonl", -- local path or git repo
+            files = { "src/parser.c" },
+        },
+        filetype = "jsonl", -- if filetype does not agrees with parser name
     }
 
     local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
@@ -1458,11 +1464,52 @@ function M.dial()
                 augend.integer.alias.decimal,
                 augend.integer.alias.hex,
                 augend.integer.alias.binary,
-                augend.date.alias["%Y/%m/%d"],
-                augend.date.alias["%Y-%m-%d"],
-                augend.date.alias["%Y年%-m月%-d日(%ja)"],
-                augend.date.alias["%H:%M:%S"],
-                augend.date.alias["%-m/%-d"],
+                augend.date.new {
+                    pattern = "%Y/%m/%d",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%Y-%m-%d",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%Y年%-m月%-d日",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%-m月%-d日",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%-m月%-d日(%J)",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%-m月%-d日（%J）",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%-m/%-d",
+                    default_kind = "day",
+                    only_valid = true,
+                    word = true,
+                },
+                augend.date.new {
+                    pattern = "%H:%M",
+                    default_kind = "min",
+                    only_valid = true,
+                    word = true,
+                },
+                augend.constant.new {
+                    elements = { "true", "false" },
+                    word = true,
+                    cyclic = true,
+                },
+                augend.constant.new {
+                    elements = { "True", "False" },
+                    word = true,
+                    cyclic = true,
+                },
                 augend.constant.alias.ja_weekday,
                 augend.constant.alias.ja_weekday_full,
                 augend.hexcolor.new { case = "lower" },
@@ -1472,11 +1519,42 @@ function M.dial()
                 augend.integer.alias.decimal,
                 augend.integer.alias.hex,
                 augend.integer.alias.binary,
-                augend.date.alias["%Y/%m/%d"],
-                augend.date.alias["%Y-%m-%d"],
-                augend.date.alias["%Y年%-m月%-d日(%ja)"],
-                augend.date.alias["%H:%M:%S"],
-                augend.date.alias["%-m/%-d"],
+                augend.date.new {
+                    pattern = "%Y/%m/%d",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%Y-%m-%d",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%Y年%-m月%-d日",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%-m月%-d日",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%-m月%-d日(%J)",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%-m月%-d日（%J）",
+                    default_kind = "day",
+                },
+                augend.date.new {
+                    pattern = "%-m/%-d",
+                    default_kind = "day",
+                    only_valid = true,
+                    word = true,
+                },
+                augend.date.new {
+                    pattern = "%H:%M",
+                    default_kind = "min",
+                    only_valid = true,
+                    word = true,
+                },
                 augend.constant.alias.ja_weekday,
                 augend.constant.alias.ja_weekday_full,
                 augend.hexcolor.new { case = "lower" },

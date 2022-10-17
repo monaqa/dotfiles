@@ -68,8 +68,8 @@ vim.keymap.set({ "n", "o", "x" }, "+", M.expr_temporal_attention, { expr = true 
 -- Section1 fold
 
 -- 自分のいない level が 1 の fold だけたたむ
--- vim.keymap.set("n", "<Space>z", "zMzA", {})
-vim.keymap.set("n", "<Space>z", "zx", {})
+vim.keymap.set("n", "<Space>z", "zMzA")
+-- vim.keymap.set("n", "<Space>z", "zx")
 
 -- Section1 search
 
@@ -518,12 +518,11 @@ vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
             -- gv を使うと、途中で '<, '> マークをいじるときにうまく動かない
             -- stroke = ":Normal " .. cmd .. "<CR>gv<Plug>(vimrc-visual-successive-normal)"
             -- mark なんて普段使わんしええやろの精神
-            stroke = "mpomqo:Normal " .. cmd .. "<CR>V'po'qo<Plug>(vimrc-visual-successive-normal)"
+            stroke = "mpomqo:normal " .. cmd .. "<CR>V'po'qo<Plug>(vimrc-visual-successive-normal)"
         end
     end)
     return stroke
 end, { expr = true })
-
 vim.keymap.set("x", "C", "<Plug>(vimrc-visual-successive-normal)")
 
 -- Section1 motion/text object
