@@ -11,7 +11,6 @@
 
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.workspace.library": [
-      "~/.local/share/nvim/site/pack/jetpack/src/github.com/monaqa/dial.nvim/lua",
       "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-treesitter/nvim-treesitter/lua",
       "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-lua/plenary.nvim/lua/plenary/busted.lua"
   ],
@@ -67,7 +66,7 @@
 
 
 
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "python", "rust" ],
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "python", "rust", "typescript", "typescriptreact" ],
 
   "codeLens.enable": true,
   "codeLens.position": "right_align",

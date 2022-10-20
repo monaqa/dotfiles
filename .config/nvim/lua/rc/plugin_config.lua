@@ -140,6 +140,7 @@ function M.fern()
 
     vim.g["fern#default_exclude"] = [[^\%(]] .. table.concat(exclude_files, [[\|]]) .. [[\)$]]
     vim.g["fern#renderer"] = "nerdfont"
+    vim.g["fern#renderer#nerdfont#indent_markers"] = 1
 
     vim.keymap.set("n", "sf", "<Cmd>Fern . -reveal=%:p<CR>")
     vim.keymap.set("n", "sz", "<Cmd>Fern . -drawer -toggle<CR>")
@@ -468,6 +469,7 @@ function M.gruvbit()
             sethl { name = "WeakTitle", guifg = "#fad57f" }
             sethl { name = "Quote", guifg = "#c6b7a2" }
             sethl { name = "VisualBlue", guibg = "#4d569e" }
+            sethl { name = "FernIndentMarkers", guifg = "#707070" }
 
             -- nvim-treesitter
             sethl { name = "TSParameter", guifg = "#b3d5c8" }
