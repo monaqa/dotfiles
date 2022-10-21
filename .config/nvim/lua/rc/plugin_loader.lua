@@ -64,7 +64,7 @@ require("jetpack").startup(function(use)
     add { "tpope/vim-capslock", hook_after = config.capslock }
     add { "tyru/capture.vim" }
     add { "tyru/open-browser.vim", hook_after = config.open_browser }
-    add { "uga-rosa/ccc.nvim" }
+    add { "uga-rosa/ccc.nvim", hook_after = config.ccc }
     add { "xolox/vim-misc" }
     add { "xolox/vim-session", hook_after = config.session }
 

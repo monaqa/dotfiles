@@ -32,12 +32,19 @@
  (fenced_code_block_delimiter) @punctuation.delimiter
  )
 
-; (html_block) @comment
-; 
+(atx_heading
+  (atx_h1_marker)
+  heading_content: (_) @text.underline @text.title
+  )
+
+(atx_heading
+  (atx_h2_marker)
+  heading_content: (_) @text.title
+  )
 
 (atx_heading
  [(atx_h3_marker) (atx_h4_marker) (atx_h5_marker) (atx_h6_marker)]
- heading_content: (_) @WeakTitle
+ heading_content: (_) @text.title.weak
  )
 
 ; 

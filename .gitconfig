@@ -34,7 +34,7 @@
 
     # master or main
     mom = !basename "$(git symbolic-ref --short refs/remotes/origin/HEAD)"
-    moom = !remote set-head origin --auto
+    moom = remote set-head origin --auto
 
     vacuum = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|main'|xargs git branch -d; git fetch --prune; };f"
 

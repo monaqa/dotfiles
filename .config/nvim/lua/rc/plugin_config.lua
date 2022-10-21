@@ -379,6 +379,13 @@ function M.open_browser()
     vim.keymap.set({ "n", "x" }, "gb", "<Plug>(openbrowser-smart-search)")
 end
 
+function M.ccc()
+    local ccc = require "ccc"
+    ccc.setup {
+        highlighter = { auto_enable = true },
+    }
+end
+
 function M.rust_doc()
     vim.g["rust_doc#define_map_K"] = 0
 end
@@ -474,10 +481,9 @@ function M.gruvbit()
             -- nvim-treesitter
             sethl { name = "TSParameter", guifg = "#b3d5c8" }
             sethl { name = "TSField", guifg = "#b3d5c8" }
-            sethl { name = "@text.title", link = "Title" }
 
             -- misc
-            sethl { name = "rustCommentLineDoc", guifg = "#a6a182" }
+            sethl { name = "rustCommentLineDoc", guifg = "#9e8f7a", gui = "bold" }
         end,
     }
 end
@@ -1359,7 +1365,7 @@ function M.treesitter()
         },
         highlight = {
             enable = true,
-            disable = { "rust", "help" },
+            disable = { "help" },
             additional_vim_regex_highlighting = false,
         },
         indent = {
@@ -1442,6 +1448,7 @@ function M.treesitter()
 
     -- breaking change により必要になってしまったモノたち
     hl("@comment", { link = "Comment" })
+    hl("@comment.doccomment", { link = "rustCommentLineDoc" })
     hl("@none", { bg = "NONE", fg = "NONE" })
     hl("@preproc", { link = "PreProc" })
     hl("@define", { link = "Define" })
@@ -1472,7 +1479,7 @@ function M.treesitter()
     hl("@method.call", { link = "Function" })
 
     hl("@constructor", { link = "Special" })
-    hl("@parameter", { link = "Identifier" })
+    hl("@parameter", { link = "TSParameter" })
 
     hl("@keyword", { link = "Keyword" })
     hl("@keyword.function", { link = "Keyword" })
@@ -1493,7 +1500,7 @@ function M.treesitter()
 
     hl("@storageclass", { link = "StorageClass" })
     hl("@attribute", { link = "PreProc" })
-    hl("@field", { link = "Identifier" })
+    hl("@field", { link = "TSField" })
     hl("@property", { link = "Function" })
 
     hl("@variable", { link = "Normal" })
@@ -1512,6 +1519,7 @@ function M.treesitter()
     hl("@text.underline", { underline = true })
     hl("@text.strike", { strikethrough = true })
     hl("@text.title", { link = "Title" })
+    hl("@text.title.weak", { link = "WeakTitle" })
     hl("@text.literal", { link = "String" })
     hl("@text.uri", { link = "Underlined" })
     hl("@text.math", { link = "Special" })

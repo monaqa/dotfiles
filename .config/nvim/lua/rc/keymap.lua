@@ -412,19 +412,20 @@ vim.keymap.set("n", "s<Bar>", util.cmdcr "vsplit", {})
 vim.keymap.set("n", "sv", util.cmdcr "vsplit", {})
 vim.keymap.set("n", "sq", util.cmdcr "close", {})
 
-for _, char in ipairs {
-    "h",
-    "j",
-    "k",
-    "l",
-    "H",
-    "J",
-    "K",
-    "L",
-    "=",
-} do
-    vim.keymap.set("n", "s" .. char, "<C-w>" .. char, {})
-end
+--- 面倒がらずにちゃんと <C-w> 使おうよ
+-- for _, char in ipairs {
+--     "h",
+--     "j",
+--     "k",
+--     "l",
+--     "H",
+--     "J",
+--     "K",
+--     "L",
+--     "=",
+-- } do
+--     vim.keymap.set("n", "s" .. char, "<C-w>" .. char, {})
+-- end
 
 vim.keymap.set("n", "sT", util.cmdcr "tabnew %")
 vim.keymap.set("n", "sQ", util.cmdcr "tabclose")
