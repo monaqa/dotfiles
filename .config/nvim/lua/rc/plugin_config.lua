@@ -1420,19 +1420,20 @@ function M.treesitter()
     }
 
     vim.keymap.set("n", "ts", "<Cmd>TSHighlightCapturesUnderCursor<CR>")
-    local query_dir = vim.fn.expand("~/.config/nvim/after/queries", nil, nil)
 
-    local function override_query(filetype, query_type)
-        local query_file = ("%s/%s/%s.scm"):format(query_dir, filetype, query_type)
-        local query = vim.fn.join(vim.fn.readfile(query_file), "\n")
-        require("vim.treesitter.query").set_query(filetype, query_type, query)
-    end
-
-    -- 本体でサポートされたので、たぶんもうじき消える
-    override_query("bash", "highlights")
-    override_query("markdown", "highlights")
-    override_query("markdown_inline", "highlights")
-    override_query("lua", "folds")
+    -- local query_dir = vim.fn.expand("~/.config/nvim/after/queries", nil, nil)
+    --
+    -- local function override_query(filetype, query_type)
+    --     local query_file = ("%s/%s/%s.scm"):format(query_dir, filetype, query_type)
+    --     local query = vim.fn.join(vim.fn.readfile(query_file), "\n")
+    --     require("vim.treesitter.query").set_query(filetype, query_type, query)
+    -- end
+    --
+    -- -- 本体でサポートされたので、たぶんもうじき消える
+    -- override_query("bash", "highlights")
+    -- override_query("markdown", "highlights")
+    -- override_query("markdown_inline", "highlights")
+    -- override_query("lua", "folds")
 
     local hl = function(group, opts)
         opts.default = true
