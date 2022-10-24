@@ -4,7 +4,7 @@
 ; ] @attribute
 
 
-; (block_quote) @Quote
+(block_quote) @text.quote
 ; 
 ; (atx_heading
 ;  (atx_h1_marker)

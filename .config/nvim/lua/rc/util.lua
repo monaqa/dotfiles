@@ -137,4 +137,14 @@ function M.create_cmd(name, impl, options)
     vim.api.nvim_create_user_command(name, impl, options)
 end
 
+--- グローバルに set_hl する。
+function M.sethl(name)
+    return function(t)
+        if t.default == nil then
+            t.default = false
+        end
+        vim.api.nvim_set_hl(0, name, t)
+    end
+end
+
 return M

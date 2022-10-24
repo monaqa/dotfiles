@@ -290,6 +290,79 @@ function M.vimtex()
     vim.g.tex_flavor = "latex"
 end
 
+function M.gitsigns()
+    require("gitsigns").setup {
+        signs = {
+            add = { hl = "GitSignsAdd", text = "║", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+            change = { hl = "GitSignsChange", text = "║", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+            delete = { hl = "GitSignsDelete", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+            topdelete = { hl = "GitSignsDelete", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+            changedelete = {
+                hl = "GitSignsChange",
+                text = "┋",
+                numhl = "GitSignsChangeNr",
+                linehl = "GitSignsChangeLn",
+            },
+        },
+        signcolumn = false,
+        numhl = true,
+        linehl = false,
+        word_diff = false,
+        on_attach = function(bufnr)
+            local gs = package.loaded.gitsigns
+
+            local function map(mode, l, r, opts)
+                opts = opts or {}
+                opts.buffer = bufnr
+                vim.keymap.set(mode, l, r, opts)
+            end
+
+            -- Navigation
+            map("n", "gj", function()
+                if vim.wo.diff then
+                    return "]c"
+                end
+                vim.schedule(function()
+                    gs.next_hunk()
+                end)
+                return "<Ignore>"
+            end, { expr = true })
+
+            map("n", "gk", function()
+                if vim.wo.diff then
+                    return "[c"
+                end
+                vim.schedule(function()
+                    gs.prev_hunk()
+                end)
+                return "<Ignore>"
+            end, { expr = true })
+
+            -- Actions
+            -- map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
+            -- map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
+            -- map("n", "<leader>hS", gs.stage_buffer)
+            -- map("n", "<leader>hu", gs.undo_stage_hunk)
+            -- map("n", "<leader>hR", gs.reset_buffer)
+
+            map("n", "<Space>d", gs.preview_hunk)
+
+            -- map("n", "<leader>hb", function()
+            --     gs.blame_line { full = true }
+            -- end)
+            -- map("n", "<leader>tb", gs.toggle_current_line_blame)
+            -- map("n", "<leader>hd", gs.diffthis)
+            -- map("n", "<leader>hD", function()
+            --     gs.diffthis "~"
+            -- end)
+            -- map("n", "<leader>td", gs.toggle_deleted)
+
+            -- Text object
+            -- map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+        end,
+    }
+end
+
 function M.emmet()
     vim.g["user_emmet_mode"] = "n"
     vim.g["emmet_html5"] = 0
@@ -382,7 +455,7 @@ end
 function M.ccc()
     local ccc = require "ccc"
     ccc.setup {
-        highlighter = { auto_enable = true },
+        -- highlighter = { auto_enable = true },
     }
 end
 
@@ -413,34 +486,6 @@ end
 -- §§1 colorscheme
 
 function M.gruvbit()
-    ---@alias tbl_hl {name: string, gui?: string, guifg?: string, guibg?: string, cterm?: string, ctermbg?: string, ctermfg?: string}
-    ---@alias tbl_link {name: string, link: string}
-
-    ---@param tbl tbl_hl | tbl_link
-    local function sethl(tbl)
-        if tbl.link ~= nil then
-            vim.cmd(table.concat({
-                "highlight!",
-                "link",
-                tbl.name,
-                tbl.link,
-            }, " "))
-        else
-            local opts = {}
-            for _, key in ipairs { "gui", "guifg", "guibg", "cterm", "ctermfg", "ctermbg" } do
-                if tbl[key] ~= nil then
-                    table.insert(opts, key .. "=" .. tbl[key])
-                end
-            end
-            local opts_str = table.concat(opts, " ")
-            vim.cmd(table.concat({
-                "highlight!",
-                tbl.name,
-                opts_str,
-            }, " "))
-        end
-    end
-
     vim.g.gruvbit_transp_bg = 1
 
     -- TODO: foo
@@ -448,42 +493,121 @@ function M.gruvbit()
         pattern = "gruvbit",
         callback = function()
             -- basic
-            sethl { name = "FoldColumn", guibg = "#303030" }
-            sethl { name = "NonText", guifg = "#496da9" }
-            sethl { name = "Todo", gui = "bold", guibg = "#444444", guifg = "#c6b7a2" }
+            util.sethl "FoldColumn" { bg = "#303030" }
+            util.sethl "NonText" { fg = "#496da9" }
+            util.sethl "Todo" { bold = true, bg = "#444444", fg = "#c6b7a2" }
 
-            sethl {
-                name = "VertSplit",
-                guifg = "#c8c8c8",
-                guibg = "None",
-                -- gui="bold",
-            }
-            sethl { name = "Visual", guibg = "#4d564e" }
-            sethl { name = "Pmenu", guibg = "#404064" }
-            sethl { name = "QuickFixLine", guibg = "#4d569e" }
+            util.sethl "VertSplit" { fg = "#c8c8c8", bg = "None", default = false }
+            util.sethl "Visual" { bg = "#4d564e" }
+            util.sethl "Pmenu" { bg = "#404064" }
+            util.sethl "QuickFixLine" { bg = "#4d569e" }
 
-            sethl { name = "DiffChange", guibg = "#314a5c" }
-            sethl { name = "DiffDelete", guibg = "#5c3728", guifg = "#968772" }
-            sethl { name = "MatchParen", guibg = "#51547d", guifg = "#ebdbb2" }
+            util.sethl "DiffChange" { bg = "#314a5c" }
+            util.sethl "DiffDelete" { bg = "#5c3728", fg = "#968772" }
+            util.sethl "MatchParen" { bg = "#51547d", fg = "#ebdbb2" }
+
+            util.sethl "LineNr" { fg = "#968772", bg = "#2a2a2a" }
 
             -- coc.nvim
-            sethl { name = "CocHintFloat", guibg = "#444444", guifg = "#45daef" }
-            sethl { name = "CocRustChainingHint", link = "CocHintFloat" }
-            sethl { name = "CocSearch", guifg = "#fabd2f" }
-            sethl { name = "CocMenuSel", guibg = "#303054" }
+            util.sethl "CocHintFloat" { bg = "#444444", fg = "#45daef" }
+            util.sethl "CocRustChainingHint" { link = "CocHintFloat" }
+            util.sethl "CocSearch" { fg = "#fabd2f" }
+            util.sethl "CocMenuSel" { bg = "#303054" }
 
             -- custom highlight name
-            sethl { name = "WeakTitle", guifg = "#fad57f" }
-            sethl { name = "Quote", guifg = "#c6b7a2" }
-            sethl { name = "VisualBlue", guibg = "#4d569e" }
-            sethl { name = "FernIndentMarkers", guifg = "#707070" }
+            util.sethl "WeakTitle" { fg = "#fad57f" }
+            util.sethl "Quote" { fg = "#c6b7a2" }
+            util.sethl "VisualBlue" { bg = "#4d569e" }
+            util.sethl "FernIndentMarkers" { fg = "#707070" }
+
+            -- gitsigns
+            util.sethl "GitSignsAdd" { fg = "#98971a", bg = "None" }
+            util.sethl "GitSignsChange" { fg = "#458588", bg = "None" }
+            util.sethl "GitSignsDelete" { fg = "#cc241d", bg = "None" }
+            -- util.sethl "GitSignsAddNr" { fg = "#88870a", bg = "None" }
+            -- util.sethl "GitSignsChangeNr" { fg = "#357578", bg = "None" }
+            -- util.sethl "GitSignsDeleteNr" { fg = "#bc140d", bg = "None" }
+            util.sethl "GitSignsAddNr" { bg = "#3b5e48", fg = "#968772" }
+            util.sethl "GitSignsChangeNr" { bg = "#314a5c", fg = "#968772" }
+            util.sethl "GitSignsDeleteNr" { link = "DiffDelete" }
+            util.sethl "GitSignsAddLn" { bg = "#122712" }
+            util.sethl "GitSignsChangeLn" { bg = "#112030" }
+            util.sethl "GitSignsDeleteLn" { bg = "#291308" }
 
             -- nvim-treesitter
-            sethl { name = "TSParameter", guifg = "#b3d5c8" }
-            sethl { name = "TSField", guifg = "#b3d5c8" }
+            util.sethl "TSParameter" { fg = "#b3d5c8" }
+            util.sethl "TSField" { fg = "#b3d5c8" }
 
-            -- misc
-            sethl { name = "rustCommentLineDoc", guifg = "#9e8f7a", gui = "bold" }
+            util.sethl "rustCommentLineDoc" { fg = "#9e8f7a", bold = true }
+
+            util.sethl "@comment" { link = "Comment" }
+            util.sethl "@comment.doccomment" { link = "rustCommentLineDoc" }
+
+            util.sethl "@attribute" { link = "PreProc" }
+            util.sethl "@boolean" { link = "Boolean" }
+            util.sethl "@character" { link = "Character" }
+            util.sethl "@character.special" { link = "SpecialChar" }
+            util.sethl "@conditional" { link = "Conditional" }
+            util.sethl "@constant" { link = "Constant" }
+            util.sethl "@constant.builtin" { link = "Special" }
+            util.sethl "@constant.macro" { link = "Define" }
+            util.sethl "@constructor" { link = "Special" }
+            util.sethl "@debug" { link = "Debug" }
+            util.sethl "@define" { link = "Define" }
+            util.sethl "@exception" { link = "Exception" }
+            util.sethl "@field" { link = "TSField" }
+            util.sethl "@float" { link = "Float" }
+            util.sethl "@function" { link = "Function" }
+            util.sethl "@function.builtin" { link = "Special" }
+            util.sethl "@function.call" { link = "Function" }
+            util.sethl "@function.macro" { link = "Macro" }
+            util.sethl "@include" { link = "Include" }
+            util.sethl "@keyword" { link = "Keyword" }
+            util.sethl "@label" { link = "Label" }
+            util.sethl "@method" { link = "Function" }
+            util.sethl "@method.call" { link = "Function" }
+            util.sethl "@namespace" { link = "Include" }
+            util.sethl "@none" { bg = "NONE", fg = "NONE" }
+            util.sethl "@number" { link = "Number" }
+            util.sethl "@operator" { link = "Operator" }
+            util.sethl "@parameter" { link = "TSParameter" }
+            util.sethl "@preproc" { link = "PreProc" }
+            util.sethl "@property" { link = "Function" }
+            util.sethl "@punctuation" { link = "Delimiter" }
+            util.sethl "@repeat" { link = "Repeat" }
+            util.sethl "@storageclass" { link = "StorageClass" }
+            util.sethl "@string" { link = "String" }
+            util.sethl "@string.escape" { link = "SpecialChar" }
+            util.sethl "@string.regex" { link = "String" }
+            util.sethl "@string.special" { link = "SpecialChar" }
+            util.sethl "@symbol" { link = "Identifier" }
+            util.sethl "@tag" { link = "Tag" }
+            util.sethl "@tag.attribute" { link = "Identifier" }
+            util.sethl "@tag.delimiter" { link = "Delimiter" }
+            util.sethl "@text" { link = "Normal" }
+            util.sethl "@text.danger" { link = "ErrorMsg" }
+            util.sethl "@text.emphasis" { italic = true }
+            util.sethl "@text.environment" { link = "Macro" }
+            util.sethl "@text.environment.name" { link = "Type" }
+            util.sethl "@text.literal" { link = "String" }
+            util.sethl "@text.math" { link = "Special" }
+            util.sethl "@text.note" { link = "SpecialComment" }
+            util.sethl "@text.quote" { link = "Quote" }
+            util.sethl "@text.reference" { link = "Constant" }
+            util.sethl "@text.strike" { strikethrough = true }
+            util.sethl "@text.strong" { bold = true }
+            util.sethl "@text.title" { link = "Title" }
+            util.sethl "@text.title.weak" { link = "WeakTitle" }
+            util.sethl "@text.todo" { link = "Todo" }
+            util.sethl "@text.underline" { underline = true }
+            util.sethl "@text.uri" { link = "Underlined" }
+            util.sethl "@text.warning" { link = "WarningMsg" }
+            util.sethl "@type" { link = "Type" }
+            util.sethl "@type.builtin" { link = "Type" }
+            util.sethl "@type.definition" { link = "Typedef" }
+            util.sethl "@type.qualifier" { link = "Type" }
+            util.sethl "@variable" { link = "Normal" }
+            util.sethl "@variable.builtin" { link = "Special" }
         end,
     }
 end
@@ -1331,6 +1455,14 @@ function M.treesitter()
         filetype = "jsonl", -- if filetype does not agrees with parser name
     }
 
+    parser_config.denops_gitter = {
+        install_info = {
+            url = "~/ghq/github.com/monaqa/tree-sitter-denops-gitter", -- local path or git repo
+            files = { "src/parser.c" },
+        },
+        filetype = "gitter", -- if filetype does not agrees with parser name
+    }
+
     local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
 
     ft_to_parser["obsidian"] = "markdown"
@@ -1426,115 +1558,6 @@ function M.treesitter()
     }
 
     vim.keymap.set("n", "ts", "<Cmd>TSHighlightCapturesUnderCursor<CR>")
-
-    -- local query_dir = vim.fn.expand("~/.config/nvim/after/queries", nil, nil)
-    --
-    -- local function override_query(filetype, query_type)
-    --     local query_file = ("%s/%s/%s.scm"):format(query_dir, filetype, query_type)
-    --     local query = vim.fn.join(vim.fn.readfile(query_file), "\n")
-    --     require("vim.treesitter.query").set_query(filetype, query_type, query)
-    -- end
-    --
-    -- -- 本体でサポートされたので、たぶんもうじき消える
-    -- override_query("bash", "highlights")
-    -- override_query("markdown", "highlights")
-    -- override_query("markdown_inline", "highlights")
-    -- override_query("lua", "folds")
-
-    local hl = function(group, opts)
-        opts.default = true
-        vim.api.nvim_set_hl(0, group, opts)
-    end
-
-    -- breaking change により必要になってしまったモノたち
-    hl("@comment", { link = "Comment" })
-    hl("@comment.doccomment", { link = "rustCommentLineDoc" })
-    hl("@none", { bg = "NONE", fg = "NONE" })
-    hl("@preproc", { link = "PreProc" })
-    hl("@define", { link = "Define" })
-    hl("@operator", { link = "Operator" })
-
-    hl("@punctuation.delimiter", { link = "Delimiter" })
-    hl("@punctuation.bracket", { link = "Delimiter" })
-    hl("@punctuation.special", { link = "Delimiter" })
-
-    hl("@string", { link = "String" })
-    hl("@string.regex", { link = "String" })
-    hl("@string.escape", { link = "SpecialChar" })
-    hl("@string.special", { link = "SpecialChar" })
-
-    hl("@character", { link = "Character" })
-    hl("@character.special", { link = "SpecialChar" })
-
-    hl("@boolean", { link = "Boolean" })
-    hl("@number", { link = "Number" })
-    hl("@float", { link = "Float" })
-
-    hl("@function", { link = "Function" })
-    hl("@function.call", { link = "Function" })
-    hl("@function.builtin", { link = "Special" })
-    hl("@function.macro", { link = "Macro" })
-
-    hl("@method", { link = "Function" })
-    hl("@method.call", { link = "Function" })
-
-    hl("@constructor", { link = "Special" })
-    hl("@parameter", { link = "TSParameter" })
-
-    hl("@keyword", { link = "Keyword" })
-    hl("@keyword.function", { link = "Keyword" })
-    hl("@keyword.operator", { link = "Keyword" })
-    hl("@keyword.return", { link = "Keyword" })
-
-    hl("@conditional", { link = "Conditional" })
-    hl("@repeat", { link = "Repeat" })
-    hl("@debug", { link = "Debug" })
-    hl("@label", { link = "Label" })
-    hl("@include", { link = "Include" })
-    hl("@exception", { link = "Exception" })
-
-    hl("@type", { link = "Type" })
-    hl("@type.builtin", { link = "Type" })
-    hl("@type.qualifier", { link = "Type" })
-    hl("@type.definition", { link = "Typedef" })
-
-    hl("@storageclass", { link = "StorageClass" })
-    hl("@attribute", { link = "PreProc" })
-    hl("@field", { link = "TSField" })
-    hl("@property", { link = "Function" })
-
-    hl("@variable", { link = "Normal" })
-    hl("@variable.builtin", { link = "Special" })
-
-    hl("@constant", { link = "Constant" })
-    hl("@constant.builtin", { link = "Special" })
-    hl("@constant.macro", { link = "Define" })
-
-    hl("@namespace", { link = "Include" })
-    hl("@symbol", { link = "Identifier" })
-
-    hl("@text", { link = "Normal" })
-    hl("@text.strong", { bold = true })
-    hl("@text.emphasis", { italic = true })
-    hl("@text.underline", { underline = true })
-    hl("@text.strike", { strikethrough = true })
-    hl("@text.title", { link = "Title" })
-    hl("@text.title.weak", { link = "WeakTitle" })
-    hl("@text.literal", { link = "String" })
-    hl("@text.uri", { link = "Underlined" })
-    hl("@text.math", { link = "Special" })
-    hl("@text.environment", { link = "Macro" })
-    hl("@text.environment.name", { link = "Type" })
-    hl("@text.reference", { link = "Constant" })
-
-    hl("@text.todo", { link = "Todo" })
-    hl("@text.note", { link = "SpecialComment" })
-    hl("@text.warning", { link = "WarningMsg" })
-    hl("@text.danger", { link = "ErrorMsg" })
-
-    hl("@tag", { link = "Tag" })
-    hl("@tag.attribute", { link = "Identifier" })
-    hl("@tag.delimiter", { link = "Delimiter" })
 end
 
 function M.treehopper()
@@ -1564,116 +1587,106 @@ function M.dial()
         vim.cmd [[packadd dial.nvim]]
 
         local augend = require "dial.augend"
-        require("dial.config").augends:register_group {
-            default = {
-                augend.integer.alias.decimal,
-                augend.integer.alias.hex,
-                augend.integer.alias.binary,
-                augend.date.new {
-                    pattern = "%Y/%m/%d",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%Y-%m-%d",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%Y年%-m月%-d日",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%-m月%-d日",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%-m月%-d日(%J)",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%-m月%-d日（%J）",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%-m/%-d",
-                    default_kind = "day",
-                    only_valid = true,
-                    word = true,
-                },
-                augend.date.new {
-                    pattern = "%H:%M",
-                    default_kind = "min",
-                    only_valid = true,
-                    word = true,
-                },
-                augend.constant.new {
-                    elements = { "true", "false" },
-                    word = true,
-                    cyclic = true,
-                },
-                augend.constant.new {
-                    elements = { "True", "False" },
-                    word = true,
-                    cyclic = true,
-                },
-                augend.constant.alias.ja_weekday,
-                augend.constant.alias.ja_weekday_full,
-                augend.hexcolor.new { case = "lower" },
-                augend.semver.alias.semver,
+
+        local function concat(tt)
+            local v = {}
+            for _, t in ipairs(tt) do
+                vim.list_extend(v, t)
+            end
+            return v
+        end
+
+        local basic = {
+            augend.integer.alias.decimal,
+            augend.integer.alias.hex,
+            augend.integer.alias.binary,
+            augend.date.new {
+                pattern = "%Y/%m/%d",
+                default_kind = "day",
+                clamp = true,
+                end_sensitive = true,
             },
-            markdown = {
-                augend.integer.alias.decimal,
-                augend.integer.alias.hex,
-                augend.integer.alias.binary,
-                augend.date.new {
-                    pattern = "%Y/%m/%d",
-                    default_kind = "day",
+            augend.date.new {
+                pattern = "%Y-%m-%d",
+                default_kind = "day",
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
+                pattern = "%Y年%-m月%-d日",
+                default_kind = "day",
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
+                pattern = "%-m月%-d日",
+                default_kind = "day",
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
+                pattern = "%-m月%-d日(%J)",
+                default_kind = "day",
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
+                pattern = "%-m月%-d日（%J）",
+                default_kind = "day",
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
+                pattern = "%-m/%-d",
+                default_kind = "day",
+                only_valid = true,
+                word = true,
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
+                pattern = "%H:%M",
+                default_kind = "min",
+                only_valid = true,
+                word = true,
+            },
+            augend.constant.new {
+                elements = { "true", "false" },
+                word = true,
+                cyclic = true,
+            },
+            augend.constant.new {
+                elements = { "True", "False" },
+                word = true,
+                cyclic = true,
+            },
+            augend.constant.alias.ja_weekday,
+            augend.constant.alias.ja_weekday_full,
+            augend.hexcolor.new { case = "lower" },
+            augend.semver.alias.semver,
+        }
+
+        require("dial.config").augends:register_group {
+            default = basic,
+            markdown = concat {
+                basic,
+                { augend.misc.alias.markdown_header },
+            },
+            visual = concat {
+                basic,
+                {
+                    augend.constant.alias.alpha,
+                    augend.constant.alias.Alpha,
                 },
-                augend.date.new {
-                    pattern = "%Y-%m-%d",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%Y年%-m月%-d日",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%-m月%-d日",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%-m月%-d日(%J)",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%-m月%-d日（%J）",
-                    default_kind = "day",
-                },
-                augend.date.new {
-                    pattern = "%-m/%-d",
-                    default_kind = "day",
-                    only_valid = true,
-                    word = true,
-                },
-                augend.date.new {
-                    pattern = "%H:%M",
-                    default_kind = "min",
-                    only_valid = true,
-                    word = true,
-                },
-                augend.constant.alias.ja_weekday,
-                augend.constant.alias.ja_weekday_full,
-                augend.hexcolor.new { case = "lower" },
-                augend.semver.alias.semver,
-                augend.misc.alias.markdown_header,
             },
         }
 
         vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), { noremap = true })
         vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), { noremap = true })
-        vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), { noremap = true })
-        vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), { noremap = true })
-        vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), { noremap = true })
-        vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), { noremap = true })
+        vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual "visual", { noremap = true })
+        vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual "visual", { noremap = true })
+        vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual "visual", { noremap = true })
+        vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual "visual", { noremap = true })
 
         util.autocmd_vimrc { "FileType" } {
             pattern = "markdown",

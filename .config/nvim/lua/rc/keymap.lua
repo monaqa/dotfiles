@@ -413,19 +413,19 @@ vim.keymap.set("n", "sv", util.cmdcr "vsplit", {})
 vim.keymap.set("n", "sq", util.cmdcr "close", {})
 
 --- 面倒がらずにちゃんと <C-w> 使おうよ
--- for _, char in ipairs {
---     "h",
---     "j",
---     "k",
---     "l",
---     "H",
---     "J",
---     "K",
---     "L",
---     "=",
--- } do
---     vim.keymap.set("n", "s" .. char, "<C-w>" .. char, {})
--- end
+for _, char in ipairs {
+    "h",
+    "j",
+    "k",
+    "l",
+    "H",
+    "J",
+    "K",
+    "L",
+    "=",
+} do
+    vim.keymap.set("n", "s" .. char, "<C-w>" .. char, {})
+end
 
 vim.keymap.set("n", "sT", util.cmdcr "tabnew %")
 vim.keymap.set("n", "sQ", util.cmdcr "tabclose")
@@ -834,8 +834,8 @@ vim.keymap.set(
 -- local submode_diffjump = submode.create_mode("diffjump", "g")
 -- submode_diffjump.register_mapping("j", "<Plug>(signify-next-hunk)")
 -- submode_diffjump.register_mapping("k", "<Plug>(signify-prev-hunk)")
-vim.keymap.set("n", "gj", "<Plug>(signify-next-hunk)")
-vim.keymap.set("n", "gk", "<Plug>(signify-prev-hunk)")
+-- vim.keymap.set("n", "gj", "<Plug>(signify-next-hunk)")
+-- vim.keymap.set("n", "gk", "<Plug>(signify-prev-hunk)")
 
 -- Section1 Macros
 

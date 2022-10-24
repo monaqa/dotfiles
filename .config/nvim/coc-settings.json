@@ -86,6 +86,7 @@
   "diagnostic.errorSign": "🚨",
   "diagnostic.infoSign": "ℹ️ ",
   "diagnostic.hintSign": "ℹ️ ",
+  "diagnostic.signLevel": "error",
 
   "suggest.floatConfig": {
     "winblend": 10

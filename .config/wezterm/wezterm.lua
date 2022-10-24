@@ -203,6 +203,7 @@ return {
     -- window
     adjust_window_size_when_changing_font_size = false,
     window_background_opacity = 0.85,
+    text_background_opacity = 0.85,
     window_padding = {
         left = "1cell",
         right = "1cell",

@@ -36,7 +36,8 @@ vim.opt.laststatus = 3
 -- 左
 vim.opt.number = true
 vim.opt.foldcolumn = "0"
-vim.opt.signcolumn = "yes:2"
+-- vim.opt.signcolumn = "yes:2"
+vim.opt.signcolumn = "number"
 
 -- misc
 vim.opt.splitright = true

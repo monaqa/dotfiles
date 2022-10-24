@@ -310,7 +310,7 @@ util.autocmd_vimrc "BufWritePost" {
     callback = function()
         -- fold の状態を保持するために mkview と loadview を入れた
         vim.cmd [[mkview]]
-        vim.fn.system([[stylua ]] .. vim.fn.expand "%:p")
+        vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand "%:p")
         vim.cmd [[edit]]
         vim.cmd [[loadview]]
     end,

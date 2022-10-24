@@ -34,6 +34,7 @@ require("jetpack").startup(function(use)
     add { "tani/vim-jetpack", opt = 1 }
 
     -- general plugins
+    -- add { "mhinz/vim-signify" }
     add { "Shougo/vimproc.vim" }
     add { "Vimjas/vim-python-pep8-indent" }
     add { "akinsho/bufferline.nvim", hook_after = config.bufferline }
@@ -52,10 +53,10 @@ require("jetpack").startup(function(use)
     add { "lambdalisue/nerdfont.vim" }
     add { "lambdalisue/vim-protocol" }
     add { "lervag/vimtex", hook_after = config.vimtex }
+    add { "lewis6991/gitsigns.nvim", hook_after = config.gitsigns }
     add { "mattn/emmet-vim", hook_after = config.emmet }
     add { "mattn/vim-maketable" }
     add { "mbbill/undotree", hook_after = config.undotree }
-    add { "mhinz/vim-signify" }
     add { "nvim-lualine/lualine.nvim", hook_after = config.lualine }
     add { "rhysd/rust-doc.vim", hook_after = config.rust_doc }
     add { "terrortylor/nvim-comment", hook_after = config.nvim_comment }
