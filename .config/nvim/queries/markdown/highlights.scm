@@ -20,13 +20,6 @@
  )
 
 (fenced_code_block
- (fenced_code_block_delimiter) @text.literal
- .
- (block_continuation)
- (fenced_code_block_delimiter) @text.literal
- )
-
-(fenced_code_block
  (fenced_code_block_delimiter) @punctuation.delimiter
  (info_string) @punctuation.delimiter
  (fenced_code_block_delimiter) @punctuation.delimiter
@@ -76,7 +69,7 @@
 ;   (fenced_code_block_delimiter)
 ; ] @punctuation.delimiter
 
-(code_fence_content) @none
+; (code_fence_content) @none
 
 [
   (link_destination)

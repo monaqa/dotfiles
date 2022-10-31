@@ -300,7 +300,7 @@ function M.gitsigns()
             changedelete = {
                 hl = "GitSignsChange",
                 text = "┋",
-                numhl = "GitSignsChangeNr",
+                numhl = "GitSignsChangeDeleteNr",
                 linehl = "GitSignsChangeLn",
             },
         },
@@ -455,7 +455,7 @@ end
 function M.ccc()
     local ccc = require "ccc"
     ccc.setup {
-        -- highlighter = { auto_enable = true },
+        highlighter = { auto_enable = true },
     }
 end
 
@@ -509,10 +509,11 @@ function M.gruvbit()
             util.sethl "LineNr" { fg = "#968772", bg = "#2a2a2a" }
 
             -- coc.nvim
-            util.sethl "CocHintFloat" { bg = "#444444", fg = "#45daef" }
-            util.sethl "CocRustChainingHint" { link = "CocHintFloat" }
+            util.sethl "CocInlayHint" { bg = "#444444", fg = "#90816c", italic = true }
+            -- util.sethl "CocHintFloat" { bg = "#444444", fg = "#45daef" }
+            util.sethl "CocRustChainingHint" { link = "CocInlayHint" }
             util.sethl "CocSearch" { fg = "#fabd2f" }
-            util.sethl "CocMenuSel" { bg = "#303054" }
+            util.sethl "CocMenuSel" { bg = "#604054" }
 
             -- custom highlight name
             util.sethl "WeakTitle" { fg = "#fad57f" }
@@ -529,7 +530,8 @@ function M.gruvbit()
             -- util.sethl "GitSignsDeleteNr" { fg = "#bc140d", bg = "None" }
             util.sethl "GitSignsAddNr" { bg = "#3b5e48", fg = "#968772" }
             util.sethl "GitSignsChangeNr" { bg = "#314a5c", fg = "#968772" }
-            util.sethl "GitSignsDeleteNr" { link = "DiffDelete" }
+            util.sethl "GitSignsDeleteNr" { link = "DiffDelete" } -- #5c3728
+            util.sethl "GitSignsChangeDeleteNr" { bg = "#5c3a5c", fg = "#968772" }
             util.sethl "GitSignsAddLn" { bg = "#122712" }
             util.sethl "GitSignsChangeLn" { bg = "#112030" }
             util.sethl "GitSignsDeleteLn" { bg = "#291308" }
@@ -1412,6 +1414,9 @@ end
 
 function M.denops_gitter()
     vim.g["gitter#token"] = vim.fn.getenv "GITTER_TOKEN"
+    if vim.g["gitter#token"] ~= "" then
+        vim.cmd [[ packadd denops-gitter.vim ]]
+    end
 end
 
 -- §§1 tree-sitter

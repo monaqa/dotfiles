@@ -107,7 +107,7 @@ require("jetpack").startup(function(use)
     add { "matsui54/ddu-source-file_external" }
     add { "shun/ddu-source-rg" }
     add { "vim-denops/denops.vim" }
-    add { "4513ECHO/denops-gitter.vim", hook_after = config.denops_gitter }
+    add { "4513ECHO/denops-gitter.vim", hook_after = config.denops_gitter, opt = true }
 
     -- tree-sitter
     add { "nvim-treesitter/nvim-treesitter", hook_after = config.treesitter }
@@ -115,6 +115,8 @@ require("jetpack").startup(function(use)
     add { "mfussenegger/nvim-treehopper", hook_after = config.treehopper }
 
     -- filetype
+    -- add { "abhishekmukherg/xonsh-vim" }
+    -- add { "jsborjesson/vim-uppercase-sql" }
     add { "JuliaEditorSupport/julia-vim" }
     add { "aklt/plantuml-syntax" }
     add { "bfontaine/Brewfile.vim" }
@@ -122,18 +124,16 @@ require("jetpack").startup(function(use)
     add { "chr4/nginx.vim" }
     add { "ekalinin/Dockerfile.vim" }
     add { "evanleck/vim-svelte" }
-    -- add { "leafgarland/typescript-vim" }
+    add { "justinmk/vim-syntax-extra" }
     add { "ocaml/vim-ocaml" }
+    add { "othree/html5.vim" }
     add { "pangloss/vim-javascript" }
     add { "pest-parser/pest.vim" }
+    add { "preservim/vim-markdown", hook_after = config.markdown }
     add { "rust-lang/rust.vim", hook_after = config.rust }
     add { "vim-python/python-syntax", hook_after = config.python }
     add { "vito-c/jq.vim" }
     add { "wlangstroth/vim-racket" }
-    add { "othree/html5.vim" }
-    add { "preservim/vim-markdown", hook_after = config.markdown }
-    add { "justinmk/vim-syntax-extra" }
-    add { "abhishekmukherg/xonsh-vim" }
 
     -- monaqa
     add { "monaqa/colordinate.vim", opt = true }
