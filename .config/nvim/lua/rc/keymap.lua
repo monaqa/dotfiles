@@ -372,34 +372,33 @@ local function register_digraph(key_pair, char)
     vim.cmd(("digraphs %s %s"):format(key_pair, vim.fn.char2nr(char, nil)))
 end
 
--- TODO: digraph_setlist を使う
+vim.fn.digraph_setlist {
+    -- これを設定することで， fjj を本来の fj と同じ効果にできる．
+    { "jj", "j" },
+    -- カッコ
+    { "j(", "（" },
+    { "j}", "）" },
+    { "j[", "「" },
+    { "j]", "」" },
+    { "j{", "『" },
+    { "j}", "』" },
+    { "j<", "【" },
+    { "j>", "】" },
 
--- これを設定することで， fjj を本来の fj と同じ効果にできる．
-register_digraph("jj", "j")
+    -- 句読点
+    { "j,", "、" },
+    { "j.", "。" },
+    { "j!", "！" },
+    { "j?", "？" },
+    { "j:", "：" },
 
--- カッコ
-register_digraph("j(", "（")
-register_digraph("j)", "）")
-register_digraph("j[", "「")
-register_digraph("j]", "」")
-register_digraph("j{", "『")
-register_digraph("j}", "』")
-register_digraph("j<", "【")
-register_digraph("j>", "】")
-
--- 句読点
-register_digraph("j,", "、")
-register_digraph("j.", "。")
-register_digraph("j!", "！")
-register_digraph("j?", "？")
-register_digraph("j:", "：")
-
--- その他の記号
-register_digraph("j~", "〜")
-register_digraph("j/", "・")
-register_digraph("js", "␣")
-register_digraph("j ", "　")
-register_digraph("zs", "​")
+    -- その他の記号
+    { "j~", "〜" },
+    { "j/", "・" },
+    { "js", "␣" },
+    { "j ", "　" },
+    { "zs", "​" },
+}
 
 -- Section1 window/buffer
 
@@ -479,7 +478,7 @@ vim.keymap.set("x", "<Space>p", visual_replace "+", {})
 -- TODO: v:register を渡せる visual_replace
 vim.keymap.set("x", "p", visual_replace '"', {})
 
-vim.keymap.set("n", "R", "gR", {})
+-- vim.keymap.set("n", "R", "gR", {})
 
 vim.keymap.set("n", "<Space><CR>", "a<CR><Esc>")
 

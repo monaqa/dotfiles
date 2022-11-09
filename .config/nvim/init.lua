@@ -13,6 +13,7 @@ _G.vimrc = {
 -- https://wiredool.hatenadiary.org/entry/20120618/1340019962
 vim.cmd [[
   filetype plugin indent off
+  syntax enable
 ]]
 
 require "rc.plugin_loader"
@@ -26,5 +27,4 @@ require "rc.filetype"
 
 vim.cmd [[
   filetype plugin indent on
-  syntax enable
 ]]

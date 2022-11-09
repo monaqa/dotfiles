@@ -455,7 +455,7 @@ end
 function M.ccc()
     local ccc = require "ccc"
     ccc.setup {
-        highlighter = { auto_enable = true },
+        -- highlighter = { auto_enable = true },
     }
 end
 
@@ -954,6 +954,11 @@ function M.textobj_comment()
     vim.keymap.set({ "x", "o" }, "am", "<Plug>(textobj-comment-a)", { remap = true })
 end
 
+function M.operator_replace()
+    -- 冷静に考えたら gR は使っても普通の R は使うことないもんね
+    vim.keymap.set("n", "R", "<Plug>(operator-replace)")
+end
+
 function M.textobj_entire()
     for _, op in ipairs {
         "y",
@@ -1414,7 +1419,7 @@ end
 
 function M.denops_gitter()
     vim.g["gitter#token"] = vim.fn.getenv "GITTER_TOKEN"
-    if vim.g["gitter#token"] ~= "" then
+    if vim.g["gitter#token"] ~= vim.NIL then
         vim.cmd [[ packadd denops-gitter.vim ]]
     end
 end

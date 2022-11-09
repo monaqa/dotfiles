@@ -17,7 +17,7 @@ vim.cmd [[
 ]]
 
 local callbacks = {}
-require("jetpack").startup(function(use)
+require("jetpack.packer").startup(function(use)
     ---`use` 関数を wrap して、hook 系が渡せるようにする
     ---@param t {hook_before?: fun(), hook_after?: fun()}
     local function add(t)
@@ -43,7 +43,6 @@ require("jetpack").startup(function(use)
     add { "iamcco/markdown-preview.nvim", run = ":call mkdp#util#install()", hook_after = config.markdown_preview }
     add { "itchyny/vim-qfedit" }
     add { "kana/vim-altr", hook_after = config.altr }
-    add { "kana/vim-operator-user" }
     add { "kkiyama117/zenn-vim" }
     add { "kyazdani42/nvim-web-devicons" }
     add { "lambdalisue/fern-hijack.vim" }
@@ -81,6 +80,8 @@ require("jetpack").startup(function(use)
     -- textedit
     add { "bps/vim-textobj-python" }
     add { "glts/vim-textobj-comment", hook_after = config.textobj_comment }
+    add { "kana/vim-operator-replace", hook_after = config.operator_replace }
+    add { "kana/vim-operator-user" }
     add { "kana/vim-textobj-entire", hook_after = config.textobj_entire }
     add { "kana/vim-textobj-user", hook_after = config.textobj_user }
     add { "machakann/vim-swap", hook_after = config.swap }
