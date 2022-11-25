@@ -13,6 +13,11 @@
 
 (strong_emphasis) @text.strong
 
+(
+ (emphasis_delimiter) @conceal
+ (#set! conceal "")
+ )
+
 [
   (link_destination)
   (uri_autolink)
@@ -46,7 +51,7 @@
 ; Conceal image links
 (image
   (link_destination) @conceal
-  (#set! conceal ""))
+  (#set! conceal "…"))
 
 ; Conceal full reference links
 (full_reference_link
@@ -55,4 +60,4 @@
     "]"
     (link_label) @conceal
   ]
-  (#set! conceal ""))
+  (#set! conceal "🖼"))

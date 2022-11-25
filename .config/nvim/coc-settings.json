@@ -15,9 +15,11 @@
       "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-lua/plenary.nvim/lua/plenary/busted.lua"
   ],
   "Lua.telemetry.enable": false,
+  "Lua.workspace.checkThirdParty": false,
 
   "rust-analyzer.lens.enable": false,
   "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.checkOnSave.target": [],
   "rust-analyzer.updates.channel": "stable",
   "rust-analyzer.procMacro.enable": true,
   "rust-analyzer.completion.privateEditable.enable": true,
