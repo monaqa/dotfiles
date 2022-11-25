@@ -518,7 +518,9 @@ vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
             -- gv を使うと、途中で '<, '> マークをいじるときにうまく動かない
             -- stroke = ":Normal " .. cmd .. "<CR>gv<Plug>(vimrc-visual-successive-normal)"
             -- mark なんて普段使わんしええやろの精神
-            stroke = "mpomqo:normal " .. cmd .. "<CR>V'po'qo<Plug>(vimrc-visual-successive-normal)"
+            -- stroke = "mpomqo:normal " .. cmd .. "<CR>V'po'qo<Plug>(vimrc-visual-successive-normal)"
+            -- 無限に繰り返せるようにしてもいいが、そうすると undo がくっついてしまう
+            stroke = "mpomqo:normal " .. cmd .. "<CR>V'po'qo"
         end
     end)
     return stroke

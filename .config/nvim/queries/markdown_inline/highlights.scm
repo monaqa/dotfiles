@@ -61,3 +61,7 @@
     (link_label) @conceal
   ]
   (#set! conceal "🖼"))
+
+; skip checking spell
+(code_span) @nospell
+(uri_autolink) @nospell

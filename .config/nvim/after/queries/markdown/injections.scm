@@ -33,3 +33,10 @@
  (#vim-match? @lang "^(lua)(:.*)?$")
  (#set! language "lua")
 )
+
+(fenced_code_block
+ (info_string) @lang
+ (code_fence_content) @content
+ (#vim-match? @lang "^(todome)(:.*)?$")
+ (#set! language "todome")
+)

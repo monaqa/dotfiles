@@ -148,6 +148,7 @@ if test -n "$FUZZY_FINDER"
   abbr -a ghpc   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr checkout {}"
   abbr -a ghpv   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr view --web {}"
   abbr -a ghiv   "gh issue list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh issue view --web {}"
+  abbr -a ghgv   "gh gist list | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh gist view --web {}"
 
   # downloads
   abbr -a vdown  "exa -a -s created -r ~/Downloads/ | $FUZZY_FINDER | xargs -I{} nvim ~/Downloads/{}"

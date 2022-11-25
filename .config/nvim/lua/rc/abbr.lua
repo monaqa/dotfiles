@@ -74,6 +74,7 @@ make_abbrev {
     { from = "tcw", to = "Telescope coc workspace_diagnostics" },
     { from = "tf", to = "Telescope find_files" },
     { from = "tg", to = "Telescope live_grep" },
+    { from = "tod", to = "TodomeOpen" },
     { from = "tmp", to = "Template" },
     { from = "ssf", to = "syntax sync fromstart" },
     { from = "sfs", to = "setfiletype satysfi" },

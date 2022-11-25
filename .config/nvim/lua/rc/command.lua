@@ -58,7 +58,7 @@ vim.cmd [[
 -- §§1 行末の空白とか最終行の空行を削除
 util.create_cmd("RemoveUnwantedSpaces", function(meta)
     local pos_save = vim.fn.getpos "."
-    vim.cmd([[keeppatterns ]] .. meta.line1 .. "," .. meta.line2 .. [[s/\s\+$//e]])
+    vim.cmd([[keeppatterns ]] .. meta.line1 .. "," .. meta.line2 .. [[s/[ \t\r]\+$//e]])
     while true do
         if vim.regex([[^\s*$]]):match_str(vim.fn.getline "$") and vim.fn.line "$" ~= 1 then
             vim.cmd [[silent $delete]]
@@ -113,3 +113,6 @@ util.create_cmd("ObsidianGrep", function()
         obsidian.grep_keyword(kwd)
     end)
 end)
+
+-- §§1 todome
+util.create_cmd("TodomeOpen", "edit ~/todome/tasks.todome")

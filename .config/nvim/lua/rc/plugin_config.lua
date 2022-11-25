@@ -957,6 +957,9 @@ end
 function M.operator_replace()
     -- 冷静に考えたら gR は使っても普通の R は使うことないもんね
     vim.keymap.set("n", "R", "<Plug>(operator-replace)")
+    -- どっちが使いやすい？
+    vim.keymap.set("n", "<Space>r", "<Plug>(operator-replace)")
+    vim.keymap.set("n", "<Space>R", [["+<Plug>(operator-replace)]])
 end
 
 function M.textobj_entire()
@@ -1651,6 +1654,18 @@ function M.dial()
                 default_kind = "day",
                 only_valid = true,
                 word = true,
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
+                pattern = "%Y/%m/%d (%J)",
+                default_kind = "day",
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
+                pattern = "%Y/%m/%d（%J）",
+                default_kind = "day",
                 clamp = true,
                 end_sensitive = true,
             },
