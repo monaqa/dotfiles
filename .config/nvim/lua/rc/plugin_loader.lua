@@ -67,6 +67,7 @@ require("jetpack.packer").startup(function(use)
     add { "uga-rosa/ccc.nvim", hook_after = config.ccc }
     add { "xolox/vim-misc" }
     add { "xolox/vim-session", hook_after = config.session }
+    add { "stevearc/aerial.nvim", hook_after = config.aerial }
 
     -- colorscheme
     add { "habamax/vim-gruvbit", hook_after = config.gruvbit }
@@ -145,18 +146,19 @@ require("jetpack.packer").startup(function(use)
     -- add{"monaqa/satysfi.vim"}
     add { "monaqa/smooth-scroll.vim", hook_after = config.smooth_scroll }
     add { "monaqa/vim-edgemotion" }
-    add { "monaqa/vim-partedit", branch = "feat-prefix_pattern", hook_after = config.partedit }
+    add { "monaqa/vim-partedit", branch = "feat-prefix_pattern", opt = true, hook_after = config.partedit }
+    -- add { "thinca/vim-partedit", hook_after = config.partedit }
 end)
-
-for _, callback in ipairs(callbacks) do
-    callback()
-end
 
 for _, name in ipairs(vim.fn["jetpack#names"]()) do
     if not util.to_bool(vim.fn["jetpack#tap"](name)) then
         vim.fn["jetpack#sync"]()
         return false
     end
+end
+
+for _, callback in ipairs(callbacks) do
+    callback()
 end
 
 return true

@@ -19,9 +19,6 @@ function M.diary_template()
     local template = ([[
 # %s
 
-## To Do
-
-## Log
 ]]):format(today)
     return vim.split(template:gsub("^%s*(.-)%s*$", "%1"), "\n", true)
 end
