@@ -306,7 +306,7 @@ end, { expr = true })
 -- §§1 保存時のコマンド実行
 
 util.autocmd_vimrc "BufWritePost" {
-    pattern = "*.lua",
+    pattern = { "*.lua", ".init.lua.local" },
     callback = function()
         -- fold の状態を保持するために mkview と loadview を入れた
         vim.cmd [[mkview]]

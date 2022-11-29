@@ -18,13 +18,29 @@ vim.cmd [[
 
 local callbacks = {}
 require("jetpack.packer").startup(function(use)
-    ---`use` 関数を wrap して、hook 系が渡せるようにする
-    ---@param t {hook_before?: fun(), hook_after?: fun()}
+    ---`use` 関数を wrap して、hook 系が渡せるようにする。
+    --- * hook_before: プラグインをロードする前に読み込む。ほとんど使わない。
+    --- * hook_after: プラグインをロードした後に読み込む。
+    --- * unless_cwd: 特定のディレクトリ上で Vim を開いたときは、そのプラグインを読み込まない。
+    ---@param t {hook_before?: fun(), hook_after?: fun(), unless_cwd?: string}
     local function add(t)
+        local packname = vim.fn.fnamemodify(t[1], ":t")
         if t.hook_before ~= nil then
             t.hook_before()
         end
-        if t.hook_after ~= nil then
+        if t.unless_cwd ~= nil then
+            t.opt = true
+            table.insert(callbacks, function()
+                if vim.fn.expand(t.unless_cwd) ~= vim.fn.getcwd() then
+                    vim.cmd.packadd(packname)
+                    if t.hook_after ~= nil then
+                        t.hook_after()
+                    end
+                else
+                    util.print_error(([[WARNING: package '%s' is not loaded.]]):format(packname), "WarningMsg")
+                end
+            end)
+        elseif t.hook_after ~= nil then
             table.insert(callbacks, t.hook_after)
         end
         use(t)
@@ -67,7 +83,12 @@ require("jetpack.packer").startup(function(use)
     add { "uga-rosa/ccc.nvim", hook_after = config.ccc }
     add { "xolox/vim-misc" }
     add { "xolox/vim-session", hook_after = config.session }
-    add { "stevearc/aerial.nvim", hook_after = config.aerial }
+    -- add { "stevearc/aerial.nvim", hook_after = config.aerial, opt = true }
+    add {
+        "stevearc/aerial.nvim",
+        unless_cwd = "~/ghq/github.com/stevearc/aerial.nvim",
+        hook_after = config.aerial,
+    }
 
     -- colorscheme
     add { "habamax/vim-gruvbit", hook_after = config.gruvbit }
@@ -139,14 +160,24 @@ require("jetpack.packer").startup(function(use)
 
     -- monaqa
     add { "monaqa/colordinate.vim", opt = true }
-    add { "monaqa/dial.nvim", opt = true, hook_after = config.dial }
+    add {
+        "monaqa/dial.nvim",
+        unless_cwd = "~/ghq/github.com/monaqa/dial.nvim",
+        hook_after = config.dial,
+    }
     add { "monaqa/modesearch.vim", hook_after = config.modesearch }
     add { "monaqa/peridot.vim" }
     add { "monaqa/pretty-fold.nvim", branch = "for_stable_neovim", hook_after = config.pretty_fold }
     -- add{"monaqa/satysfi.vim"}
     add { "monaqa/smooth-scroll.vim", hook_after = config.smooth_scroll }
     add { "monaqa/vim-edgemotion" }
-    add { "monaqa/vim-partedit", branch = "feat-prefix_pattern", opt = true, hook_after = config.partedit }
+    add {
+        "monaqa/vim-partedit",
+        unless_cwd = "~/ghq/github.com/monaqa/vim-partedit",
+        branch = "feat-prefix_pattern",
+        opt = true,
+        hook_after = config.partedit,
+    }
     -- add { "thinca/vim-partedit", hook_after = config.partedit }
 end)
 

@@ -8,9 +8,13 @@ function M.trim(text)
 end
 
 ---エラーとしてメッセージを出力する。
----@param message any
-function M.print_error(message)
-    vim.api.nvim_echo({ { message, "Error" } }, true, {})
+---@param message string
+---@param hl string?
+function M.print_error(message, hl)
+    if hl == nil then
+        hl = "Error"
+    end
+    vim.api.nvim_echo({ { message, hl } }, true, {})
 end
 
 ---ある要素を n 回繰り返した array を返す。
@@ -144,6 +148,14 @@ function M.sethl(name)
             t.default = false
         end
         vim.api.nvim_set_hl(0, name, t)
+    end
+end
+
+function M.load_cwd_as_plugin(source_file_name)
+    local cwd = vim.fn.getcwd()
+    vim.opt.runtimepath:append(cwd)
+    if source_file_name ~= nil then
+        vim.cmd.source(([[%s/%s]]):format(cwd, source_file_name))
     end
 end
 

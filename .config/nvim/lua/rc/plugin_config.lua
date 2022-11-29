@@ -782,6 +782,7 @@ function M.aerial()
     end)
 
     vim.keymap.set("n", "<Space>i", function()
+        aerial.open { focus = false }
         aerial.focus()
     end)
 end
@@ -1087,6 +1088,18 @@ function M.sandwich()
     -- レシピ集
     local default_recipes = vim.g["sandwich#default_recipes"]
 
+    -- dot repeat が効かないのでお蔵入り
+    -- local custom_func = {
+    --     {
+    --         buns = { "(", ")" },
+    --         kind = { "add" },
+    --         action = { "add" },
+    --         cursor = "head",
+    --         command = { "startinsert" },
+    --         input = { "f" },
+    --     },
+    -- }
+
     local recipe_general = {
         {
             input = { "(" },
@@ -1094,9 +1107,7 @@ function M.sandwich()
             nesting = 1,
             match_syntax = 1,
             kind = { "add", "replace" },
-            action = {
-                "add",
-            },
+            action = { "add" },
         },
         {
             input = { "[" },
@@ -1104,9 +1115,7 @@ function M.sandwich()
             nesting = 1,
             match_syntax = 1,
             kind = { "add", "replace" },
-            action = {
-                "add",
-            },
+            action = { "add" },
         },
         {
             buns = { "{", "}" },
@@ -1114,12 +1123,10 @@ function M.sandwich()
             nesting = 1,
             match_syntax = 1,
             kind = { "add", "replace" },
-            action = {
-                "add",
-            },
+            action = { "add" },
         },
         {
-            input = { "(" },
+            input = { "[" },
             buns = { [=[\s*[]=], [=[]\s*]=] },
             regex = 1,
             nesting = 1,
@@ -1128,7 +1135,7 @@ function M.sandwich()
             action = { "delete" },
         },
         {
-            input = { "[" },
+            input = { "(" },
             buns = { [[\s*(]], [[)\s*]] },
             regex = 1,
             nesting = 1,
@@ -1899,139 +1906,131 @@ end
 -- §§1 monaqa
 
 function M.dial()
-    local function dial_config()
-        vim.cmd [[packadd dial.nvim]]
+    local augend = require "dial.augend"
 
-        local augend = require "dial.augend"
-
-        local function concat(tt)
-            local v = {}
-            for _, t in ipairs(tt) do
-                vim.list_extend(v, t)
-            end
-            return v
+    local function concat(tt)
+        local v = {}
+        for _, t in ipairs(tt) do
+            vim.list_extend(v, t)
         end
-
-        local basic = {
-            augend.integer.alias.decimal,
-            augend.integer.alias.hex,
-            augend.integer.alias.binary,
-            augend.date.new {
-                pattern = "%Y/%m/%d",
-                default_kind = "day",
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%Y-%m-%d",
-                default_kind = "day",
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%Y年%-m月%-d日",
-                default_kind = "day",
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%-m月%-d日",
-                default_kind = "day",
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%-m月%-d日(%J)",
-                default_kind = "day",
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%-m月%-d日（%J）",
-                default_kind = "day",
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%-m/%-d",
-                default_kind = "day",
-                only_valid = true,
-                word = true,
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%Y/%m/%d (%J)",
-                default_kind = "day",
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%Y/%m/%d（%J）",
-                default_kind = "day",
-                clamp = true,
-                end_sensitive = true,
-            },
-            augend.date.new {
-                pattern = "%H:%M",
-                default_kind = "min",
-                only_valid = true,
-                word = true,
-            },
-            augend.constant.new {
-                elements = { "true", "false" },
-                word = true,
-                cyclic = true,
-            },
-            augend.constant.new {
-                elements = { "True", "False" },
-                word = true,
-                cyclic = true,
-            },
-            augend.constant.alias.ja_weekday,
-            augend.constant.alias.ja_weekday_full,
-            augend.hexcolor.new { case = "lower" },
-            augend.semver.alias.semver,
-        }
-
-        require("dial.config").augends:register_group {
-            default = basic,
-            markdown = concat {
-                basic,
-                { augend.misc.alias.markdown_header },
-            },
-            visual = concat {
-                basic,
-                {
-                    augend.constant.alias.alpha,
-                    augend.constant.alias.Alpha,
-                },
-            },
-        }
-
-        vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), { noremap = true })
-        vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), { noremap = true })
-        vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual "visual", { noremap = true })
-        vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual "visual", { noremap = true })
-        vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual "visual", { noremap = true })
-        vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual "visual", { noremap = true })
-
-        util.autocmd_vimrc { "FileType" } {
-            pattern = "markdown",
-            callback = function()
-                vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal "markdown", { noremap = true })
-                vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal "markdown", { noremap = true })
-                vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual "markdown", { noremap = true })
-                vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual "markdown", { noremap = true })
-                vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual "markdown", { noremap = true })
-                vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual "markdown", { noremap = true })
-            end,
-        }
+        return v
     end
 
-    if vim.fn.getcwd() ~= "/Users/monaqa/ghq/github.com/monaqa/dial.nvim" then
-        dial_config()
-    end
+    local basic = {
+        augend.integer.alias.decimal,
+        augend.integer.alias.hex,
+        augend.integer.alias.binary,
+        augend.date.new {
+            pattern = "%Y/%m/%d",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%Y-%m-%d",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%Y年%-m月%-d日",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%-m月%-d日",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%-m月%-d日(%J)",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%-m月%-d日（%J）",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%-m/%-d",
+            default_kind = "day",
+            only_valid = true,
+            word = true,
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%Y/%m/%d (%J)",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%Y/%m/%d（%J）",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%H:%M",
+            default_kind = "min",
+            only_valid = true,
+            word = true,
+        },
+        augend.constant.new {
+            elements = { "true", "false" },
+            word = true,
+            cyclic = true,
+        },
+        augend.constant.new {
+            elements = { "True", "False" },
+            word = true,
+            cyclic = true,
+        },
+        augend.constant.alias.ja_weekday,
+        augend.constant.alias.ja_weekday_full,
+        augend.hexcolor.new { case = "lower" },
+        augend.semver.alias.semver,
+    }
+
+    require("dial.config").augends:register_group {
+        default = basic,
+        markdown = concat {
+            basic,
+            { augend.misc.alias.markdown_header },
+        },
+        visual = concat {
+            basic,
+            {
+                augend.constant.alias.alpha,
+                augend.constant.alias.Alpha,
+            },
+        },
+    }
+
+    vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), { noremap = true })
+    vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), { noremap = true })
+    vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual "visual", { noremap = true })
+    vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual "visual", { noremap = true })
+    vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual "visual", { noremap = true })
+    vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual "visual", { noremap = true })
+
+    util.autocmd_vimrc { "FileType" } {
+        pattern = "markdown",
+        callback = function()
+            vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal "markdown", { noremap = true })
+            vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal "markdown", { noremap = true })
+            vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual "markdown", { noremap = true })
+            vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual "markdown", { noremap = true })
+            vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual "markdown", { noremap = true })
+            vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual "markdown", { noremap = true })
+        end,
+    }
 end
 
 function M.smooth_scroll()
