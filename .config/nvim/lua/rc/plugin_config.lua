@@ -502,9 +502,9 @@ function M.aerial()
             -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
             -- min_width and max_width can be a list of mixed types.
             -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
-            max_width = { 60, 0.4 },
+            max_width = { 80, 0.5 },
             width = nil,
-            min_width = 15,
+            min_width = 20,
 
             -- key-value pairs of window-local options for aerial window (e.g. winhl)
             win_opts = {
@@ -892,6 +892,11 @@ function M.gruvbit()
             util.sethl "@tag.delimiter" { link = "Delimiter" }
             util.sethl "@text" { link = "Normal" }
             util.sethl "@text.danger" { link = "ErrorMsg" }
+            util.sethl "@text.diff.add" { link = "DiffAdd" }
+            util.sethl "@text.diff.change" { link = "DiffChange" }
+            util.sethl "@text.diff.delete" { link = "DiffDelete" }
+            util.sethl "@text.diff.addsign" { link = "@string" }
+            util.sethl "@text.diff.delsign" { link = "@type" }
             util.sethl "@text.emphasis" { italic = true }
             util.sethl "@text.environment" { link = "Macro" }
             util.sethl "@text.environment.name" { link = "Type" }
@@ -1798,6 +1803,7 @@ function M.treesitter()
         ensure_installed = {
             "bash",
             "css",
+            "diff",
             "dot",
             "html",
             "json",
