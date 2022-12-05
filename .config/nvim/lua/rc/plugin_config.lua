@@ -284,6 +284,14 @@ function M.gina()
             echo @+
         ]]
     end, { range = "%" })
+
+    vim.api.nvim_create_user_command("GinaPrChanges", function(meta)
+        local branch = meta.args
+        if meta.args == "" then
+            branch = "master"
+        end
+        vim.cmd(([[Gina changes %s...HEAD]]):format(branch))
+    end, { nargs = "?" })
 end
 
 function M.vimtex()
@@ -1272,8 +1280,7 @@ end
 function M.operator_replace()
     -- 冷静に考えたら gR は使っても普通の R は使うことないもんね
     vim.keymap.set("n", "R", "<Plug>(operator-replace)")
-    -- どっちが使いやすい？
-    vim.keymap.set("n", "<Space>r", "<Plug>(operator-replace)")
+    vim.keymap.set("n", "RR", "<Plug>(operator-replace)")
     vim.keymap.set("n", "<Space>R", [["+<Plug>(operator-replace)]])
 end
 
@@ -1963,7 +1970,7 @@ function M.dial()
             end_sensitive = true,
         },
         augend.date.new {
-            pattern = "%-m/%-d",
+            pattern = "%m/%d",
             default_kind = "day",
             only_valid = true,
             word = true,

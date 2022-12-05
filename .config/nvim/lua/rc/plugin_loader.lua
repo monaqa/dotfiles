@@ -126,7 +126,7 @@ require("jetpack.packer").startup(function(use)
     add { "Shougo/ddu-source-file_rec" }
     add { "Shougo/ddu-ui-ff" }
     add { "kuuote/ddu-source-mr" }
-    add { "lambdalisue/mr.vim" }
+    add { "lambdalisue/mr.vim", branch = "main" }
     add { "matsui54/ddu-source-file_external" }
     add { "shun/ddu-source-rg" }
     add { "vim-denops/denops.vim" }
@@ -152,7 +152,7 @@ require("jetpack.packer").startup(function(use)
     add { "othree/html5.vim" }
     add { "pangloss/vim-javascript" }
     add { "pest-parser/pest.vim" }
-    add { "preservim/vim-markdown", hook_after = config.markdown }
+    -- add { "preservim/vim-markdown", hook_after = config.markdown }
     add { "rust-lang/rust.vim", hook_after = config.rust }
     add { "vim-python/python-syntax", hook_after = config.python }
     add { "vito-c/jq.vim" }

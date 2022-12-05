@@ -57,6 +57,8 @@ make_abbrev {
     { from = "gc", to = "Gina commit" },
     { from = "gl", to = "Gina log --all --graph" },
     { from = "gp", to = "Gina push" },
+    { from = "gps", to = "Gina push" },
+    { from = "gpc", to = "GinaPrChanges" },
     { from = "gs", to = "Gina status -s --opener=split" },
     { from = "git", to = "Gina" },
     { from = "gina", to = "Gina" },
