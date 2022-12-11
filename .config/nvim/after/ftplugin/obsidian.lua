@@ -9,7 +9,7 @@ vim.keymap.set("n", "gf", function()
         local note_root = home .. "/Documents/obsidian/mogamemo/note/"
         vim.cmd("e " .. note_root .. link_name .. ".md")
     else
-        vim.cmd [[normal! gf]]
+        vim.cmd [[normal! gF]]
     end
 end, { buffer = true })
 

@@ -288,7 +288,7 @@ function M.gina()
     vim.api.nvim_create_user_command("GinaPrChanges", function(meta)
         local branch = meta.args
         if meta.args == "" then
-            branch = "master"
+            branch = vim.trim(vim.fn.system "git mom")
         end
         vim.cmd(([[Gina changes %s...HEAD]]):format(branch))
     end, { nargs = "?" })

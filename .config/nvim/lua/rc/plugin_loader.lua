@@ -61,6 +61,8 @@ require("jetpack.packer").startup(function(use)
     add { "kkiyama117/zenn-vim" }
     add { "kyazdani42/nvim-web-devicons" }
     add { "lambdalisue/fern-hijack.vim" }
+    add { "lambdalisue/fern-git-status.vim" }
+    -- add { "lambdalisue/fern-mapping-git.vim" }
     add { "lambdalisue/fern-renderer-nerdfont.vim" }
     add { "lambdalisue/fern.vim", branch = "main", hook_after = config.fern }
     add { "lambdalisue/gina.vim", hook_after = config.gina }
