@@ -676,7 +676,7 @@ function M.aerial()
         -- Use symbol tree for folding. Set to true or false to enable/disable
         -- Set to "auto" to manage folds if your previous foldmethod was 'manual'
         -- This can be a filetype map (see :help aerial-filetype-map)
-        manage_folds = true,
+        manage_folds = "auto",
 
         -- When you fold code with za, zo, or zc, update the aerial tree as well.
         -- Only works when manage_folds = true
@@ -927,6 +927,8 @@ function M.gruvbit()
             util.sethl "@type.qualifier" { link = "Type" }
             util.sethl "@variable" { link = "Normal" }
             util.sethl "@variable.builtin" { link = "Special" }
+
+            util.sethl "@text.diff.indicator" { bg = "#555555" }
         end,
     }
 end
@@ -1280,7 +1282,7 @@ end
 function M.operator_replace()
     -- 冷静に考えたら gR は使っても普通の R は使うことないもんね
     vim.keymap.set("n", "R", "<Plug>(operator-replace)")
-    vim.keymap.set("n", "RR", "<Plug>(operator-replace)")
+    vim.keymap.set("n", "RR", "<Plug>(operator-replace)_")
     vim.keymap.set("n", "<Space>R", [["+<Plug>(operator-replace)]])
 end
 
@@ -1798,6 +1800,14 @@ function M.treesitter()
         filetype = "gitter", -- if filetype does not agrees with parser name
     }
 
+    parser_config.unifieddiff = {
+        install_info = {
+            url = "https://github.com/monaqa/tree-sitter-unifieddiff", -- local path or git repo
+            files = { "src/parser.c", "src/scanner.c" },
+        },
+        filetype = "diff", -- if filetype does not agrees with parser name
+    }
+
     local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
 
     ft_to_parser["obsidian"] = "markdown"
@@ -1810,7 +1820,7 @@ function M.treesitter()
         ensure_installed = {
             "bash",
             "css",
-            "diff",
+            -- "diff",
             "dot",
             "html",
             "json",

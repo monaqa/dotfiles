@@ -47,10 +47,9 @@ require("jetpack.packer").startup(function(use)
     end
 
     -- bootstrap
-    add { "tani/vim-jetpack", opt = 1 }
+    add { "tani/vim-jetpack", commit = "c6ee097413951604c6719927f5e69a1b83b03759", opt = 1 }
 
     -- general plugins
-    -- add { "mhinz/vim-signify" }
     add { "Shougo/vimproc.vim" }
     add { "Vimjas/vim-python-pep8-indent" }
     add { "akinsho/bufferline.nvim", hook_after = config.bufferline }
@@ -83,7 +82,6 @@ require("jetpack.packer").startup(function(use)
     add { "uga-rosa/ccc.nvim", hook_after = config.ccc }
     add { "xolox/vim-misc" }
     add { "xolox/vim-session", hook_after = config.session }
-    -- add { "stevearc/aerial.nvim", hook_after = config.aerial, opt = true }
     add {
         "stevearc/aerial.nvim",
         unless_cwd = "~/ghq/github.com/stevearc/aerial.nvim",
@@ -138,8 +136,6 @@ require("jetpack.packer").startup(function(use)
     add { "mfussenegger/nvim-treehopper", hook_after = config.treehopper }
 
     -- filetype
-    -- add { "abhishekmukherg/xonsh-vim" }
-    -- add { "jsborjesson/vim-uppercase-sql" }
     add { "JuliaEditorSupport/julia-vim" }
     add { "aklt/plantuml-syntax" }
     add { "bfontaine/Brewfile.vim" }
@@ -152,7 +148,6 @@ require("jetpack.packer").startup(function(use)
     add { "othree/html5.vim" }
     add { "pangloss/vim-javascript" }
     add { "pest-parser/pest.vim" }
-    -- add { "preservim/vim-markdown", hook_after = config.markdown }
     add { "rust-lang/rust.vim", hook_after = config.rust }
     add { "vim-python/python-syntax", hook_after = config.python }
     add { "vito-c/jq.vim" }
@@ -165,28 +160,29 @@ require("jetpack.packer").startup(function(use)
         unless_cwd = "~/ghq/github.com/monaqa/dial.nvim",
         hook_after = config.dial,
     }
-    add { "monaqa/modesearch.vim", hook_after = config.modesearch }
+    add {
+        "monaqa/modesearch.vim",
+        unless_cwd = "~/ghq/github.com/monaqa/modesearch.vim",
+        hook_after = config.modesearch,
+    }
     add { "monaqa/peridot.vim" }
     add { "monaqa/pretty-fold.nvim", branch = "for_stable_neovim", hook_after = config.pretty_fold }
-    -- add{"monaqa/satysfi.vim"}
     add { "monaqa/smooth-scroll.vim", hook_after = config.smooth_scroll }
     add { "monaqa/vim-edgemotion" }
     add {
         "monaqa/vim-partedit",
         unless_cwd = "~/ghq/github.com/monaqa/vim-partedit",
         branch = "feat-prefix_pattern",
-        opt = true,
         hook_after = config.partedit,
     }
-    -- add { "thinca/vim-partedit", hook_after = config.partedit }
 end)
 
-for _, name in ipairs(vim.fn["jetpack#names"]()) do
-    if not util.to_bool(vim.fn["jetpack#tap"](name)) then
-        vim.fn["jetpack#sync"]()
-        return false
-    end
-end
+-- for _, name in ipairs(vim.fn["jetpack#names"]()) do
+--     if not util.to_bool(vim.fn["jetpack#tap"](name)) then
+--         vim.fn["jetpack#sync"]()
+--         return false
+--     end
+-- end
 
 for _, callback in ipairs(callbacks) do
     callback()
