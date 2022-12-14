@@ -154,6 +154,7 @@ require("jetpack.packer").startup(function(use)
     add { "vim-python/python-syntax", hook_after = config.python }
     add { "vito-c/jq.vim" }
     add { "wlangstroth/vim-racket" }
+    add { "terrastruct/d2-vim" }
 
     -- monaqa
     add { "monaqa/colordinate.vim", opt = true }

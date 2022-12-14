@@ -25,6 +25,8 @@
  (fenced_code_block_delimiter) @punctuation.delimiter
  )
 
+(code_fence_content) @nospell
+
 (atx_heading
   (atx_h1_marker)
   heading_content: (_) @text.underline @text.title

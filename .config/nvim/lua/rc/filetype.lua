@@ -126,6 +126,22 @@ util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     command = [[setfiletype lua]],
 }
 
+-- JSON lines
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
+    pattern = [[*.jsonl]],
+    callback = function()
+        vim.opt_local.filetype = "jsonl"
+    end,
+}
+
+-- D2
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
+    pattern = [[*.d2]],
+    callback = function()
+        vim.opt_local.filetype = "d2"
+    end,
+}
+
 -- query
 util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = [[*/queries/*/*.scm]],

@@ -1808,6 +1808,15 @@ function M.treesitter()
         filetype = "diff", -- if filetype does not agrees with parser name
     }
 
+    parser_config.d2 = {
+        install_info = {
+            url = "https://github.com/pleshevskiy/tree-sitter-d2", -- local path or git repo
+            revision = "main",
+            files = { "src/parser.c", "src/scanner.cc" },
+        },
+        filetype = "d2", -- if filetype does not agrees with parser name
+    }
+
     local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
 
     ft_to_parser["obsidian"] = "markdown"
