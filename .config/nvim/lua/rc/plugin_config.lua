@@ -1802,7 +1802,8 @@ function M.treesitter()
 
     parser_config.unifieddiff = {
         install_info = {
-            url = "https://github.com/monaqa/tree-sitter-unifieddiff", -- local path or git repo
+            url = "https://github.com/monaqa/tree-sitter-unifieddiff",
+            -- url = "~/ghq/github.com/monaqa/tree-sitter-unifieddiff",
             files = { "src/parser.c", "src/scanner.c" },
         },
         filetype = "diff", -- if filetype does not agrees with parser name

@@ -411,8 +411,9 @@ vim.keymap.set("n", "s<Bar>", util.cmdcr "vsplit", {})
 vim.keymap.set("n", "sv", util.cmdcr "vsplit", {})
 vim.keymap.set("n", "sq", util.cmdcr "close", {})
 
---- 面倒がらずにちゃんと <C-w> 使おうよ
+--- 面倒がらずにちゃんと <C-w> 使おうよ…と思ったがやっぱり面倒くさい
 for _, char in ipairs {
+    "x", -- exchange! 知らなかった
     "h",
     "j",
     "k",
