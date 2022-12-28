@@ -47,7 +47,7 @@
 ; 
 
 ;From MDeiml/tree-sitter-markdown
-(atx_heading (inline) @text.title)
+; (atx_heading (inline) @text.title)
 (setext_heading (paragraph) @text.title)
 
 [
@@ -66,6 +66,13 @@
   (indented_code_block)
   ; (fenced_code_block)
 ] @text.literal
+
+(pipe_table_header (pipe_table_cell) @text.title.weak)
+
+(pipe_table_header "|" @punctuation.special)
+(pipe_table_row "|" @punctuation.special)
+(pipe_table_delimiter_row "|" @punctuation.special)
+(pipe_table_delimiter_cell) @punctuation.special
 
 ; [
 ;   (fenced_code_block_delimiter)
@@ -90,8 +97,20 @@
   (thematic_break)
 ] @punctuation.special
 
+; (task_list_marker_unchecked) @text.todo.unchecked
+; (task_list_marker_checked) @text.todo.checked
+
+(list_item
+  (task_list_marker_checked) @comment
+  (_) @comment
+  )
+
+(list_item
+  (task_list_marker_unchecked) @text.strong
+  (_) @text.strong
+  )
+
 [
-  (block_continuation)
   (block_quote_marker)
 ] @punctuation.special
 

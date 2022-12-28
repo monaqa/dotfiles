@@ -1821,6 +1821,7 @@ function M.treesitter()
     local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
 
     ft_to_parser["obsidian"] = "markdown"
+    ft_to_parser["gina-commit"] = "gitcommit"
 
     local parser_install_dir = vim.fn.stdpath "data" .. "/treesitter"
     vim.opt.runtimepath:prepend(parser_install_dir)
@@ -1853,7 +1854,18 @@ function M.treesitter()
         },
         highlight = {
             enable = true,
-            disable = { "help" },
+            -- disable = { "help" },
+            disable = function(lang, buf)
+                if lang == "help" then
+                    return true
+                end
+                local max_filesize = 256 * 1024 -- 256 KB
+                local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+                if ok and stats and stats.size > max_filesize then
+                    util.print_error("File too large: tree-sitter disabled.", "WarningMsg")
+                    return true
+                end
+            end,
             additional_vim_regex_highlighting = false,
         },
         indent = {

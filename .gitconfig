@@ -9,6 +9,7 @@
 
 [commit]
     template = /Users/monaqa/.commit_template
+    verbose = true
     gpgsign = true
 [core]
     editor = nvim
