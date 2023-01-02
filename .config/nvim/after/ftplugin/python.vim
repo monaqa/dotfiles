@@ -60,5 +60,7 @@ function! SandwichPythonGenericsName() abort
   return genericsname . '['
 endfunction
 
-let b:partedit_prefix_pattern = '\v( {4})*'
-let b:partedit_filetype = 'markdown'
+xnoremap <buffer> gq :!black - 2>/dev/null<CR>
+
+" let b:partedit_prefix_pattern = '\v( {4})*'
+" let b:partedit_filetype = 'markdown'

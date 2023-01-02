@@ -1933,6 +1933,10 @@ function M.treehopper()
     vim.keymap.set("x", "q", ":lua require('tsht').nodes()<CR>")
 end
 
+function M.clipping()
+    vim.keymap.set("n", "<Space>c", "<Plug>(ts-clipping-clip)")
+end
+
 -- §§1 filetype
 
 function M.rust()

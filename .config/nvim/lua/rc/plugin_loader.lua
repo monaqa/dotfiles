@@ -89,6 +89,11 @@ require("jetpack.packer").startup(function(use)
         unless_cwd = "~/ghq/github.com/stevearc/aerial.nvim",
         hook_after = config.aerial,
     }
+    add {
+        "thinca/vim-partedit",
+        unless_cwd = "~/ghq/github.com/monaqa/vim-partedit",
+        hook_after = config.partedit,
+    }
 
     -- colorscheme
     add { "habamax/vim-gruvbit", hook_after = config.gruvbit }
@@ -173,10 +178,9 @@ require("jetpack.packer").startup(function(use)
     add { "monaqa/smooth-scroll.vim", hook_after = config.smooth_scroll }
     add { "monaqa/vim-edgemotion" }
     add {
-        "monaqa/vim-partedit",
-        unless_cwd = "~/ghq/github.com/monaqa/vim-partedit",
-        branch = "feat-prefix_pattern",
-        hook_after = config.partedit,
+        "monaqa/nvim-treesitter-clipping",
+        hook_after = config.clipping,
+        unless_cwd = "~/ghq/github.com/monaqa/nvim-treesitter-clipping",
     }
 end)
 
