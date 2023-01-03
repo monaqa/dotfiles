@@ -1443,7 +1443,7 @@ function M.textobj_functioncall()
 end
 
 -- §§1 coc
-function M.coc()
+local function coc_config()
     local function coc_service_names(arglead, cmdline, cursorpos)
         return vim.tbl_map(function(service)
             return service["id"]
@@ -1609,12 +1609,156 @@ function M.coc()
     end)
 end
 
+function M.coc()
+    -- nvim_lsp を明示的に読み込む場合のみ skip
+    if util.to_bool(vim.fn.filereadable ".local_ignore_use_nvim_lsp") then
+        return
+    end
+    vim.cmd.packadd "coc.nvim"
+    vim.cmd.packadd "coc-nvim-lua"
+    vim.cmd.packadd "telescope-coc.nvim"
+    require("telescope").load_extension "coc"
+    coc_config()
+end
+
+-- §§1 nvim_lsp
+local function nvim_lsp_config()
+    require("mason").setup()
+    -- require("mason-lspconfig").setup()
+    local lspconfig = require "lspconfig"
+
+    require("mason-lspconfig").setup_handlers {
+        function(server_name)
+            require("lspconfig")[server_name].setup {
+                on_attach = function()
+                    vim.keymap.set("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>")
+                    vim.keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>")
+                    vim.keymap.set("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>")
+                    vim.keymap.set("n", "gr", "<Cmd>lua vim.lsp.buf.references()<CR>")
+                    -- vim.keymap.set("n", "gi", "<Cmd>lua vim.lsp.buf.implementation()<CR>")
+                    -- vim.keymap.set("n", "<C-k>", "<Cmd>lua vim.lsp.buf.signature_help()<CR>")
+                    -- vim.keymap.set("n", "<space>wa", "<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>")
+                    -- vim.keymap.set("n", "<space>wr", "<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>")
+                    -- vim.keymap.set("n", "<space>wl", "<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>")
+                    -- vim.keymap.set("n", "<space>D", "<Cmd>lua vim.lsp.buf.type_definition()<CR>")
+                    -- vim.keymap.set("n", "<space>rn", "<Cmd>lua vim.lsp.buf.rename()<CR>")
+                    -- vim.keymap.set("n", "<space>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>")
+                    -- vim.keymap.set("n", "<space>e", "<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>")
+                    -- vim.keymap.set("n", "[d", "<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
+                    -- vim.keymap.set("n", "]d", "<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
+                    -- vim.keymap.set("n", "<space>q", "<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>")
+                    -- vim.keymap.set("n", "<space>f", "<Cmd>lua vim.lsp.buf.formatting()<CR>")
+                    vim.lsp.handlers["textDocument/publishDiagnostics"] =
+                        vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false })
+                end,
+
+                -- capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+            }
+        end,
+    }
+
+    vim.cmd [[
+        set updatetime=500
+        highlight LspReferenceText  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+        highlight LspReferenceRead  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+        highlight LspReferenceWrite cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+        augroup lsp_document_highlight
+          autocmd!
+          autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
+          autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
+        augroup END
+    ]]
+    -- lspconfig[server.name].setupに追加
+    -- capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+    local check_backspace = function()
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
+    end
+
+    vim.opt.completeopt = { "menu", "menuone", "noselect" }
+
+    local cmp = require "cmp"
+    cmp.setup {
+        snippet = {
+            expand = function(args)
+                vim.fn["vsnip#anonymous"](args.body)
+            end,
+        },
+        mapping = cmp.mapping.preset.insert {
+            ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+            ["<C-f>"] = cmp.mapping.scroll_docs(4),
+            ["<C-Space>"] = cmp.mapping.complete(),
+            ["<C-e>"] = cmp.mapping.close(),
+            ["<CR>"] = cmp.mapping.confirm { select = true },
+            ["<Tab>"] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    _G.vimrc.debug[#_G.vimrc.debug + 1] = cmp.get_selected_entry()
+                    cmp.select_next_item()
+                elseif check_backspace() then
+                    fallback()
+                else
+                    fallback()
+                end
+            end, {
+                "i",
+                "s",
+            }),
+            ["<S-Tab>"] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                elseif check_backspace() then
+                    fallback()
+                else
+                    fallback()
+                end
+            end, {
+                "i",
+                "s",
+            }),
+        },
+        sources = cmp.config.sources({
+            { name = "nvim_lsp" },
+            { name = "vsnip" },
+        }, {
+            { name = "buffer" },
+        }),
+
+        preselect = cmp.PreselectMode.None,
+    }
+
+    cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+            { name = "path" },
+        }, {
+            { name = "cmdline" },
+        }),
+    })
+end
+
+function M.nvim_lsp()
+    if not util.to_bool(vim.fn.filereadable ".local_ignore_use_nvim_lsp") then
+        return
+    end
+    vim.cmd.packadd "nvim-lspconfig"
+    vim.cmd.packadd "mason.nvim"
+    vim.cmd.packadd "mason-lspconfig.nvim"
+    vim.cmd.packadd "nvim-cmp"
+    vim.cmd.packadd "cmp-nvim-lsp"
+    vim.cmd.packadd "cmp-vsnip"
+    vim.cmd.packadd "cmp-buffer"
+    vim.cmd.packadd "cmp-path"
+    vim.cmd.packadd "cmp-cmdline"
+    vim.cmd.packadd "vim-vsnip"
+    nvim_lsp_config()
+end
+
 -- §§1 telescope
 
 function M.telescope()
     local actions = require "telescope.actions"
     local builtin = require "telescope.builtin"
-    require("telescope").load_extension "coc"
 
     -- Global remapping
     require("telescope").setup {

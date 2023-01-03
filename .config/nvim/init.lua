@@ -7,6 +7,7 @@ _G.vimrc = {
     motion = {},
     omnifunc = {},
     state = {},
+    debug = {},
 }
 
 -- 正直このあたりよくわかってません

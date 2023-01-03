@@ -115,14 +115,26 @@ require("jetpack.packer").startup(function(use)
     add { "machakann/vim-textobj-functioncall", hook_after = config.textobj_functioncall }
 
     -- coc
-    add { "neoclide/coc.nvim", branch = "release", hook_after = config.coc }
-    add { "rafcamlet/coc-nvim-lua" }
+    add { "neoclide/coc.nvim", branch = "release", hook_after = config.coc, opt = 1 }
+    add { "rafcamlet/coc-nvim-lua", opt = 1 }
+    add { "fannheyward/telescope-coc.nvim", opt = 1 }
+
+    -- nvim_lsp
+    add { "neovim/nvim-lspconfig", opt = 1, hook_after = config.nvim_lsp }
+    add { "williamboman/mason.nvim", opt = 1 }
+    add { "williamboman/mason-lspconfig.nvim", opt = 1 }
+    add { "hrsh7th/nvim-cmp", opt = 1 }
+    add { "hrsh7th/cmp-nvim-lsp", opt = 1 }
+    add { "hrsh7th/cmp-vsnip", opt = 1 }
+    add { "hrsh7th/cmp-buffer", opt = 1 }
+    add { "hrsh7th/cmp-path", opt = 1 }
+    add { "hrsh7th/cmp-cmdline", opt = 1 }
+    add { "hrsh7th/vim-vsnip", opt = 1 }
 
     -- telescope
     add { "nvim-telescope/telescope.nvim", hook_after = config.telescope }
     add { "nvim-lua/popup.nvim" }
     add { "nvim-lua/plenary.nvim" }
-    add { "fannheyward/telescope-coc.nvim" }
 
     -- denops
     add { "Shougo/ddu.vim", hook_after = config.ddu }

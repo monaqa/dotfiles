@@ -3,6 +3,8 @@
   "Lua.workspace.checkThirdParty": false,
   "Lua.workspace.library": [
     "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-treesitter/nvim-treesitter/lua",
+    "~/.local/share/nvim/site/pack/jetpack/src/github.com/hrsh7th/nvim-cmp/lua",
+    "~/.local/share/nvim/site/pack/jetpack/src/github.com/neovim/nvim-lspconfig/lua",
     "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-lua/plenary.nvim/lua/plenary/busted.lua"
   ],
 
