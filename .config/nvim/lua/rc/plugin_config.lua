@@ -1623,9 +1623,28 @@ end
 
 -- §§1 nvim_lsp
 local function nvim_lsp_config()
+    -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
+    require("neodev").setup {
+        -- add any options here, or leave empty to use the default settings
+    }
+
+    -- then setup your lsp server as usual
+    local lspconfig = require "lspconfig"
+
+    -- example to setup sumneko and enable call snippets
+    lspconfig.sumneko_lua.setup {
+        settings = {
+            Lua = {
+                completion = {
+                    callSnippet = "Replace",
+                },
+            },
+        },
+    }
+
     require("mason").setup()
     -- require("mason-lspconfig").setup()
-    local lspconfig = require "lspconfig"
+    -- local lspconfig = require "lspconfig"
 
     require("mason-lspconfig").setup_handlers {
         function(server_name)
@@ -1648,8 +1667,15 @@ local function nvim_lsp_config()
                     -- vim.keymap.set("n", "]d", "<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
                     -- vim.keymap.set("n", "<space>q", "<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>")
                     -- vim.keymap.set("n", "<space>f", "<Cmd>lua vim.lsp.buf.formatting()<CR>")
+
                     vim.lsp.handlers["textDocument/publishDiagnostics"] =
-                        vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false })
+                        vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+                            virtual_text = true,
+                            signs = {
+                                severity = vim.diagnostic.severity.ERROR,
+                            },
+                            float = true,
+                        })
                 end,
 
                 -- capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
@@ -1751,6 +1777,7 @@ function M.nvim_lsp()
     vim.cmd.packadd "cmp-path"
     vim.cmd.packadd "cmp-cmdline"
     vim.cmd.packadd "vim-vsnip"
+    vim.cmd.packadd "neodev.nvim"
     nvim_lsp_config()
 end
 

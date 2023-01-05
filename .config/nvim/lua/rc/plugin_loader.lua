@@ -130,6 +130,7 @@ require("jetpack.packer").startup(function(use)
     add { "hrsh7th/cmp-path", opt = 1 }
     add { "hrsh7th/cmp-cmdline", opt = 1 }
     add { "hrsh7th/vim-vsnip", opt = 1 }
+    add { "folke/neodev.nvim", opt = 1 }
 
     -- telescope
     add { "nvim-telescope/telescope.nvim", hook_after = config.telescope }
