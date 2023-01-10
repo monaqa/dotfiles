@@ -224,20 +224,22 @@ util.autocmd_vimrc "TermOpen" {
     -- buffer = true
 }
 
+vim.g.current_terminal_bufid = -1
+
 local function open_terminal()
     util.split_window()
     vim.cmd [[terminal fish]]
     vim.g.current_terminal_job_id = vim.b.terminal_job_id
+    vim.g.current_terminal_bufid = vim.fn.bufnr()
 end
 
 local function open_term_window()
-    if vim.fn.bufname "term://" == "" then
+    if vim.g.current_terminal_bufid > 0 and util.to_bool(vim.fn.bufexists(vim.g.current_terminal_bufid)) then
+        util.split_window()
+        vim.cmd.buffer { vim.g.current_terminal_bufid }
+    else
         open_terminal()
-        return
     end
-
-    util.split_window()
-    vim.cmd [[buffer term://]]
 end
 
 vim.keymap.set("n", "st", open_term_window, {})
@@ -497,9 +499,8 @@ end
 vim.keymap.set("n", "<Space>o", append_new_lines(0), { expr = true })
 vim.keymap.set("n", "<Space>O", append_new_lines(-1), { expr = true })
 
-local function increment_char(forward)
+local function increment_char(direction)
     return require("peridot").repeatable_edit(function(ctx)
-        local direction = util.ifexpr(forward, 1, -1)
         vim.cmd [[normal! v"my]]
         local char = vim.fn.getreg("m", nil, nil)
         local num = vim.fn.char2nr(char)

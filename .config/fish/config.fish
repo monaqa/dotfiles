@@ -39,6 +39,9 @@ set -x PATH $HOME/.poetry/bin $PATH
 # Haxe
 set -x HAXE_STD_PATH "/usr/local/lib/haxe/std"
 
+# yarn
+set -x PATH $HOME/.yarn/bin $PATH
+
 # deno
 set -x PATH $HOME/.deno/bin $PATH
 

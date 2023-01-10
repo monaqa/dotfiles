@@ -17,3 +17,6 @@ vim.opt_local.foldmethod = "indent"
 vim.opt_local.foldnestmax = 4
 vim.opt_local.foldminlines = 5
 vim.opt_local.commentstring = "% %s"
+vim.opt_local.indentkeys:append {
+    "0*",
+}

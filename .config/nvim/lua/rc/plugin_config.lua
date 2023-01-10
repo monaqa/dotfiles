@@ -587,7 +587,7 @@ function M.aerial()
         -- lazy_load = true,
 
         -- Disable aerial on files with this many lines
-        disable_max_lines = 10000,
+        disable_max_lines = 100000,
 
         -- Disable aerial on files this size or larger (in bytes)
         disable_max_size = 2000000, -- Default 2MB
@@ -2192,6 +2192,12 @@ function M.dial()
         },
         augend.date.new {
             pattern = "%Y/%m/%d（%J）",
+            default_kind = "day",
+            clamp = true,
+            end_sensitive = true,
+        },
+        augend.date.new {
+            pattern = "%a %b %-d %Y",
             default_kind = "day",
             clamp = true,
             end_sensitive = true,
