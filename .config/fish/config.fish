@@ -46,7 +46,7 @@ set -x PATH $HOME/.yarn/bin $PATH
 set -x PATH $HOME/.deno/bin $PATH
 
 # Rust sccache
-set -x RUSTC_WRAPPER (which sccache)
+# set -x RUSTC_WRAPPER (which sccache)
 
 # Satyrographos
 set -x SATYROGRAPHOS_EXPERIMENTAL 1

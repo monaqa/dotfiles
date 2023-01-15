@@ -16,7 +16,7 @@
 [alias]
     cancel = !git commit -a -m 'Temporary commit for cancel' && git reset --hard HEAD~
     commend = commit --amend --no-edit
-    please = push --force-with-lease
+    please = push --force-with-lease --force-if-includes
     it = !git init && git commit -m “root” --allow-empty
     stsh = stash --keep-index
     staash = stash --include-untracked

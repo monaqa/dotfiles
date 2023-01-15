@@ -471,6 +471,21 @@ function M.rust_doc()
     vim.g["rust_doc#define_map_K"] = 0
 end
 
+function M.deepl()
+    vim.g["deepl#endpoint"] = "https://api-free.deepl.com/v2/translate"
+    vim.g["deepl#auth_key"] = vim.fn.getenv "DEEPL_API_KEY"
+    -- 起動時にキーが見つからなかったらマッピングを有効化しない
+    if vim.g["deepl#auth_key"] == vim.NIL then
+        return
+    end
+    vim.keymap.set("x", "@j", function()
+        vim.fn["deepl#v"] "JA"
+    end)
+    vim.keymap.set("x", "@e", function()
+        vim.fn["deepl#v"] "EN"
+    end)
+end
+
 function M.nvim_comment()
     require("nvim_comment").setup {
         line_mapping = ",,",
@@ -676,7 +691,8 @@ function M.aerial()
         -- Use symbol tree for folding. Set to true or false to enable/disable
         -- Set to "auto" to manage folds if your previous foldmethod was 'manual'
         -- This can be a filetype map (see :help aerial-filetype-map)
-        manage_folds = "auto",
+        -- manage_folds = "auto",
+        manage_folds = false,
 
         -- When you fold code with za, zo, or zc, update the aerial tree as well.
         -- Only works when manage_folds = true
@@ -1754,7 +1770,11 @@ local function nvim_lsp_config()
     }
 
     cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
+        -- mapping = cmp.mapping.preset.cmdline(),
+        mapping = {
+            ["<Tab>"] = cmp.mapping.preset.cmdline()["<Tab>"],
+            ["<S-Tab>"] = cmp.mapping.preset.cmdline()["<S-Tab>"],
+        },
         sources = cmp.config.sources({
             { name = "path" },
         }, {
@@ -2063,6 +2083,9 @@ function M.treesitter()
                 "todome",
             },
         },
+        incremental_selection = {
+            enable = true,
+        },
         textobjects = {
             select = {
                 enable = true,
@@ -2095,6 +2118,18 @@ function M.treesitter()
             lint_events = { "BufWrite", "CursorHold", "InsertLeave" },
         },
     }
+
+    vim.keymap.set("x", "v", function()
+        if vim.fn.mode() == "v" then
+            return ":lua require'nvim-treesitter.incremental_selection'.node_incremental()<CR>"
+        else
+            return "v"
+        end
+    end, { expr = true })
+
+    vim.keymap.set("x", "<C-o>", function()
+        return ":lua require'nvim-treesitter.incremental_selection'.node_decremental()<CR>"
+    end, { expr = true })
 
     vim.keymap.set("n", "ts", "<Cmd>TSHighlightCapturesUnderCursor<CR>")
 end

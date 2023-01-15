@@ -20,7 +20,13 @@ vim.opt.listchars = {
 }
 
 vim.opt.scrolloff = 0
+-- default は marker にしておく
+vim.opt.foldmethod = "marker"
 vim.opt.foldlevelstart = 99
+-- あえて manual にしたときは、自動的に fold が保存されるようにしておく
+vim.opt.viewoptions = {
+    "folds",
+}
 
 vim.opt.matchpairs:append {
     "（:）",
@@ -44,7 +50,7 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.diffopt:append { "vertical", "algorithm:histogram" }
 
--- §§1 表示設定
+-- §§1 編集関係
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 

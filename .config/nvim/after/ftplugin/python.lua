@@ -11,7 +11,7 @@ if first_line == "# %% [markdown]" or first_line == "# %% streamlit" then
     vim.opt_local.foldmethod = "HydrogenCustomFoldText()"
 end
 
-vim.keymap.set("gq", ":!black - 2>/dev/null<CR>", { buffer = true })
+vim.keymap.set("x", "gq", ":!black - 2>/dev/null<CR>", { buffer = true })
 
 -- すまん。面倒くさくて
 vim.cmd [[

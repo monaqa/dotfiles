@@ -75,6 +75,7 @@ require("jetpack.packer").startup(function(use)
     add { "mbbill/undotree", hook_after = config.undotree }
     add { "nvim-lualine/lualine.nvim", hook_after = config.lualine }
     add { "rhysd/rust-doc.vim", hook_after = config.rust_doc }
+    add { "ryicoh/deepl.vim", hook_after = config.deepl }
     add { "terrortylor/nvim-comment", hook_after = config.nvim_comment }
     add { "thinca/vim-qfreplace" }
     add { "thinca/vim-quickrun" }
