@@ -301,15 +301,12 @@ end
 function M.gitsigns()
     require("gitsigns").setup {
         signs = {
-            add = { hl = "GitSignsAdd", text = "║", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
-            change = { hl = "GitSignsChange", text = "║", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-            delete = { hl = "GitSignsDelete", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-            topdelete = { hl = "GitSignsDelete", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+            add = { text = "║" },
+            change = { text = "║" },
+            delete = {},
+            topdelete = {},
             changedelete = {
-                hl = "GitSignsChange",
                 text = "┋",
-                numhl = "GitSignsChangeDeleteNr",
-                linehl = "GitSignsChangeLn",
             },
         },
         signcolumn = false,
