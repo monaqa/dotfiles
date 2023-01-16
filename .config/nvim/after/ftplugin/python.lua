@@ -8,7 +8,7 @@ local first_line = vim.fn.getline(1)
 if first_line == "# %% [markdown]" or first_line == "# %% streamlit" then
     vim.opt_local.foldmethod = "expr"
     vim.opt_local.foldexpr = "HydrogenFoldOnlyCode(v:lnum)"
-    vim.opt_local.foldmethod = "HydrogenCustomFoldText()"
+    vim.opt_local.foldtext = "HydrogenCustomFoldText()"
 end
 
 vim.keymap.set("x", "gq", ":!black - 2>/dev/null<CR>", { buffer = true })

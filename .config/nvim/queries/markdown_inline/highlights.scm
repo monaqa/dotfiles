@@ -13,10 +13,10 @@
 
 (strong_emphasis) @text.strong
 
-; (
-;  (emphasis_delimiter) @conceal
-;  (#set! conceal "")
-;  )
+(
+ (emphasis_delimiter) @conceal
+ (#set! conceal "")
+ )
 
 [
   (link_destination)
@@ -43,25 +43,25 @@
 
 (inline_link) @punctuation.delimiter
 
-; ; Conceal inline links
-; (inline_link
-;   (link_destination) @conceal
-;   (#set! conceal "…"))
-;
-; ; Conceal image links
-; (image
-;   (link_destination) @conceal
-;   (#set! conceal "…"))
+; Conceal inline links
+(inline_link
+  (link_destination) @conceal
+  (#set! conceal "…"))
 
-; ; Conceal full reference links
-; (full_reference_link
-;   [
-;     "["
-;     "]"
-;     (link_label) @conceal
-;   ]
-;   (#set! conceal "🖼"
-;   ))
+; Conceal image links
+(image
+  (link_destination) @conceal
+  (#set! conceal "…"))
+
+; Conceal full reference links
+(full_reference_link
+  [
+    "["
+    "]"
+    (link_label) @conceal
+  ]
+  (#set! conceal "🖼"
+  ))
 
 ; skip checking spell
 (code_span) @nospell

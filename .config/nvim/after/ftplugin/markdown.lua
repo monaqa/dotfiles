@@ -45,7 +45,7 @@ vim.opt_local.spell = true
 vim.opt_local.foldmethod = "expr"
 vim.opt_local.foldexpr = "MarkdownLevel(v:lnum)"
 vim.opt_local.suffixesadd:append ".md"
--- vim.opt_local.conceallevel = 2
+vim.opt_local.conceallevel = 2
 
 vim.opt_local.comments = {
     "nb:>",

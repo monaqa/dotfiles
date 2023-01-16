@@ -86,6 +86,10 @@ util.create_cmd("SubstituteCommaPeriod", function(meta)
     end
 end, { bang = true })
 
+util.create_cmd("EditFtplugin", function()
+    vim.cmd.edit { "~/.config/nvim/after/ftplugin/" .. vim.opt_local.filetype:get() .. ".lua" }
+end)
+
 -- §§1 memolist.vim + telescope
 util.create_cmd("MemoFind", function()
     require("telescope.builtin").find_files { cwd = "~/memo" }
