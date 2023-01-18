@@ -1624,13 +1624,12 @@ end
 
 function M.coc()
     -- nvim_lsp を明示的に読み込む場合のみ skip
-    if util.to_bool(vim.fn.filereadable ".local_ignore_use_nvim_lsp") then
-        return
-    end
-    vim.cmd.packadd "coc.nvim"
-    vim.cmd.packadd "coc-nvim-lua"
-    vim.cmd.packadd "telescope-coc.nvim"
-    require("telescope").load_extension "coc"
+    -- if util.to_bool(vim.fn.filereadable ".local_ignore_use_nvim_lsp") then
+    --     return
+    -- end
+    -- vim.cmd.packadd "coc.nvim"
+    -- vim.cmd.packadd "coc-nvim-lua"
+    -- vim.cmd.packadd "telescope-coc.nvim"
     coc_config()
 end
 
@@ -1804,6 +1803,8 @@ function M.telescope()
     local actions = require "telescope.actions"
     local builtin = require "telescope.builtin"
 
+    require("telescope").load_extension "coc"
+
     -- Global remapping
     require("telescope").setup {
         defaults = {
@@ -1942,6 +1943,8 @@ end
 -- §§1 tree-sitter
 
 function M.treesitter()
+    require("nvim-treesitter.install").compilers = { "gcc-12" }
+
     local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
     parser_config.todome = {
         install_info = {
