@@ -134,6 +134,7 @@ add { "matsui54/ddu-source-file_external" }
 add { "shun/ddu-source-rg" }
 add { "vim-denops/denops.vim" }
 add { "4513ECHO/denops-gitter.vim", config = config.denops_gitter, enabled = false }
+add { "lambdalisue/kensaku.vim" }
 
 -- tree-sitter
 add { "nvim-treesitter/nvim-treesitter", config = config.treesitter }

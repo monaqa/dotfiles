@@ -216,6 +216,11 @@ function M.fern()
 
         vim.keymap.set("n", "<C-l>", "<Plug>(fern-action-redraw)", { remap = true, buffer = true })
 
+        vim.keymap.set("n", "u", function()
+            vim.g["fern#renderer#nerdfont#indent_markers"] = 1 - vim.g["fern#renderer#nerdfont#indent_markers"]
+            return "<Plug>(fern-action-redraw)"
+        end, { buffer = true, expr = true })
+
         local fern_excluded = true
 
         vim.keymap.set("n", "<Plug>(fern-exclude-toggle)", function()
@@ -1019,6 +1024,18 @@ function M.lexima()
     --         return [[<C-g>u]] .. vim.fn["lexima#expand"]("<CR>", "i")
     --     end
     -- end, {expr = true, silent = true})
+
+    vim.keymap.set("i", "<CR>", function()
+        if util.to_bool(vim.fn["coc#pum#visible"]()) then
+            -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
+            -- （意図せず補完候補がセレクトされてしまうのを抑止）
+            if vim.fn["coc#pum#info"]()["index"] >= 0 then
+                return "<Plug>(vimrc-coc-select-confirm)"
+            end
+            return "<C-y><Plug>(vimrc-lexima-expand-cr)"
+        end
+        return "<Plug>(vimrc-lexima-expand-cr)"
+    end, { expr = true, remap = true })
 end
 
 function M.sandwich()

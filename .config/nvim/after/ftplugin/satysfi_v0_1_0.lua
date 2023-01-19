@@ -1,4 +1,5 @@
 vim.opt_local.path:append {
+    ".",
     "/usr/local/share/satysfi/dist/packages",
     vim.fn.expand "~/.satysfi/dist/packages",
     vim.fn.expand "~/.satysfi/local/packages",

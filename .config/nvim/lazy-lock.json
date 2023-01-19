@@ -29,6 +29,7 @@
   "html5.vim": { "branch": "master", "commit": "7c9f6f38ce4f9d35db7eeedb764035b6b63922c6" },
   "jq.vim": { "branch": "master", "commit": "6ff60efab7a15c60ff073c5bb7aec2858a0bafba" },
   "julia-vim": { "branch": "master", "commit": "fca7e3e59e6f9417d3fd77bac50d4b820a3e8bc4" },
+  "kensaku.vim": { "branch": "main", "commit": "7f107431adc22aeffd0c853f2ae5a61f4b293bf0" },
   "lazy.nvim": { "branch": "main", "commit": "c05d61d208afaccb2a6765c0a6eb2d4e506a8c18" },
   "lexima.vim": { "branch": "master", "commit": "36781e59099b9b46eed564283b95938f90cd852d" },
   "lualine.nvim": { "branch": "master", "commit": "0050b308552e45f7128f399886c86afefc3eb988" },

@@ -262,11 +262,18 @@ util.autocmd_vimrc "CmdlineLeave" {
     end,
 }
 
+local visual_match_ids = {}
+
 local function free_visual_match()
-    if util.to_bool(vim.fn.exists "w:visual_match_id") then
-        vim.fn.matchdelete(vim.w.visual_match_id)
-        vim.api.nvim_win_del_var(0, "visual_match_id")
+    -- if util.to_bool(vim.fn.exists "w:visual_match_id") then
+    --     vim.fn.matchdelete(vim.w.visual_match_id)
+    --     vim.api.nvim_win_del_var(0, "visual_match_id")
+    -- end
+
+    for winid, matchid in pairs(visual_match_ids) do
+        pcall(vim.fn.matchdelete, matchid, winid)
     end
+    visual_match_ids = {}
 end
 
 local function visual_match()
@@ -281,10 +288,23 @@ local function visual_match()
             vim.fn.col "v" - 2 + len_of_char_of_v,
             vim.fn.col "." - 2 + len_of_char_of_dot,
         }
-        vim.w.visual_match_id = vim.fn.matchadd(
-            "VisualBlue",
-            ([[\C\V%s]]):format(vim.fn.escape(vim.fn.getline("."):sub(first + 1, last + 1), [[\]]))
-        )
+        -- vim.w.visual_match_id = vim.fn.matchadd(
+        --     "VisualBlue",
+        --     ([[\C\V%s]]):format(vim.fn.escape(vim.fn.getline("."):sub(first + 1, last + 1), [[\]]))
+        -- )
+        local visible_winids = vim.tbl_filter(function(s)
+            return type(s) == "number"
+        end, vim.tbl_flatten(vim.fn.winlayout()))
+        for _, winid in ipairs(visible_winids) do
+            local visual_match_id = vim.fn.matchadd(
+                "VisualBlue",
+                ([[\C\V%s]]):format(vim.fn.escape(vim.fn.getline("."):sub(first + 1, last + 1), [[\]])),
+                10, --default
+                -1, --default
+                { window = winid }
+            )
+            visual_match_ids[winid] = visual_match_id
+        end
     end
 end
 
