@@ -167,6 +167,13 @@ add {
     opts = {
         load = {
             ["core.defaults"] = {},
+            ["core.norg.esupports.indent"] = {
+                config = {
+                    indents = {
+                        -- ["heading1"] = { indent = 0 },
+                    },
+                },
+            },
             ["core.norg.concealer"] = {
                 config = {
                     icons = {
@@ -176,6 +183,7 @@ add {
                         },
                     },
                     dim_code_blocks = {
+                        enabled = false,
                         conceal = false,
                     },
                 },
@@ -197,6 +205,10 @@ add {
             ["core.export"] = {},
             ["core.export.markdown"] = {},
             ["core.integrations.telescope"] = {},
+            -- ["core.gtd.base"] = {},
+            -- ["core.gtd.queries"] = {},
+            -- ["core.gtd.helpers"] = {},
+            -- ["core.gtd.ui"] = {},
         },
     },
     dependencies = { "nvim-lua/plenary.nvim", "nvim-neorg/neorg-telescope" },
