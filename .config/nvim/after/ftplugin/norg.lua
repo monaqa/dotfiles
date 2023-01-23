@@ -1,5 +1,32 @@
 local util = require "rc.util"
 vim.opt_local.conceallevel = 1
+vim.opt_local.shiftwidth = 2
+vim.opt_local.comments = {
+    "nb:>",
+    "b:- (x)",
+    "b:- ( )",
+    "b:-",
+    "b:--",
+    "b:---",
+    "b:----",
+}
+vim.opt_local.formatoptions:remove "c"
+vim.opt_local.formatoptions:append { "j", "r" }
+vim.opt_local.wrap = false
+vim.opt_local.foldlevel = 4
+
+vim.keymap.set("n", "Z", function()
+    -- conceallevel の toggle を入れると何故か toggle-concealer がバグる
+    vim.opt_local.wrap = not vim.opt_local.wrap:get()
+    vim.cmd [[Neorg toggle-concealer]]
+end, { buffer = true, nowait = true })
+
+vim.keymap.set(
+    "x",
+    "L",
+    [["lc{<C-r>=substitute(getreg("+"), '\n', '', 'g')<CR>}[<C-r>=substitute(getreg("l"), '\n', '', 'g')<CR>]<Esc>]],
+    { buffer = true }
+)
 
 vim.api.nvim_buf_create_user_command(0, "CorrectLink", function(meta)
     vim.cmd(([[keeppatterns %s,%ssubstitute/\v\[(.*)\]\((.*)\)/{\2}[\1]/g]]):format(meta.line1, meta.line2))
@@ -10,8 +37,6 @@ vim.api.nvim_buf_create_user_command(0, "ExportMarkdown", function()
     vim.cmd["Neorg"] { "export", "to-file", fname }
     vim.cmd.vsplit { fname }
 end, {})
-
-vim.opt_local.shiftwidth = 2
 
 _G.vimrc.fn = {}
 _G.vimrc.fn.norg_indentexpr = function()
@@ -34,17 +59,6 @@ util.autocmd_vimrc "BufEnter" {
         vim.opt_local.indentexpr = "v:lua.vimrc.fn.norg_indentexpr()"
     end,
 }
-
-vim.opt_local.comments = {
-    "nb:>",
-    "b:- (x)",
-    "b:- ( )",
-    "b:-",
-}
-
-vim.opt_local.formatoptions:remove "c"
-vim.opt_local.formatoptions:append "j"
-vim.opt_local.formatoptions:append "r"
 
 vim.cmd [[
     inoreabbrev <buffer><expr> ) (getline('.') =~# '\s*- )') ? '( )' : ')'

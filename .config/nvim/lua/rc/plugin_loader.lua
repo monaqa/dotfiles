@@ -170,7 +170,9 @@ add {
             ["core.norg.esupports.indent"] = {
                 config = {
                     indents = {
-                        -- ["heading1"] = { indent = 0 },
+                        ["heading2"] = { indent = 1 },
+                        ["heading4"] = { indent = 1 },
+                        ["heading6"] = { indent = 1 },
                     },
                 },
             },
@@ -203,7 +205,11 @@ add {
                 },
             },
             ["core.export"] = {},
-            ["core.export.markdown"] = {},
+            ["core.export.markdown"] = {
+                config = {
+                    extensions = { "definition-lists" },
+                },
+            },
             ["core.integrations.telescope"] = {},
             -- ["core.gtd.base"] = {},
             -- ["core.gtd.queries"] = {},

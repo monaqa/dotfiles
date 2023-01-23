@@ -955,6 +955,7 @@ end
 
 function M.lexima()
     vim.g["lexima_no_default_rules"] = 1
+    vim.g["lexima_enable_space_rules"] = 0
     vim.fn["lexima#set_default_rules"]()
 
     -- シングルクォート補完の無効化
@@ -1024,6 +1025,12 @@ function M.lexima()
     --         return [[<C-g>u]] .. vim.fn["lexima#expand"]("<CR>", "i")
     --     end
     -- end, {expr = true, silent = true})
+
+    -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
+    vim.cmd [[
+        inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()
+        inoremap <expr> <Plug>(vimrc-lexima-expand-cr) lexima#expand('<LT>CR>', 'i')
+    ]]
 
     vim.keymap.set("i", "<CR>", function()
         if util.to_bool(vim.fn["coc#pum#visible"]()) then
@@ -1234,6 +1241,15 @@ function M.sandwich()
             filetype = { "markdown", "obsidian" },
             input = { "C" },
             buns = { "SandwichMarkdownCodeSnippet()", [["```"]] },
+            expr = 1,
+            kind = { "add" },
+            linewise = 1,
+            command = { [[']s/^\s*//]] },
+        },
+        {
+            filetype = { "norg" },
+            input = { "c" },
+            buns = { "@code", "@end" },
             expr = 1,
             kind = { "add" },
             linewise = 1,
