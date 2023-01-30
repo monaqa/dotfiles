@@ -41,6 +41,19 @@
   "tsserver.enable": true,
 
   "languageserver": {
+    "astro": {
+      "command": "astro-ls",
+      "args": ["--stdio"],
+      "initializationOptions": {
+        "configuration": {},
+        "typescript": {
+          "serverPath": "/Users/monaqa/.config/coc/extensions/node_modules/coc-tsserver/node_modules/typescript/lib/typescript.js"
+        }
+      },
+      "filetypes": [
+        "astro"
+      ]
+    },
     "efm": {
       "command": "efm-langserver",
       "args": [],

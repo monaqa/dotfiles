@@ -18,6 +18,8 @@ set -x PATH "/opt/homebrew/bin" $PATH
 set -x PATH "$HOME/.cargo/bin" $PATH
 set -x PATH "$HOME/.local/bin" $PATH
 set -x PATH "$HOME/.nimble/bin" $PATH
+set -x PNPM_HOME "$HOME/Library/pnpm"
+set -x PATH "$PNPM_HOME:$PATH"
 
 # SATySFi
 export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi
