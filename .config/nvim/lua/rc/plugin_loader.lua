@@ -100,9 +100,8 @@ add { "machakann/vim-swap", config = config.swap }
 
 -- coc
 add { "neoclide/coc.nvim", branch = "release", config = config.coc }
-add { "rafcamlet/coc-nvim-lua" }
+-- add { "rafcamlet/coc-nvim-lua" }
 add { "fannheyward/telescope-coc.nvim" }
-
 -- nvim_lsp
 
 -- add { "neovim/nvim-lspconfig", opt = 1, config = config.nvim_lsp }
@@ -234,8 +233,8 @@ add {
     config = config.dial,
 }
 add {
-    "monaqa/modesearch.vim",
-    unless_cwd = "~/ghq/github.com/monaqa/modesearch.vim",
+    "monaqa/modesearch.nvim",
+    unless_cwd = "~/ghq/github.com/monaqa/modesearch.nvim",
     config = config.modesearch,
 }
 add { "monaqa/peridot.vim" }

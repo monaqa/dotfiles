@@ -44,6 +44,9 @@ set -x PATH $HOME/.yarn/bin $PATH
 # deno
 set -x PATH $HOME/.deno/bin $PATH
 
+# 普通に困るくね？
+set -x HOMEBREW_NO_AUTO_UPDATE 1
+
 # Rust sccache
 # set -x RUSTC_WRAPPER (which sccache)
 

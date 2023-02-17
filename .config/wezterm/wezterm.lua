@@ -124,7 +124,7 @@ wezterm.on("toggle-mode-screenshare", function(window, pane)
     local overrides = window:get_config_overrides() or {}
     if not overrides.font_size then
         overrides.window_background_opacity = 1.0
-        overrides.font_size = 12.0 * 2
+        overrides.font_size = 22.0
         overrides.enable_tab_bar = false
     else
         overrides.window_background_opacity = nil
@@ -180,7 +180,7 @@ return {
         -- {family="BIZ UDPGothic", weight="Regular", stretch="Normal"},
         -- {family="IBM Plex Sans JP", weight="Regular", stretch="Normal"},
     }),
-    font_size = 14.0,
+    font_size = 16.0,
     use_ime = true,
     freetype_load_flags = "NO_HINTING",
 

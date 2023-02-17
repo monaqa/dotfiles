@@ -142,6 +142,14 @@ util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     end,
 }
 
+-- mdx
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
+    pattern = [[*.mdx]],
+    callback = function()
+        vim.opt_local.filetype = "markdown"
+    end,
+}
+
 -- query
 util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = [[*/queries/*/*.scm]],

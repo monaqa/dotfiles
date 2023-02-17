@@ -18,6 +18,9 @@ vim.opt.listchars = {
     extends = "❯",
     precedes = "❮",
 }
+vim.opt.fillchars = {
+    eob = " ",
+}
 
 vim.opt.scrolloff = 0
 -- default は marker にしておく

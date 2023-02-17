@@ -2044,6 +2044,7 @@ function M.treesitter()
 
     local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
 
+    ft_to_parser["mdx"] = "markdown"
     ft_to_parser["obsidian"] = "markdown"
     ft_to_parser["gina-commit"] = "gitcommit"
 
@@ -2385,9 +2386,42 @@ function M.smooth_scroll()
 end
 
 function M.modesearch()
-    vim.keymap.set({ "n", "x", "o" }, "/", "<Plug>(modesearch-slash-rawstr)")
-    vim.keymap.set({ "n", "x", "o" }, "?", "<Plug>(modesearch-slash-regexp)")
-    vim.keymap.set("c", "<C-x>", "<Plug>(modesearch-toggle-mode)")
+    -- vim.keymap.set({ "n", "x", "o" }, "/", "<Plug>(modesearch-slash-rawstr)")
+    -- vim.keymap.set({ "n", "x", "o" }, "?", "<Plug>(modesearch-slash-regexp)")
+    -- vim.keymap.set("c", "<C-x>", "<Plug>(modesearch-toggle-mode)")
+    -- vim.keymap.set("n", "_", "/")
+    local modesearch = require "modesearch"
+    modesearch.setup {
+        modes = {
+            rawstr = {
+                prompt = "[rawstr]/",
+                converter = function(query)
+                    return [[\V]] .. vim.fn.escape(query, [[/\]])
+                end,
+            },
+            regexp = {
+                prompt = "[regexp]/",
+                converter = function(query)
+                    return [[\v]] .. vim.fn.escape(query, [[/]])
+                end,
+            },
+            migemo = {
+                prompt = "[migemo]/",
+                converter = function(query)
+                    return [[\v]] .. vim.fn["kensaku#query"](query)
+                end,
+            },
+        },
+    }
+
+    vim.keymap.set({ "n", "x", "o" }, "/", function()
+        return modesearch.keymap.prompt.show "rawstr"
+    end, { expr = true })
+
+    vim.keymap.set("c", "<C-x>", function()
+        return modesearch.keymap.mode.cycle { "rawstr", "migemo", "regexp" }
+    end, { expr = true })
+
     vim.keymap.set("n", "_", "/")
 end
 

@@ -336,3 +336,50 @@ util.autocmd_vimrc "BufWritePost" {
     end,
     desc = "execute stylua",
 }
+
+-- auto repeatable macro （ドットリピートや通常マクロのほうが直感的なのでボツ）
+
+-- local auto_repeatable = false
+-- util.autocmd_vimrc "VimEnter" {
+--     pattern = "*",
+--     callback = function()
+--         vim.fn.setreg("p", "")
+--         vim.keymap.set("n", ";", function()
+--             -- if auto_repeatable then
+--             --     if vim.fn.reg_recording() == "p" then
+--             --         local preg = vim.fn.getreg "p"
+--             --         vim.api.nvim_feedkeys("q", "n", true)
+--             --         vim.fn.setreg("p", preg)
+--             --         vim.pretty_print { "stop", vim.fn.getreg "p", prev_macro_content }
+--             --     end
+--             --     vim.api.nvim_feedkeys("@p", "n", true)
+--             -- end
+--             if auto_repeatable then
+--                 local s = ""
+--                 if vim.fn.reg_recording() == "p" then
+--                     s = s .. "q"
+--                 end
+--                 s = s .. "@z"
+--                 return s
+--             end
+--             return ""
+--         end, { expr = true })
+--         vim.api.nvim_feedkeys("qp", "n", true)
+--     end,
+--     desc = "execute text_changed",
+-- }
+--
+-- util.autocmd_vimrc "TextChanged" {
+--     pattern = "*",
+--     callback = function()
+--         if vim.fn.reg_recording() == "p" then
+--             vim.api.nvim_feedkeys("q", "n", true)
+--             local current_macro_content = vim.fn.getreg "p"
+--             auto_repeatable = vim.endswith(vim.fn.getreg "z", current_macro_content)
+--             vim.fn.setreg("z", current_macro_content)
+--         end
+--         vim.pretty_print { vim.fn.getreg "p", auto_repeatable }
+--         vim.api.nvim_feedkeys("qp", "n", true)
+--     end,
+--     desc = "execute text_changed",
+-- }
