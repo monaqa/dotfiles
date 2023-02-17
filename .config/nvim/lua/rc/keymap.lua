@@ -928,10 +928,10 @@ vim.keymap.set("i", "<C-g>", "<C-x>")
 vim.keymap.set("v", "<C-a>", "<C-a>gv")
 vim.keymap.set("v", "<C-x>", "<C-x>gv")
 
--- 直前の単語の upper/lower case を入れ替える。
+-- 直前の単語を full uppercase にする。
 -- vimrc 読書会より。
 -- thanks to thinca
-vim.keymap.set("i", "<C-l>", "<Esc>g~vbgi")
+vim.keymap.set("i", "<C-l>", "<Esc>gUvbgi")
 
 vim.keymap.set("n", "gf", "gF")
 

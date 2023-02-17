@@ -1120,7 +1120,7 @@ function M.sandwich()
           return genericsname . '<'
         endfunction
 
-        function! InlineCommandName() abort
+        function! SandwichInlineCmdName() abort
           let cmdname = input('inline-cmd name: ', '')
           if cmdname ==# ''
             throw 'OperatorSandwichCancel'
@@ -1128,7 +1128,7 @@ function M.sandwich()
           return '\' . cmdname . '{'
         endfunction
 
-        function! BlockCommandName() abort
+        function! SandwichBlockCmdName() abort
           let cmdname = input('block-cmd name: ', '')
           if cmdname ==# ''
             throw 'OperatorSandwichCancel'
@@ -1894,17 +1894,17 @@ function M.ddu()
         }
     end)
 
-    vim.keymap.set("n", "@o", function()
-        vim.fn["ddu#start"] {
-            sources = {
-                { name = "file_external", params = {} },
-            },
-        }
-    end)
-
-    vim.keymap.set("n", "@g", function()
-        vim.fn["ddu_rg#find"]()
-    end)
+    -- vim.keymap.set("n", "@o", function()
+    --     vim.fn["ddu#start"] {
+    --         sources = {
+    --             { name = "file_external", params = {} },
+    --         },
+    --     }
+    -- end)
+    --
+    -- vim.keymap.set("n", "@g", function()
+    --     vim.fn["ddu_rg#find"]()
+    -- end)
 
     vim.fn["ddu#custom#patch_global"] {
         ui = "ff",
@@ -2084,7 +2084,7 @@ function M.treesitter()
                 if lang == "help" then
                     return true
                 end
-                local max_filesize = 256 * 1024 -- 256 KB
+                local max_filesize = 1024 * 1024 -- 1 MB
                 local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
                 if ok and stats and stats.size > max_filesize then
                     util.print_error("File too large: tree-sitter disabled.", "WarningMsg")
@@ -2312,6 +2312,13 @@ function M.dial()
         },
     }
 
+    require("dial.config").augends:on_filetype {
+        markdown = concat {
+            basic,
+            { augend.misc.alias.markdown_header },
+        },
+    }
+
     -- vim.keymap.set("n", "<C-a>", function()
     --     local cmd = vim.api.nvim_replace_termcodes(require("dial.map").inc_normal(), true, true, true)
     --     vim.cmd.normal { cmd }
@@ -2322,18 +2329,6 @@ function M.dial()
     vim.keymap.set("v", "<C-x>", require("dial.map").dec_visual "visual", { noremap = true })
     vim.keymap.set("v", "g<C-a>", require("dial.map").inc_gvisual "visual", { noremap = true })
     vim.keymap.set("v", "g<C-x>", require("dial.map").dec_gvisual "visual", { noremap = true })
-
-    util.autocmd_vimrc { "FileType" } {
-        pattern = "markdown",
-        callback = function()
-            vim.keymap.set("n", "<C-a>", require("dial.map").inc_normal "markdown", { noremap = true })
-            vim.keymap.set("n", "<C-x>", require("dial.map").dec_normal "markdown", { noremap = true })
-            vim.keymap.set("v", "<C-a>", require("dial.map").inc_visual "markdown", { noremap = true })
-            vim.keymap.set("v", "<C-x>", require("dial.map").dec_visual "markdown", { noremap = true })
-            vim.keymap.set("v", "g<C-a>", require("dial.map").inc_gvisual "markdown", { noremap = true })
-            vim.keymap.set("v", "g<C-x>", require("dial.map").dec_gvisual "markdown", { noremap = true })
-        end,
-    }
 end
 
 function M.smooth_scroll()
