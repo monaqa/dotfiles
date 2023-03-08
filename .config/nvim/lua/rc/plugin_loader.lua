@@ -77,6 +77,11 @@ add {
     config = config.partedit,
 }
 
+add {
+    "atusy/tsnode-marker.nvim",
+    config = config.tsnode_marker,
+}
+
 -- colorscheme
 add { "habamax/vim-gruvbit", config = config.gruvbit }
 add { "yasukotelin/shirotelin", opt = true }
@@ -101,7 +106,6 @@ add { "machakann/vim-swap", config = config.swap }
 -- coc
 add { "neoclide/coc.nvim", branch = "release", config = config.coc }
 -- add { "rafcamlet/coc-nvim-lua" }
-add { "fannheyward/telescope-coc.nvim" }
 -- nvim_lsp
 
 -- add { "neovim/nvim-lspconfig", opt = 1, config = config.nvim_lsp }
@@ -117,7 +121,13 @@ add { "fannheyward/telescope-coc.nvim" }
 -- add { "folke/neodev.nvim", opt = 1 }
 
 -- telescope
-add { "nvim-telescope/telescope.nvim", config = config.telescope }
+add {
+    "nvim-telescope/telescope.nvim",
+    config = config.telescope,
+    dependencies = {
+        "fannheyward/telescope-coc.nvim",
+    },
+}
 add { "nvim-lua/popup.nvim" }
 add { "nvim-lua/plenary.nvim" }
 
@@ -160,64 +170,64 @@ add { "wlangstroth/vim-racket" }
 add { "terrastruct/d2-vim" }
 
 -- neorg
-add {
-    "nvim-neorg/neorg",
-    build = ":Neorg sync-parsers",
-    opts = {
-        load = {
-            ["core.defaults"] = {},
-            ["core.norg.esupports.indent"] = {
-                config = {
-                    indents = {
-                        ["heading2"] = { indent = 1 },
-                        ["heading4"] = { indent = 1 },
-                        ["heading6"] = { indent = 1 },
-                    },
-                },
-            },
-            ["core.norg.concealer"] = {
-                config = {
-                    icons = {
-                        todo = {
-                            -- enabled = false,
-                            undone = { enabled = false },
-                        },
-                    },
-                    dim_code_blocks = {
-                        enabled = false,
-                        conceal = false,
-                    },
-                },
-            },
-            ["core.norg.qol.todo_items"] = {},
-            ["core.norg.dirman"] = {
-                config = {
-                    workspaces = {
-                        home = "~/notes/home",
-                    },
-                    default_workspace = "home",
-                },
-            },
-            ["core.norg.journal"] = {
-                config = {
-                    workspace = "home",
-                },
-            },
-            ["core.export"] = {},
-            ["core.export.markdown"] = {
-                config = {
-                    extensions = { "definition-lists" },
-                },
-            },
-            ["core.integrations.telescope"] = {},
-            -- ["core.gtd.base"] = {},
-            -- ["core.gtd.queries"] = {},
-            -- ["core.gtd.helpers"] = {},
-            -- ["core.gtd.ui"] = {},
-        },
-    },
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-neorg/neorg-telescope" },
-}
+-- add {
+--     "nvim-neorg/neorg",
+--     build = ":Neorg sync-parsers",
+--     opts = {
+--         load = {
+--             ["core.defaults"] = {},
+--             ["core.norg.esupports.indent"] = {
+--                 config = {
+--                     indents = {
+--                         ["heading2"] = { indent = 1 },
+--                         ["heading4"] = { indent = 1 },
+--                         ["heading6"] = { indent = 1 },
+--                     },
+--                 },
+--             },
+--             ["core.norg.concealer"] = {
+--                 config = {
+--                     icons = {
+--                         todo = {
+--                             -- enabled = false,
+--                             undone = { enabled = false },
+--                         },
+--                     },
+--                     dim_code_blocks = {
+--                         enabled = false,
+--                         conceal = false,
+--                     },
+--                 },
+--             },
+--             ["core.norg.qol.todo_items"] = {},
+--             ["core.norg.dirman"] = {
+--                 config = {
+--                     workspaces = {
+--                         home = "~/notes/home",
+--                     },
+--                     default_workspace = "home",
+--                 },
+--             },
+--             ["core.norg.journal"] = {
+--                 config = {
+--                     workspace = "home",
+--                 },
+--             },
+--             ["core.export"] = {},
+--             ["core.export.markdown"] = {
+--                 config = {
+--                     extensions = { "definition-lists" },
+--                 },
+--             },
+--             ["core.integrations.telescope"] = {},
+--             -- ["core.gtd.base"] = {},
+--             -- ["core.gtd.queries"] = {},
+--             -- ["core.gtd.helpers"] = {},
+--             -- ["core.gtd.ui"] = {},
+--         },
+--     },
+--     dependencies = { "nvim-lua/plenary.nvim", "nvim-neorg/neorg-telescope" },
+-- }
 
 -- monaqa
 add { "monaqa/colordinate.vim", enabled = false }

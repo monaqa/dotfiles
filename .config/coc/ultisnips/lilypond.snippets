@@ -1,0 +1,107 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+snippet score "Description" b
+\version "2.21.82"
+
+\pointAndClickOff
+
+line = {
+	s1 \noBreak s1 \noBreak s1 \noBreak s1 \break
+}
+
+withMinFret =
+#(define-music-function
+		(minFret music)
+		(number? ly:music?)
+	#{
+		\set TabStaff.minimumFret = #minFret
+		#music
+		\set TabStaff.minimumFret = #2
+	#})
+
+\header {
+	title = "${1:タイトル}"
+	composer = "${2:作曲}"
+}
+
+chordmusic = {
+	\tempo 4 = 108
+	\fixed c, {
+		\set TabStaff.minimumFret = #2
+		\set TabStaff.restrainOpenStrings = ##t
+		% \tabFullNotation
+
+		\key a \major
+		% intro
+		${0:r1*4}
+
+		\bar "|."
+	}
+}
+
+\score {
+	<<
+		\chords {
+			\set chordChanges = ##t
+			\set majorSevenSymbol = \markup { M7 }
+		}
+
+		\new Staff \with {
+			\omit StringNumber
+			midiInstrument = "electric bass (finger)"
+		}{
+			\clef "bass_8"
+			<<
+				{
+					\chordmusic
+				}
+				{
+					\line
+					\line
+				}
+			>>
+		}
+
+		\new TabStaff \with {
+			stringTunings = #bass-tuning
+		} {
+			\huge
+			\chordmusic
+		}
+	>>
+
+	\layout {
+		\context {
+			\Score
+			proportionalNotationDuration = #(ly:make-moment 1/8)
+			% markFormatter = #format-mark-box-alphabet
+		}
+	}
+
+	% \midi {}
+}
+endsnippet

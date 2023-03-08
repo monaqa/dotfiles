@@ -389,6 +389,13 @@ function M.lualine()
         sections = {
             lualine_b = {
                 function()
+                    local bufname = vim.fn.bufname()
+                    if vim.startswith(bufname, "term://") then
+                        return "[terminal]"
+                    end
+                    if vim.startswith(bufname, "fern://") then
+                        return "[fern]"
+                    end
                     return [[%f %m]]
                 end,
             },
@@ -838,6 +845,8 @@ function M.gruvbit()
 
             util.sethl "LineNr" { fg = "#968772", bg = "#2a2a2a" }
 
+            vim.api.nvim_set_hl(0, "TSNodeMarker", { bg = "#243243" })
+
             -- coc.nvim
             util.sethl "CocInlayHint" { bg = "#444444", fg = "#90816c", italic = true }
             -- util.sethl "CocHintFloat" { bg = "#444444", fg = "#45daef" }
@@ -1037,11 +1046,11 @@ function M.lexima()
             -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
             -- （意図せず補完候補がセレクトされてしまうのを抑止）
             if vim.fn["coc#pum#info"]()["index"] >= 0 then
-                return "<Plug>(vimrc-coc-select-confirm)"
+                return vim.api.nvim_replace_termcodes(vim.fn["coc#pum#confirm"](), true, true, true)
             end
-            return "<C-y><Plug>(vimrc-lexima-expand-cr)"
+            return vim.fn.keytrans(vim.fn["lexima#expand"]("<CR>", "i"))
         end
-        return "<Plug>(vimrc-lexima-expand-cr)"
+        return vim.fn.keytrans(vim.fn["lexima#expand"]("<CR>", "i"))
     end, { expr = true, remap = true })
 end
 
@@ -1849,7 +1858,7 @@ function M.telescope()
                 "--hidden",
                 "--with-filename",
                 "--column",
-                -- '--smart-case'
+                "--smart-case",
             },
             prompt_prefix = "𝜻",
             find_command = {
@@ -2381,6 +2390,15 @@ function M.smooth_scroll()
 end
 
 function M.modesearch()
+    local function escape_regex_paren(query)
+        return vim.fn.substitute(query, [=[\\\@<![()|\\]]=], function(m)
+            if m[1] == "(" then
+                return [[\%]] .. m[1]
+            else
+                return [[\]] .. m[1]
+            end
+        end, "g")
+    end
     -- vim.keymap.set({ "n", "x", "o" }, "/", "<Plug>(modesearch-slash-rawstr)")
     -- vim.keymap.set({ "n", "x", "o" }, "?", "<Plug>(modesearch-slash-regexp)")
     -- vim.keymap.set("c", "<C-x>", "<Plug>(modesearch-toggle-mode)")
@@ -2403,7 +2421,7 @@ function M.modesearch()
             migemo = {
                 prompt = "[migemo]/",
                 converter = function(query)
-                    return [[\v]] .. vim.fn["kensaku#query"](query)
+                    return escape_regex_paren(vim.fn["kensaku#query"](query))
                 end,
             },
         },
@@ -2411,7 +2429,7 @@ function M.modesearch()
 
     vim.keymap.set({ "n", "x", "o" }, "/", function()
         return modesearch.keymap.prompt.show "rawstr"
-    end, { expr = true })
+    end, { expr = true, silent = true })
 
     vim.keymap.set("c", "<C-x>", function()
         return modesearch.keymap.mode.cycle { "rawstr", "migemo", "regexp" }
@@ -2430,6 +2448,36 @@ function M.partedit()
         local options = { filetype = filetype }
         vim.fn["partedit#start"](meta.line1, meta.line2, options)
     end, { range = true })
+end
+
+function M.tsnode_marker()
+    vim.api.nvim_create_autocmd("FileType", {
+        -- group = vim.api.nvim_create_augroup("tsnode-marker-markdown", {}),
+        pattern = "markdown",
+        callback = function(ctx)
+            require("tsnode-marker").set_automark(ctx.buf, {
+                target = { "code_fence_content" }, -- list of target node types
+                hl_group = "TSNodeMarker",
+                -- hl_group = "CursorLine",
+            })
+        end,
+    })
+
+    -- local function set_automark(bufnr)
+    --     local parsers = require "vim.treesitter"
+    --     local tsparser = parsers.get_parser(bufnr)
+    --     local lang = tsparser:lang()
+    --     local tree = tsparser:parse()[1]
+    --
+    --     local query = vim.treesitter.get_query(lang, "clipping")
+    -- end
+    --
+    -- util.autocmd_vimrc "FileType" {
+    --     pattern = "*",
+    --     callback = function(ctx)
+    --         set_automark(ctx.buf)
+    --     end,
+    -- }
 end
 
 function M.pretty_fold()

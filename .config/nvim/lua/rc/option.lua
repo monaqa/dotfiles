@@ -27,9 +27,9 @@ vim.opt.scrolloff = 0
 vim.opt.foldmethod = "marker"
 vim.opt.foldlevelstart = 99
 -- あえて manual にしたときは、自動的に fold が保存されるようにしておく
-vim.opt.viewoptions = {
-    "folds",
-}
+-- vim.opt.viewoptions = {
+--     "folds",
+-- }
 
 vim.opt.matchpairs:append {
     "（:）",
@@ -108,7 +108,7 @@ vim.opt.sessionoptions = {
 }
 
 if vim.fn.executable "rg" then
-    vim.opt.grepprg = "rg --vimgrep --hidden --glob " .. "'!tags*'"
+    vim.opt.grepprg = "rg --vimgrep --hidden --no-heading --glob " .. "'!tags*'"
     vim.opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
 end
 

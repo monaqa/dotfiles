@@ -34,9 +34,6 @@
 
   "sumneko-lua.enableNvimLuaDev": true,
 
-  "svelte.enable-ts-plugin": true,
-  "svelte.plugin.html.completions.enable": true,
-
   "tsdetect.mode": "auto",
   "tsserver.enable": true,
 

@@ -158,8 +158,9 @@ vim.keymap.set("n", "g/", function()
     -- hlsearch の有効化
     vim.o.hlsearch = vim.o.hlsearch
 
-    vim.cmd([[silent grep ]] .. vim.fn.string(query) .. " " .. search_range)
-end)
+    -- vim.cmd([[silent grep ]] .. vim.fn.string(query) .. " " .. search_range)
+    return [[:silent grep ]] .. vim.fn.string(query) .. " " .. search_range
+end, { expr = true })
 
 vim.keymap.set("n", "<C-n>", util.cmdcr "cnext" .. "zz", {})
 vim.keymap.set("n", "<C-p>", util.cmdcr "cprevious" .. "zz", {})
