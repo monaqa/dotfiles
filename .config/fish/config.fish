@@ -6,13 +6,52 @@
 # end
 
 # xonsh が終了したら以下を fallback
-export EDITOR=nvim
+
+# functions {{{
+function gitaddtree -a branch
+  cd (git rev-parse --git-common-dir)/../
+  set reponame (basename (git rev-parse --show-toplevel))
+  git branch $branch 2> /dev/null
+  git worktree add .worktree/$branch/$reponame $branch
+  cd .worktree/$branch/$reponame
+end
+
+# thanks: https://gist.github.com/tommyip/cf9099fa6053e30247e5d0318de2fb9e
+function __auto_source_venv --on-variable PWD --description "Activate/Deactivate virtualenv on directory change"
+  status --is-command-substitution; and return
+
+  # Check if we are inside a git directory
+  if git rev-parse --show-toplevel &>/dev/null
+    set gitdir (realpath (git rev-parse --show-toplevel))
+    set cwd (pwd)
+    # While we are still inside the git directory, find the closest
+    # virtualenv starting from the current directory.
+    while string match "$gitdir*" "$cwd" &>/dev/null
+      if test -e "$cwd/.venv/bin/activate.fish"
+        source "$cwd/.venv/bin/activate.fish" &>/dev/null 
+        return
+      else
+        set cwd (path dirname "$cwd")
+      end
+    end
+  end
+  # If virtualenv activated but we are not in a git directory, deactivate.
+  if test -n "$VIRTUAL_ENV"
+    deactivate
+  end
+end
+
+# }}}
 
 fish_default_key_bindings
 
-set -g fish_ambiguous_width 1
-
 # environment variables {{{
+
+# basic
+set -g fish_ambiguous_width 1
+set -x EDITOR nvim
+set -x LSCOLORS gxfxcxdxbxegedabagacad
+
 # bin at home directory
 set -x PATH "/opt/homebrew/bin" $PATH
 set -x PATH "$HOME/.cargo/bin" $PATH
@@ -53,11 +92,14 @@ set -x HOMEBREW_NO_AUTO_UPDATE 1
 # Satyrographos
 set -x SATYROGRAPHOS_EXPERIMENTAL 1
 
-# eval (starship init fish)
-# }}}
+# pdm
+if test -n "$PYTHONPATH"
+    set -x PYTHONPATH '/Users/monaqa/.local/pipx/venvs/pdm/lib/python3.11/site-packages/pdm/pep582' $PYTHONPATH
+else
+    set -x PYTHONPATH '/Users/monaqa/.local/pipx/venvs/pdm/lib/python3.11/site-packages/pdm/pep582'
+end
 
-# ls
-set -x LSCOLORS gxfxcxdxbxegedabagacad
+# }}}
 
 # abbr {{{
 # abbr は universal 変数として格納される．
@@ -171,13 +213,5 @@ if test -e ~/.config/fish/local.fish
 end
 
 # }}}
-
-function gitaddtree -a branch
-  cd (git rev-parse --git-common-dir)/../
-  set reponame (basename (git rev-parse --show-toplevel))
-  git branch $branch 2> /dev/null
-  git worktree add .worktree/$branch/$reponame $branch
-  cd .worktree/$branch/$reponame
-end
 
 eval (starship init fish)
