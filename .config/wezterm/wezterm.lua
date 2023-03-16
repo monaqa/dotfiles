@@ -169,7 +169,8 @@ local scheme = wezterm.get_builtin_color_schemes()["Gruvbox Dark"]
 scheme.compose_cursor = "gray"
 
 return {
-    default_prog = {"/opt/homebrew/bin/fish", "-l"},
+    -- default_prog = {"/opt/homebrew/bin/fish", "-l"},
+    default_prog = {"/opt/homebrew/bin/fish", "-c", [[tmux new-session -A -s "default"]]},
     -- font config
     -- /Users/monaqa/Library/Fonts/Hack Regular Nerd Font Complete.ttf, CoreText
     -- font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
@@ -184,6 +185,9 @@ return {
     use_ime = true,
     freetype_load_flags = "NO_HINTING",
 
+    initial_rows = 58,
+    initial_cols = 187,
+
     -- colors
     color_schemes = {
         ["Gruvbox-monaqa-oriented"] = scheme,
@@ -192,18 +196,19 @@ return {
 
     -- tab
     -- window_decolations = "TITLE" | "RESIZE",
-    hide_tab_bar_if_only_one_tab = false,
+    hide_tab_bar_if_only_one_tab = true,
     use_fancy_tab_bar = false,
     tab_max_width = MAX_TAB_WIDTH + 2,
     window_frame = {
         font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
     },
+    window_decorations = "RESIZE",
     -- tab_bar_at_bottom = true,
 
     -- window
     adjust_window_size_when_changing_font_size = false,
-    window_background_opacity = 0.85,
-    -- text_background_opacity = 0.85,
+    window_background_opacity = 0.0,
+    text_background_opacity = 0.85,
     window_padding = {
         left = "1cell",
         right = "1cell",
@@ -220,41 +225,62 @@ return {
     key_map_preference = "Physical",
     -- leader = { key = "s", mods = "CTRL", timeout_milliseconds=1000 },
     keys = {
+        -- works as a hotkey
         {key="Enter", mods="CMD", action="ToggleFullScreen"},
-        {key="q", mods="CTRL", action=wezterm.action{SendString="\x11"}},
         {key=" ", mods="CMD", action="HideApplication"},
-        -- { key = ";", mods="CMD|SHIFT", action="IncreaseFontSize"},
-        -- { key = "-", mods="CMD|SHIFT", action="ResetFontSize"},
-        -- { key = "-", mods="CMD|SHIFT", action="ResetFontSize"},
-        { key = "raw:27", mods="CMD|SHIFT", action="ResetFontSize"},
-        { key = "raw:27", mods="CMD", action="DecreaseFontSize"},
-        { key = "raw:41", mods="CMD|SHIFT", action="IncreaseFontSize"},
-        { key = "a", mods="CMD|CTRL", action="IncreaseFontSize"},
-        { key = "x", mods="CMD|CTRL", action="DecreaseFontSize"},
-        { key = "0", mods="CMD|CTRL", action="ResetFontSize"},
 
-        -- タブの生成、移動、削除
-        {key = "t", mods="CMD", action=wezterm.action{SpawnCommandInNewTab={cwd = "/Users/monaqa"}}},
-        {key = "t", mods="CMD|SHIFT", action=wezterm.action{ActivateTabRelative=1}},
-        {key = "n", mods="CMD", action=wezterm.action{ActivateTabRelative=1}},
-        {key = "p", mods="CMD", action=wezterm.action{ActivateTabRelative=-1}},
-        {key = "n", mods="CMD|SHIFT", action=wezterm.action{MoveTabRelative=1}},
-        {key = "p", mods="CMD|SHIFT", action=wezterm.action{MoveTabRelative=-1}},
-        {key = "q", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
-        {key = "d", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
-        {key = "s", mods="CMD", action="ShowTabNavigator"},
-        {key = "w", mods="CMD", action="SpawnWindow"},
+        -- works as default
+
+        {key="q", mods="CTRL", action=wezterm.action{SendString="\x11"}},
         {key = "Tab", mods="CTRL", action="DisableDefaultAssignment"},
         {key = "Tab", mods="CTRL|SHIFT", action="DisableDefaultAssignment"},
 
+        -- change font size
+
+        -- { key = ";", mods="CMD|SHIFT", action="IncreaseFontSize"},
+        -- { key = "-", mods="CMD|SHIFT", action="ResetFontSize"},
+        -- { key = "-", mods="CMD|SHIFT", action="ResetFontSize"},
+
+        { key = "raw:27", mods="CMD|SHIFT", action="ResetFontSize"},
+        { key = "raw:27", mods="CMD", action="DecreaseFontSize"},
+        { key = "raw:41", mods="CMD|SHIFT", action="IncreaseFontSize"},
+        -- { key = "a", mods="CMD|CTRL", action="IncreaseFontSize"},
+        -- { key = "x", mods="CMD|CTRL", action="DecreaseFontSize"},
+        { key = "0", mods="CMD|CTRL", action="ResetFontSize"},
+
+        -- タブの生成、移動、削除
+        -- {key = "t", mods="CMD", action=wezterm.action{SpawnCommandInNewTab={cwd = "/Users/monaqa"}}},
+        -- {key = "t", mods="CMD|SHIFT", action=wezterm.action{ActivateTabRelative=1}},
+        -- {key = "n", mods="CMD", action=wezterm.action{ActivateTabRelative=1}},
+        -- {key = "p", mods="CMD", action=wezterm.action{ActivateTabRelative=-1}},
+        -- {key = "n", mods="CMD|SHIFT", action=wezterm.action{MoveTabRelative=1}},
+        -- {key = "p", mods="CMD|SHIFT", action=wezterm.action{MoveTabRelative=-1}},
+        -- {key = "q", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
+        -- {key = "d", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
+        -- {key = "s", mods="CMD", action="ShowTabNavigator"},
+        -- {key = "w", mods="CMD", action="SpawnWindow"},
+
+        -- tmux 連携 (\x13 == <C-s>)
+
+        {key = "t", mods="CMD", action=wezterm.action.SendString "\x13c"},
+        {key = "t", mods="CMD|SHIFT", action=wezterm.action.SendString "\x13C"},
+        {key = "h", mods="CMD", action=wezterm.action.SendString "\x13p"},
+        {key = "l", mods="CMD", action=wezterm.action.SendString "\x13n"},
+        {key = "j", mods="CMD", action=wezterm.action.SendString "\x13\x0a"},
+        {key = "k", mods="CMD", action=wezterm.action.SendString "\x13\x0b"},
+
+        {key = "d", mods="CMD", action=wezterm.action.SendString "\x13q"},
+        {key = "d", mods="CMD|SHIFT", action=wezterm.action.SendString "\x13Q"},
+        -- {key = "w", mods="CMD", action=wezterm.action.SendString "\x13Q"},
+
         -- window の分割、移動
-        {key = "_", mods="CMD", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
-        -- CMD + | で縦分割
-        {key = "raw:93", mods="CMD|SHIFT", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
-        {key = "h", mods="CMD", action=wezterm.action{ActivatePaneDirection="Left"}},
-        {key = "j", mods="CMD", action=wezterm.action{ActivatePaneDirection="Down"}},
-        {key = "k", mods="CMD", action=wezterm.action{ActivatePaneDirection="Up"}},
-        {key = "l", mods="CMD", action=wezterm.action{ActivatePaneDirection="Right"}},
+        -- {key = "_", mods="CMD", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
+        -- -- CMD + | で縦分割
+        -- {key = "raw:93", mods="CMD|SHIFT", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
+        -- {key = "h", mods="CMD", action=wezterm.action{ActivatePaneDirection="Left"}},
+        -- {key = "j", mods="CMD", action=wezterm.action{ActivatePaneDirection="Down"}},
+        -- {key = "k", mods="CMD", action=wezterm.action{ActivatePaneDirection="Up"}},
+        -- {key = "l", mods="CMD", action=wezterm.action{ActivatePaneDirection="Right"}},
 
         {key = "y", mods="CMD", action=wezterm.action{EmitEvent="trigger-nvim-with-scrollback"}},
 
