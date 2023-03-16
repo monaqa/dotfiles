@@ -86,7 +86,7 @@
   "[typescriptreact]": {"coc.preferences.formatOnSave": true },
   "[css]": {"coc.preferences.formatOnSave": true },
 
-  "codeLens.enable": true,
+  "codeLens.enable": false,
   "codeLens.position": "right_align",
 
   "diagnostic.messageTarget": "float",

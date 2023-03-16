@@ -390,11 +390,9 @@ function M.lualine()
             lualine_b = {
                 function()
                     local bufname = vim.fn.bufname()
-                    if vim.startswith(bufname, "term://") then
-                        return "[terminal]"
-                    end
-                    if vim.startswith(bufname, "fern://") then
-                        return "[fern]"
+                    local index = bufname:find("://", 1, true)
+                    if index ~= nil then
+                        return "[" .. bufname:sub(1, index - 1) .. "]"
                     end
                     return [[%f %m]]
                 end,
@@ -2390,15 +2388,15 @@ function M.smooth_scroll()
 end
 
 function M.modesearch()
-    local function escape_regex_paren(query)
-        return vim.fn.substitute(query, [=[\\\@<![()|\\]]=], function(m)
-            if m[1] == "(" then
-                return [[\%]] .. m[1]
-            else
-                return [[\]] .. m[1]
-            end
-        end, "g")
-    end
+    -- local function escape_regex_paren(query)
+    --     return vim.fn.substitute(query, [=[\\\@<![()|\\]]=], function(m)
+    --         if m[1] == "(" then
+    --             return [[\%]] .. m[1]
+    --         else
+    --             return [[\]] .. m[1]
+    --         end
+    --     end, "g")
+    -- end
     -- vim.keymap.set({ "n", "x", "o" }, "/", "<Plug>(modesearch-slash-rawstr)")
     -- vim.keymap.set({ "n", "x", "o" }, "?", "<Plug>(modesearch-slash-regexp)")
     -- vim.keymap.set("c", "<C-x>", "<Plug>(modesearch-toggle-mode)")
@@ -2421,7 +2419,7 @@ function M.modesearch()
             migemo = {
                 prompt = "[migemo]/",
                 converter = function(query)
-                    return escape_regex_paren(vim.fn["kensaku#query"](query))
+                    return vim.fn["kensaku#query"](query)
                 end,
             },
         },
@@ -2451,17 +2449,17 @@ function M.partedit()
 end
 
 function M.tsnode_marker()
-    vim.api.nvim_create_autocmd("FileType", {
-        -- group = vim.api.nvim_create_augroup("tsnode-marker-markdown", {}),
-        pattern = "markdown",
-        callback = function(ctx)
-            require("tsnode-marker").set_automark(ctx.buf, {
-                target = { "code_fence_content" }, -- list of target node types
-                hl_group = "TSNodeMarker",
-                -- hl_group = "CursorLine",
-            })
-        end,
-    })
+    -- vim.api.nvim_create_autocmd("FileType", {
+    --     -- group = vim.api.nvim_create_augroup("tsnode-marker-markdown", {}),
+    --     pattern = "markdown",
+    --     callback = function(ctx)
+    --         require("tsnode-marker").set_automark(ctx.buf, {
+    --             target = { "code_fence_content" }, -- list of target node types
+    --             hl_group = "TSNodeMarker",
+    --             -- hl_group = "CursorLine",
+    --         })
+    --     end,
+    -- })
 
     -- local function set_automark(bufnr)
     --     local parsers = require "vim.treesitter"

@@ -383,3 +383,45 @@ util.autocmd_vimrc "BufWritePost" {
 --     end,
 --     desc = "execute text_changed",
 -- }
+
+-- local function node_range_in_cursor(range, curpos)
+--     local r_s, c_s, r_e, c_e = unpack(range)
+--     local _, r_cur, c_cur, _, _ = unpack(curpos)
+--     r_cur = r_cur - 1
+--     c_cur = c_cur - 1
+--     -- range が単一行にある場合
+--     if r_s == r_e then
+--         return r_s == r_cur and c_s <= c_cur and c_cur < c_e
+--     end
+--     -- 行またぎの range かつあきらかに中にある場合
+--     if r_s < r_cur and r_cur < r_e then
+--         return true
+--     end
+--     -- 行またぎの range かつ境界の場合
+--     if r_cur == r_s then
+--         return c_s <= c_cur
+--     end
+--     if r_cur == r_e then
+--         return c_cur < c_e
+--     end
+--     return false
+-- end
+--
+-- local query = require "vim.treesitter.query"
+-- local function cursor_at(match, _, source, predicate)
+--     local node = match[predicate[2]]
+--     if not node then
+--         return true
+--     end
+--     return node_range_in_cursor({ node:range() }, vim.fn.getcurpos())
+-- end
+--
+-- query.add_predicate("cursor-at?", cursor_at, false)
+--
+-- query.add_predicate("cursor-not-at?", function(match, a, source, predicate)
+--     return not cursor_at(match, a, source, predicate)
+-- end, false)
+--
+-- util.autocmd_vimrc "CursorMoved" {
+--     command = "redraw!",
+-- }
