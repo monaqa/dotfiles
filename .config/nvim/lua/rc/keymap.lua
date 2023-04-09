@@ -947,4 +947,6 @@ vim.keymap.set("n", "@t", function()
     vim.cmd [[TodomeOpen]]
 end)
 
+vim.keymap.set("n", "ts", "<Cmd>Inspect<CR>")
+
 return M

@@ -825,7 +825,6 @@ end
 function M.gruvbit()
     vim.g.gruvbit_transp_bg = 0
 
-    -- TODO: foo
     util.autocmd_vimrc { "ColorScheme" } {
         pattern = "gruvbit",
         callback = function()

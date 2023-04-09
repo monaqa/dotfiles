@@ -447,3 +447,12 @@ util.autocmd_vimrc "BufWritePost" {
 -- util.autocmd_vimrc "CursorMoved" {
 --     command = "redraw!",
 -- }
+
+local query = require "vim.treesitter.query"
+local function bufname_vim_match(match, _, source, predicate)
+    local regex = vim.regex(predicate[2])
+    local foo = regex:match_str(vim.fn.bufname(source)) ~= nil
+    return foo
+end
+
+query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
