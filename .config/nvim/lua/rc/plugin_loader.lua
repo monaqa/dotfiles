@@ -25,7 +25,19 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local lazy_config = {}
+local lazy_config = {
+    dev = {
+        -- directory where you store your local plugin projects
+        path = "~/ghq/github.com/",
+        ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
+        patterns = { "monaqa" }, -- For example {"folke"}
+        fallback = false, -- Fallback to git when local plugin doesn't exist
+    },
+}
+
+local function cond_dev(plug_path)
+    return vim.fn.getcwd() == vim.fn.expand "~/ghq/github.com/" .. plug_path
+end
 
 local function add(tbl)
     table.insert(lazy_config, tbl)
@@ -106,6 +118,7 @@ add { "machakann/vim-swap", config = config.swap }
 -- coc
 add { "neoclide/coc.nvim", branch = "release", config = config.coc }
 -- add { "rafcamlet/coc-nvim-lua" }
+
 -- nvim_lsp
 
 -- add { "neovim/nvim-lspconfig", opt = 1, config = config.nvim_lsp }
@@ -124,10 +137,11 @@ add { "neoclide/coc.nvim", branch = "release", config = config.coc }
 add {
     "nvim-telescope/telescope.nvim",
     config = config.telescope,
-    dependencies = {
-        "fannheyward/telescope-coc.nvim",
-    },
+    -- dependencies = {
+    --     "fannheyward/telescope-coc.nvim",
+    -- },
 }
+add { "fannheyward/telescope-coc.nvim", dependencies = { "nvim-telescope/telescope.nvim" } }
 add { "nvim-lua/popup.nvim" }
 add { "nvim-lua/plenary.nvim" }
 
@@ -169,82 +183,23 @@ add { "vito-c/jq.vim" }
 add { "wlangstroth/vim-racket" }
 add { "terrastruct/d2-vim" }
 
--- neorg
--- add {
---     "nvim-neorg/neorg",
---     build = ":Neorg sync-parsers",
---     opts = {
---         load = {
---             ["core.defaults"] = {},
---             ["core.norg.esupports.indent"] = {
---                 config = {
---                     indents = {
---                         ["heading2"] = { indent = 1 },
---                         ["heading4"] = { indent = 1 },
---                         ["heading6"] = { indent = 1 },
---                     },
---                 },
---             },
---             ["core.norg.concealer"] = {
---                 config = {
---                     icons = {
---                         todo = {
---                             -- enabled = false,
---                             undone = { enabled = false },
---                         },
---                     },
---                     dim_code_blocks = {
---                         enabled = false,
---                         conceal = false,
---                     },
---                 },
---             },
---             ["core.norg.qol.todo_items"] = {},
---             ["core.norg.dirman"] = {
---                 config = {
---                     workspaces = {
---                         home = "~/notes/home",
---                     },
---                     default_workspace = "home",
---                 },
---             },
---             ["core.norg.journal"] = {
---                 config = {
---                     workspace = "home",
---                 },
---             },
---             ["core.export"] = {},
---             ["core.export.markdown"] = {
---                 config = {
---                     extensions = { "definition-lists" },
---                 },
---             },
---             ["core.integrations.telescope"] = {},
---             -- ["core.gtd.base"] = {},
---             -- ["core.gtd.queries"] = {},
---             -- ["core.gtd.helpers"] = {},
---             -- ["core.gtd.ui"] = {},
---         },
---     },
---     dependencies = { "nvim-lua/plenary.nvim", "nvim-neorg/neorg-telescope" },
--- }
-
 -- monaqa
 add { "monaqa/colordinate.vim", enabled = false }
 add {
     "monaqa/dial.nvim",
-    enabled = function()
-        if vim.fn.getcwd() == vim.fn.expand "~/ghq/github.com/monaqa/dial.nvim" then
-            util.print_error("dial.nvim is not loaded.", "WarningMsg")
-            return false
-        end
-        return true
-    end,
+    dev = cond_dev "monaqa/dial.nvim",
+    -- enabled = function()
+    --     if vim.fn.getcwd() == vim.fn.expand "~/ghq/github.com/monaqa/dial.nvim" then
+    --         util.print_error("dial.nvim is not loaded.", "WarningMsg")
+    --         return false
+    --     end
+    --     return true
+    -- end,
     config = config.dial,
 }
 add {
     "monaqa/modesearch.nvim",
-    unless_cwd = "~/ghq/github.com/monaqa/modesearch.nvim",
+    dev = cond_dev "monaqa/modesearch.nvim",
     config = config.modesearch,
 }
 add { "monaqa/peridot.vim" }
@@ -253,8 +208,9 @@ add { "monaqa/smooth-scroll.vim", config = config.smooth_scroll }
 add { "monaqa/vim-edgemotion" }
 add {
     "monaqa/nvim-treesitter-clipping",
+    dev = cond_dev "monaqa/nvim-treesitter-clipping",
     config = config.clipping,
-    unless_cwd = "~/ghq/github.com/monaqa/nvim-treesitter-clipping",
+    -- unless_cwd = "~/ghq/github.com/monaqa/nvim-treesitter-clipping",
 }
 
 require("lazy").setup(lazy_config)

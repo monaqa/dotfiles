@@ -76,6 +76,12 @@
         "args": [],
         "filetypes": ["todome"],
         "trace.server": "verbose"
+    },
+    "typst-ls": {
+      "command": "/Users/monaqa/ghq/github.com/nvarner/typst-lsp/target/release/typst-lsp",
+      "args": [],
+      "filetypes": ["typst"],
+      "trace.server": "verbose"
     }
   },
 

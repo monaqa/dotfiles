@@ -99,6 +99,7 @@ else
     set -x PYTHONPATH '/Users/monaqa/.local/pipx/venvs/pdm/lib/python3.11/site-packages/pdm/pep582'
 end
 
+set -x MANPAGER 'nvim +Man!'
 # }}}
 
 # abbr {{{

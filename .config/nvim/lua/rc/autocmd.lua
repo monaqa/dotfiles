@@ -39,6 +39,18 @@ util.autocmd_vimrc "VimResized" {
     command = [[Normal! <C-w>=]],
 }
 
+-- autocmd BufRead * autocmd FileType <buffer> ++once
+--   \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif
+util.autocmd_vimrc "BufRead" {
+    desc = "カーソル位置を閉じたときの場所に戻す",
+    callback = function(arg)
+        if vim.bo.filetype == "commit" or vim.bo.filetype == "rebase" then
+            return
+        end
+        vim.cmd.normal [[g`"]]
+    end,
+}
+
 -- §§1 .init.lua.local
 ---@class LocalrcList
 local LocalrcList = {
@@ -221,6 +233,16 @@ util.autocmd_vimrc "VimEnter" {
     desc = "マクロ用のレジスタを消去",
     callback = function()
         vim.fn.setreg("q", "")
+    end,
+}
+
+util.autocmd_vimrc "VimEnter" {
+    desc = ".todome が cwd にあればそれを開く",
+    callback = function()
+        if util.to_bool(vim.fn.filereadable ".todome") then
+            vim.cmd.edit ".todome"
+            vim.cmd.setfiletype "todome"
+        end
     end,
 }
 

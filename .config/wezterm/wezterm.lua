@@ -183,6 +183,7 @@ return {
     }),
     font_size = 16.0,
     use_ime = true,
+    macos_forward_to_ime_modifier_mask = "SHIFT|CTRL",
     freetype_load_flags = "NO_HINTING",
 
     initial_rows = 58,
@@ -247,6 +248,8 @@ return {
         -- { key = "a", mods="CMD|CTRL", action="IncreaseFontSize"},
         -- { key = "x", mods="CMD|CTRL", action="DecreaseFontSize"},
         { key = "0", mods="CMD|CTRL", action="ResetFontSize"},
+
+        {key = "u", mods="CMD|SHIFT", action=wezterm.action.CharSelect{}},
 
         -- タブの生成、移動、削除
         -- {key = "t", mods="CMD", action=wezterm.action{SpawnCommandInNewTab={cwd = "/Users/monaqa"}}},

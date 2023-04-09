@@ -926,9 +926,6 @@ vim.keymap.set("n", "<C-g>", "g,")
 -- <C-x> 絶妙に押しづらいから…
 vim.keymap.set("i", "<C-g>", "<C-x>")
 
-vim.keymap.set("v", "<C-a>", "<C-a>gv")
-vim.keymap.set("v", "<C-x>", "<C-x>gv")
-
 -- 直前の単語を full uppercase にする。
 -- vimrc 読書会より。
 -- thanks to thinca

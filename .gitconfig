@@ -41,6 +41,7 @@
 
     # https://qiita.com/oswhk/items/0883b630f98cc8eb6b08
     blamepr = "!f() { gh pr view -w `git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1 | cut -f5 -d' ' | sed -e 's%#%%'`; }; f"
+    prev = reset HEAD^
 
 [push]
     default = current

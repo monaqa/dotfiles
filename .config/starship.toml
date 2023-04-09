@@ -61,7 +61,6 @@ $git_branch\
 $git_commit\
 $git_state\
 $git_status\
-$package\
 $golang\
 $julia\
 $nim\
@@ -95,4 +94,4 @@ utc_time_offset = "+9"
 style = "fg:249"
 
 [python]
-format = '[${symbol}(${version})( \($virtualenv\))]($style)'
+format = '[${symbol}(${version}) (\($virtualenv\))]($style)'

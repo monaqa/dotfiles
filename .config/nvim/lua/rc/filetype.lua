@@ -90,7 +90,7 @@ util.autocmd_vimrc "FileType" {
 -- §§1 todome
 util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.todome",
-    command = [[setfiletype todome]],
+    command = [[setlocal filetype=todome]],
 }
 
 -- §§1 html
@@ -165,5 +165,21 @@ util.autocmd_vimrc { "BufEnter", "BufNewFile" } {
     end, obsidian.file_pattern),
     callback = function()
         vim.opt_local.filetype = "obsidian"
+    end,
+}
+
+-- typst
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
+    pattern = [[*.typ]],
+    callback = function()
+        vim.opt_local.filetype = "typst"
+    end,
+}
+
+-- typst
+util.autocmd_vimrc { "BufRead", "BufNewFile" } {
+    pattern = [[*.sus]],
+    callback = function()
+        vim.opt_local.filetype = "sus"
     end,
 }

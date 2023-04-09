@@ -487,7 +487,9 @@ function M.deepl()
     end
     vim.keymap.set("x", "@j", function()
         vim.fn["deepl#v"] "JA"
-    end)
+    end, {
+        desc = "DeepL translate",
+    })
     vim.keymap.set("x", "@e", function()
         vim.fn["deepl#v"] "EN"
     end)
@@ -2049,11 +2051,17 @@ function M.treesitter()
         filetype = "d2", -- if filetype does not agrees with parser name
     }
 
-    local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
+    parser_config.typst = {
+        install_info = {
+            url = "~/ghq/github.com/SeniorMars/tree-sitter-typst", -- local path or git repo
+            revision = "main",
+            files = { "src/parser.c", "src/scanner.c" },
+        },
+        filetype = "typst", -- if filetype does not agrees with parser name
+    }
 
-    ft_to_parser["mdx"] = "markdown"
-    ft_to_parser["obsidian"] = "markdown"
-    ft_to_parser["gina-commit"] = "gitcommit"
+    vim.treesitter.language.register("markdown", { "mdx", "obsidian" })
+    vim.treesitter.language.register("gitcommit", { "gina-commit" })
 
     local parser_install_dir = vim.fn.stdpath "data" .. "/treesitter"
     vim.opt.runtimepath:prepend(parser_install_dir)
@@ -2186,6 +2194,7 @@ end
 
 function M.clipping()
     vim.keymap.set("n", "<Space>c", "<Plug>(ts-clipping-clip)")
+    vim.keymap.set({ "x", "o" }, "<Space>c", "<Plug>(ts-clipping-select)")
 end
 
 -- §§1 filetype
@@ -2306,17 +2315,6 @@ function M.dial()
 
     require("dial.config").augends:register_group {
         default = basic,
-        markdown = concat {
-            basic,
-            { augend.misc.alias.markdown_header },
-        },
-        visual = concat {
-            basic,
-            {
-                augend.constant.alias.alpha,
-                augend.constant.alias.Alpha,
-            },
-        },
     }
 
     require("dial.config").augends:on_filetype {
@@ -2332,10 +2330,12 @@ function M.dial()
     -- end, { noremap = true })
     vim.keymap.set("n", "<C-a>", require("dial.map").inc_normal(), { noremap = true })
     vim.keymap.set("n", "<C-x>", require("dial.map").dec_normal(), { noremap = true })
-    vim.keymap.set("v", "<C-a>", require("dial.map").inc_visual "visual", { noremap = true })
-    vim.keymap.set("v", "<C-x>", require("dial.map").dec_visual "visual", { noremap = true })
-    vim.keymap.set("v", "g<C-a>", require("dial.map").inc_gvisual "visual", { noremap = true })
-    vim.keymap.set("v", "g<C-x>", require("dial.map").dec_gvisual "visual", { noremap = true })
+    vim.keymap.set("n", "g<C-a>", require("dial.map").inc_gnormal(), { noremap = true })
+    vim.keymap.set("n", "g<C-x>", require("dial.map").dec_gnormal(), { noremap = true })
+    vim.keymap.set("v", "<C-a>", require("dial.map").inc_visual(), { noremap = true })
+    vim.keymap.set("v", "<C-x>", require("dial.map").dec_visual(), { noremap = true })
+    vim.keymap.set("v", "g<C-a>", require("dial.map").inc_gvisual(), { noremap = true })
+    vim.keymap.set("v", "g<C-x>", require("dial.map").dec_gvisual(), { noremap = true })
 end
 
 function M.smooth_scroll()
