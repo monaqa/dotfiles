@@ -165,7 +165,8 @@ wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
 end)
 
 -- color theme
-local scheme = wezterm.get_builtin_color_schemes()["Gruvbox Dark"]
+-- local scheme = wezterm.get_builtin_color_schemes()["Gruvbox Dark"]
+local scheme = wezterm.get_builtin_color_schemes()["Gruvbox dark, medium (base16)"]
 scheme.compose_cursor = "gray"
 
 return {
@@ -229,6 +230,10 @@ return {
         -- works as a hotkey
         {key="Enter", mods="CMD", action="ToggleFullScreen"},
         {key=" ", mods="CMD", action="HideApplication"},
+
+        {key="f", mods="CMD", action=wezterm.action.SpawnCommandInNewWindow {
+            args = {"/opt/homebrew/bin/fish"}
+        }},
 
         -- works as default
 

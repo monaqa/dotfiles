@@ -407,7 +407,7 @@ vim.fn.digraph_setlist {
 
 vim.keymap.set("n", "s", "<Nop>", {})
 
-vim.keymap.set("n", "ss", util.split_window, {})
+-- vim.keymap.set("n", "ss", util.split_window, {})
 
 vim.keymap.set("n", "s_", util.cmdcr "split", {})
 vim.keymap.set("n", "s<Bar>", util.cmdcr "vsplit", {})

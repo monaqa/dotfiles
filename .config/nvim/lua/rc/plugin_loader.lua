@@ -143,7 +143,7 @@ add {
         { "sw", "<Cmd>bp | sp | bn | bd<CR>" },
     },
 }
-add { "glidenote/memolist.vim" }
+-- add { "glidenote/memolist.vim" }
 add {
     "haya14busa/vim-asterisk",
     keys = {
@@ -155,6 +155,7 @@ add {
 }
 add {
     "iamcco/markdown-preview.nvim",
+    ft = { "markdown", "mdx" },
     run = ":call mkdp#util#install()",
     config = function()
         vim.g.mkdp_markdown_css = vim.fn.expand "~/.config/nvim/resource/github-markdown-light.css"
@@ -173,7 +174,6 @@ add {
     },
 }
 add { "kkiyama117/zenn-vim" }
-add { "kyazdani42/nvim-web-devicons" }
 add {
     "lambdalisue/fern.vim",
     branch = "main",
@@ -462,15 +462,15 @@ add {
         end,
     },
 }
-add {
-    "mattn/emmet-vim",
-    config = function()
-        vim.g["user_emmet_mode"] = "n"
-        vim.g["emmet_html5"] = 0
-        vim.g["user_emmet_install_global"] = 0
-    end,
-}
-add { "mattn/vim-maketable" }
+-- add {
+--     "mattn/emmet-vim",
+--     config = function()
+--         vim.g["user_emmet_mode"] = "n"
+--         vim.g["emmet_html5"] = 0
+--         vim.g["user_emmet_install_global"] = 0
+--     end,
+-- }
+add { "mattn/vim-maketable", cmd = { "MakeTable", "UnmakeTable" } }
 add { "mbbill/undotree", keys = { { "U", "<Cmd>UndotreeToggle<CR>" } } }
 add {
     "nvim-lualine/lualine.nvim",
@@ -541,6 +541,7 @@ add {
 }
 add {
     "rhysd/rust-doc.vim",
+    ft = "rust",
     config = function()
         vim.g["rust_doc#define_map_K"] = 0
     end,
@@ -576,7 +577,7 @@ add {
 add {
     "terrortylor/nvim-comment",
     name = "nvim_comment",
-    keys = { "," },
+    keys = { { ",", mode = { "n", "x" } } },
     opts = {
         line_mapping = ",,",
         operator_mapping = ",",
@@ -584,15 +585,18 @@ add {
     },
 }
 add { "thinca/vim-qfreplace" }
-add { "thinca/vim-quickrun" }
-add { "tyru/capture.vim" }
+-- add { "thinca/vim-quickrun" }
+add { "tyru/capture.vim", cmd = { "Capture" } }
 add {
     "tyru/open-browser.vim",
     keys = {
         { "gb", "<Plug>(openbrowser-smart-search)", mode = { "n", "x" } },
     },
 }
-add { "uga-rosa/ccc.nvim", opts = {} }
+add {
+    "uga-rosa/ccc.nvim",
+    cmd = { "CccHighlighterEnable" },
+}
 add { "xolox/vim-misc" }
 add {
     "xolox/vim-session",
@@ -611,6 +615,7 @@ add {
 }
 add {
     "stevearc/aerial.nvim",
+    dependencies = { "kyazdani42/nvim-web-devicons" },
     keys = {
         {
             "<Space>t",
@@ -822,7 +827,7 @@ add {
 
         -- -- Set default symbol icons to use patched font icons (see https://www.nerdfonts.com/)
         -- -- "auto" will set it to true if nvim-web-devicons or lspkind-nvim is installed.
-        -- nerd_font = "auto",
+        nerd_font = true,
         --
         -- -- Call this function when aerial attaches to a buffer.
         -- on_attach = function(bufnr) end,
@@ -1079,7 +1084,7 @@ add {
         }
     end,
 }
-add { "yasukotelin/shirotelin", opt = true }
+add { "yasukotelin/shirotelin", lazy = true }
 
 -- paren
 add {
@@ -1181,7 +1186,7 @@ add {
 add {
     "machakann/vim-sandwich",
     keys = {
-        "sa",
+        { "sa", mode = { "n", "x" } },
         {
             "ds",
             "<Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)",
@@ -1449,6 +1454,9 @@ add {
 }
 add {
     "andymass/vim-matchup",
+    -- keys = {
+    --     { "<Space>m", "<Plug>(matchup-%)" },
+    -- },
     config = function()
         vim.g["matchup_matchparen_offscreen"] = {}
     end,
@@ -1465,7 +1473,7 @@ add {
     },
 }
 
-add { "bps/vim-textobj-python", dependencies = { "kana/vim-textobj-user" } }
+add { "bps/vim-textobj-python", dependencies = { "kana/vim-textobj-user" }, ft = { "python" } }
 add {
     "glts/vim-textobj-comment",
     dependencies = { "kana/vim-textobj-user" },
@@ -1921,8 +1929,8 @@ add {
     cmd = { "Telescope" },
     dependencies = { "neoclide/coc.nvim" },
 }
-add { "nvim-lua/popup.nvim" }
-add { "nvim-lua/plenary.nvim" }
+add { "nvim-lua/popup.nvim", lazy = true }
+add { "nvim-lua/plenary.nvim", lazy = true }
 
 -- denops
 -- add { "Shougo/ddu.vim", config = config.ddu }
@@ -2164,7 +2172,7 @@ add {
         }
     end,
 }
-add { "nvim-treesitter/playground", cond = cond_dev "nvim-treesitter/playground" }
+add { "nvim-treesitter/playground", cond = cond_dev "nvim-treesitter/playground", ft = { "query" } }
 add {
     "mfussenegger/nvim-treehopper",
     keys = {
@@ -2427,7 +2435,7 @@ add {
             migemo = {
                 prompt = "[migemo]/",
                 converter = function(query)
-                    return vim.fn["kensaku#query"](query)
+                    return [[\v]] .. vim.fn["kensaku#query"](query)
                 end,
             },
         },

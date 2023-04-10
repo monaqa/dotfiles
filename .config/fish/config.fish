@@ -41,6 +41,30 @@ function __auto_source_venv --on-variable PWD --description "Activate/Deactivate
   end
 end
 
+# https://blog.kentarom.com/posts/b9e446f0-8297-44e8-8c76-a0a6fe2fb54e
+function show_filtered_pr_list
+  set query '
+  query($q: String!, $limit: Int = 10) {
+    search(first: $limit, type: ISSUE, query: $q) {
+      nodes {
+        ... on PullRequest {
+          number
+          title
+          url
+          updatedAt
+          repository {
+            name
+          }
+        }
+      }
+    }
+  }
+  '
+  gh api graphql -F q="$argv" -F limit=10 -f query=$query
+end
+# show_filtered_pr_list is:open is:pr review-requested:@me
+# show_filtered_pr_list is:open is:pr author:@me
+
 # }}}
 
 fish_default_key_bindings
