@@ -13,6 +13,6 @@
     )
   ) @type
  (#match? @funcname "add")
- (#bufname-vim-match? "\\v.*plugin_loader\\.lua$")
+ (#bufname-vim-match? "\\v.*plugins\\.lua$")
  (#set! "kind" "Function")
  )
