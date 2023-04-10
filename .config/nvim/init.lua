@@ -17,7 +17,7 @@ vim.cmd [[
   syntax enable
 ]]
 
-require "rc.plugin_loader"
+require "rc.plugins"
 
 require "rc.autocmd"
 require "rc.option"

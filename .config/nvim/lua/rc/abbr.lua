@@ -62,6 +62,7 @@ make_abbrev {
     { from = "gs", to = "Gina status -s --opener=split" },
     { from = "git", to = "Gina" },
     { from = "gina", to = "Gina" },
+    { from = "l", to = "Lazy" },
     { from = "mn", to = "MemoNew" },
     { from = "mf", to = "MemoFind" },
     { from = "mg", to = "MemoLiveGrep" },

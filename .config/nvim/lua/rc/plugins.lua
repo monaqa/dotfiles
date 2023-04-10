@@ -1,5 +1,4 @@
 local util = require "rc.util"
-local config = require "rc.plugin_config"
 local submode = require "rc.submode"
 
 local disable_plugins = {
