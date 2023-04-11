@@ -48,7 +48,7 @@ local function add(conf)
     table.insert(lazy_config, conf)
 end
 
-add { "Vimjas/vim-python-pep8-indent" }
+add { "Vimjas/vim-python-pep8-indent", ft = { "python" } }
 add {
     "akinsho/bufferline.nvim",
     lazy = false,
@@ -164,7 +164,7 @@ add {
         }
     end,
 }
-add { "itchyny/vim-qfedit" }
+add { "itchyny/vim-qfedit", ft = { "qf" } }
 add {
     "kana/vim-altr",
     keys = {
@@ -583,7 +583,7 @@ add {
         -- comment_chunk_text_object = "im",
     },
 }
-add { "thinca/vim-qfreplace" }
+add { "thinca/vim-qfreplace", ft = { "qf" } }
 -- add { "thinca/vim-quickrun" }
 add { "tyru/capture.vim", cmd = { "Capture" } }
 add {
@@ -1451,15 +1451,15 @@ add {
         }
     end,
 }
-add {
-    "andymass/vim-matchup",
-    -- keys = {
-    --     { "<Space>m", "<Plug>(matchup-%)" },
-    -- },
-    config = function()
-        vim.g["matchup_matchparen_offscreen"] = {}
-    end,
-}
+-- add {
+--     "andymass/vim-matchup",
+--     -- keys = {
+--     --     { "<Space>m", "<Plug>(matchup-%)" },
+--     -- },
+--     config = function()
+--         vim.g["matchup_matchparen_offscreen"] = {}
+--     end,
+-- }
 
 -- textedit
 add {
@@ -1952,7 +1952,7 @@ add {
 }
 add {
     "lambdalisue/kensaku.vim",
-    lazy = true,
+    lazy = false,
     dependencies = { "vim-denops/denops.vim" },
 }
 
@@ -2094,7 +2094,7 @@ add {
                 enable = true,
                 -- disable = { "help" },
                 disable = function(lang, buf)
-                    if lang == "help" then
+                    if lang == "vimdoc" then
                         return true
                     end
                     local max_filesize = 1024 * 1024 -- 1 MB
@@ -2494,6 +2494,9 @@ vim.g["smooth_scroll_no_default_key_mappings"] = 1
 add {
     "monaqa/smooth-scroll.vim",
     keys = {
+        { mode = { "n", "x" }, "zz" },
+        { mode = { "n", "x" }, "zb" },
+        { mode = { "n", "x" }, "z<CR>" },
         {
             "<C-d>",
             function()
@@ -2554,10 +2557,10 @@ add {
 add {
     "monaqa/vim-edgemotion",
     keys = {
-        { "<Space>j", "m`<Plug>(edgemotion-j)" },
-        { "<Space>k", "m`<Plug>(edgemotion-k)" },
-        { "<Space>j", "<Plug>(edgemotion-j)" },
-        { "<Space>k", "<Plug>(edgemotion-k)" },
+        { mode = { "n", "x", "o" }, "<Space>j", "m`<Plug>(edgemotion-j)" },
+        { mode = { "n", "x", "o" }, "<Space>k", "m`<Plug>(edgemotion-k)" },
+        { mode = { "n", "x", "o" }, "<Space>j", "<Plug>(edgemotion-j)" },
+        { mode = { "n", "x", "o" }, "<Space>k", "<Plug>(edgemotion-k)" },
     },
 }
 add {

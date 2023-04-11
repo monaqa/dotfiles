@@ -242,6 +242,8 @@ util.autocmd_vimrc "VimEnter" {
         if util.to_bool(vim.fn.filereadable ".todome") then
             vim.cmd.edit ".todome"
             vim.cmd.setfiletype "todome"
+            -- なぜか BufRead が発火しない
+            vim.cmd.normal [[g`"]]
         end
     end,
 }
