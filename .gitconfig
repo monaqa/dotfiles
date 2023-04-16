@@ -1,7 +1,7 @@
 [user]
     email = cmonaqa@gmail.com
     name = monaqa
-    signingkey = 6999EB7A920CC3A6
+	signingkey = /Users/monaqa/.ssh/id_rsa.pub
 [github]
     user = monaqa
 
@@ -56,3 +56,4 @@
     algorithm = histogram
 [gpg]
     program = /opt/homebrew/bin/gpg
+	format = ssh
