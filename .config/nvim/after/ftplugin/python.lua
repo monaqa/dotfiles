@@ -1,3 +1,5 @@
+require("lazy").load { plugins = "vim-sandwich" }
+
 vim.cmd.inoreabbrev { args = { "<buffer>", "imprt", "import" } }
 vim.cmd.inoreabbrev { args = { "<buffer>", "improt", "import" } }
 

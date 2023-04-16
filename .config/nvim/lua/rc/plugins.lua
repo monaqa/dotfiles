@@ -393,6 +393,16 @@ add {
 add {
     "lewis6991/gitsigns.nvim",
     lazy = false,
+    config = function(_, opts)
+        _G.vimrc.omnifunc.gitsigns_branches = function(arglead)
+            local branches = vim.fn.systemlist { "git", "rev-parse", "--symbolic", "--branches", "--tags", "--remotes" }
+            return vim.tbl_filter(function(x)
+                return vim.startswith(x, arglead)
+            end, branches)
+        end
+
+        require("gitsigns").setup(opts)
+    end,
     opts = {
         signs = {
             add = { text = "║" },
@@ -415,6 +425,31 @@ add {
                 opts.buffer = bufnr
                 vim.keymap.set(mode, l, r, opts)
             end
+
+            map("n", "gc", function()
+                local branches =
+                    vim.fn.systemlist { "git", "rev-parse", "--symbolic", "--branches", "--tags", "--remotes" }
+                local default = "HEAD"
+                for _, item in ipairs { "master", "main" } do
+                    if vim.tbl_contains(branches, item) then
+                        default = item
+                        break
+                    end
+                end
+
+                vim.ui.input({
+                    prompt = "select branch (default: " .. default .. "): ",
+                    completion = "customlist,v:lua.vimrc.omnifunc.gitsigns_branches",
+                }, function(branch)
+                    if branch == nil then
+                        return
+                    end
+                    if branch == "" then
+                        branch = default
+                    end
+                    gs.change_base(branch, true)
+                end)
+            end)
 
             -- Navigation
             map("n", "gj", function()

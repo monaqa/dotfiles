@@ -30,6 +30,10 @@ const Path: React.FC<{}> = (props) => {
 };
 endsnippet
 
-snippet us "useState" b
-const [${1}, set_$1] = useState<${3}>(${2:null});
+snippet us "React useState hook" b
+const [$1, set${1/\w+/\u${0}/}] = useState(${2:null});
+endsnippet
+
+snippet ust "React useState hook with type" b
+const [$1, set${1/\w+/\u${0}/}] = useState<$3>(${2:null});
 endsnippet
