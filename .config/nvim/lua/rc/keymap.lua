@@ -607,9 +607,7 @@ vim.keymap.set("x", "<Space>l", function()
             end
         end
         local dispwidth_cursor = vim.fn.strdisplaywidth(vim.fn.getline(lnum_cursor))
-        vim.pretty_print { max = dispwidth_max, cur = dispwidth_cursor }
         if dispwidth_max > dispwidth_cursor then
-            vim.pretty_print { #line_cursor, dispwidth_max - dispwidth_cursor }
             vim.fn.cursor { lnum_cursor, #line_cursor, dispwidth_max - dispwidth_cursor, dispwidth_max }
         end
     end

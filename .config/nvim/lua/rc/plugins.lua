@@ -2441,6 +2441,7 @@ add {
             mode = { "n", "x", "o" },
             expr = true,
             silent = true,
+            replace_keycodes = false,
         },
         {
             "<C-x>",
