@@ -80,7 +80,7 @@ vim.keymap.set(
     "n",
     "n",
     util.trim [[
-    'Nn'[v:searchforward] .. '<Cmd>lua require("rc.keymap").temporal_attention()<CR>'
+    'Nn'[v:searchforward]
 ]],
     { expr = true }
 )
@@ -89,7 +89,7 @@ vim.keymap.set(
     "n",
     "N",
     util.trim [[
-    'nN'[v:searchforward] .. '<Cmd>lua require("rc.keymap").temporal_attention()<CR>'
+    'nN'[v:searchforward]
 ]],
     { expr = true }
 )
@@ -529,6 +529,113 @@ vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
     return stroke
 end, { expr = true })
 vim.keymap.set("x", "C", "<Plug>(vimrc-visual-successive-normal)")
+
+-- general conversion operator
+---@alias convertf function(s: string): string
+---@alias converter {desc: string, converter: convertf}
+
+---@type converter | nil
+local convert_config = nil
+
+---@type converter
+local identity_converter = {
+    desc = "何もしない",
+    converter = function(s)
+        return s
+    end,
+}
+
+---@param f fun(c: string): (string | nil)
+---@return fun(s: string): string
+local function char_converter(f)
+    return function(s)
+        local chars = vim.fn.split(s, [[\zs]])
+        chars = vim.tbl_map(function(char)
+            return f(char) or char
+        end, chars)
+        return table.concat(chars, "")
+    end
+end
+
+---@type converter[]
+local converters = {
+    {
+        desc = "小文字を大文字にする (abc -> ABC)",
+        converter = char_converter(function(c)
+            local codepoint = vim.fn.char2nr(c)
+            local start_codepoint = vim.fn.char2nr "a"
+            local end_codepoint = vim.fn.char2nr "z"
+            if start_codepoint <= codepoint and codepoint <= end_codepoint then
+                codepoint = codepoint - 0x20
+                return vim.fn.nr2char(codepoint)
+            end
+            return nil
+        end),
+    },
+    {
+        desc = "半角文字を全角文字に変換する (abcABC -> ａｂｃＡＢＣ)",
+        converter = char_converter(function(c)
+            local codepoint = vim.fn.char2nr(c)
+            local start_codepoint = vim.fn.char2nr "A"
+            local end_codepoint = vim.fn.char2nr "z"
+            if start_codepoint <= codepoint and codepoint <= end_codepoint then
+                codepoint = codepoint + 0xfee0
+                return vim.fn.nr2char(codepoint)
+            end
+            return nil
+        end),
+    },
+}
+
+function _G.vimrc.op.general_convert(type)
+    if convert_config == nil then
+        vim.ui.select(converters, {
+            format_item = function(item)
+                return item.desc
+            end,
+        }, function(item)
+            convert_config = item
+        end)
+    end
+
+    if convert_config == nil then
+        return
+    end
+
+    local sel_save = vim.o.selection
+    vim.o.selection = "inclusive"
+    local m_reg = vim.fn.getreg("m", nil, nil)
+
+    local visual_range
+    if type == "line" then
+        visual_range = "'[V']"
+    else
+        visual_range = "`[v`]"
+    end
+    vim.cmd("normal! " .. visual_range .. '"my')
+    local content = vim.fn.getreg("m", nil, nil)
+    local new_content = convert_config.converter(content)
+
+    if content == new_content then
+        return
+    end
+
+    if type == "line" then
+        vim.fn.setreg("m", new_content, "V")
+    else
+        vim.fn.setreg("m", new_content, "v")
+    end
+    vim.cmd("normal! " .. visual_range .. '"mp')
+
+    vim.o.selection = sel_save
+    vim.fn.setreg("m", m_reg, nil)
+end
+
+vim.keymap.set({ "n", "x" }, "gc", function()
+    convert_config = nil
+    vim.opt.operatorfunc = "v:lua.vimrc.op.general_convert"
+    return "g@"
+end, { expr = true, desc = "汎用文字列コンバータ" })
 
 -- Section1 motion/text object
 

@@ -21,6 +21,7 @@
   "python.formatting.provider": "black",
   "python.linting.flake8Enabled": false,
   "python.linting.mypyEnabled": true,
+  "python.linting.ruffEnabled": true,
   "python.linting.mypyPath": "mypy",
   "python.pythonPath": "/opt/homebrew/bin/python3",
   "python.sortImports.path": "/opt/homebrew/bin/isort",
@@ -38,6 +39,8 @@
 
   "tsdetect.mode": "auto",
   "tsserver.enable": true,
+  "eslint.enable": true,
+  "eslint.autoFixOnSave": true,
 
   "languageserver": {
     "astro": {
@@ -87,12 +90,10 @@
     }
   },
 
-  "[javascript]": {"coc.preferences.formatOnSave": true },
   "[python]": {"coc.preferences.formatOnSave": true },
   "[rust]": {"coc.preferences.formatOnSave": true },
-  "[typescript]": {"coc.preferences.formatOnSave": true },
-  "[typescriptreact]": {"coc.preferences.formatOnSave": true },
   "[css]": {"coc.preferences.formatOnSave": true },
+  "[javascript][typescript][typescriptreact]": {"coc.preferences.formatOnSave": false },
 
   "codeLens.enable": false,
   "codeLens.position": "right_align",

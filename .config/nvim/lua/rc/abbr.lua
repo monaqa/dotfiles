@@ -56,6 +56,7 @@ make_abbrev {
     { from = "gbr", to = "GinaBrowseYank" },
     { from = "gby", to = "GinaBrowseYank" },
     { from = "gc", to = "Gina commit" },
+    { from = "gcb", to = "GitsignsChangeBase" },
     { from = "gl", to = "Gina log --all --graph" },
     { from = "gps", to = "Gina push" },
     { from = "gpc", to = "GinaPrChanges" },

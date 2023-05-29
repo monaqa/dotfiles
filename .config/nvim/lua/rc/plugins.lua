@@ -199,6 +199,7 @@ add {
             [[\.DS_Store]],
             [[\.git]],
             [[\.mypy_cache]],
+            [[\.ruff_cache]],
             [[\.pytest_cache]],
             [[\.vim]],
             [[\.vimsessions]],
@@ -378,30 +379,51 @@ add {
             if meta.args == "" then
                 branch = vim.trim(vim.fn.system "git mom")
             end
+            package.loaded.gitsigns.change_base(branch, true)
             vim.cmd(([[Gina changes %s...HEAD]]):format(branch))
         end, { nargs = "?" })
     end,
 }
 add { "lambdalisue/vim-protocol" }
-add {
-    "lervag/vimtex",
-    config = function()
-        vim.g.tex_flavor = "latex"
-    end,
-    ft = { "tex" },
-}
+-- add {
+--     "lervag/vimtex",
+--     config = function()
+--         vim.g.tex_flavor = "latex"
+--     end,
+--     ft = { "tex" },
+-- }
 add {
     "lewis6991/gitsigns.nvim",
     lazy = false,
     config = function(_, opts)
-        _G.vimrc.omnifunc.gitsigns_branches = function(arglead)
+        require("gitsigns").setup(opts)
+
+        local function complete_branches(arglead, cmdline, cursorpos)
             local branches = vim.fn.systemlist { "git", "rev-parse", "--symbolic", "--branches", "--tags", "--remotes" }
-            return vim.tbl_filter(function(x)
-                return vim.startswith(x, arglead)
+            branches = vim.tbl_filter(function(cand)
+                return vim.startswith(cand, arglead)
             end, branches)
+            return branches
         end
 
-        require("gitsigns").setup(opts)
+        vim.api.nvim_create_user_command("GitsignsChangeBase", function(opts)
+            local branch = "HEAD"
+            if opts.fargs[1] ~= nil then
+                branch = opts.fargs[1]
+            else
+                local branches = complete_branches ""
+                for _, item in ipairs { "master", "main" } do
+                    if vim.tbl_contains(branches, item) then
+                        branch = item
+                        break
+                    end
+                end
+            end
+            package.loaded.gitsigns.change_base(branch, true)
+        end, {
+            nargs = "*",
+            complete = complete_branches,
+        })
     end,
     opts = {
         signs = {
@@ -425,31 +447,6 @@ add {
                 opts.buffer = bufnr
                 vim.keymap.set(mode, l, r, opts)
             end
-
-            map("n", "gc", function()
-                local branches =
-                    vim.fn.systemlist { "git", "rev-parse", "--symbolic", "--branches", "--tags", "--remotes" }
-                local default = "HEAD"
-                for _, item in ipairs { "master", "main" } do
-                    if vim.tbl_contains(branches, item) then
-                        default = item
-                        break
-                    end
-                end
-
-                vim.ui.input({
-                    prompt = "select branch (default: " .. default .. "): ",
-                    completion = "customlist,v:lua.vimrc.omnifunc.gitsigns_branches",
-                }, function(branch)
-                    if branch == nil then
-                        return
-                    end
-                    if branch == "" then
-                        branch = default
-                    end
-                    gs.change_base(branch, true)
-                end)
-            end)
 
             -- Navigation
             map("n", "gj", function()
@@ -630,22 +627,6 @@ add {
 add {
     "uga-rosa/ccc.nvim",
     cmd = { "CccHighlighterEnable" },
-}
-add { "xolox/vim-misc" }
-add {
-    "xolox/vim-session",
-    dependencies = { "vim-misc" },
-    config = function()
-        local session_dir = vim.fn["xolox#misc#path#merge"](vim.fn.getcwd(), ".vimsessions")
-        if util.to_bool(vim.fn.isdirectory(session_dir)) then
-            vim.g.session_directory = session_dir
-            vim.g.session_autosave = "yes"
-            vim.g.session_autoload = "yes"
-        else
-            vim.g.session_autosave = "no"
-            vim.g.session_autoload = "no"
-        end
-    end,
 }
 add {
     "stevearc/aerial.nvim",
@@ -975,7 +956,7 @@ add {
     end,
 }
 
-add { "atusy/tsnode-marker.nvim" }
+-- add { "atusy/tsnode-marker.nvim" }
 
 -- colorscheme
 add {
@@ -2226,17 +2207,17 @@ add {
 -- filetype
 -- julia-vim は遅延ロード負荷
 -- add { "JuliaEditorSupport/julia-vim" }
-add { "aklt/plantuml-syntax", ft = { "plantuml" } }
+-- add { "aklt/plantuml-syntax", ft = { "plantuml" } }
 add { "bfontaine/Brewfile.vim", ft = { "brewfile" } }
 add { "cespare/vim-toml", ft = { "toml" } }
-add { "chr4/nginx.vim", ft = { "nginx" } }
+-- add { "chr4/nginx.vim", ft = { "nginx" } }
 add { "ekalinin/Dockerfile.vim", ft = { "dockerfile" } }
 add { "evanleck/vim-svelte", ft = { "svelte" } }
 add { "justinmk/vim-syntax-extra", ft = { "vim" } }
-add { "ocaml/vim-ocaml", ft = { "ocaml" } }
+-- add { "ocaml/vim-ocaml", ft = { "ocaml" } }
 add { "othree/html5.vim", ft = { "html" } }
 add { "pangloss/vim-javascript", ft = { "javascript" } }
-add { "pest-parser/pest.vim", ft = { "pest" } }
+-- add { "pest-parser/pest.vim", ft = { "pest" } }
 add {
     "rust-lang/rust.vim",
     ft = { "rust" },
@@ -2459,19 +2440,26 @@ add {
             rawstr = {
                 prompt = "[rawstr]/",
                 converter = function(query)
-                    return [[\V]] .. vim.fn.escape(query, [[/\]])
+                    local case_handler = (function()
+                        if query:find "%u" ~= nil then
+                            return [[\C]]
+                        else
+                            return [[\c]]
+                        end
+                    end)()
+                    return case_handler .. [[\V]] .. vim.fn.escape(query, [[/\]])
                 end,
             },
             regexp = {
                 prompt = "[regexp]/",
                 converter = function(query)
-                    return [[\v]] .. vim.fn.escape(query, [[/]])
+                    return [[\c\v]] .. vim.fn.escape(query, [[/]])
                 end,
             },
             migemo = {
                 prompt = "[migemo]/",
                 converter = function(query)
-                    return [[\v]] .. vim.fn["kensaku#query"](query)
+                    return [[\c\v]] .. vim.fn["kensaku#query"](query)
                 end,
             },
         },
