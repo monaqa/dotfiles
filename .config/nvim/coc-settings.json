@@ -71,16 +71,16 @@
       "filetypes": ["nim"]
     },
     "satysfi-ls": {
-        "command": "satysfi-language-server",
-        "args": [],
-        "filetypes": ["satysfi"],
-        "trace.server": "verbose"
+      "command": "satysfi-language-server",
+      "args": [],
+      "filetypes": ["satysfi"],
+      "trace.server": "verbose"
     },
     "todome-ls": {
-        "command": "todome-language-server",
-        "args": [],
-        "filetypes": ["todome"],
-        "trace.server": "verbose"
+      "command": "todome-language-server",
+      "args": [],
+      "filetypes": ["todome"],
+      "trace.server": "verbose"
     },
     "typst-ls": {
       "command": "/Users/monaqa/ghq/github.com/nvarner/typst-lsp/target/release/typst-lsp",
@@ -127,18 +127,18 @@
   "suggest.acceptSuggestionOnCommitCharacter": false,
   "suggest.asciiCharactersOnly": true,
   "suggest.invalidInsertCharacters": [
-      "(",
+    "(",
       "<",
       "{",
-      "[",
-      "\r",
-      "\n"
-  ],
-  "suggest.noselect": true,
-  "suggest.enablePreselect": false,
+        "[",
+          "\r",
+          "\n"
+        ],
+        "suggest.noselect": true,
+        "suggest.enablePreselect": false,
 
-  "list.insertMappings": {
-    "<C-j>": "normal:j",
-    "<C-k>": "normal:k"
-  }
-}
+        "list.insertMappings": {
+          "<C-j>": "normal:j",
+          "<C-k>": "normal:k"
+        }
+      }

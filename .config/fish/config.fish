@@ -155,7 +155,7 @@ abbr -a gsc  "git switch -c"
 # abbr -a gsd "git stash drop"
 
 # tig
-abbr -a ta   "tig --all"
+abbr -a ta   "nvim -c 'Gina log --all --graph'"
 
 # tmux
 

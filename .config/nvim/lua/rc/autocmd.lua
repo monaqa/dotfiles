@@ -239,6 +239,13 @@ util.autocmd_vimrc "VimEnter" {
 util.autocmd_vimrc "VimEnter" {
     desc = ".todome が cwd にあればそれを開く",
     callback = function()
+        if #vim.v.argv > 2 then
+            -- Workaround: nvim を引数付きで開いた場合は後続処理を行わない。
+            -- 引数無しで開けば vim.v.argv は
+            -- {"nvim への絶対パス", "--embed"} みたいな配列になるため、
+            -- それ以外を弾く形。
+            return
+        end
         if util.to_bool(vim.fn.filereadable ".todome") then
             vim.cmd.edit ".todome"
             vim.cmd.setfiletype "todome"
