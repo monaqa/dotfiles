@@ -11,3 +11,9 @@ vim.keymap.set(
         buffer = true,
     }
 )
+
+vim.opt_local.comments = {
+    "nb:>",
+    "b:-",
+    "b:1. ",
+}

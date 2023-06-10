@@ -2065,14 +2065,14 @@ add {
             filetype = "d2", -- if filetype does not agrees with parser name
         }
 
-        parser_config.typst = {
-            install_info = {
-                url = "~/ghq/github.com/SeniorMars/tree-sitter-typst", -- local path or git repo
-                revision = "main",
-                files = { "src/parser.c", "src/scanner.c" },
-            },
-            filetype = "typst", -- if filetype does not agrees with parser name
-        }
+        -- parser_config.typst = {
+        --     install_info = {
+        --         url = "~/ghq/github.com/frozolotl/tree-sitter-typst", -- local path or git repo
+        --         revision = "main",
+        --         files = { "src/parser.c", "src/scanner.cc" },
+        --     },
+        --     filetype = "typst", -- if filetype does not agrees with parser name
+        -- }
 
         vim.treesitter.language.register("markdown", { "mdx", "obsidian" })
         vim.treesitter.language.register("gitcommit", { "gina-commit" })
