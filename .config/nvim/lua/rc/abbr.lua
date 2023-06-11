@@ -46,6 +46,7 @@ make_abbrev {
     { from = "cc", to = "CocConfig" },
     { from = "cl", to = "CocList" },
     { from = "clc", to = "CocLocalConfig" },
+    { from = "cm", to = "Capture messages" },
     { from = "cq", to = "CocQuickfix" },
     { from = "cr", to = "CocRestart" },
     -- { from = "dia", to = "ObsidianOpenDiary" },
