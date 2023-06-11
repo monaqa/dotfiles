@@ -38,7 +38,6 @@ vim.api.nvim_buf_create_user_command(0, "ExportMarkdown", function()
     vim.cmd.vsplit { fname }
 end, {})
 
-_G.vimrc.fn = {}
 _G.vimrc.fn.norg_indentexpr = function()
     local bufnr = 0
     local line = vim.v.lnum - 1

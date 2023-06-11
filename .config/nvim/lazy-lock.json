@@ -46,6 +46,7 @@
   "typst.vim": { "branch": "main", "commit": "6750b01970045affed30efe063d7e21b399f1efc" },
   "undotree": { "branch": "master", "commit": "485f01efde4e22cb1ce547b9e8c9238f36566f21" },
   "vim-altr": { "branch": "master", "commit": "fba055cf3b83a1ada5b05d694fbefd024aa93289" },
+  "vim-applescript": { "branch": "master", "commit": "a39af8fc7e4caf581366e2917d558f6232e4db36" },
   "vim-asterisk": { "branch": "master", "commit": "77e97061d6691637a034258cc415d98670698459" },
   "vim-edgemotion": { "branch": "master", "commit": "8d16bd92f6203dfe44157d43be7880f34fd5c060" },
   "vim-gruvbit": { "branch": "master", "commit": "9c9336abbd08fbc2ddf9b4f60f6502dea37e3443" },

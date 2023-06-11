@@ -120,3 +120,22 @@ end)
 
 -- §§1 todome
 util.create_cmd("TodomeOpen", "edit ~/todome/tasks.todome")
+
+-- §§1 Save Clipboard Image
+
+vim.api.nvim_create_user_command(
+    "PutClipboardImage",
+    require("rc.clipboard").command_put_clipboard_image {
+        fn_image_path = function(name)
+            local dir = "image/"
+            if name == nil or name == "" then
+                name = vim.fn.strftime "%Y-%m-%d-%H-%M-%S"
+            end
+            return dir .. name .. ".png"
+        end,
+        fn_markup_string = function(name, path)
+            return "![](" .. path .. ")"
+        end,
+    },
+    { nargs = "*" }
+)

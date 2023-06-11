@@ -8,6 +8,7 @@ _G.vimrc = {
     omnifunc = {},
     state = {},
     debug = {},
+    fn = {},
 }
 
 -- 正直このあたりよくわかってません

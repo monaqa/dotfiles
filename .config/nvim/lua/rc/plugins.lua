@@ -2237,6 +2237,7 @@ add { "vito-c/jq.vim", ft = { "jq" } }
 add { "wlangstroth/vim-racket", ft = { "racket" } }
 add { "terrastruct/d2-vim", ft = { "d2" } }
 add { "kaarmu/typst.vim" }
+add { "mityu/vim-applescript" }
 
 -- monaqa
 add { "monaqa/colordinate.vim", enabled = false }
