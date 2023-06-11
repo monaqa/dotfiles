@@ -396,7 +396,7 @@ util.autocmd_vimrc "BufWritePost" {
 --             --         local preg = vim.fn.getreg "p"
 --             --         vim.api.nvim_feedkeys("q", "n", true)
 --             --         vim.fn.setreg("p", preg)
---             --         vim.pretty_print { "stop", vim.fn.getreg "p", prev_macro_content }
+--             --         vim.print { "stop", vim.fn.getreg "p", prev_macro_content }
 --             --     end
 --             --     vim.api.nvim_feedkeys("@p", "n", true)
 --             -- end
@@ -424,7 +424,7 @@ util.autocmd_vimrc "BufWritePost" {
 --             auto_repeatable = vim.endswith(vim.fn.getreg "z", current_macro_content)
 --             vim.fn.setreg("z", current_macro_content)
 --         end
---         vim.pretty_print { vim.fn.getreg "p", auto_repeatable }
+--         vim.print { vim.fn.getreg "p", auto_repeatable }
 --         vim.api.nvim_feedkeys("qp", "n", true)
 --     end,
 --     desc = "execute text_changed",

@@ -901,7 +901,7 @@ add {
                 -- This is the config that will be passed to nvim_open_win.
                 -- Change values here to customize the layout
 
-                -- vim.pretty_print { conf = conf, source_winid = source_winid }
+                -- vim.print { conf = conf, source_winid = source_winid }
                 conf.anchor = "NE"
                 conf.col = vim.fn.winwidth(source_winid)
                 conf.row = 0

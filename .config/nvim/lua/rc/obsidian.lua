@@ -106,7 +106,7 @@ function M.omnifunc(findstart, base)
         ---@type string
         local line = vim.fn.getline "."
         local start = vim.fn.col "."
-        vim.pretty_print { line = line, start = start, sub = line:sub(start, start) }
+        vim.print { line = line, start = start, sub = line:sub(start, start) }
         while start > 0 do
             start = start - 1
             if line:sub(start, start) == "[" then
