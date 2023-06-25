@@ -172,7 +172,7 @@ add {
         { "<Space>-", "<Plug>(altr-forward)" },
     },
 }
-add { "kkiyama117/zenn-vim" }
+add { "kkiyama117/zenn-vim", lazy = true }
 add {
     "lambdalisue/fern.vim",
     branch = "main",
@@ -1289,6 +1289,15 @@ add {
               endif
               return '+' . cmdname . '<'
             endfunction
+
+            function! SandwichTypstCmdName() abort
+              let cmdname = input('command name: ', '')
+              if cmdname ==# ''
+                throw 'OperatorSandwichCancel'
+              endif
+              return '#' . cmdname . '['
+            endfunction
+
         ]]
 
         -- レシピ集
@@ -1454,6 +1463,18 @@ add {
             },
         }
 
+        local recipe_typst_cmd = {
+            {
+                filetype = { "typst" },
+                input = { "c" },
+                buns = { "SandwichTypstCmdName()", [["]"]] },
+                expr = 1,
+                cursor = "inner_tail",
+                kind = { "add", "replace" },
+                action = { "add" },
+            },
+        }
+
         vim.g["sandwich#recipes"] = util.list_concat {
             default_recipes,
             recipe_general,
@@ -1464,6 +1485,7 @@ add {
             recipe_codeblock,
             recipe_generics,
             recipe_satysfi_cmd,
+            recipe_typst_cmd,
         }
     end,
 }
@@ -2236,8 +2258,8 @@ add {
 add { "vito-c/jq.vim", ft = { "jq" } }
 add { "wlangstroth/vim-racket", ft = { "racket" } }
 add { "terrastruct/d2-vim", ft = { "d2" } }
-add { "kaarmu/typst.vim" }
-add { "mityu/vim-applescript" }
+add { "kaarmu/typst.vim", ft = { "typst" } }
+add { "mityu/vim-applescript", ft = { "applescript" } }
 
 -- monaqa
 add { "monaqa/colordinate.vim", enabled = false }
@@ -2313,6 +2335,7 @@ add {
             augend.integer.alias.decimal,
             augend.integer.alias.hex,
             augend.integer.alias.binary,
+            augend.decimal_fraction.new { signed = true },
             augend.date.new {
                 pattern = "%Y/%m/%d",
                 default_kind = "day",

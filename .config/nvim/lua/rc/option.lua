@@ -21,6 +21,7 @@ vim.opt.listchars = {
 vim.opt.fillchars = {
     eob = " ",
 }
+vim.opt.formatoptions:append "M"
 
 vim.opt.scrolloff = 0
 -- default は marker にしておく

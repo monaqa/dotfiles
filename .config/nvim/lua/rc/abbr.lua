@@ -4,7 +4,16 @@ vim.cmd [==[
     cnoreabbrev <expr> w] (getcmdtype() .. getcmdline() ==# ":w]") ? "w" : "w]"
 ]==]
 
----@alias abbrrule {from: string, to: string, prepose?: string, prepose_nospace?: string}
+vim.cmd [[
+function! RemoveAbbrTrigger(arg)
+  if a:arg
+    call getchar()
+  endif
+  return ""
+endfunction
+]]
+
+---@alias abbrrule {from: string, to: string, prepose?: string, prepose_nospace?: string, remove_trigger?: boolean}
 
 ---@param rules abbrrule[]
 local function make_abbrev(rules)
@@ -23,7 +32,8 @@ local function make_abbrev(rules)
     for key, rules_with_key in pairs(abbr_dict_rule) do
         ---コマンドラインが特定の内容だったら、それに対応する値を返す。
         ---@type table<string, string>
-        local d = {}
+        local d_str = {}
+        local d_remove = {}
 
         for _, rule in ipairs(rules_with_key) do
             local required_pattern = rule.from
@@ -32,12 +42,25 @@ local function make_abbrev(rules)
             elseif rule.prepose ~= nil then
                 required_pattern = rule.prepose .. " " .. required_pattern
             end
-            d[required_pattern] = rule.to
+            d_str[required_pattern] = rule.to
+            if rule.remove_trigger then
+                d_remove[required_pattern] = true
+            else
+                d_remove[required_pattern] = false
+            end
         end
 
-        vim.cmd(([[
-        cnoreabbrev <expr> %s (getcmdtype()==# ":") ? get(%s, getcmdline(), %s) : %s
-        ]]):format(key, vim.fn.string(d), vim.fn.string(key), vim.fn.string(key)))
+        vim.cmd(
+            ([[
+        cnoreabbrev <expr> %s (getcmdtype()==# ":" && has_key(%s, getcmdline())) ? get(%s, getcmdline()) .. RemoveAbbrTrigger(get(%s, getcmdline())) : %s
+        ]]):format(
+                key,
+                vim.fn.string(d_str),
+                vim.fn.string(d_str),
+                vim.fn.string(d_remove),
+                vim.fn.string(key)
+            )
+        )
     end
 end
 
@@ -81,6 +104,7 @@ make_abbrev {
     { from = "tg", to = "Telescope live_grep" },
     { from = "tod", to = "TodomeOpen" },
     { from = "tmp", to = "Template" },
+    { from = "s", to = "%s///g<Left><Left>", remove_trigger = true },
     { from = "ssf", to = "syntax sync fromstart" },
     { from = "sfs", to = "setfiletype satysfi" },
     { from = "vims", to = "vimgrep // %" },
@@ -104,6 +128,7 @@ make_abbrev {
     { prepose_nospace = "'<,'>", from = "gby", to = "GinaBrowseYank" },
     { prepose_nospace = "'<,'>", from = "p", to = "Partedit" },
     { prepose_nospace = "'<,'>", from = "pc", to = "ParteditCodeblock" },
+    { prepose_nospace = "'<,'>", from = "s", to = "s///g<Left><Left>", remove_trigger = true },
 
     { from = "isort", to = "!isort --profile black %" },
 }
