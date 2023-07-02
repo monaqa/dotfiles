@@ -127,7 +127,8 @@ vim.api.nvim_create_user_command(
     "PutClipboardImage",
     require("rc.clipboard").command_put_clipboard_image {
         fn_image_path = function(name)
-            local dir = "image/"
+            local current_file_dir = vim.fn.expand "%:h"
+            local dir = current_file_dir .. "/image/"
             if name == nil or name == "" then
                 name = vim.fn.strftime "%Y-%m-%d-%H-%M-%S"
             end

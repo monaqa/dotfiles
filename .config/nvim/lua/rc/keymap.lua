@@ -1054,4 +1054,9 @@ end)
 
 vim.keymap.set("n", "ts", "<Cmd>Inspect<CR>")
 
+-- TODO: 'path' を読んでもっといい感じに開く
+vim.keymap.set("n", "gF", "<Cmd>!open <cfile><CR>", {
+    desc = "外部の open コマンドを用いてパスを開く",
+})
+
 return M

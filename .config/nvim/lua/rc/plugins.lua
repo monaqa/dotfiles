@@ -48,7 +48,14 @@ local function add(conf)
     table.insert(lazy_config, conf)
 end
 
-add { "Vimjas/vim-python-pep8-indent", ft = { "python" } }
+-- add {
+--     "glacambre/firenvim",
+--     cond = not not vim.g.started_by_firenvim,
+--     build = function()
+--         require("lazy").load { plugins = "firenvim", wait = true }
+--         vim.fn["firenvim#install"](0)
+--     end,
+-- }
 add {
     "akinsho/bufferline.nvim",
     lazy = false,
@@ -2230,6 +2237,7 @@ add {
 -- julia-vim は遅延ロード負荷
 -- add { "JuliaEditorSupport/julia-vim" }
 -- add { "aklt/plantuml-syntax", ft = { "plantuml" } }
+add { "Vimjas/vim-python-pep8-indent", ft = { "python" } }
 add { "bfontaine/Brewfile.vim", ft = { "brewfile" } }
 add { "cespare/vim-toml", ft = { "toml" } }
 -- add { "chr4/nginx.vim", ft = { "nginx" } }
