@@ -446,6 +446,12 @@ add {
         numhl = true,
         linehl = false,
         word_diff = false,
+        current_line_blame_opts = {
+            virt_text = true,
+            virt_text_pos = "right_align",
+            delay = 10,
+            ignore_whitespace = true,
+        },
         on_attach = function(bufnr)
             local gs = package.loaded.gitsigns
 
@@ -484,6 +490,7 @@ add {
             -- map("n", "<leader>hR", gs.reset_buffer)
 
             map("n", "<Space>d", gs.preview_hunk)
+            map("n", "<Space>b", gs.toggle_current_line_blame)
 
             -- map("n", "<leader>hb", function()
             --     gs.blame_line { full = true }
@@ -1904,6 +1911,9 @@ add {
     "nvim-telescope/telescope.nvim",
     dependencies = {
         "fannheyward/telescope-coc.nvim",
+        "nvim-telescope/telescope-smart-history.nvim",
+        "nvim-telescope/telescope-frecency.nvim",
+        "kkharji/sqlite.lua",
     },
     cmd = { "Telescope" },
     keys = {
@@ -1942,11 +1952,26 @@ add {
                 builtin.quickfix { prompt_prefix = "𝝄" }
             end,
         },
+        {
+            "si",
+            function()
+                local extensions = require("telescope").extensions
+                extensions.frecency.frecency { prompt_prefix = "𝑓", workspace = "CWD" }
+            end,
+        },
     },
     config = function()
         local actions = require "telescope.actions"
 
         require("telescope").load_extension "coc"
+        require("telescope").load_extension "smart_history"
+        require("telescope").load_extension "frecency"
+
+        -- manage database history
+        local db_dir = vim.fn.stdpath "data" .. "/databases"
+        if not util.to_bool(vim.fn.isdirectory(db_dir)) then
+            vim.fn.mkdir(db_dir, "p")
+        end
 
         -- Global remapping
         require("telescope").setup {
@@ -1971,6 +1996,21 @@ add {
                 mappings = {
                     n = {
                         ["<Esc>"] = actions.close,
+                    },
+                    i = {
+                        ["<C-n>"] = actions.cycle_history_next,
+                        ["<C-p>"] = actions.cycle_history_prev,
+                        ["<C-j>"] = actions.move_selection_next,
+                        ["<C-k>"] = actions.move_selection_previous,
+                    },
+                },
+                history = {
+                    path = db_dir .. "/telescope_history.sqlite3",
+                    limite = 100,
+                },
+                extensions = {
+                    frecency = {
+                        show_unindexed = false,
                     },
                 },
             },
