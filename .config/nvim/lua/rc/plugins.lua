@@ -500,6 +500,15 @@ add {
         end,
     },
 }
+
+add {
+    "lifepillar/vim-colortemplate",
+    cmd = { "Colortemplate" },
+    ft = { "colortemplate" },
+    config = function()
+        vim.g.colortemplate_toolbar = 0
+    end,
+}
 -- add {
 --     "mattn/emmet-vim",
 --     config = function()
@@ -1977,7 +1986,91 @@ add { "nvim-lua/popup.nvim", lazy = true }
 add { "nvim-lua/plenary.nvim", lazy = true }
 
 -- denops
--- add { "Shougo/ddu.vim", config = config.ddu }
+-- add {
+--     "Shougo/ddu.vim",
+--     dependencies = { "vim-denops/denops.vim" },
+--     enabled = false,
+--     config = function()
+--         vim.keymap.set("n", "sm", function()
+--             vim.fn["ddu#start"] {
+--                 sources = {
+--                     { name = "mr", params = { kind = "mru" } },
+--                 },
+--             }
+--         end)
+--
+--         -- vim.keymap.set("n", "@o", function()
+--         --     vim.fn["ddu#start"] {
+--         --         sources = {
+--         --             { name = "file_external", params = {} },
+--         --         },
+--         --     }
+--         -- end)
+--         --
+--         -- vim.keymap.set("n", "@g", function()
+--         --     vim.fn["ddu_rg#find"]()
+--         -- end)
+--
+--         vim.fn["ddu#custom#patch_global"] {
+--             ui = "ff",
+--             uiParams = {
+--                 ff = { split = "floating" },
+--             },
+--             sources = {
+--                 { name = "file_rec", params = {} },
+--             },
+--             sourceOptions = {
+--                 ["_"] = {
+--                     matchers = { "matcher_substring" },
+--                 },
+--                 rg = {
+--                     args = { "--column", "--no-heading", "--color", "never" },
+--                 },
+--             },
+--             kindOptions = {
+--                 file = { defaultAction = "open" },
+--             },
+--             sourceParams = {
+--                 rg = {
+--                     args = { "--column", "--no-heading", "--color", "--hidden" },
+--                 },
+--                 file_external = {
+--                     cmd = { "fd", ".", "-H", "-E", "__pycache__", "-t", "f" },
+--                 },
+--             },
+--         }
+--
+--         local function nmap_action(lhs, action)
+--             vim.keymap.set(
+--                 "n",
+--                 lhs,
+--                 [[<Cmd>call ddu#ui#ff#do_action(']] .. action .. [[')<CR>]],
+--                 { buffer = true, silent = true }
+--             )
+--         end
+--
+--         util.autocmd_vimrc "FileType" {
+--             pattern = "ddu-ff",
+--             callback = function()
+--                 nmap_action("<CR>", "itemAction")
+--                 nmap_action("<Space>", "toggleSelectItem")
+--                 nmap_action("i", "openFilterWindow")
+--                 nmap_action("q", "quit")
+--                 nmap_action("<Esc>", "quit")
+--             end,
+--         }
+--
+--         util.autocmd_vimrc "FileType" {
+--             pattern = "ddu-ff-filter",
+--             callback = function()
+--                 vim.keymap.set("i", "<CR>", "<Esc><Cmd>close<CR>", { buffer = true, silent = true })
+--                 vim.keymap.set("n", "<CR>", "<Cmd>close<CR>", { buffer = true, silent = true })
+--                 vim.keymap.set("n", "q", "<Cmd>close<CR>", { buffer = true, silent = true })
+--                 vim.keymap.set("n", "<Esc>", "<Cmd>close<CR>", { buffer = true, silent = true })
+--             end,
+--         }
+--     end,
+-- }
 -- add { "Shougo/ddu-filter-matcher_substring" }
 -- add { "Shougo/ddu-kind-file" }
 -- add { "Shougo/ddu-source-file_rec" }
@@ -2339,6 +2432,122 @@ add {
             return v
         end
 
+        ---@param tone string
+        ---@return integer
+        local function tone_to_number(tone)
+            return ({
+                cees = 10,
+                ces = 11,
+                c = 0,
+                cis = 1,
+                ciis = 2,
+
+                dees = 0,
+                des = 1,
+                d = 2,
+                dis = 3,
+                diis = 4,
+
+                eees = 2,
+                ees = 3,
+                e = 4,
+                eis = 5,
+                eiis = 6,
+
+                fees = 3,
+                fes = 4,
+                f = 5,
+                fis = 6,
+                fiis = 7,
+
+                gees = 5,
+                ges = 6,
+                g = 7,
+                gis = 8,
+                giis = 9,
+
+                aees = 7,
+                aes = 8,
+                a = 9,
+                ais = 10,
+                aiis = 11,
+
+                bees = 9,
+                bes = 10,
+                b = 11,
+                bis = 0,
+                biis = 1,
+            })[tone]
+        end
+
+        local function octave_to_number(octave)
+            return ({
+                ["'''"] = 3,
+                ["''"] = 2,
+                ["'"] = 1,
+                [""] = 0,
+                [","] = -1,
+                [",,"] = -2,
+                [",,,"] = -3,
+            })[octave]
+        end
+
+        local function number_to_octave(num)
+            return ({
+                [3] = "'''",
+                [2] = "''",
+                [1] = "'",
+                [0] = "",
+                [-1] = ",",
+                [-2] = ",,",
+                [-3] = ",,,",
+            })[num]
+        end
+
+        local function number_to_tone(num)
+            return ({
+                "c",
+                "cis",
+                "d",
+                "dis",
+                "e",
+                "f",
+                "fis",
+                "g",
+                "gis",
+                "a",
+                "ais",
+                "b",
+            })[num + 1]
+        end
+
+        local lilypond_note = augend.user.new {
+            find = require("dial.augend.common").find_pattern_regex [[\v\C[cdefgab](ees|es|is|iis)?[,']*]],
+            ---@param text string
+            ---@param addend integer
+            ---@param cursor integer
+            ---@return { text?: string, cursor?: integer }
+            add = function(text, addend, cursor)
+                local tone_start, tone_end = text:find "[abcdefgis]+"
+                if tone_start == nil or tone_end == nil then
+                    return {}
+                end
+                local tone = text:sub(tone_start, tone_end)
+                local octave = text:sub(tone_end + 1)
+                local tone_num = tone_to_number(tone)
+                local octave_num = octave_to_number(octave)
+                local total_tone = tone_num + 12 * octave_num
+                total_tone = total_tone + addend
+                local new_tone_num = total_tone % 12
+                local new_octave_num = math.floor(total_tone / 12)
+                local new_tone = number_to_tone(new_tone_num)
+                local new_octave = number_to_octave(new_octave_num)
+                vim.print(text, tone, octave, new_tone, new_octave)
+                text = new_tone .. new_octave
+                return { text = text, cursor = #text }
+            end,
+        }
+
         local basic = {
             augend.integer.alias.decimal,
             augend.integer.alias.hex,
@@ -2430,6 +2639,39 @@ add {
 
         require("dial.config").augends:register_group {
             default = basic,
+            lilypond_note = { lilypond_note },
+            lilypond_ises = {
+                augend.constant.new {
+                    elements = { "cis", "des" },
+                    word = false,
+                    cyclic = true,
+                },
+                augend.constant.new {
+                    elements = { "dis", "ees" },
+                    word = false,
+                    cyclic = true,
+                },
+                augend.constant.new {
+                    elements = { "dis", "ees" },
+                    word = false,
+                    cyclic = true,
+                },
+                augend.constant.new {
+                    elements = { "fis", "ges" },
+                    word = false,
+                    cyclic = true,
+                },
+                augend.constant.new {
+                    elements = { "gis", "aes" },
+                    word = false,
+                    cyclic = true,
+                },
+                augend.constant.new {
+                    elements = { "ais", "bes" },
+                    word = false,
+                    cyclic = true,
+                },
+            },
         }
 
         require("dial.config").augends:on_filetype {
@@ -2437,6 +2679,10 @@ add {
                 basic,
                 { augend.misc.alias.markdown_header },
             },
+            -- lilypond = concat {
+            --     basic,
+            --     { lilypond_note },
+            -- },
         }
     end,
 }
