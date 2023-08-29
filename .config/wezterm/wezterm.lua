@@ -176,12 +176,15 @@ return {
     -- /Users/monaqa/Library/Fonts/Hack Regular Nerd Font Complete.ttf, CoreText
     -- font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
     font = wezterm.font_with_fallback({
+        -- {family="CommitMono-height105", weight=450, stretch="Normal", style="Normal"},
+        {family="CommitMono-height105-nokern", weight=450, stretch="Normal", style="Normal"},
         {family="Hack Nerd Font", weight="Regular", stretch="Normal", italic=false},
         -- {family="YuGothic", weight="Regular", stretch="Normal"},
         {family="Noto Sans CJK JP", weight="Regular", stretch="Normal"},
         -- {family="BIZ UDPGothic", weight="Regular", stretch="Normal"},
         -- {family="IBM Plex Sans JP", weight="Regular", stretch="Normal"},
     }),
+
     font_size = 16.0,
     use_ime = true,
     macos_forward_to_ime_modifier_mask = "SHIFT|CTRL",

@@ -69,7 +69,6 @@ $ocaml\
 $python\
 $ruby\
 $rust\
-$swift\
 $terraform\
 $memory_usage\
 $aws\

@@ -2,7 +2,7 @@ require("lazy").load { plugins = "dial.nvim" }
 
 vim.b.did_ftplugin = 1
 vim.opt_local.runtimepath:append {
-    "/opt/homebrew/share/lilypond/2.24.0/vim",
+    "/opt/homebrew/share/lilypond/2.24.1/vim",
 }
 
 vim.opt_local.shiftwidth = 2

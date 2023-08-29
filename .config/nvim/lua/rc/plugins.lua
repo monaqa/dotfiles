@@ -1952,13 +1952,13 @@ add {
                 builtin.quickfix { prompt_prefix = "𝝄" }
             end,
         },
-        {
-            "si",
-            function()
-                local extensions = require("telescope").extensions
-                extensions.frecency.frecency { prompt_prefix = "𝑓", workspace = "CWD" }
-            end,
-        },
+        -- {
+        --     "si",
+        --     function()
+        --         local extensions = require("telescope").extensions
+        --         extensions.frecency.frecency { prompt_prefix = "𝑓", workspace = "CWD" }
+        --     end,
+        -- },
     },
     config = function()
         local actions = require "telescope.actions"
@@ -2162,6 +2162,7 @@ add {
     },
     config = function()
         -- require("nvim-treesitter.install").compilers = { "gcc-12" }
+        require("nvim-treesitter.install").compilers = { "gcc-11" }
 
         local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
         parser_config.todome = {

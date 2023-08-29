@@ -83,10 +83,22 @@
       "trace.server": "verbose"
     },
     "typst-ls": {
-      "command": "/Users/monaqa/ghq/github.com/nvarner/typst-lsp/target/release/typst-lsp",
+      "command": "typst-lsp",
       "args": [],
       "filetypes": ["typst"],
       "trace.server": "verbose"
+    },
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [
+        ".ccls-root",
+        "compile_commands.json",
+        ".git/",
+      ],
+      "initializationOptions": {
+        "exportPdf": "onSave"
+      }
     }
   },
 

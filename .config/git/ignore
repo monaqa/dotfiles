@@ -22,3 +22,5 @@ Icon
 .worktree/
 
 __pycache__
+
+.ccls-cache/
