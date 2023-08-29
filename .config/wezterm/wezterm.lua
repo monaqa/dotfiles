@@ -112,10 +112,10 @@ end)
 
 wezterm.on("toggle-bg-opacity", function(window, pane)
     local overrides = window:get_config_overrides() or {}
-    if not overrides.window_background_opacity then
-        overrides.window_background_opacity = 1.0
-    else
+    if overrides.window_background_opacity then
         overrides.window_background_opacity = nil
+    else
+        overrides.window_background_opacity = 0.0
     end
     window:set_config_overrides(overrides)
 end)
@@ -123,11 +123,11 @@ end)
 wezterm.on("toggle-mode-screenshare", function(window, pane)
     local overrides = window:get_config_overrides() or {}
     if not overrides.font_size then
-        overrides.window_background_opacity = 1.0
+        overrides.window_background_opacity = nil
         overrides.font_size = 22.0
         overrides.enable_tab_bar = false
     else
-        overrides.window_background_opacity = nil
+        overrides.window_background_opacity = 0.0
         overrides.font_size = nil
         overrides.enable_tab_bar = nil
     end
@@ -170,8 +170,8 @@ local scheme = wezterm.get_builtin_color_schemes()["Gruvbox dark, medium (base16
 scheme.compose_cursor = "gray"
 
 return {
-    -- default_prog = {"/opt/homebrew/bin/fish", "-l"},
-    default_prog = {"/opt/homebrew/bin/fish", "-c", [[tmux new-session -A -s "default"]]},
+    default_prog = {"/opt/homebrew/bin/fish", "-l"},
+    -- default_prog = {"/opt/homebrew/bin/fish", "-c", [[tmux new-session -A -s "default"]]},
     -- font config
     -- /Users/monaqa/Library/Fonts/Hack Regular Nerd Font Complete.ttf, CoreText
     -- font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
@@ -212,7 +212,7 @@ return {
 
     -- window
     adjust_window_size_when_changing_font_size = false,
-    window_background_opacity = 0.0,
+    window_background_opacity = 1.0,
     text_background_opacity = 0.85,
     window_padding = {
         left = "1cell",

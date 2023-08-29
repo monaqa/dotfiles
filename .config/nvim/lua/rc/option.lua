@@ -66,7 +66,7 @@ vim.opt.shiftwidth = 4
 vim.opt.breakindent = true
 vim.opt.smartindent = false
 vim.opt.virtualedit = "block"
-vim.opt.isfname = vim.opt.isfname - "="
+vim.opt.isfname:remove "="
 
 vim.opt.backup = false
 vim.opt.swapfile = false

@@ -43,7 +43,7 @@ local function cond_dev(plug_path)
     return true
 end
 
----@param conf LazySpec
+---@param conf LazyPluginSpec
 local function add(conf)
     table.insert(lazy_config, conf)
 end
@@ -273,6 +273,7 @@ add {
 
             vim.keymap.set("n", "<C-h>", "<Plug>(fern-action-leave)", { remap = true, buffer = true })
             vim.keymap.set("n", "<CR>", "<Plug>(fern-open-or-enter)", { remap = true, buffer = true, nowait = true })
+            vim.keymap.set("n", "<Space><CR>", "<Plug>(fern-action-open:system)", { remap = true, buffer = true })
             vim.keymap.set("n", "e", "<Plug>(fern-action-open)", { remap = true, buffer = true })
             vim.keymap.set("n", "<BS>", "<Plug>(fern-action-leave)", { remap = true, buffer = true })
 
@@ -1912,7 +1913,7 @@ add {
     dependencies = {
         "fannheyward/telescope-coc.nvim",
         "nvim-telescope/telescope-smart-history.nvim",
-        "nvim-telescope/telescope-frecency.nvim",
+        -- "nvim-telescope/telescope-frecency.nvim",
         "kkharji/sqlite.lua",
     },
     cmd = { "Telescope" },
@@ -1965,7 +1966,7 @@ add {
 
         require("telescope").load_extension "coc"
         require("telescope").load_extension "smart_history"
-        require("telescope").load_extension "frecency"
+        -- require("telescope").load_extension "frecency"
 
         -- manage database history
         local db_dir = vim.fn.stdpath "data" .. "/databases"
@@ -2008,11 +2009,7 @@ add {
                     path = db_dir .. "/telescope_history.sqlite3",
                     limite = 100,
                 },
-                extensions = {
-                    frecency = {
-                        show_unindexed = false,
-                    },
-                },
+                extensions = {},
             },
         }
     end,
@@ -2298,7 +2295,7 @@ add {
                     "json",
                     "lua",
                     -- 'markdown',
-                    "python",
+                    -- "python",
                     "query",
                     -- 'rust',
                     -- 'svelte',
@@ -2371,7 +2368,7 @@ add {
 -- julia-vim は遅延ロード負荷
 -- add { "JuliaEditorSupport/julia-vim" }
 -- add { "aklt/plantuml-syntax", ft = { "plantuml" } }
-add { "Vimjas/vim-python-pep8-indent", ft = { "python" } }
+-- add { "Vimjas/vim-python-pep8-indent", ft = { "python" } }
 add { "bfontaine/Brewfile.vim", ft = { "brewfile" } }
 add { "cespare/vim-toml", ft = { "toml" } }
 -- add { "chr4/nginx.vim", ft = { "nginx" } }
