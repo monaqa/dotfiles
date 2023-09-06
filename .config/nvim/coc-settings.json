@@ -120,6 +120,10 @@
   "diagnostic.hintSign": "ℹ️ ",
   "diagnostic.signLevel": "error",
 
+  "inlayHint.enable": true,
+  "inlayHint.display": true,
+  "inlayHint.refreshOnInsertMode": false,
+
   "suggest.floatConfig": {
     "winblend": 10
   },

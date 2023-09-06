@@ -17,7 +17,7 @@ local function save_cliboard_image(filepath)
 end
 
 ---@param image_path string
----@param markup_string string
+---@param markup_string string | string[]
 function M.put_clipboard_image(image_path, markup_string)
     local parent_dir = vim.fn.fnamemodify(image_path, ":p:h")
     if not util.to_bool(vim.fn.isdirectory(parent_dir)) then
@@ -29,7 +29,7 @@ function M.put_clipboard_image(image_path, markup_string)
 end
 
 ---@alias f_image_path fun(name: string): string
----@alias f_markup_string fun(name: string, path: string): string
+---@alias f_markup_string fun(name: string, path: string): string | string[]
 
 --- fn_image_path を使って保存先のファイルパスを決定
 --- fn_markup_string を使って挿入する文字列を決定

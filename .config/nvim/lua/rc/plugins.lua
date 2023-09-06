@@ -179,6 +179,15 @@ add {
         { "<Space>-", "<Plug>(altr-forward)" },
     },
 }
+add {
+    "kana/vim-smartword",
+    keys = {
+        { "w", "<Plug>(smartword-w)", mode = { "n", "x" } },
+        { "e", "<Plug>(smartword-e)", mode = { "n", "x" } },
+        { "b", "<Plug>(smartword-b)", mode = { "n", "x" } },
+        { "ge", "<Plug>(smartword-ge)", mode = { "n", "x" } },
+    },
+}
 add { "kkiyama117/zenn-vim", lazy = true }
 add {
     "lambdalisue/fern.vim",
@@ -213,8 +222,6 @@ add {
             [[\.worktree]],
             [[__pycache__]],
             [[sumneko-lua-.*]],
-            [[Cargo.lock]],
-            [[poetry.lock]],
         }
 
         vim.g["fern#default_exclude"] = [[^\%(]] .. table.concat(exclude_files, [[\|]]) .. [[\)$]]
@@ -491,7 +498,7 @@ add {
             -- map("n", "<leader>hR", gs.reset_buffer)
 
             map("n", "<Space>d", gs.preview_hunk)
-            map("n", "<Space>b", gs.toggle_current_line_blame)
+            map("n", "@b", gs.toggle_current_line_blame)
 
             -- map("n", "<leader>hb", function()
             --     gs.blame_line { full = true }
@@ -1802,6 +1809,7 @@ add {
         vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)")
         vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
         vim.keymap.set("n", "K", util.cmdcr "call CocActionAsync('doHover')")
+        vim.keymap.set("n", "K", util.cmdcr "CocCommand document.toggleInlayHint")
 
         -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
         vim.cmd [[
@@ -2197,7 +2205,7 @@ add {
     },
     config = function()
         -- require("nvim-treesitter.install").compilers = { "gcc-12" }
-        require("nvim-treesitter.install").compilers = { "gcc-11" }
+        -- require("nvim-treesitter.install").compilers = { "gcc-11" }
 
         local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
         parser_config.todome = {
