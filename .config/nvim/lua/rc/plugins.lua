@@ -392,7 +392,12 @@ add {
         vim.api.nvim_create_user_command("GinaPrChanges", function(meta)
             local branch = meta.args
             if meta.args == "" then
-                branch = vim.trim(vim.fn.system "git mom")
+                local base_ref = vim.trim(vim.fn.system "gh pr view --json baseRefName -q '.baseRefName'")
+                if vim.startswith(base_ref, "no ") then
+                    branch = vim.trim(vim.fn.system "git mom")
+                else
+                    branch = base_ref
+                end
             end
             package.loaded.gitsigns.change_base(branch, true)
             vim.cmd(([[Gina changes %s...HEAD]]):format(branch))
@@ -1784,6 +1789,7 @@ add {
         vim.keymap.set("n", "ti", util.cmdcr "Telescope coc implementations")
         vim.keymap.set("n", "tr", util.cmdcr "Telescope coc references")
         vim.keymap.set("n", "ty", util.cmdcr "Telescope coc type_definitions")
+        vim.keymap.set("n", "tA", util.cmdcr "Telescope coc code_actions")
         vim.keymap.set("n", "tn", "<Plug>(coc-rename)")
         vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)")
         vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)")
@@ -2000,6 +2006,16 @@ add {
             vim.fn.mkdir(db_dir, "p")
         end
 
+        util.autocmd_vimrc "FileType" {
+            pattern = "TelescopePrompt",
+            callback = function()
+                vim.b.lexima_disabled = 1
+                -- なぜか lexima が <Esc><Esc> という mapping をはやしてしまうため
+                -- それより優先度の高いマッピングを入れておく
+                vim.keymap.set("i", "<Esc>", "<Esc>", { buffer = true, nowait = true })
+            end,
+        }
+
         -- Global remapping
         require("telescope").setup {
             defaults = {
@@ -2029,6 +2045,7 @@ add {
                         ["<C-p>"] = actions.cycle_history_prev,
                         ["<C-j>"] = actions.move_selection_next,
                         ["<C-k>"] = actions.move_selection_previous,
+                        ["<C-f>"] = false,
                     },
                 },
                 history = {
@@ -2143,6 +2160,7 @@ add { "nvim-lua/plenary.nvim", lazy = true }
 -- add { "matsui54/ddu-source-file_external" }
 -- add { "shun/ddu-source-rg" }
 add { "vim-denops/denops.vim", lazy = false }
+add { "lambdalisue/guise.vim", lazy = false }
 add {
     "4513ECHO/denops-gitter.vim",
     dependencies = { "vim-denops/denops.vim" },
