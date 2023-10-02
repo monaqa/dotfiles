@@ -192,7 +192,10 @@ abbr -a rafnew "cd (raf new)"
 
 # modern commands {{{
 
-if type -q exa
+if type -q lsd
+  abbr -a j "lsd -la"
+  abbr -a lt 'lsd -a --tree'
+else if type -q exa
   abbr -a j "exa -a --icons --group-directories-first --long --time-style=long-iso"
 else
   abbr -a j "ls -Fhla"

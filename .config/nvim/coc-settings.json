@@ -121,7 +121,7 @@
   "diagnostic.signLevel": "error",
 
   "inlayHint.enable": true,
-  "inlayHint.display": true,
+  "inlayHint.display": false,
   "inlayHint.refreshOnInsertMode": false,
 
   "suggest.floatConfig": {

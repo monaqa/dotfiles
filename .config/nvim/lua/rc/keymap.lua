@@ -531,7 +531,7 @@ end, { expr = true })
 vim.keymap.set("x", "C", "<Plug>(vimrc-visual-successive-normal)")
 
 -- general conversion operator
----@alias convertf function(s: string): string
+---@alias convertf fun(s: string): string
 ---@alias converter {desc: string, converter: convertf}
 
 ---@type converter | nil
@@ -585,6 +585,69 @@ local converters = {
             return nil
         end),
     },
+    {
+        desc = "16進数を2進数に変換する (5A -> 10100101, 0xA5 -> 0b10100101)",
+        converter = function(text)
+            local prefix = ""
+            if text:sub(1, 2) == "0x" then
+                text = text:sub(3)
+                prefix = "0b"
+            end
+            local num = tonumber(text, 16)
+            return vim.fn.printf("%s%b", prefix, num)
+        end,
+    },
+    {
+        desc = "Vim script の式とみなして計算する (1 + 1 -> 2, 40 * 3 -> 120)",
+        converter = function(text)
+            return vim.fn.string(vim.fn.eval(text))
+        end,
+    },
+    {
+        desc = "Title Case に変換する",
+        converter = function(text)
+            ---@param word string
+            ---@return string
+            local function capitalize(word)
+                local lower = word:lower()
+                local exception = {
+                    "and",
+                    "as",
+                    "but",
+                    "for",
+                    "if",
+                    "nor",
+                    "or",
+                    "so",
+                    "yet",
+                    "a",
+                    "an",
+                    "the",
+                    "as",
+                    "at",
+                    "by",
+                    "for",
+                    "in",
+                    "of",
+                    "off",
+                    "on",
+                    "per",
+                    "to",
+                    "up",
+                    "via",
+                }
+                if vim.list_contains(exception, lower) then
+                    return lower
+                end
+                local new_word = lower:gsub("^.", function(c)
+                    return c:upper()
+                end)
+                return new_word
+            end
+            local new_text = text:gsub("(%w+)", capitalize)
+            return new_text
+        end,
+    },
 }
 
 function _G.vimrc.op.general_convert(type)
@@ -602,9 +665,11 @@ function _G.vimrc.op.general_convert(type)
         return
     end
 
+    -- backup
     local sel_save = vim.o.selection
-    vim.o.selection = "inclusive"
     local m_reg = vim.fn.getreg("m", nil, nil)
+
+    vim.o.selection = "inclusive"
 
     local visual_range
     if type == "line" then
@@ -627,13 +692,22 @@ function _G.vimrc.op.general_convert(type)
     end
     vim.cmd("normal! " .. visual_range .. '"mp')
 
+    -- restore
     vim.o.selection = sel_save
     vim.fn.setreg("m", m_reg, nil)
 end
 
+-- v:lua の関数を opfunc に指定しても dot repeat ができない
+-- https://github.com/neovim/neovim/issues/17503
+vim.cmd [[
+    function! GeneralConvert(type) abort
+        return v:lua.vimrc.op.general_convert(a:type)
+    endfunction
+]]
+
 vim.keymap.set({ "n", "x" }, "gc", function()
     convert_config = nil
-    vim.opt.operatorfunc = "v:lua.vimrc.op.general_convert"
+    vim.opt.operatorfunc = "GeneralConvert"
     return "g@"
 end, { expr = true, desc = "汎用文字列コンバータ" })
 

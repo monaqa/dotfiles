@@ -179,15 +179,15 @@ add {
         { "<Space>-", "<Plug>(altr-forward)" },
     },
 }
-add {
-    "kana/vim-smartword",
-    keys = {
-        { "w", "<Plug>(smartword-w)", mode = { "n", "x" } },
-        { "e", "<Plug>(smartword-e)", mode = { "n", "x" } },
-        { "b", "<Plug>(smartword-b)", mode = { "n", "x" } },
-        { "ge", "<Plug>(smartword-ge)", mode = { "n", "x" } },
-    },
-}
+-- add {
+--     "kana/vim-smartword",
+--     keys = {
+--         { "w", "<Plug>(smartword-w)", mode = { "n", "x" } },
+--         { "e", "<Plug>(smartword-e)", mode = { "n", "x" } },
+--         { "b", "<Plug>(smartword-b)", mode = { "n", "x" } },
+--         { "ge", "<Plug>(smartword-ge)", mode = { "n", "x" } },
+--     },
+-- }
 add { "kkiyama117/zenn-vim", lazy = true }
 add {
     "lambdalisue/fern.vim",
@@ -640,8 +640,9 @@ add {
 add {
     "numToStr/Comment.nvim",
     keys = {
-        { ",", mode = { "n", "v" } },
-        { ",,", mode = { "n" } },
+        { ",", "<Plug>(comment_toggle_linewise)", mode = { "n" } },
+        { ",", "<Plug>(comment_toggle_linewise_visual)", mode = { "x" } },
+        { ",,", "<Plug>(comment_toggle_linewise)_", mode = { "n" } },
     },
     opts = {
         ---Add a space b/w comment and the line
@@ -650,33 +651,12 @@ add {
         -- sticky = true,
         -- ---Lines to be ignored while (un)comment
         -- ignore = nil,
-        ---LHS of toggle mappings in NORMAL mode
-        toggler = {
-            ---Line-comment toggle keymap
-            line = ",,",
+        mappings = {
+            ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+            basic = false,
+            ---Extra mapping; `gco`, `gcO`, `gcA`
+            extra = false,
         },
-        ---LHS of operator-pending mappings in NORMAL and VISUAL mode
-        opleader = {
-            ---Line-comment keymap
-            line = ",",
-        },
-        -- ---LHS of extra mappings
-        -- extra = {
-        --     ---Add comment on the line above
-        --     above = "gcO",
-        --     ---Add comment on the line below
-        --     below = "gco",
-        --     ---Add comment at the end of line
-        --     eol = "gcA",
-        -- },
-        -- ---Enable keybindings
-        -- ---NOTE: If given `false` then the plugin won't create any mappings
-        -- mappings = {
-        --     ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-        --     basic = true,
-        --     ---Extra mapping; `gco`, `gcO`, `gcA`
-        --     extra = true,
-        -- },
         -- ---Function to call before (un)comment
         -- pre_hook = nil,
         -- ---Function to call after (un)comment
@@ -1809,7 +1789,7 @@ add {
         vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)")
         vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
         vim.keymap.set("n", "K", util.cmdcr "call CocActionAsync('doHover')")
-        vim.keymap.set("n", "K", util.cmdcr "CocCommand document.toggleInlayHint")
+        vim.keymap.set("n", "th", util.cmdcr "CocCommand document.toggleInlayHint")
 
         -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
         vim.cmd [[

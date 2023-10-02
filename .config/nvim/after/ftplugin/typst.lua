@@ -36,7 +36,7 @@ vim.api.nvim_buf_create_user_command(
             vim.fn.chdir(prev_dir)
             return {
                 "#align(center)[",
-                ([[  #imag("%s", width: 85%%)]]):format(relpath),
+                ([[  #image("%s", width: 85%%)]]):format(relpath),
                 "]",
             }
         end,
