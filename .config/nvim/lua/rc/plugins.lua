@@ -956,6 +956,9 @@ add {
                 -- Change values here to customize the layout
 
                 -- vim.print { conf = conf, source_winid = source_winid }
+
+                -- telescope の floating window の下に出るようにする
+                conf.zindex = 49
                 conf.anchor = "NE"
                 conf.col = vim.fn.winwidth(source_winid)
                 conf.row = 0
@@ -1945,8 +1948,8 @@ add {
     dependencies = {
         "fannheyward/telescope-coc.nvim",
         "nvim-telescope/telescope-smart-history.nvim",
-        -- "nvim-telescope/telescope-frecency.nvim",
         "kkharji/sqlite.lua",
+        "fdschmidt93/telescope-egrepify.nvim",
     },
     cmd = { "Telescope" },
     keys = {
@@ -1974,8 +1977,11 @@ add {
         {
             "sg",
             function()
-                local builtin = require "telescope.builtin"
-                builtin.live_grep { prompt_prefix = "𝜸" }
+                -- local builtin = require "telescope.builtin"
+                -- builtin.live_grep { prompt_prefix = "𝜸" }
+                require("telescope").extensions.egrepify.egrepify {
+                    prompt_prefix = "𝜸",
+                }
             end,
         },
         {
@@ -1998,6 +2004,7 @@ add {
 
         require("telescope").load_extension "coc"
         require("telescope").load_extension "smart_history"
+        require("telescope").load_extension "egrepify"
         -- require("telescope").load_extension "frecency"
 
         -- manage database history
@@ -2052,7 +2059,47 @@ add {
                     path = db_dir .. "/telescope_history.sqlite3",
                     limite = 100,
                 },
-                extensions = {},
+                extensions = {
+                    egrepify = {
+                        prefixes = {
+                            ["#"] = {
+                                -- #$REMAINDER
+                                -- # is caught prefix
+                                -- `input` becomes $REMAINDER
+                                -- in the above example #lua,md -> input: lua,md
+                                flag = "glob",
+                                cb = function(input)
+                                    return string.format([[*.{%s}]], input)
+                                end,
+                            },
+                            -- filter for (partial) folder names
+                            -- example prompt: >conf $MY_PROMPT
+                            -- searches with ripgrep prompt $MY_PROMPT in paths that have "conf" in folder
+                            -- i.e. rg --glob="**/conf*/**" -- $MY_PROMPT
+                            [">"] = {
+                                flag = "glob",
+                                cb = function(input)
+                                    return string.format([[**/{%s}*/**]], input)
+                                end,
+                            },
+                            -- filter for (partial) file names
+                            -- example prompt: &egrep $MY_PROMPT
+                            -- searches with ripgrep prompt $MY_PROMPT in paths that have "egrep" in file name
+                            -- i.e. rg --glob="*egrep*" -- $MY_PROMPT
+                            ["&"] = {
+                                flag = "glob",
+                                cb = function(input)
+                                    return string.format([[*{%s}*]], input)
+                                end,
+                            },
+                        },
+                        mappings = {
+                            ["<C-z>"] = false,
+                            ["<C-a>"] = false,
+                            ["<C-r>"] = false,
+                        },
+                    },
+                },
             },
         }
     end,
@@ -2062,6 +2109,11 @@ add {
     cmd = { "Telescope" },
     dependencies = { "neoclide/coc.nvim" },
 }
+add {
+    "fdschmidt93/telescope-egrepify.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+}
+
 add { "nvim-lua/popup.nvim", lazy = true }
 add { "nvim-lua/plenary.nvim", lazy = true }
 
@@ -2885,28 +2937,28 @@ add {
         {
             "<C-d>",
             function()
-                vim.fn["smooth_scroll#flick"](vim.v.count1 * vim.o.scroll, 15, "j", "k")
+                vim.fn["smooth_scroll#flick"](vim.v.count1 * vim.o.scroll, 15, "gj", "gk")
             end,
             mode = { "n", "x" },
         },
         {
             "<C-u>",
             function()
-                vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.o.scroll, 15, "j", "k")
+                vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.o.scroll, 15, "gj", "gk")
             end,
             mode = { "n", "x" },
         },
         {
             "<C-f>",
             function()
-                vim.fn["smooth_scroll#flick"](vim.v.count1 * vim.fn.winheight(0), 25, "j", "k")
+                vim.fn["smooth_scroll#flick"](vim.v.count1 * vim.fn.winheight(0), 25, "gj", "gk")
             end,
             mode = { "n", "x" },
         },
         {
             "<C-b>",
             function()
-                vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winheight(0), 25, "j", "k")
+                vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winheight(0), 25, "gj", "gk")
             end,
             mode = { "n", "x" },
         },
