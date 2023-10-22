@@ -108,6 +108,8 @@ make_abbrev {
     { from = "sfs", to = "setfiletype satysfi" },
     { from = "vims", to = "vimgrep // %" },
     { from = "wd", to = "Telescope coc workspace_diagnostics" },
+    { from = "gd", to = "g//d" },
+    { from = "vd", to = "v//d" },
     { prepose = "CocCommand", from = "s", to = "snippets.editSnippets" },
     { prepose = "CocCommand", from = "r", to = "rust-analyzer.reload" },
     { prepose = "CocList", from = "e", to = "extensions" },
@@ -129,6 +131,8 @@ make_abbrev {
     { prepose_nospace = "'<,'>", from = "p", to = "Partedit" },
     { prepose_nospace = "'<,'>", from = "pc", to = "ParteditCodeblock" },
     { prepose_nospace = "'<,'>", from = "s", to = "s///g<Left><Left>", remove_trigger = true },
+    { prepose_nospace = "'<,'>", from = "gd", to = "g//d" },
+    { prepose_nospace = "'<,'>", from = "vd", to = "v//d" },
 
     { from = "isort", to = "!isort --profile black %" },
 }
