@@ -199,7 +199,7 @@ add {
         "lambdalisue/nerdfont.vim",
     },
     keys = {
-        { "sf", "<Cmd>Fern . -reveal=%:p<CR>" },
+        -- { "sf", "<Cmd>Fern . -reveal=%:p<CR>" },
         { "sz", "<Cmd>Fern . -drawer -toggle<CR>" },
     },
     cmd = {
@@ -685,6 +685,7 @@ add {
 add {
     "stevearc/aerial.nvim",
     dependencies = { "kyazdani42/nvim-web-devicons" },
+    lazy = false,
     keys = {
         {
             "<Space>t",
@@ -697,7 +698,7 @@ add {
             "<Space>i",
             function()
                 local aerial = require "aerial"
-                aerial.open { focus = false }
+                -- aerial.open { focus = false }
                 aerial.focus()
             end,
         },
@@ -717,7 +718,7 @@ add {
             -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
             -- min_width and max_width can be a list of mixed types.
             -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
-            max_width = { 80, 0.5 },
+            max_width = { 40, 0.3 },
             width = nil,
             min_width = 20,
 
@@ -735,19 +736,24 @@ add {
             -- Determines where the aerial window will be opened
             --   edge   - open aerial at the far right/left of the editor
             --   window - open aerial to the right/left of the current window
-            placement = "edge",
+            placement = "window",
         },
 
         -- -- Determines how the aerial window decides which buffer to display symbols for
         -- --   window - aerial window will display symbols for the buffer in the window from which it was opened
         -- --   global - aerial window will display symbols for the current window
-        -- attach_mode = "window",
+        attach_mode = "window",
         --
         -- -- List of enum values that configure when to auto-close the aerial window
         -- --   unfocus       - close aerial when you leave the original source window
         -- --   switch_buffer - close aerial when you change buffers in the source window
         -- --   unsupported   - close aerial when attaching to a buffer that has no symbol source
         -- close_automatic_events = {},
+        close_automatic_events = {
+            "unfocus",
+            "switch_buffer",
+            "unsupported",
+        },
         --
         -- -- Keymaps in aerial window. Can be any value that `vim.keymap.set` accepts OR a table of keymap
         -- -- options with a `callback` (e.g. { callback = function() ... end, desc = "", nowait = true })
@@ -907,12 +913,17 @@ add {
         -- -- Automatically open aerial when entering supported buffers.
         -- -- This can be a function (see :help aerial-open-automatic)
         -- open_automatic = false,
+        open_automatic = function()
+            local aerial = require "aerial"
+            return aerial.num_symbols() > 1 and not aerial.was_closed()
+        end,
+
         --
         -- -- Run this command after jumping to a symbol (false will disable)
         -- post_jump_cmd = "normal! zz",
         --
         -- -- When true, aerial will automatically close after jumping to a symbol
-        close_on_select = true,
+        close_on_select = false,
         --
         -- -- The autocmds that trigger symbols update (not used for LSP backend)
         -- update_events = "TextChanged,InsertLeave",
@@ -947,9 +958,9 @@ add {
             -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
             -- min_height and max_height can be a list of mixed types.
             -- min_height = {8, 0.1} means "the greater of 8 rows or 10% of total"
-            max_height = 0.9,
+            max_height = 0.4,
             height = nil,
-            min_height = { 8, 0.1 },
+            min_height = 8,
 
             override = function(conf, source_winid)
                 -- This is the config that will be passed to nvim_open_win.
@@ -959,9 +970,9 @@ add {
 
                 -- telescope の floating window の下に出るようにする
                 conf.zindex = 49
-                conf.anchor = "NE"
+                conf.anchor = "SE"
                 conf.col = vim.fn.winwidth(source_winid)
-                conf.row = 0
+                conf.row = vim.fn.winheight(source_winid)
                 return conf
             end,
         },
@@ -994,6 +1005,167 @@ add {
         --     update_delay = 300,
         -- },
     },
+}
+add {
+    "stevearc/oil.nvim",
+    keys = {
+        { "sf", "<Cmd>Oil .<CR>" },
+    },
+    cmd = {
+        "Oil",
+    },
+    config = function()
+        local function with_nowait(action)
+            return {
+                callback = require("oil.actions")[action].callback,
+                desc = require("oil.actions")[action].desc,
+                nowait = true,
+            }
+        end
+        require("oil").setup {
+            -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
+            -- Set to false if you still want to use netrw.
+            default_file_explorer = true,
+            -- Id is automatically added at the beginning, and name at the end
+            -- See :help oil-columns
+            columns = {
+                "icon",
+                -- "permissions",
+                -- "size",
+                -- "mtime",
+            },
+            -- Buffer-local options to use for oil buffers
+            buf_options = {
+                buflisted = false,
+                bufhidden = "hide",
+            },
+            -- Window-local options to use for oil buffers
+            win_options = {
+                wrap = false,
+                signcolumn = "no",
+                cursorcolumn = false,
+                foldcolumn = "0",
+                spell = false,
+                list = false,
+                conceallevel = 3,
+                concealcursor = "nvic",
+            },
+            -- Send deleted files to the trash instead of permanently deleting them (:help oil-trash)
+            delete_to_trash = true,
+            -- Skip the confirmation popup for simple operations
+            skip_confirm_for_simple_edits = false,
+            -- Change this to customize the command used when deleting to trash
+            trash_command = "trash-put",
+            -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
+            prompt_save_on_select_new_entry = true,
+            -- Oil will automatically delete hidden buffers after this delay
+            -- You can set the delay to false to disable cleanup entirely
+            -- Note that the cleanup process only starts when none of the oil buffers are currently displayed
+            cleanup_delay_ms = 2000,
+            -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
+            -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
+            -- Additionally, if it is a string that matches "actions.<name>",
+            -- it will use the mapping at require("oil.actions").<name>
+            -- Set to `false` to remove a keymap
+            -- See :help oil-actions for a list of all available actions
+            keymaps = {
+                ["g?"] = "actions.show_help",
+                ["?"] = "actions.show_help",
+                ["<CR>"] = "actions.select",
+                ["<C-p>"] = "actions.preview",
+                ["<C-c>"] = "actions.close",
+                ["<C-l>"] = "actions.refresh",
+                ["H"] = "actions.parent",
+                ["L"] = "actions.select",
+                ["_"] = "actions.open_cwd",
+                ["gs"] = "actions.change_sort",
+                ["gx"] = "actions.open_external",
+                ["g."] = "actions.toggle_hidden",
+            },
+            -- Set to false to disable all of the above keymaps
+            use_default_keymaps = false,
+            view_options = {
+                -- Show files and directories that start with "."
+                show_hidden = true,
+                -- This function defines what is considered a "hidden" file
+                is_hidden_file = function(name, bufnr)
+                    return vim.startswith(name, ".")
+                end,
+                -- This function defines what will never be shown, even when `show_hidden` is set
+                is_always_hidden = function(name, bufnr)
+                    return false
+                end,
+                sort = {
+                    -- sort order can be "asc" or "desc"
+                    -- see :help oil-columns to see which columns are sortable
+                    { "type", "asc" },
+                    { "name", "asc" },
+                },
+            },
+            -- Configuration for the floating window in oil.open_float
+            float = {
+                -- Padding around the floating window
+                padding = 2,
+                max_width = 0,
+                max_height = 0,
+                border = "rounded",
+                win_options = {
+                    winblend = 0,
+                },
+                -- This is the config that will be passed to nvim_open_win.
+                -- Change values here to customize the layout
+                override = function(conf)
+                    return conf
+                end,
+            },
+            -- Configuration for the actions floating preview window
+            preview = {
+                -- Width dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
+                -- min_width and max_width can be a single value or a list of mixed integer/float types.
+                -- max_width = {100, 0.8} means "the lesser of 100 columns or 80% of total"
+                max_width = 0.9,
+                -- min_width = {40, 0.4} means "the greater of 40 columns or 40% of total"
+                min_width = { 40, 0.4 },
+                -- optionally define an integer/float for the exact width of the preview window
+                width = nil,
+                -- Height dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
+                -- min_height and max_height can be a single value or a list of mixed integer/float types.
+                -- max_height = {80, 0.9} means "the lesser of 80 columns or 90% of total"
+                max_height = 0.9,
+                -- min_height = {5, 0.1} means "the greater of 5 columns or 10% of total"
+                min_height = { 5, 0.1 },
+                -- optionally define an integer/float for the exact height of the preview window
+                height = nil,
+                border = "rounded",
+                win_options = {
+                    winblend = 0,
+                },
+            },
+            -- Configuration for the floating progress window
+            progress = {
+                max_width = 0.9,
+                min_width = { 40, 0.4 },
+                width = nil,
+                max_height = { 10, 0.9 },
+                min_height = { 5, 0.1 },
+                height = nil,
+                border = "rounded",
+                minimized_border = "none",
+                win_options = {
+                    winblend = 0,
+                },
+            },
+        }
+        -- vim.api.nvim_create_autocmd("User", {
+        --     pattern = "OilEnter",
+        --     callback = vim.schedule_wrap(function(args)
+        --         local oil = require "oil"
+        --         if vim.api.nvim_get_current_buf() == args.data.buf and oil.get_cursor_entry() then
+        --             oil.select { preview = true }
+        --         end
+        --     end),
+        -- })
+    end,
 }
 add {
     "thinca/vim-partedit",
