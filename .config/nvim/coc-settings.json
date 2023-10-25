@@ -1,5 +1,4 @@
 {
-  "Lua.telemetry.enable": false,
   "Lua.workspace.checkThirdParty": false,
   "Lua.workspace.library": [
     "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-treesitter/nvim-treesitter/lua",
@@ -37,8 +36,11 @@
 
   "sumneko-lua.enableNvimLuaDev": true,
 
-  "tsdetect.mode": "auto",
+  "svelte.enable-ts-plugin": false,
+
   "tsserver.enable": true,
+  "tsdetect.mode": "auto",
+  "prettier.trailingComma": "all",
   "eslint.enable": true,
   "eslint.autoFixOnSave": true,
 
@@ -119,15 +121,6 @@
   "diagnostic.infoSign": "ℹ️ ",
   "diagnostic.hintSign": "ℹ️ ",
   "diagnostic.signLevel": "error",
-
-  "inlayHint.enable": true,
-  "inlayHint.display": false,
-  "inlayHint.refreshOnInsertMode": false,
-
-  "suggest.floatConfig": {
-    "winblend": 10
-  },
-
   "diagnostic.floatConfig": {
     "winblend": 15
   },
@@ -137,24 +130,29 @@
     "shadow": false
   },
 
-  "prettier.trailingComma": "all",
+  "inlayHint.enable": true,
+  "inlayHint.display": false,
+  "inlayHint.refreshOnInsertMode": false,
 
   "suggest.snippetIndicator": "►",
   "suggest.acceptSuggestionOnCommitCharacter": false,
   "suggest.asciiCharactersOnly": true,
   "suggest.invalidInsertCharacters": [
     "(",
-      "<",
-      "{",
-        "[",
-          "\r",
-          "\n"
-        ],
-        "suggest.noselect": true,
-        "suggest.enablePreselect": false,
+    "<",
+    "{",
+    "[",
+    "\r",
+    "\n"
+  ],
+  "suggest.noselect": true,
+  "suggest.enablePreselect": false,
+  "suggest.floatConfig": {
+    "winblend": 10
+  },
 
-        "list.insertMappings": {
-          "<C-j>": "normal:j",
-          "<C-k>": "normal:k"
-        }
-      }
+  "list.insertMappings": {
+    "<C-j>": "normal:j",
+    "<C-k>": "normal:k"
+  }
+}

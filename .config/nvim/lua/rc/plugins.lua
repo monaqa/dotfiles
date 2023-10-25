@@ -59,6 +59,11 @@ end
 add {
     "akinsho/bufferline.nvim",
     lazy = false,
+    keys = {
+        { "sN", "<Cmd>BufferLineMoveNext<CR>" },
+        { "sP", "<Cmd>BufferLineMovePrev<CR>" },
+        { "sw", "<Cmd>bp | sp | bn | bd<CR>" },
+    },
     opts = {
         options = {
             diagnostics = "coc",
@@ -83,6 +88,12 @@ add {
             max_name_length = 30,
             show_close_icon = false,
             show_buffer_close_icons = false,
+            custom_filter = function(buf_number, buf_numbers)
+                -- filter out filetypes you don't want to see
+                if vim.bo[buf_number].filetype ~= "oil" then
+                    return true
+                end
+            end,
         },
 
         highlights = {
@@ -142,11 +153,6 @@ add {
             separator_visible = { bg = "#444444", fg = "#c8c8c8" },
             separator_selected = { bg = "None", fg = "#c8c8c8" },
         },
-    },
-    keys = {
-        { "sN", "<Cmd>BufferLineMoveNext<CR>" },
-        { "sP", "<Cmd>BufferLineMovePrev<CR>" },
-        { "sw", "<Cmd>bp | sp | bn | bd<CR>" },
     },
 }
 -- add { "glidenote/memolist.vim" }
@@ -1009,19 +1015,70 @@ add {
 add {
     "stevearc/oil.nvim",
     keys = {
-        { "sf", "<Cmd>Oil .<CR>" },
+        {
+            "sf",
+            function()
+                local bufname = vim.api.nvim_buf_get_name(0)
+                if bufname:find "://" then
+                    -- 特殊なバッファなので cwd にする
+                    require("oil").open(vim.fn.getcwd())
+                else
+                    -- デフォルトの挙動に fallback
+                    require("oil").open()
+                end
+            end,
+        },
+        {
+            "sF",
+            function()
+                local bufname = vim.api.nvim_buf_get_name(0)
+                if bufname:find "://" then
+                    -- 特殊なバッファなので cwd にする
+                    require("oil").open_float(vim.fn.getcwd())
+                else
+                    -- デフォルトの挙動に fallback
+                    require("oil").open_float()
+                end
+            end,
+        },
     },
     cmd = {
         "Oil",
     },
     config = function()
-        local function with_nowait(action)
-            return {
-                callback = require("oil.actions")[action].callback,
-                desc = require("oil.actions")[action].desc,
-                nowait = true,
-            }
+        local oil = require "oil"
+
+        local sort_rules = {
+            {
+                sort = {
+                    { "type", "asc" },
+                    { "name", "asc" },
+                },
+                columns = {
+                    "icon",
+                },
+            },
+            {
+                sort = {
+                    { "type", "asc" },
+                    { "mtime", "desc" },
+                    { "name", "asc" },
+                },
+                columns = {
+                    { "mtime", format = "%Y-%m-%d %H:%M:%S", highlight = "@number" },
+                    "icon",
+                },
+            },
+        }
+        local default_rule_idx = 1
+
+        local function change_sort_by_rule()
+            default_rule_idx = default_rule_idx % #sort_rules + 1
+            local rule = sort_rules[default_rule_idx]
+            oil.set_columns(rule.columns)
+            oil.set_sort(rule.sort)
         end
+
         require("oil").setup {
             -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
             -- Set to false if you still want to use netrw.
@@ -1029,6 +1086,7 @@ add {
             -- Id is automatically added at the beginning, and name at the end
             -- See :help oil-columns
             columns = {
+                -- { "mtime", format = "%m/%d %H:%M", highlight = "@field" },
                 "icon",
                 -- "permissions",
                 -- "size",
@@ -1069,27 +1127,59 @@ add {
             -- Set to `false` to remove a keymap
             -- See :help oil-actions for a list of all available actions
             keymaps = {
-                ["g?"] = "actions.show_help",
                 ["?"] = "actions.show_help",
                 ["<CR>"] = "actions.select",
                 ["<C-p>"] = "actions.preview",
+                ["M"] = "actions.preview",
                 ["<C-c>"] = "actions.close",
-                ["<C-l>"] = "actions.refresh",
+                -- ["<C-l>"] = "actions.refresh",
                 ["H"] = "actions.parent",
-                ["L"] = "actions.select",
-                ["_"] = "actions.open_cwd",
-                ["gs"] = "actions.change_sort",
-                ["gx"] = "actions.open_external",
+                ["L"] = {
+                    callback = function()
+                        local actions = require "oil.actions"
+                        local entry = require("oil").get_cursor_entry()
+                        local preview_win = require("oil.util").get_preview_win()
+
+                        if entry == nil then
+                            return
+                        end
+
+                        local is_dir_or_dirlink = entry.type == "directory"
+                            or (entry.type == "link" and entry.meta.link_stat.type == "directory")
+
+                        if not is_dir_or_dirlink then
+                            return
+                        end
+
+                        actions.select.callback()
+
+                        if preview_win ~= nil then
+                            -- actions.select の時点で preview が消えてしまうため、
+                            -- preview が出ていたときは preview window を出しなおす
+                            actions.preview.callback()
+                        end
+                    end,
+                    desc = "Right move",
+                },
+                ["gs"] = {
+                    callback = change_sort_by_rule,
+                    desc = "Change sort by pre-defined rules",
+                },
+                ["gS"] = "actions.change_sort",
+                ["<Space><CR>"] = "actions.open_external",
                 ["g."] = "actions.toggle_hidden",
             },
             -- Set to false to disable all of the above keymaps
             use_default_keymaps = false,
             view_options = {
                 -- Show files and directories that start with "."
-                show_hidden = true,
+                show_hidden = false,
                 -- This function defines what is considered a "hidden" file
                 is_hidden_file = function(name, bufnr)
-                    return vim.startswith(name, ".")
+                    return vim.tbl_contains({
+                        "__pycache__/",
+                        ".DS_Store",
+                    }, name)
                 end,
                 -- This function defines what will never be shown, even when `show_hidden` is set
                 is_always_hidden = function(name, bufnr)
@@ -2398,6 +2488,14 @@ add {
     lazy = false,
     dependencies = { "vim-denops/denops.vim" },
 }
+add {
+    "gamoutatsumi/dps-ghosttext.vim",
+    config = function()
+        vim.g["dps_ghosttext#ftmap"] = {
+            ["github.com"] = "markdown",
+        }
+    end,
+}
 
 -- tree-sitter
 add {
@@ -2560,7 +2658,7 @@ add {
                     "bash",
                     "css",
                     "html",
-                    "json",
+                    -- "json",
                     "lua",
                     -- 'markdown',
                     -- "python",
