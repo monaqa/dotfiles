@@ -1,5 +1,4 @@
 local util = require "rc.util"
-local submode = require "rc.submode"
 
 local disable_plugins = {
     "netrw",
@@ -1177,7 +1176,7 @@ add {
                 -- This function defines what is considered a "hidden" file
                 is_hidden_file = function(name, bufnr)
                     return vim.tbl_contains({
-                        "__pycache__/",
+                        "__pycache__",
                         ".DS_Store",
                     }, name)
                 end,
@@ -1521,6 +1520,7 @@ add {
     "machakann/vim-sandwich",
     keys = {
         { "sa", mode = { "n", "x" } },
+        { "ib", mode = { "x", "o" } },
         {
             "ds",
             "<Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)",
