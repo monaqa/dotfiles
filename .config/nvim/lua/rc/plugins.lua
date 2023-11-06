@@ -1030,14 +1030,7 @@ add {
         {
             "sF",
             function()
-                local bufname = vim.api.nvim_buf_get_name(0)
-                if bufname:find "://" then
-                    -- 特殊なバッファなので cwd にする
-                    require("oil").open_float(vim.fn.getcwd())
-                else
-                    -- デフォルトの挙動に fallback
-                    require("oil").open_float()
-                end
+                require("oil").open(vim.fn.getcwd())
             end,
         },
     },
@@ -2763,7 +2756,13 @@ add {
 add { "vito-c/jq.vim", ft = { "jq" } }
 add { "wlangstroth/vim-racket", ft = { "racket" } }
 add { "terrastruct/d2-vim", ft = { "d2" } }
-add { "kaarmu/typst.vim", ft = { "typst" } }
+add {
+    "kaarmu/typst.vim",
+    ft = { "typst" },
+    -- ひとまず以下の issue が解決するまでは
+    -- https://github.com/kaarmu/typst.vim/issues/64
+    commit = "65f9e78c11829a643d1539f3481c0ff875c83603",
+}
 add { "mityu/vim-applescript", ft = { "applescript" } }
 
 -- monaqa
@@ -3251,8 +3250,29 @@ add {
         -- vim.keymap.set({"n", "v"}, "L", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
         -- vim.keymap.set({"n", "v"}, "H", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
 
+        ---@param pos number
+        local function set_line_specific_pos(pos)
+            return function()
+                local wrap = vim.opt.wrap:get()
+                vim.opt.wrap = false
+                vim.fn["smooth_scroll#flick"](
+                    vim.fn.winline() - math.floor(pos),
+                    10,
+                    vim.api.nvim_replace_termcodes("<C-e>", true, true, true),
+                    vim.api.nvim_replace_termcodes("<C-y>", true, true, true),
+                    true
+                )
+                -- vim.opt.wrap = wrap
+            end
+        end
+
+        vim.keymap.set({ "n", "x" }, "z<CR>", set_line_specific_pos(1))
+        vim.keymap.set({ "n", "x" }, "zz", set_line_specific_pos(vim.fn.winheight(0) / 2))
+        vim.keymap.set({ "n", "x" }, "zb", set_line_specific_pos(vim.fn.winheight(0)))
+
+        -- nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
+
         vim.cmd [[
-            nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
             nnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
             nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
             xnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>

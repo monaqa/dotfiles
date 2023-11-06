@@ -107,7 +107,7 @@
   "[python]": {"coc.preferences.formatOnSave": true },
   "[rust]": {"coc.preferences.formatOnSave": true },
   "[css]": {"coc.preferences.formatOnSave": true },
-  "[javascript][typescript][typescriptreact]": {"coc.preferences.formatOnSave": false },
+  "[javascript][typescript][typescriptreact]": {"coc.preferences.formatOnSave": true },
 
   "codeLens.enable": false,
   "codeLens.position": "right_align",

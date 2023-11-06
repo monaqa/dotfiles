@@ -383,6 +383,21 @@ util.autocmd_vimrc "BufWritePost" {
     desc = "execute stylua",
 }
 
+util.autocmd_vimrc "BufWritePre" {
+    pattern = { "*.typ" },
+    callback = function()
+        -- fold の状態を保持するために mkview と loadview を入れた
+        -- vim.cmd [[mkview]]
+        -- vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand "%:p")
+        -- vim.cmd [[edit]]
+        -- vim.cmd [[loadview]]
+        keep_cursor(function()
+            vim.cmd [[%!typstfmt 2>/dev/null]]
+        end)
+    end,
+    desc = "execute stylua",
+}
+
 -- auto repeatable macro （ドットリピートや通常マクロのほうが直感的なのでボツ）
 
 -- local auto_repeatable = false
