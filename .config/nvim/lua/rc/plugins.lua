@@ -552,6 +552,15 @@ add {
             lualine_b = {
                 function()
                     local bufname = vim.fn.bufname()
+                    if bufname:find("oil://", 1, true) ~= nil then
+                        local cwd = require("oil").get_current_dir()
+                        local dir_rel = vim.fn.fnamemodify(cwd, ":.")
+                        if vim.startswith(dir_rel, "/") then
+                            return "[oil] " .. dir_rel
+                        else
+                            return "[oil] ./" .. dir_rel
+                        end
+                    end
                     local index = bufname:find("://", 1, true)
                     if index ~= nil then
                         return "[" .. bufname:sub(1, index - 1) .. "]"
@@ -1014,6 +1023,7 @@ add {
 add {
     "stevearc/oil.nvim",
     keys = {
+        { "gf" },
         {
             "sf",
             function()
@@ -1170,6 +1180,9 @@ add {
                 is_hidden_file = function(name, bufnr)
                     return vim.tbl_contains({
                         "__pycache__",
+                        ".mypy_cache",
+                        ".pytest_cache",
+                        ".ruff_cache",
                         ".DS_Store",
                     }, name)
                 end,

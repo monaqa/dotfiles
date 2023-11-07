@@ -547,7 +547,19 @@ local identity_converter = {
 
 ---@param f fun(c: string): (string | nil)
 ---@return fun(s: string): string
-local function char_converter(f)
+local function linewise_converter(f)
+    return function(s)
+        local lines = vim.split(s, "\n")
+        lines = vim.tbl_map(function(line)
+            return f(line) or line
+        end, lines)
+        return table.concat(lines, "\n")
+    end
+end
+
+---@param f fun(c: string): (string | nil)
+---@return fun(s: string): string
+local function charwise_converter(f)
     return function(s)
         local chars = vim.fn.split(s, [[\zs]])
         chars = vim.tbl_map(function(char)
@@ -561,7 +573,7 @@ end
 local converters = {
     {
         desc = "小文字を大文字にする (abc -> ABC)",
-        converter = char_converter(function(c)
+        converter = charwise_converter(function(c)
             local codepoint = vim.fn.char2nr(c)
             local start_codepoint = vim.fn.char2nr "a"
             local end_codepoint = vim.fn.char2nr "z"
@@ -574,7 +586,7 @@ local converters = {
     },
     {
         desc = "半角文字を全角文字に変換する (abcABC -> ａｂｃＡＢＣ)",
-        converter = char_converter(function(c)
+        converter = charwise_converter(function(c)
             local codepoint = vim.fn.char2nr(c)
             local start_codepoint = vim.fn.char2nr "A"
             local end_codepoint = vim.fn.char2nr "z"
@@ -600,7 +612,7 @@ local converters = {
     {
         desc = "Vim script の式とみなして計算する (1 + 1 -> 2, 40 * 3 -> 120)",
         converter = function(text)
-            return vim.fn.string(vim.fn.eval(text))
+            return vim.fn.string(vim.api.nvim_eval(text))
         end,
     },
     {
@@ -647,6 +659,28 @@ local converters = {
             local new_text = text:gsub("(%w+)", capitalize)
             return new_text
         end,
+    },
+    {
+        desc = "インデントを半分にする",
+        converter = linewise_converter(function(line)
+            local _, indent = line:find "^[ ]*"
+            local indent_after = math.floor(indent / 2)
+            if indent_after >= 0 then
+                line = (" "):rep(indent_after) .. line:sub(indent + 1)
+            end
+            return line
+        end),
+    },
+    {
+        desc = "インデントを倍にする",
+        converter = linewise_converter(function(line)
+            local _, indent = line:find "^[ ]*"
+            local indent_after = indent * 2
+            if indent_after >= 0 then
+                line = (" "):rep(indent_after) .. line:sub(indent + 1)
+            end
+            return line
+        end),
     },
 }
 
