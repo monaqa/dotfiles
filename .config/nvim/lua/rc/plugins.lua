@@ -61,7 +61,8 @@ add {
     keys = {
         { "sN", "<Cmd>BufferLineMoveNext<CR>" },
         { "sP", "<Cmd>BufferLineMovePrev<CR>" },
-        { "sw", "<Cmd>bp | sp | bn | bd<CR>" },
+        -- { "sw", "<Cmd>bp | sp | bn | bd<CR>" },
+        { "sw", "<Cmd>bp | bd #<CR>" },
     },
     opts = {
         options = {
@@ -1025,7 +1026,26 @@ add {
     keys = {
         { "gf" },
         {
+            -- よしなに開く。
             "sf",
+            function()
+                local bufname = vim.api.nvim_buf_get_name(0)
+                if bufname:find "://" then
+                    -- 特殊なバッファなので cwd にする
+                    require("oil").open(vim.fn.getcwd())
+                else
+                    local dir_rel = vim.fn.fnamemodify(bufname, ":.")
+                    if vim.startswith(dir_rel, "/") then
+                        require("oil").open(vim.fn.getcwd())
+                    else
+                        require("oil").open()
+                    end
+                end
+            end,
+        },
+        {
+            -- 開いているバッファのあるディレクトリを開く。
+            "sF",
             function()
                 local bufname = vim.api.nvim_buf_get_name(0)
                 if bufname:find "://" then
@@ -1038,7 +1058,8 @@ add {
             end,
         },
         {
-            "sF",
+            -- カレントディレクトリを開く。
+            "sc",
             function()
                 require("oil").open(vim.fn.getcwd())
             end,
@@ -1096,7 +1117,7 @@ add {
             },
             -- Buffer-local options to use for oil buffers
             buf_options = {
-                buflisted = false,
+                buflisted = true,
                 bufhidden = "hide",
             },
             -- Window-local options to use for oil buffers
@@ -2314,6 +2335,9 @@ add {
                 mappings = {
                     n = {
                         ["<Esc>"] = actions.close,
+                        -- ["<C-f>"] = function (prompt_buffer)
+                        --     actions.move_selection_next(prompt_buffer)
+                        -- end,
                     },
                     i = {
                         ["<C-n>"] = actions.cycle_history_next,
@@ -3263,35 +3287,26 @@ add {
         -- vim.keymap.set({"n", "v"}, "L", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
         -- vim.keymap.set({"n", "v"}, "H", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
 
-        ---@param pos number
-        local function set_line_specific_pos(pos)
+        ---@param percent float
+        local function set_line_specific_pos(percent)
             return function()
+                local target_line = math.floor(1 + (vim.fn.winheight(0) - 1) * percent)
                 local wrap = vim.opt.wrap:get()
                 vim.opt.wrap = false
                 vim.fn["smooth_scroll#flick"](
-                    vim.fn.winline() - math.floor(pos),
+                    vim.fn.winline() - target_line,
                     10,
                     vim.api.nvim_replace_termcodes("<C-e>", true, true, true),
                     vim.api.nvim_replace_termcodes("<C-y>", true, true, true),
                     true
                 )
-                -- vim.opt.wrap = wrap
+                vim.opt.wrap = wrap
             end
         end
 
-        vim.keymap.set({ "n", "x" }, "z<CR>", set_line_specific_pos(1))
-        vim.keymap.set({ "n", "x" }, "zz", set_line_specific_pos(vim.fn.winheight(0) / 2))
-        vim.keymap.set({ "n", "x" }, "zb", set_line_specific_pos(vim.fn.winheight(0)))
-
-        -- nnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
-
-        vim.cmd [[
-            nnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
-            nnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
-            xnoremap zz    <Cmd>call smooth_scroll#flick(winline() - winheight(0) / 2, 10, "\<C-e>", "\<C-y>", v:true)<CR>
-            xnoremap z<CR> <Cmd>call smooth_scroll#flick(winline() - 1               , 10, "\<C-e>", "\<C-y>", v:true)<CR>
-            xnoremap zb    <Cmd>call smooth_scroll#flick(winline() - winheight(0)    , 10, "\<C-e>", "\<C-y>", v:true)<CR>
-        ]]
+        vim.keymap.set({ "n", "x" }, "z<CR>", set_line_specific_pos(0.1))
+        vim.keymap.set({ "n", "x" }, "zz", set_line_specific_pos(0.4))
+        vim.keymap.set({ "n", "x" }, "zb", set_line_specific_pos(0.9))
     end,
 }
 add {
