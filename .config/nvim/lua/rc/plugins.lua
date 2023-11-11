@@ -56,7 +56,7 @@ end
 --     end,
 -- }
 add {
-    "akinsho/bufferline.nvim",
+    "https://github.com/akinsho/bufferline.nvim",
     lazy = false,
     keys = {
         { "sN", "<Cmd>BufferLineMoveNext<CR>" },
@@ -155,9 +155,9 @@ add {
         },
     },
 }
--- add { "glidenote/memolist.vim" }
+-- add { "https://github.com/glidenote/memolist.vim" }
 add {
-    "haya14busa/vim-asterisk",
+    "https://github.com/haya14busa/vim-asterisk",
     keys = {
         { "*", "<Plug>(asterisk-z*)" },
         { "#", "<Plug>(asterisk-z#)" },
@@ -166,7 +166,7 @@ add {
     },
 }
 add {
-    "iamcco/markdown-preview.nvim",
+    "https://github.com/iamcco/markdown-preview.nvim",
     ft = { "markdown", "mdx" },
     run = ":call mkdp#util#install()",
     config = function()
@@ -177,9 +177,9 @@ add {
         }
     end,
 }
-add { "itchyny/vim-qfedit", ft = { "qf" } }
+add { "https://github.com/itchyny/vim-qfedit", ft = { "qf" } }
 add {
-    "kana/vim-altr",
+    "https://github.com/kana/vim-altr",
     keys = {
         { "<Space>^", "<Plug>(altr-forward)" },
         { "<Space>-", "<Plug>(altr-forward)" },
@@ -194,15 +194,15 @@ add {
 --         { "ge", "<Plug>(smartword-ge)", mode = { "n", "x" } },
 --     },
 -- }
-add { "kkiyama117/zenn-vim", lazy = true }
+add { "https://github.com/kkiyama117/zenn-vim", lazy = true }
 add {
-    "lambdalisue/fern.vim",
+    "https://github.com/lambdalisue/fern.vim",
     branch = "main",
     dependencies = {
-        "lambdalisue/fern-renderer-nerdfont.vim",
-        "lambdalisue/fern-hijack.vim",
-        "lambdalisue/fern-git-status.vim",
-        "lambdalisue/nerdfont.vim",
+        "https://github.com/lambdalisue/fern-renderer-nerdfont.vim",
+        "https://github.com/lambdalisue/fern-hijack.vim",
+        "https://github.com/lambdalisue/fern-git-status.vim",
+        "https://github.com/lambdalisue/nerdfont.vim",
     },
     keys = {
         -- { "sf", "<Cmd>Fern . -reveal=%:p<CR>" },
@@ -342,7 +342,7 @@ add {
     end,
 }
 add {
-    "lambdalisue/gina.vim",
+    "https://github.com/lambdalisue/gina.vim",
     cmd = {
         "Gina",
         "GinaBrowseYank",
@@ -410,7 +410,7 @@ add {
         end, { nargs = "?" })
     end,
 }
-add { "lambdalisue/vim-protocol" }
+add { "https://github.com/lambdalisue/vim-protocol" }
 -- add {
 --     "lervag/vimtex",
 --     config = function()
@@ -419,7 +419,7 @@ add { "lambdalisue/vim-protocol" }
 --     ft = { "tex" },
 -- }
 add {
-    "lewis6991/gitsigns.nvim",
+    "https://github.com/lewis6991/gitsigns.nvim",
     lazy = false,
     config = function(_, opts)
         require("gitsigns").setup(opts)
@@ -528,7 +528,7 @@ add {
 }
 
 add {
-    "lifepillar/vim-colortemplate",
+    "https://github.com/lifepillar/vim-colortemplate",
     cmd = { "Colortemplate" },
     ft = { "colortemplate" },
     config = function()
@@ -543,10 +543,10 @@ add {
 --         vim.g["user_emmet_install_global"] = 0
 --     end,
 -- }
-add { "mattn/vim-maketable", cmd = { "MakeTable", "UnmakeTable" } }
-add { "mbbill/undotree", keys = { { "U", "<Cmd>UndotreeToggle<CR>" } } }
+add { "https://github.com/mattn/vim-maketable", cmd = { "MakeTable", "UnmakeTable" } }
+add { "https://github.com/mbbill/undotree", keys = { { "U", "<Cmd>UndotreeToggle<CR>" } } }
 add {
-    "nvim-lualine/lualine.nvim",
+    "https://github.com/nvim-lualine/lualine.nvim",
     lazy = false,
     opts = {
         sections = {
@@ -622,14 +622,14 @@ add {
     },
 }
 add {
-    "rhysd/rust-doc.vim",
+    "https://github.com/rhysd/rust-doc.vim",
     ft = "rust",
     config = function()
         vim.g["rust_doc#define_map_K"] = 0
     end,
 }
 add {
-    "ryicoh/deepl.vim",
+    "https://github.com/ryicoh/deepl.vim",
     keys = {
         {
             "@j",
@@ -658,7 +658,7 @@ add {
 }
 
 add {
-    "numToStr/Comment.nvim",
+    "https://github.com/numToStr/Comment.nvim",
     keys = {
         { ",", "<Plug>(comment_toggle_linewise)", mode = { "n" } },
         { ",", "<Plug>(comment_toggle_linewise_visual)", mode = { "x" } },
@@ -684,22 +684,22 @@ add {
     },
 }
 
-add { "thinca/vim-qfreplace", ft = { "qf" } }
--- add { "thinca/vim-quickrun" }
-add { "tyru/capture.vim", cmd = { "Capture" } }
+add { "https://github.com/thinca/vim-qfreplace", ft = { "qf" } }
+-- add { "https://github.com/thinca/vim-quickrun" }
+add { "https://github.com/tyru/capture.vim", cmd = { "Capture" } }
 add {
-    "tyru/open-browser.vim",
+    "https://github.com/tyru/open-browser.vim",
     keys = {
         { "gb", "<Plug>(openbrowser-smart-search)", mode = { "n", "x" } },
     },
 }
 add {
-    "uga-rosa/ccc.nvim",
+    "https://github.com/uga-rosa/ccc.nvim",
     cmd = { "CccHighlighterEnable" },
 }
 add {
-    "stevearc/aerial.nvim",
-    dependencies = { "kyazdani42/nvim-web-devicons" },
+    "https://github.com/stevearc/aerial.nvim",
+    dependencies = { "https://github.com/kyazdani42/nvim-web-devicons" },
     lazy = false,
     keys = {
         {
@@ -1022,7 +1022,7 @@ add {
     },
 }
 add {
-    "stevearc/oil.nvim",
+    "https://github.com/stevearc/oil.nvim",
     keys = {
         { "gf" },
         {
@@ -1284,7 +1284,7 @@ add {
     end,
 }
 add {
-    "thinca/vim-partedit",
+    "https://github.com/thinca/vim-partedit",
     cmd = {
         "ParteditCodeblock",
     },
@@ -1301,11 +1301,11 @@ add {
     end,
 }
 
--- add { "atusy/tsnode-marker.nvim" }
+-- add { "https://github.com/atusy/tsnode-marker.nvim" }
 
 -- colorscheme
 add {
-    "habamax/vim-gruvbit",
+    "https://github.com/habamax/vim-gruvbit",
     lazy = false,
     config = function()
         vim.g.gruvbit_transp_bg = 0
@@ -1444,11 +1444,11 @@ add {
         }
     end,
 }
-add { "yasukotelin/shirotelin", lazy = true }
+add { "https://github.com/yasukotelin/shirotelin", lazy = true }
 
 -- paren
 add {
-    "cohama/lexima.vim",
+    "https://github.com/cohama/lexima.vim",
     event = "InsertEnter",
     config = function()
         vim.g["lexima_no_default_rules"] = 1
@@ -1544,7 +1544,7 @@ add {
 }
 
 add {
-    "machakann/vim-sandwich",
+    "https://github.com/machakann/vim-sandwich",
     keys = {
         { "sa", mode = { "n", "x" } },
         { "ib", mode = { "x", "o" } },
@@ -1847,8 +1847,8 @@ add {
 
 -- textedit
 add {
-    "kana/vim-operator-replace",
-    dependencies = { "kana/vim-operator-user" },
+    "https://github.com/kana/vim-operator-replace",
+    dependencies = { "https://github.com/kana/vim-operator-user" },
     keys = {
         { "R", "<Plug>(operator-replace)" },
         { "RR", "<Plug>(operator-replace)_" },
@@ -1856,10 +1856,14 @@ add {
     },
 }
 
-add { "bps/vim-textobj-python", dependencies = { "kana/vim-textobj-user" }, ft = { "python" } }
 add {
-    "glts/vim-textobj-comment",
-    dependencies = { "kana/vim-textobj-user" },
+    "https://github.com/bps/vim-textobj-python",
+    dependencies = { "https://github.com/kana/vim-textobj-user" },
+    ft = { "python" },
+}
+add {
+    "https://github.com/glts/vim-textobj-comment",
+    dependencies = { "https://github.com/kana/vim-textobj-user" },
     keys = {
         { "im", "<Plug>(textobj-comment-i)", mode = { "x", "o" } },
         { "am", "<Plug>(textobj-comment-a)", mode = { "x", "o" } },
@@ -1869,8 +1873,8 @@ add {
     end,
 }
 add {
-    "kana/vim-textobj-entire",
-    dependencies = { "kana/vim-textobj-user" },
+    "https://github.com/kana/vim-textobj-entire",
+    dependencies = { "https://github.com/kana/vim-textobj-user" },
     keys = {
         { "ie", mode = { "x", "o" } },
         { "yie", "y<Plug>(textobj-entire-i)<C-o>" },
@@ -1884,8 +1888,8 @@ add {
     },
 }
 add {
-    "machakann/vim-textobj-functioncall",
-    dependencies = { "kana/vim-textobj-user" },
+    "https://github.com/machakann/vim-textobj-functioncall",
+    dependencies = { "https://github.com/kana/vim-textobj-user" },
     keys = {
         {
             "<Plug>(textobj-functioncall-generics-i)",
@@ -1925,7 +1929,7 @@ add {
     end,
 }
 add {
-    "kana/vim-textobj-user",
+    "https://github.com/kana/vim-textobj-user",
     -- まあまあ面倒くさいからいいや
     -- keys = {
     --     {"il", mode = {"x", "o"}},
@@ -2036,7 +2040,7 @@ add {
 }
 
 add {
-    "machakann/vim-swap",
+    "https://github.com/machakann/vim-swap",
     keys = {
         "gs",
         { "i,", "<Plug>(swap-textobject-i)", mode = { "x", "o" } },
@@ -2046,7 +2050,7 @@ add {
 
 -- coc
 add {
-    "neoclide/coc.nvim",
+    "https://github.com/neoclide/coc.nvim",
     branch = "release",
     config = function()
         local function coc_service_names(arglead, cmdline, cursorpos)
@@ -2219,26 +2223,26 @@ add {
 
 -- nvim_lsp
 
--- add { "neovim/nvim-lspconfig", opt = 1, config = config.nvim_lsp }
--- add { "williamboman/mason.nvim", opt = 1 }
--- add { "williamboman/mason-lspconfig.nvim", opt = 1 }
--- add { "hrsh7th/nvim-cmp", opt = 1 }
--- add { "hrsh7th/cmp-nvim-lsp", opt = 1 }
--- add { "hrsh7th/cmp-vsnip", opt = 1 }
--- add { "hrsh7th/cmp-buffer", opt = 1 }
--- add { "hrsh7th/cmp-path", opt = 1 }
--- add { "hrsh7th/cmp-cmdline", opt = 1 }
--- add { "hrsh7th/vim-vsnip", opt = 1 }
--- add { "folke/neodev.nvim", opt = 1 }
+-- add { "https://github.com/neovim/nvim-lspconfig", opt = 1, config = config.nvim_lsp }
+-- add { "https://github.com/williamboman/mason.nvim", opt = 1 }
+-- add { "https://github.com/williamboman/mason-lspconfig.nvim", opt = 1 }
+-- add { "https://github.com/hrsh7th/nvim-cmp", opt = 1 }
+-- add { "https://github.com/hrsh7th/cmp-nvim-lsp", opt = 1 }
+-- add { "https://github.com/hrsh7th/cmp-vsnip", opt = 1 }
+-- add { "https://github.com/hrsh7th/cmp-buffer", opt = 1 }
+-- add { "https://github.com/hrsh7th/cmp-path", opt = 1 }
+-- add { "https://github.com/hrsh7th/cmp-cmdline", opt = 1 }
+-- add { "https://github.com/hrsh7th/vim-vsnip", opt = 1 }
+-- add { "https://github.com/folke/neodev.nvim", opt = 1 }
 
 -- telescope
 add {
-    "nvim-telescope/telescope.nvim",
+    "https://github.com/nvim-telescope/telescope.nvim",
     dependencies = {
-        "fannheyward/telescope-coc.nvim",
-        "nvim-telescope/telescope-smart-history.nvim",
-        "kkharji/sqlite.lua",
-        "fdschmidt93/telescope-egrepify.nvim",
+        "https://github.com/fannheyward/telescope-coc.nvim",
+        "https://github.com/nvim-telescope/telescope-smart-history.nvim",
+        "https://github.com/kkharji/sqlite.lua",
+        "https://github.com/fdschmidt93/telescope-egrepify.nvim",
     },
     cmd = { "Telescope" },
     keys = {
@@ -2397,22 +2401,22 @@ add {
     end,
 }
 add {
-    "fannheyward/telescope-coc.nvim",
+    "https://github.com/fannheyward/telescope-coc.nvim",
     cmd = { "Telescope" },
-    dependencies = { "neoclide/coc.nvim" },
+    dependencies = { "https://github.com/neoclide/coc.nvim" },
 }
 add {
-    "fdschmidt93/telescope-egrepify.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "https://github.com/fdschmidt93/telescope-egrepify.nvim",
+    dependencies = { "https://github.com/nvim-lua/plenary.nvim" },
 }
 
-add { "nvim-lua/popup.nvim", lazy = true }
-add { "nvim-lua/plenary.nvim", lazy = true }
+add { "https://github.com/nvim-lua/popup.nvim", lazy = true }
+add { "https://github.com/nvim-lua/plenary.nvim", lazy = true }
 
 -- denops
 -- add {
---     "Shougo/ddu.vim",
---     dependencies = { "vim-denops/denops.vim" },
+--     "https://github.com/Shougo/ddu.vim",
+--     dependencies = { "https://github.com/vim-denops/denops.vim" },
 --     enabled = false,
 --     config = function()
 --         vim.keymap.set("n", "sm", function()
@@ -2495,31 +2499,31 @@ add { "nvim-lua/plenary.nvim", lazy = true }
 --         }
 --     end,
 -- }
--- add { "Shougo/ddu-filter-matcher_substring" }
--- add { "Shougo/ddu-kind-file" }
--- add { "Shougo/ddu-source-file_rec" }
--- add { "Shougo/ddu-ui-ff" }
--- add { "kuuote/ddu-source-mr" }
--- add { "lambdalisue/mr.vim", branch = "main" }
--- add { "matsui54/ddu-source-file_external" }
--- add { "shun/ddu-source-rg" }
-add { "vim-denops/denops.vim", lazy = false }
-add { "lambdalisue/guise.vim", lazy = false }
+-- add { "https://github.com/Shougo/ddu-filter-matcher_substring" }
+-- add { "https://github.com/Shougo/ddu-kind-file" }
+-- add { "https://github.com/Shougo/ddu-source-file_rec" }
+-- add { "https://github.com/Shougo/ddu-ui-ff" }
+-- add { "https://github.com/kuuote/ddu-source-mr" }
+-- add { "https://github.com/lambdalisue/mr.vim", branch = "main" }
+-- add { "https://github.com/matsui54/ddu-source-file_external" }
+-- add { "https://github.com/shun/ddu-source-rg" }
+add { "https://github.com/vim-denops/denops.vim", lazy = false }
+add { "https://github.com/lambdalisue/guise.vim", lazy = false }
 add {
-    "4513ECHO/denops-gitter.vim",
-    dependencies = { "vim-denops/denops.vim" },
+    "https://github.com/4513ECHO/denops-gitter.vim",
+    dependencies = { "https://github.com/vim-denops/denops.vim" },
     enabled = false,
     config = function()
         vim.g["gitter#token"] = vim.fn.getenv "GITTER_TOKEN"
     end,
 }
 add {
-    "lambdalisue/kensaku.vim",
+    "https://github.com/lambdalisue/kensaku.vim",
     lazy = false,
-    dependencies = { "vim-denops/denops.vim" },
+    dependencies = { "https://github.com/vim-denops/denops.vim" },
 }
 add {
-    "gamoutatsumi/dps-ghosttext.vim",
+    "https://github.com/gamoutatsumi/dps-ghosttext.vim",
     config = function()
         vim.g["dps_ghosttext#ftmap"] = {
             ["github.com"] = "markdown",
@@ -2529,7 +2533,7 @@ add {
 
 -- tree-sitter
 add {
-    "nvim-treesitter/nvim-treesitter",
+    "https://github.com/nvim-treesitter/nvim-treesitter",
     lazy = false,
     keys = {
         {
@@ -2743,9 +2747,9 @@ add {
         }
     end,
 }
-add { "nvim-treesitter/playground", cond = cond_dev "nvim-treesitter/playground", ft = { "query" } }
+add { "https://github.com/nvim-treesitter/playground", cond = cond_dev "nvim-treesitter/playground", ft = { "query" } }
 add {
-    "mfussenegger/nvim-treehopper",
+    "https://github.com/mfussenegger/nvim-treehopper",
     keys = {
         {
             "q",
@@ -2762,21 +2766,21 @@ add {
 
 -- filetype
 -- julia-vim は遅延ロード負荷
--- add { "JuliaEditorSupport/julia-vim" }
--- add { "aklt/plantuml-syntax", ft = { "plantuml" } }
--- add { "Vimjas/vim-python-pep8-indent", ft = { "python" } }
-add { "bfontaine/Brewfile.vim", ft = { "brewfile" } }
-add { "cespare/vim-toml", ft = { "toml" } }
--- add { "chr4/nginx.vim", ft = { "nginx" } }
-add { "ekalinin/Dockerfile.vim", ft = { "dockerfile" } }
-add { "evanleck/vim-svelte", ft = { "svelte" } }
-add { "justinmk/vim-syntax-extra", ft = { "vim" } }
--- add { "ocaml/vim-ocaml", ft = { "ocaml" } }
-add { "othree/html5.vim", ft = { "html" } }
-add { "pangloss/vim-javascript", ft = { "javascript" } }
--- add { "pest-parser/pest.vim", ft = { "pest" } }
+-- add { "https://github.com/JuliaEditorSupport/julia-vim" }
+-- add { "https://github.com/aklt/plantuml-syntax", ft = { "plantuml" } }
+-- add { "https://github.com/Vimjas/vim-python-pep8-indent", ft = { "python" } }
+add { "https://github.com/bfontaine/Brewfile.vim", ft = { "brewfile" } }
+add { "https://github.com/cespare/vim-toml", ft = { "toml" } }
+-- add { "https://github.com/chr4/nginx.vim", ft = { "nginx" } }
+add { "https://github.com/ekalinin/Dockerfile.vim", ft = { "dockerfile" } }
+add { "https://github.com/evanleck/vim-svelte", ft = { "svelte" } }
+add { "https://github.com/justinmk/vim-syntax-extra", ft = { "vim" } }
+-- add { "https://github.com/ocaml/vim-ocaml", ft = { "ocaml" } }
+add { "https://github.com/othree/html5.vim", ft = { "html" } }
+add { "https://github.com/pangloss/vim-javascript", ft = { "javascript" } }
+-- add { "https://github.com/pest-parser/pest.vim", ft = { "pest" } }
 add {
-    "rust-lang/rust.vim",
+    "https://github.com/rust-lang/rust.vim",
     ft = { "rust" },
     config = function()
         -- なんかめちゃ重かった
@@ -2784,28 +2788,28 @@ add {
     end,
 }
 add {
-    "vim-python/python-syntax",
+    "https://github.com/vim-python/python-syntax",
     ft = { "python" },
     config = function()
         vim.g.python_highlight_all = 1
     end,
 }
-add { "vito-c/jq.vim", ft = { "jq" } }
-add { "wlangstroth/vim-racket", ft = { "racket" } }
-add { "terrastruct/d2-vim", ft = { "d2" } }
+add { "https://github.com/vito-c/jq.vim", ft = { "jq" } }
+add { "https://github.com/wlangstroth/vim-racket", ft = { "racket" } }
+add { "https://github.com/terrastruct/d2-vim", ft = { "d2" } }
 add {
-    "kaarmu/typst.vim",
+    "https://github.com/kaarmu/typst.vim",
     ft = { "typst" },
     -- ひとまず以下の issue が解決するまでは
     -- https://github.com/kaarmu/typst.vim/issues/64
     commit = "65f9e78c11829a643d1539f3481c0ff875c83603",
 }
-add { "mityu/vim-applescript", ft = { "applescript" } }
+add { "https://github.com/mityu/vim-applescript", ft = { "applescript" } }
 
 -- monaqa
-add { "monaqa/colordinate.vim", enabled = false }
+add { "https://github.com/monaqa/colordinate.vim", enabled = false }
 add {
-    "monaqa/dial.nvim",
+    "https://github.com/monaqa/dial.nvim",
     cond = cond_dev "monaqa/dial.nvim",
     keys = {
         {
@@ -3127,10 +3131,10 @@ add {
     end,
 }
 add {
-    "monaqa/modesearch.nvim",
+    "https://github.com/monaqa/modesearch.nvim",
     cond = cond_dev "monaqa/modesearch.nvim",
     dependencies = {
-        "lambdalisue/kensaku.vim",
+        "https://github.com/lambdalisue/kensaku.vim",
     },
     keys = {
         {
@@ -3183,9 +3187,9 @@ add {
         },
     },
 }
-add { "monaqa/peridot.vim", lazy = true }
+add { "https://github.com/monaqa/peridot.vim", lazy = true }
 add {
-    "monaqa/pretty-fold.nvim",
+    "https://github.com/monaqa/pretty-fold.nvim",
     branch = "for_stable_neovim",
     opts = {
         fill_char = "┄",
@@ -3235,7 +3239,7 @@ add {
 
 vim.g["smooth_scroll_no_default_key_mappings"] = 1
 add {
-    "monaqa/smooth-scroll.vim",
+    "https://github.com/monaqa/smooth-scroll.vim",
     keys = {
         { mode = { "n", "x" }, "zz" },
         { mode = { "n", "x" }, "zb" },
@@ -3310,7 +3314,7 @@ add {
     end,
 }
 add {
-    "monaqa/vim-edgemotion",
+    "https://github.com/monaqa/vim-edgemotion",
     keys = {
         { mode = { "n", "x", "o" }, "<Space>j", "m`<Plug>(edgemotion-j)" },
         { mode = { "n", "x", "o" }, "<Space>k", "m`<Plug>(edgemotion-k)" },
@@ -3319,8 +3323,8 @@ add {
     },
 }
 add {
-    "monaqa/nvim-treesitter-clipping",
-    dependencies = { "thinca/vim-partedit" },
+    "https://github.com/monaqa/nvim-treesitter-clipping",
+    dependencies = { "https://github.com/thinca/vim-partedit" },
     cond = cond_dev "monaqa/nvim-treesitter-clipping",
     keys = {
         { "<Space>c", "<Plug>(ts-clipping-clip)" },
