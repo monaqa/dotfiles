@@ -411,13 +411,7 @@ add {
     end,
 }
 add { "https://github.com/lambdalisue/vim-protocol" }
--- add {
---     "lervag/vimtex",
---     config = function()
---         vim.g.tex_flavor = "latex"
---     end,
---     ft = { "tex" },
--- }
+
 add {
     "https://github.com/lewis6991/gitsigns.nvim",
     lazy = false,
@@ -1205,6 +1199,7 @@ add {
                         ".pytest_cache",
                         ".ruff_cache",
                         ".DS_Store",
+                        "..",
                     }, name)
                 end,
                 -- This function defines what will never be shown, even when `show_hidden` is set
@@ -1447,87 +1442,253 @@ add {
 add { "https://github.com/yasukotelin/shirotelin", lazy = true }
 
 -- paren
+-- add {
+--     "https://github.com/cohama/lexima.vim",
+--     event = "InsertEnter",
+--     config = function()
+--         vim.g["lexima_no_default_rules"] = 1
+--         vim.g["lexima_enable_space_rules"] = 0
+--         vim.fn["lexima#set_default_rules"]()
+--
+--         -- シングルクォート補完の無効化
+--         vim.fn["lexima#add_rule"] {
+--             filetype = { "latex", "tex", "satysfi" },
+--             char = "'",
+--             input = "'",
+--         }
+--
+--         vim.fn["lexima#add_rule"] {
+--             char = "{",
+--             at = [=[\%#[-0-9a-zA-Z_]]=],
+--             input = "{",
+--         }
+--
+--         -- TeX/LaTeX
+--         vim.fn["lexima#add_rule"] {
+--             filetype = { "latex", "tex" },
+--             char = "{",
+--             input = "{",
+--             at = [[\%#\\]],
+--         }
+--         vim.fn["lexima#add_rule"] {
+--             filetype = { "latex", "tex" },
+--             char = "$",
+--             input_after = "$",
+--         }
+--         vim.fn["lexima#add_rule"] {
+--             filetype = { "latex", "tex" },
+--             char = "$",
+--             at = [[$\%#\$]],
+--             leave = 1,
+--         }
+--         vim.fn["lexima#add_rule"] {
+--             filetype = { "latex", "tex" },
+--             char = "<BS>",
+--             at = [[\$\%#\$]],
+--             leave = 1,
+--         }
+--
+--         -- SATySFi
+--         vim.fn["lexima#add_rule"] {
+--             filetype = { "satysfi" },
+--             char = "$",
+--             input = "${",
+--             input_after = "}",
+--         }
+--         vim.fn["lexima#add_rule"] {
+--             filetype = { "satysfi" },
+--             char = "$",
+--             at = [[\\\%#]],
+--             leave = 1,
+--         }
+--
+--         -- reST
+--         vim.fn["lexima#add_rule"] {
+--             filetype = { "rst" },
+--             char = "``",
+--             input_after = "``",
+--         }
+--
+--         -- なぜかうまくいかない
+--         -- vim.keymap.set("i", "<CR>", function ()
+--         --     if vim.fn.pumvisible() ~= 0 then
+--         --         return [[<C-y>]]
+--         --     else
+--         --         return [[<C-g>u]] .. vim.fn["lexima#expand"]("<CR>", "i")
+--         --     end
+--         -- end, {expr = true, silent = true})
+--
+--         -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
+--         vim.cmd [[
+--             inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()
+--             inoremap <expr> <Plug>(vimrc-lexima-expand-cr) lexima#expand('<LT>CR>', 'i')
+--         ]]
+--
+--         vim.keymap.set("i", "<CR>", function()
+--             if util.to_bool(vim.fn["coc#pum#visible"]()) then
+--                 -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
+--                 -- （意図せず補完候補がセレクトされてしまうのを抑止）
+--                 if vim.fn["coc#pum#info"]()["index"] >= 0 then
+--                     return vim.api.nvim_replace_termcodes(vim.fn["coc#pum#confirm"](), true, true, true)
+--                 end
+--                 return vim.fn.keytrans(vim.fn["lexima#expand"]("<CR>", "i"))
+--             end
+--             return vim.fn.keytrans(vim.fn["lexima#expand"]("<CR>", "i"))
+--         end, { expr = true, remap = true })
+--     end,
+-- }
+
 add {
-    "https://github.com/cohama/lexima.vim",
+    "https://github.com/hrsh7th/nvim-insx",
     event = "InsertEnter",
     config = function()
-        vim.g["lexima_no_default_rules"] = 1
-        vim.g["lexima_enable_space_rules"] = 0
-        vim.fn["lexima#set_default_rules"]()
+        local standard = require "insx.preset.standard"
+        local insx = require "insx"
+        local esc = require("insx.helper.regex").esc
 
-        -- シングルクォート補完の無効化
-        vim.fn["lexima#add_rule"] {
-            filetype = { "latex", "tex", "satysfi" },
-            char = "'",
-            input = "'",
-        }
+        -- standard.set_pair の中身を少し改変
+        local function set_pair(mode, open, close)
+            local option = { mode = mode }
 
-        vim.fn["lexima#add_rule"] {
-            char = "{",
-            at = [=[\%#[-0-9a-zA-Z_]]=],
-            input = "{",
-        }
+            -- jump_out
+            insx.add(
+                close,
+                insx.with(
+                    require "insx.recipe.jump_next" {
+                        jump_pat = {
+                            [[\%#]] .. esc(close) .. [[\zs]],
+                        },
+                    },
+                    {}
+                ),
+                option
+            )
 
-        -- TeX/LaTeX
-        vim.fn["lexima#add_rule"] {
-            filetype = { "latex", "tex" },
-            char = "{",
-            input = "{",
-            at = [[\%#\\]],
-        }
-        vim.fn["lexima#add_rule"] {
-            filetype = { "latex", "tex" },
-            char = "$",
-            input_after = "$",
-        }
-        vim.fn["lexima#add_rule"] {
-            filetype = { "latex", "tex" },
-            char = "$",
-            at = [[$\%#\$]],
-            leave = 1,
-        }
-        vim.fn["lexima#add_rule"] {
-            filetype = { "latex", "tex" },
-            char = "<BS>",
-            at = [[\$\%#\$]],
-            leave = 1,
-        }
+            -- auto_pair
+            insx.add(
+                open,
+                insx.with(
+                    require "insx.recipe.auto_pair" {
+                        open = open,
+                        close = close,
+                    },
+                    {}
+                ),
+                option
+            )
 
-        -- SATySFi
-        vim.fn["lexima#add_rule"] {
-            filetype = { "satysfi" },
-            char = "$",
-            input = "${",
-            input_after = "}",
-        }
-        vim.fn["lexima#add_rule"] {
-            filetype = { "satysfi" },
-            char = "$",
-            at = [[\\\%#]],
-            leave = 1,
-        }
+            -- delete_pair
+            insx.add(
+                "<BS>",
+                insx.with(
+                    require "insx.recipe.delete_pair" {
+                        open_pat = esc(open),
+                        close_pat = esc(close),
+                    },
+                    {}
+                ),
+                option
+            )
 
-        -- reST
-        vim.fn["lexima#add_rule"] {
-            filetype = { "rst" },
-            char = "``",
-            input_after = "``",
-        }
+            -- spacing
+            -- if kit.get(standard.config, { "spacing", "enabled" }, true) then
+            --     insx.add(
+            --         "<Space>",
+            --         insx.with(
+            --             require("insx.recipe.pair_spacing").increase {
+            --                 open_pat = esc(open),
+            --                 close_pat = esc(close),
+            --             },
+            --             withs
+            --         ),
+            --         option
+            --     )
+            --
+            --     insx.add(
+            --         "<BS>",
+            --         insx.with(
+            --             require("insx.recipe.pair_spacing").decrease {
+            --                 open_pat = esc(open),
+            --                 close_pat = esc(close),
+            --             },
+            --             withs
+            --         ),
+            --         option
+            --     )
+            -- end
 
-        -- なぜかうまくいかない
-        -- vim.keymap.set("i", "<CR>", function ()
-        --     if vim.fn.pumvisible() ~= 0 then
-        --         return [[<C-y>]]
-        --     else
-        --         return [[<C-g>u]] .. vim.fn["lexima#expand"]("<CR>", "i")
-        --     end
-        -- end, {expr = true, silent = true})
+            -- fast_break
+            insx.add(
+                "<CR>",
+                insx.with(
+                    require "insx.recipe.fast_break" {
+                        open_pat = esc(open),
+                        close_pat = esc(close),
+                        split = nil,
+                        html_attrs = true,
+                        html_tags = true,
+                        arguments = true,
+                    },
+                    {}
+                ),
+                option
+            )
 
-        -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
-        vim.cmd [[
-            inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()
-            inoremap <expr> <Plug>(vimrc-lexima-expand-cr) lexima#expand('<LT>CR>', 'i')
-        ]]
+            -- fast_wrap
+            insx.add(
+                "<C-]>",
+                insx.with(
+                    require "insx.recipe.fast_wrap" {
+                        close = close,
+                    },
+                    {}
+                ),
+                option
+            )
+        end
+
+        -- standard.setup_insert_mode の中身を少し改変
+
+        insx.add("`", {
+            enabled = function(ctx)
+                return ctx.match [[`\%#`]] and ctx.filetype == "markdown"
+            end,
+            action = function(ctx)
+                ctx.send "``<Left>"
+                ctx.send "``<Left>"
+            end,
+        })
+        insx.add(
+            "<CR>",
+            require "insx.recipe.fast_break" {
+                open_pat = [[```\w*]],
+                close_pat = "```",
+                indent = 0,
+            }
+        )
+
+        -- html tag like.
+        insx.add(
+            "<CR>",
+            require "insx.recipe.fast_break" {
+                open_pat = insx.helper.search.Tag.Open,
+                close_pat = insx.helper.search.Tag.Close,
+            }
+        )
+
+        -- quotes
+        for _, quote in ipairs { '"', "'", "`" } do
+            standard.set_quote("i", quote)
+        end
+
+        -- pairs
+        for open, close in pairs {
+            ["("] = ")",
+            ["["] = "]",
+            ["{"] = "}",
+        } do
+            set_pair("i", open, close)
+        end
 
         vim.keymap.set("i", "<CR>", function()
             if util.to_bool(vim.fn["coc#pum#visible"]()) then
@@ -1536,9 +1697,9 @@ add {
                 if vim.fn["coc#pum#info"]()["index"] >= 0 then
                     return vim.api.nvim_replace_termcodes(vim.fn["coc#pum#confirm"](), true, true, true)
                 end
-                return vim.fn.keytrans(vim.fn["lexima#expand"]("<CR>", "i"))
+                return vim.fn.keytrans(vim.fn["insx#expand"] "<CR>")
             end
-            return vim.fn.keytrans(vim.fn["lexima#expand"]("<CR>", "i"))
+            return vim.fn.keytrans(vim.fn["insx#expand"] "<CR>")
         end, { expr = true, remap = true })
     end,
 }
@@ -2309,10 +2470,17 @@ add {
         util.autocmd_vimrc "FileType" {
             pattern = "TelescopePrompt",
             callback = function()
-                vim.b.lexima_disabled = 1
+                -- vim.b.lexima_disabled = 1
+
                 -- なぜか lexima が <Esc><Esc> という mapping をはやしてしまうため
                 -- それより優先度の高いマッピングを入れておく
-                vim.keymap.set("i", "<Esc>", "<Esc>", { buffer = true, nowait = true })
+                -- vim.keymap.set("i", "<Esc>", "<Esc>", { buffer = true, nowait = true })
+                -- vim.keymap.set("n", "<Plug>(telescopt-scroll-f)", function()
+                --     actions.move_selection_next(0)
+                -- end, { buffer = true, nowait = true })
+                -- vim.keymap.set("n", "<Plug>(telescopt-scroll-b)", function()
+                --     actions.move_selection_previous(0)
+                -- end, { buffer = true, nowait = true })
             end,
         }
 
@@ -2339,8 +2507,14 @@ add {
                 mappings = {
                     n = {
                         ["<Esc>"] = actions.close,
-                        -- ["<C-f>"] = function (prompt_buffer)
-                        --     actions.move_selection_next(prompt_buffer)
+                        -- ["<C-f>"] = function(prompt_buffer)
+                        --     -- actions.move_selection_next(prompt_buffer)
+                        --     vim.fn["smooth_scroll#flick"](
+                        --         vim.v.count1 * vim.fn.winheight(0),
+                        --         20,
+                        --         "<Plug>(telescope-scroll-f)",
+                        --         "<Plug>(telescope-scroll-b)"
+                        --     )
                         -- end,
                     },
                     i = {

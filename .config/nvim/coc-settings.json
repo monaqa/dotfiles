@@ -1,10 +1,9 @@
 {
   "Lua.workspace.checkThirdParty": false,
   "Lua.workspace.library": [
-    "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-treesitter/nvim-treesitter/lua",
-    "~/.local/share/nvim/site/pack/jetpack/src/github.com/hrsh7th/nvim-cmp/lua",
-    "~/.local/share/nvim/site/pack/jetpack/src/github.com/neovim/nvim-lspconfig/lua",
-    "~/.local/share/nvim/site/pack/jetpack/src/github.com/nvim-lua/plenary.nvim/lua/plenary/busted.lua"
+    "~/.local/share/nvim/lazy/nvim-treesitter/lua",
+    "~/.local/share/nvim/lazy/nvim-insx/lua",
+    "~/.local/share/nvim/lazy/dial.nvim/lua",
   ],
 
   "deno.codeLens.references": true,
@@ -36,7 +35,7 @@
 
   "sumneko-lua.enableNvimLuaDev": true,
 
-  "svelte.enable-ts-plugin": false,
+  "svelte.enable-ts-plugin": true,
 
   "tsserver.enable": true,
   "tsdetect.mode": "auto",
@@ -102,12 +101,14 @@
         "exportPdf": "onSave"
       }
     }
+
   },
 
   "[python]": {"coc.preferences.formatOnSave": true },
   "[rust]": {"coc.preferences.formatOnSave": true },
   "[css]": {"coc.preferences.formatOnSave": true },
   "[javascript][typescript][typescriptreact]": {"coc.preferences.formatOnSave": true },
+  "[svelte]": {"coc.preferences.formatOnSave": true },
 
   "codeLens.enable": false,
   "codeLens.position": "right_align",
