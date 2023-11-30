@@ -7,7 +7,7 @@ vim.opt_local.runtimepath:append {
 
 vim.opt_local.shiftwidth = 2
 
-vim.keymap.set("n", "@q", "<Cmd>!lilypond %<CR>", { buffer = true })
+vim.keymap.set("n", "@q", "<Cmd>!cd %:h; lilypond %:t<CR>", { buffer = true })
 vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", { buffer = true })
 
 vim.opt_local.commentstring = "% %s"

@@ -653,29 +653,34 @@ add {
 
 add {
     "https://github.com/numToStr/Comment.nvim",
+    dependencies = {
+        "https://github.com/JoosepAlviste/nvim-ts-context-commentstring",
+    },
     keys = {
         { ",", "<Plug>(comment_toggle_linewise)", mode = { "n" } },
         { ",", "<Plug>(comment_toggle_linewise_visual)", mode = { "x" } },
         { ",,", "<Plug>(comment_toggle_linewise)_", mode = { "n" } },
     },
-    opts = {
-        ---Add a space b/w comment and the line
-        padding = true,
-        -- ---Whether the cursor should stay at its position
-        -- sticky = true,
-        -- ---Lines to be ignored while (un)comment
-        -- ignore = nil,
-        mappings = {
-            ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-            basic = false,
-            ---Extra mapping; `gco`, `gcO`, `gcA`
-            extra = false,
-        },
-        -- ---Function to call before (un)comment
-        -- pre_hook = nil,
-        -- ---Function to call after (un)comment
-        -- post_hook = nil,
-    },
+    config = function()
+        require("Comment").setup {
+            ---Add a space b/w comment and the line
+            padding = true,
+            -- ---Whether the cursor should stay at its position
+            -- sticky = true,
+            -- ---Lines to be ignored while (un)comment
+            -- ignore = nil,
+            mappings = {
+                ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+                basic = false,
+                ---Extra mapping; `gco`, `gcO`, `gcA`
+                extra = false,
+            },
+            -- ---Function to call before (un)comment
+            pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+            -- ---Function to call after (un)comment
+            -- post_hook = nil,
+        }
+    end,
 }
 
 add { "https://github.com/thinca/vim-qfreplace", ft = { "qf" } }
@@ -1017,6 +1022,8 @@ add {
 }
 add {
     "https://github.com/stevearc/oil.nvim",
+    -- `vim <dir>` のときも自動で開いてほしい
+    lazy = false,
     keys = {
         { "gf" },
         {
@@ -1077,7 +1084,7 @@ add {
             },
             {
                 sort = {
-                    { "type", "asc" },
+                    -- { "type", "asc" },
                     { "mtime", "desc" },
                     { "name", "asc" },
                 },
@@ -1658,13 +1665,43 @@ add {
                 ctx.send "``<Left>"
             end,
         })
+
+        insx.add([["]], {
+            enabled = function(ctx)
+                return ctx.match [["\%#"]] and ctx.filetype == "python"
+            end,
+            action = function(ctx)
+                ctx.send [[""<Left>]]
+                ctx.send [[""<Left>]]
+            end,
+        })
+
         insx.add(
             "<CR>",
-            require "insx.recipe.fast_break" {
-                open_pat = [[```\w*]],
-                close_pat = "```",
-                indent = 0,
-            }
+            insx.with(
+                require "insx.recipe.fast_break" {
+                    open_pat = [[```\w*]],
+                    close_pat = "```",
+                    indent = 0,
+                },
+                {
+                    insx.with.filetype { "markdown" },
+                }
+            )
+        )
+
+        insx.add(
+            "<CR>",
+            insx.with(
+                require "insx.recipe.fast_break" {
+                    open_pat = [["""\w*]],
+                    close_pat = [["""]],
+                    indent = 0,
+                },
+                {
+                    insx.with.filetype { "python" },
+                }
+            )
         )
 
         -- html tag like.
@@ -1708,7 +1745,6 @@ add {
     "https://github.com/machakann/vim-sandwich",
     keys = {
         { "sa", mode = { "n", "x" } },
-        { "ib", mode = { "x", "o" } },
         {
             "ds",
             "<Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-query-a)",
@@ -1725,6 +1761,8 @@ add {
             "csb",
             "<Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)",
         },
+        { "ab", mode = { "x", "o" } },
+        { "ib", mode = { "x", "o" } },
         {
             "m",
             "<Plug>(textobj-sandwich-literal-query-i)",
