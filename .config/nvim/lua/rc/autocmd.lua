@@ -219,11 +219,25 @@ util.autocmd_vimrc "BufWritePre" {
     callback = auto_mkdir,
 }
 
+_G.vimrc.register_info = {}
+
 util.autocmd_vimrc "TextYankPost" {
     desc = "無名レジスタへの yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）",
     callback = function()
         local event = vim.v.event
-        if event.operator == "y" and event.regname == "" then
+
+        if event.regname ~= "" then
+            return
+        end
+        if event.operator == "d" then
+            vim.fn.setreg("d", vim.fn.getreg('"', nil, nil))
+        end
+        if event.operator == "c" then
+            vim.fn.setreg("c", vim.fn.getreg('"', nil, nil))
+        end
+        if event.operator == "y" then
+            _G.vimrc.register_info[#_G.vimrc.register_info + 1] = vim.fn.getreginfo "+"
+            vim.fn.setreg("y", vim.fn.getreg('"', nil, nil))
             vim.fn.setreg("+", vim.fn.getreg('"', nil, nil))
         end
     end,

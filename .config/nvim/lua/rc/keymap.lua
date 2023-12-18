@@ -363,17 +363,10 @@ end
 
 -- Section1 input Japanese character
 
-vim.keymap.set({ "n", "x", "o" }, "fj", "f<C-k>j", {})
-vim.keymap.set({ "x", "o" }, "tj", "t<C-k>j", {})
-vim.keymap.set({ "n", "x", "o" }, "Fj", "F<C-k>j", {})
-vim.keymap.set({ "x", "o" }, "Tj", "T<C-k>j", {})
-
----digraph を登録する。
----@param key_pair string
----@param char string
-local function register_digraph(key_pair, char)
-    vim.cmd(("digraphs %s %s"):format(key_pair, vim.fn.char2nr(char, nil)))
-end
+vim.keymap.set({ "n", "x", "o" }, "fj", "f<C-k>j")
+vim.keymap.set({ "x", "o" }, "tj", "t<C-k>j")
+vim.keymap.set({ "n", "x", "o" }, "Fj", "F<C-k>j")
+vim.keymap.set({ "x", "o" }, "Tj", "T<C-k>j")
 
 vim.fn.digraph_setlist {
     -- これを設定することで， fjj を本来の fj と同じ効果にできる．
@@ -513,21 +506,48 @@ end
 vim.keymap.set("n", "<Space>a", increment_char(1), { expr = true })
 vim.keymap.set("n", "<Space>x", increment_char(-1), { expr = true })
 
+local ns_id = vim.api.nvim_create_namespace "vimrc"
+
 vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
-    local stroke = "<Esc>"
-    vim.cmd [[redraw!]]
-    vim.ui.input({ prompt = "cmd:" }, function(cmd)
-        if cmd ~= nil then
-            -- gv を使うと、途中で '<, '> マークをいじるときにうまく動かない
-            -- stroke = ":Normal " .. cmd .. "<CR>gv<Plug>(vimrc-visual-successive-normal)"
-            -- mark なんて普段使わんしええやろの精神
-            -- stroke = "mpomqo:normal " .. cmd .. "<CR>V'po'qo<Plug>(vimrc-visual-successive-normal)"
-            -- 無限に繰り返せるようにしてもいいが、そうすると undo がくっついてしまう
-            stroke = "mpomqo:normal " .. cmd .. "<CR>V'po'qo"
-        end
-    end)
-    return stroke
-end, { expr = true })
+    local cursor_line = vim.fn.line "."
+    local other_line = vim.fn.line "v"
+    local start_line = util.ifexpr(cursor_line < other_line, cursor_line, other_line)
+    local end_line = util.ifexpr(cursor_line < other_line, other_line, cursor_line)
+
+    local mark_id = vim.api.nvim_buf_set_extmark(0, ns_id, start_line - 1, 0, {
+        end_row = end_line,
+        end_col = 0,
+        hl_group = "Visual",
+    })
+    local finished = false
+
+    -- 何もしない normal コマンドを実行して VISUAL mode から抜ける。これ以外良い方法が思いつかない
+    vim.cmd.normal { args = { "A" }, bang = true }
+    vim.cmd.redraw { bang = true }
+
+    while not finished do
+        vim.ui.input({ prompt = ":'<,'>normal " }, function(cmd)
+            if cmd == nil or cmd == "" then
+                finished = true
+            else
+                vim.cmd.normal { args = { "iu" }, bang = true }
+                vim.cmd.normal {
+                    args = { cmd },
+                    range = { start_line, end_line },
+                }
+                vim.cmd.redraw { bang = true }
+            end
+        end)
+    end
+
+    vim.api.nvim_buf_del_extmark(0, ns_id, mark_id)
+
+    -- `gv` で再選択できるよう選択領域を restore
+    vim.cmd(tostring(start_line))
+    vim.cmd.normal [[V]]
+    vim.cmd(tostring(end_line))
+    vim.cmd.normal [[V]]
+end)
 vim.keymap.set("x", "C", "<Plug>(vimrc-visual-successive-normal)")
 
 -- general conversion operator

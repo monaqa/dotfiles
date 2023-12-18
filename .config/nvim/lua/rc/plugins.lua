@@ -1658,9 +1658,12 @@ add {
 
         insx.add("`", {
             enabled = function(ctx)
-                return ctx.match [[`\%#`]] and ctx.filetype == "markdown"
+                return ctx.match [[`\%#`]] and vim.tbl_contains({ "markdown", "typst" }, ctx.filetype)
             end,
             action = function(ctx)
+                if ctx.match [[```\%#```]] then
+                    return
+                end
                 ctx.send "``<Left>"
                 ctx.send "``<Left>"
             end,
@@ -1671,6 +1674,9 @@ add {
                 return ctx.match [["\%#"]] and ctx.filetype == "python"
             end,
             action = function(ctx)
+                if ctx.match [["""\%#"""]] then
+                    return
+                end
                 ctx.send [[""<Left>]]
                 ctx.send [[""<Left>]]
             end,
@@ -1685,7 +1691,7 @@ add {
                     indent = 0,
                 },
                 {
-                    insx.with.filetype { "markdown" },
+                    insx.with.filetype { "markdown", "typst" },
                 }
             )
         )

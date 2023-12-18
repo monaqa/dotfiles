@@ -80,7 +80,6 @@ set -x LSCOLORS gxfxcxdxbxegedabagacad
 set -x PATH "/opt/homebrew/bin" $PATH
 set -x PATH "$HOME/.cargo/bin" $PATH
 set -x PATH "$HOME/.local/bin" $PATH
-set -x PATH "$HOME/.nimble/bin" $PATH
 set -x PNPM_HOME "$HOME/Library/pnpm"
 set -x PATH "$PNPM_HOME:$PATH"
 
@@ -131,6 +130,9 @@ set -x MANPAGER 'nvim +Man!'
 # abbr は universal 変数として格納される．
 # リセットしたい場合は以下のコマンドを実行
 # for a in (abbr --list); abbr --erase $a; end
+
+abbr -a cp    "cp -i"
+abbr -a mv    "mv -i"
 
 abbr -a cdd   "cd ../"
 abbr -a cddd  "cd ../../"

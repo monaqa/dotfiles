@@ -109,6 +109,7 @@
   "[css]": {"coc.preferences.formatOnSave": true },
   "[javascript][typescript][typescriptreact]": {"coc.preferences.formatOnSave": true },
   "[svelte]": {"coc.preferences.formatOnSave": true },
+  "[toml]": {"coc.preferences.formatOnSave": false },
 
   "codeLens.enable": false,
   "codeLens.position": "right_align",
