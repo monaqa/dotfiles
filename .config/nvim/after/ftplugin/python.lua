@@ -4,7 +4,8 @@ vim.cmd.inoreabbrev { args = { "<buffer>", "imprt", "import" } }
 vim.cmd.inoreabbrev { args = { "<buffer>", "improt", "import" } }
 
 vim.opt_local.smartindent = false
-vim.opt_local.foldmethod = "indent"
+-- octo で PR レビューするとき邪魔になっちゃうっぽい
+-- vim.opt_local.foldmethod = "indent"
 
 local first_line = vim.fn.getline(1)
 if first_line == "# %% [markdown]" or first_line == "# %% streamlit" then
