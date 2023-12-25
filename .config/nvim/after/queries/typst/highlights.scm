@@ -1,142 +1,93 @@
-; ;; Markup
-;
-; (markup) @markup
-; (escape) @string.escape
-; (text_shorthand) @punctuation
-; (smart_quote) @punctuation.delimiter
-; (raw) @markup.raw.inline
-; (link) @markup.link.url
-; (label) @markup.label
-; (strong) @markup.bold
-; (emph) @markup.italic
-;
-; (heading
-;   (heading_start) @punctuation.special
-; ) @text.title
-;
-; ;; Math
-;
-; (equation
-;   "$" @punctuation.special)
-;
-; (math_shorthand) @punctuation
-; (math_delimited_left) @punctuation.bracket
-; (math_delimited_right) @punctuation.bracket
-; (math_align_point) @operator
-;
-; (math_function_call
-;   [
-;     (math_field_access
-;       value: (_) @function)
-;     (math_field_access
-;       field: (_) @function.method)
-;   ])
-; (math_field_access
-;   [
-;     "." @punctuation.delimiter
-;     value: (_) @variable
-;     object: (_) @variable
-;     field: (_) @variable.other.member  
-;   ])
-; (math_arg_named
-;   ":" @punctuation.delimiter)
-;
-; (math_root
-;   ["√" "∛" "∜"] @operator)
-; (math_attach_below
-;   "_" @operator)
-; (math_attach_above
-;   "^" @operator)
-; (math_frac
-;   "/" @operator)
-;
-; ((math_text) @constant.numeric.integer
-;   (#match? @constant.numeric.integer "^\\d+$"))
-; ((math_text) @constant.numeric.float
-;   (#match? @constant.numeric.float "^\\d+\\.\\d+$"))
-; (math_ident) @identifier
-;
-; ;; Code
-;
-; (embedded_code_expr) @field
-;
-; (embedded_code_expr
-;   "#" @keyword
-;   (let_binding))
-;
-; (dict
-;   ":" @operator)
-; (named_value
-;   ":" @punctuation.delimiter)
-; (spread
-;   ".." @operator)
-;
-; (let_binding
-;   "let" @keyword.storage
-;   "=" @operator)
-; (pattern
-;   [
-;     "_" @variable
-;     (code_ident) @variable
-;   ])
-; (pattern_parenthesized
-;   (code_ident) @variable)
-; (pattern_destructuring
-;   (code_ident) @variable)
-; (pattern_spread
-;   ".." @operator)
-; (pattern_closure
-;   name: (_) @function)
-; (params
-;   [
-;     (code_ident) @variable.parameter
-;     (pattern_spread
-;       (code_ident) @variable.parameter)
-;     (pattern_destructuring
-;       [
-;         (code_ident) @variable.parameter
-;         (pattern_spread
-;           (code_ident) @variable.parameter)
-;         (pattern_named
-;           binding: (code_ident) @variable.parameter)
-;       ])
-;   ])
-; (param_named
-;   name: (_) @variable.parameter)
-; (pattern_named
-;   [
-;     field: (_) @variable.other.member
-;     ":" @punctuation.delimiter
-;     binding: (_) @variable 
-;   ])
-;
-; (code_ident) @identifier
-; (code_number) @constant.numeric
-; (code_int) @constant.numeric.integer
-; (code_float) @constant.numeric.float
-; (string) @string
-; [
-;   "none"
-;   "auto"
-;   "true"
-;   "false"
-; ] @constant.builtin
-;
-; ;; Any
-;
-; [
-;   "{"
-;   "}"
-;   "["
-;   "]"
-;   "("
-;   ")"
-; ] @punctuation.bracket
-; [
-;   ","
-;   ";"
-; ] @punctuation.delimiter
-;
-; (line_comment) @comment.line
-; (block_comment) @comment.block
-;
+(call
+  item: (ident) @function)
+(call
+  item: (field field: (ident) @function.method))
+(comment) @comment
+
+(field field: (ident) @field)
+; 隣接を使い出すと重くなる説がある
+; ((field field: (ident) @method) . (group))
+
+(tagged field: (_) @field)
+
+"#" @punctuation.delimiter
+(content ["[" "]"] @punctuation.delimiter)
+
+; (content "#" @field . (ident) @field)
+; (content "#" @field [(import) (let)] @field)
+
+; CONTROL
+(let "let" @keyword.storage.type)
+(let "=" @operator)
+(assign "assign" @operator)
+
+(branch ["if" "else"] @keyword.control.conditional)
+(while "while" @keyword.control.repeat)
+(for ["for" "in"] @keyword.control.repeat)
+(import "import" @keyword.control.import)
+(as "as" @keyword.operator)
+(include "include" @keyword.control.import)
+(show "show" @keyword.control)
+(set "set" @keyword.control)
+(return "return" @keyword.control)
+(flow ["break" "continue"] @keyword.control)
+
+; OPERATOR
+(in ["in" "not"] @keyword.operator)
+(and "and" @keyword.operator)
+(or "or" @keyword.operator)
+(not "not" @keyword.operator)
+(sign ["+" "-"] @operator)
+(add "+" @operator)
+(sub "-" @operator)
+(mul "*" @operator)
+(div "/" @operator)
+(cmp ["==" "<=" ">=" "!=" "<" ">"] @operator)
+(fraction "/" @operator)
+(fac "!" @operator)
+(attach ["^" "_"] @operator)
+(wildcard) @operator
+
+; VALUE
+(raw_blck "```" @punctuation.delimiter) @text.literal
+(raw_span "`" @punctuation.delimiter) @text.literal
+(raw_blck lang: (ident) @tag)
+(label) @tag
+(ref) @tag
+(number) @constant.numeric
+(string) @string
+(bool) @constant.builtin.boolean
+(builtin) @constant.builtin
+(none) @constant.builtin
+(auto) @constant.builtin
+; (ident) @variable
+(call
+  item: (builtin) @function.builtin)
+
+; MARKUP
+(item "-" @punctuation.special)
+(term ["/" ":"] @punctuation.special)
+(heading "=" (text) @text.underline ) @text.title
+(heading "==" ) @text.title
+(heading "===" ) @text.title
+(heading "====" ) @text.title.weak
+(heading "=====" ) @text.title.weak
+(heading "======" ) @text.title.weak
+(url) @tag
+(emph) @text.underline
+(strong) @text.strong
+(symbol) @constant.character
+(shorthand) @constant.builtin
+; (quote) @markup.quote
+(align) @operator
+(letter) @constant.character
+(linebreak) @constant.builtin
+
+(math "$" @operator)
+; "#" @operator
+"end" @punctuation.delimiter
+
+(escape) @constant.character.escape
+["(" ")" "{" "}"] @punctuation.bracket
+["," ";" ".." ":" "sep"] @punctuation.delimiter
+(field "." @punctuation)

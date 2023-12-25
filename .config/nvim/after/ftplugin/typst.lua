@@ -30,13 +30,14 @@ vim.api.nvim_buf_create_user_command(
             end
             return dir .. name .. ".png"
         end,
-        fn_markup_string = function(name, path)
-            local prev_dir = vim.fn.chdir(vim.fn.expand "%:h")
-            local relpath = vim.fn.fnamemodify(path, ":.")
-            vim.fn.chdir(prev_dir)
+        fn_markup_string = function(_, path)
+            local fname = vim.fn.fnamemodify(path, ":t:r")
+            -- local prev_dir = vim.fn.chdir(vim.fn.expand "%:h")
+            -- local relpath = vim.fn.fnamemodify(path, ":.")
+            -- vim.fn.chdir(prev_dir)
             return {
                 "#align(center)[",
-                ([[  #image("%s", width: 85%%)]]):format(relpath),
+                ([[  #image("image/%s.png", width: 85%%)]]):format(fname),
                 "]",
             }
         end,
