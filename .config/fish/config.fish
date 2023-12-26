@@ -178,6 +178,7 @@ abbr -a vtex "env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim"
 abbr -a mkvs "mkdir .vimsessions"
 abbr -a rmvs "rm .vimsessions/*"
 abbr -a vlsp "env NVIM_APPNAME='nvim-nvim_lsp' nvim"
+abbr -a vtech "env NVIM_APPNAME='nvim-edit_tech' nvim"
 
 # cargo
 abbr -a cb   "cargo build"

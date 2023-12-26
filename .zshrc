@@ -100,7 +100,8 @@ abbrev-alias -c mkvs="mkdir .vimsessions"
 abbrev-alias -c rmvs="rm .vimsessions/*"
 abbrev-alias -c ta="tig --all"
 abbrev-alias -c tn="tmux new-session -A -s"
-abbrev-alias -c v="nvim"
+# abbrev-alias -c v="nvim"
+abbrev-alias -c v="env NVIM_APPNAME='nvim-edit_tech' nvim"
 abbrev-alias -c rafnew="cd \$(raf new)"
 
 if type "exa" > /dev/null 2>&1; then

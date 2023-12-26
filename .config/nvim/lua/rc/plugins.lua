@@ -1217,6 +1217,8 @@ add {
     "https://github.com/stevearc/oil.nvim",
     -- `vim <dir>` のときも自動で開いてほしい
     lazy = false,
+    -- なんか最新版だとファイル編集できなくなった。LSP feature が原因？
+    commit = "24027ed8d7f3ee5c38cfd713915e2e16d89e79b3",
     keys = {
         { "gf" },
         {
@@ -2254,11 +2256,11 @@ add {
     },
 }
 
-add {
-    "https://github.com/bps/vim-textobj-python",
-    dependencies = { "https://github.com/kana/vim-textobj-user" },
-    ft = { "python" },
-}
+-- add {
+--     "https://github.com/bps/vim-textobj-python",
+--     dependencies = { "https://github.com/kana/vim-textobj-user" },
+--     ft = { "python" },
+-- }
 add {
     "https://github.com/glts/vim-textobj-comment",
     dependencies = { "https://github.com/kana/vim-textobj-user" },
@@ -3198,13 +3200,13 @@ add {
         vim.g["rustfmt_autosave"] = 0
     end,
 }
-add {
-    "https://github.com/vim-python/python-syntax",
-    ft = { "python" },
-    config = function()
-        vim.g.python_highlight_all = 1
-    end,
-}
+-- add {
+--     "https://github.com/vim-python/python-syntax",
+--     ft = { "python" },
+--     config = function()
+--         vim.g.python_highlight_all = 1
+--     end,
+-- }
 add { "https://github.com/vito-c/jq.vim", ft = { "jq" } }
 add { "https://github.com/wlangstroth/vim-racket", ft = { "racket" } }
 add { "https://github.com/terrastruct/d2-vim", ft = { "d2" } }
