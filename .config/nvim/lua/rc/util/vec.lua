@@ -5,20 +5,20 @@
 -- とかやりたいよね。
 
 ---@generic T
----@class Vec<T>
+---@class Vec
 ---@field t `T`[]
 local Vec = {}
 
 ---@generic T
 ---@param t `T`[]
----@return Vec<T>
+---@return Vec
 function Vec.new(t)
     return setmetatable({ t = t }, { __index = Vec })
 end
 
 ---@generic T
 ---@param f fun(t: T): T
----@return Vec<T>
+---@return Vec
 function Vec:map(f)
     local results = {}
     for _, value in ipairs(self.t) do
@@ -28,8 +28,16 @@ function Vec:map(f)
 end
 
 ---@generic T
+---@param f fun(t: T)
+function Vec:for_each(f)
+    for _, value in ipairs(self.t) do
+        f(value)
+    end
+end
+
+---@generic T
 ---@param f fun(t: T): boolean
----@return Vec<T>
+---@return Vec
 function Vec:filter(f)
     local results = {}
     for _, value in ipairs(self.t) do
@@ -42,7 +50,7 @@ end
 
 ---@generic T
 ---@param f fun(t: T): T | nil
----@return Vec<T>
+---@return Vec
 function Vec:filter_map(f)
     local results = {}
     for _, value in ipairs(self.t) do
@@ -55,13 +63,12 @@ end
 
 ---@generic T
 ---@return T[]
-function Vec:into_table()
+function Vec:collect()
     return self.t
 end
 
 ---@generic T
----@param self Vec<T[]>
----@return T[]
+---@return Vec
 function Vec:concat()
     local results = {}
     for _, array in ipairs(self.t) do
@@ -73,8 +80,22 @@ function Vec:concat()
 end
 
 ---@generic T
+---@param e T
+function Vec:push(e)
+    self.t[#self.t + 1] = e
+end
+
+---@generic T
 ---@param t T[]
----@return Vec<T>
+function Vec:append(t)
+    for _, value in ipairs(t) do
+        self.t[#self.t + 1] = value
+    end
+end
+
+---@generic T
+---@param t T[]
+---@return Vec
 local function vec(t)
     return Vec.new(t)
 end

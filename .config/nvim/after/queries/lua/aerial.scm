@@ -2,7 +2,7 @@
 (
  (
   function_call
-  name: (identifier) @funcname
+  name: (method_index_expression) @funcname
   arguments:
   (arguments
     (table_constructor
@@ -12,8 +12,8 @@
       )
     )
   ) @type
- (#match? @funcname "add")
- (#bufname-vim-match? "\\v.*plugins\\.lua$")
+ (#match? @funcname "plugins:push")
+ (#bufname-vim-match? "\\vplugins/.*\\.lua$")
  (#offset! @name 0 20 0 -1)
  (#set! "kind" "Function")
  )
