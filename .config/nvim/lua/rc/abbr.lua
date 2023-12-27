@@ -87,6 +87,7 @@ make_abbrev {
     { from = "gs", to = "Gina status -s --opener=split" },
     { from = "git", to = "Gina" },
     { from = "gina", to = "Gina" },
+    { from = "gop", to = "OctoOpenPr" },
     { from = "it", to = "InspectTree" },
     { from = "l", to = "Lazy" },
     { from = "mn", to = "MemoNew" },

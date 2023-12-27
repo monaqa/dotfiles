@@ -740,8 +740,8 @@ add {
                     prev_comment = { lhs = "gk", desc = "go to previous comment" },
                     -- react_hooray = { lhs = "<space>rp", desc = "add/remove 🎉 reaction" },
                     -- react_heart = { lhs = "<space>rh", desc = "add/remove ❤️ reaction" },
-                    -- react_eyes = { lhs = "<space>re", desc = "add/remove 👀 reaction" },
-                    -- react_thumbs_up = { lhs = "<space>r+", desc = "add/remove 👍 reaction" },
+                    react_eyes = { lhs = "@e", desc = "add/remove 👀 reaction" },
+                    react_thumbs_up = { lhs = "@b", desc = "add/remove 👍 reaction" },
                     -- react_thumbs_down = { lhs = "<space>r-", desc = "add/remove 👎 reaction" },
                     -- react_rocket = { lhs = "<space>rr", desc = "add/remove 🚀 reaction" },
                     -- react_laugh = { lhs = "<space>rl", desc = "add/remove 😄 reaction" },
@@ -754,15 +754,15 @@ add {
                     -- delete_comment = { lhs = "<space>cd", desc = "delete comment" },
                     next_comment = { lhs = "gj", desc = "go to next comment" },
                     prev_comment = { lhs = "gk", desc = "go to previous comment" },
-                    select_next_entry = { lhs = "]q", desc = "move to previous changed file" },
-                    select_prev_entry = { lhs = "[q", desc = "move to next changed file" },
-                    select_first_entry = { lhs = "[Q", desc = "move to first changed file" },
-                    select_last_entry = { lhs = "]Q", desc = "move to last changed file" },
+                    -- select_next_entry = { lhs = "]q", desc = "move to previous changed file" },
+                    -- select_prev_entry = { lhs = "[q", desc = "move to next changed file" },
+                    -- select_first_entry = { lhs = "[Q", desc = "move to first changed file" },
+                    -- select_last_entry = { lhs = "]Q", desc = "move to last changed file" },
                     -- close_review_tab = { lhs = "<C-c>", desc = "close review tab" },
                     -- react_hooray = { lhs = "<space>rp", desc = "add/remove 🎉 reaction" },
                     -- react_heart = { lhs = "<space>rh", desc = "add/remove ❤️ reaction" },
-                    -- react_eyes = { lhs = "<space>re", desc = "add/remove 👀 reaction" },
-                    -- react_thumbs_up = { lhs = "<space>r+", desc = "add/remove 👍 reaction" },
+                    react_eyes = { lhs = "@e", desc = "add/remove 👀 reaction" },
+                    react_thumbs_up = { lhs = "@b", desc = "add/remove 👍 reaction" },
                     -- react_thumbs_down = { lhs = "<space>r-", desc = "add/remove 👎 reaction" },
                     -- react_rocket = { lhs = "<space>rr", desc = "add/remove 🚀 reaction" },
                     -- react_laugh = { lhs = "<space>rl", desc = "add/remove 😄 reaction" },
@@ -779,10 +779,10 @@ add {
                     add_review_suggestion = { lhs = "O", desc = "add a new review suggestion" },
                     focus_files = { lhs = "@f", desc = "move focus to changed file panel" },
                     toggle_files = { lhs = "@t", desc = "hide/show changed files panel" },
-                    next_thread = { lhs = "gj", desc = "move to next thread" },
-                    prev_thread = { lhs = "gk", desc = "move to previous thread" },
-                    -- select_next_entry = { lhs = "]q", desc = "move to previous changed file" },
-                    -- select_prev_entry = { lhs = "[q", desc = "move to next changed file" },
+                    next_thread = { lhs = ")", desc = "move to next thread" },
+                    prev_thread = { lhs = "(", desc = "move to previous thread" },
+                    select_next_entry = { lhs = "sn", desc = "move to previous changed file" },
+                    select_prev_entry = { lhs = "sp", desc = "move to next changed file" },
                     -- select_first_entry = { lhs = "[Q", desc = "move to first changed file" },
                     -- select_last_entry = { lhs = "]Q", desc = "move to last changed file" },
                     close_review_tab = { lhs = "sQ", desc = "close review tab" },
@@ -805,6 +805,18 @@ add {
                 },
             },
         }
+
+        vim.api.nvim_create_user_command("OctoOpenPr", function(_)
+            local cmd = [[gh pr status --json number --jq ".currentBranch.number"]]
+            local pr_number = vim.trim(vim.fn.system(cmd))
+            vim.cmd["Octo"] {
+                args = {
+                    "pr",
+                    "edit",
+                    pr_number,
+                },
+            }
+        end, {})
     end,
 }
 
@@ -1514,6 +1526,8 @@ add {
                 util.sethl "FoldColumn" { bg = "#303030" }
                 util.sethl "NonText" { fg = "#496da9" }
                 util.sethl "Todo" { bold = true, bg = "#444444", fg = "#c6b7a2" }
+                util.sethl "CursorLine" { bg = "#3d4041" }
+                util.sethl "CursorColumn" { bg = "#3d4041" }
 
                 util.sethl "VertSplit" { fg = "#c8c8c8", bg = "None", default = false }
                 util.sethl "Visual" { bg = "#4d564e" }
