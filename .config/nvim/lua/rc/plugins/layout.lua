@@ -19,7 +19,7 @@ plugins:push {
                 util.sethl "Todo" { bold = true, bg = "#444444", fg = "#c6b7a2" }
                 util.sethl "CursorLine" { bg = "#3d4041" }
                 util.sethl "CursorColumn" { bg = "#3d4041" }
-                util.sethl "Folded" { bg = "#303030", fg = "#968772", bold = true }
+                util.sethl "Folded" { bg = "#303030", bold = true, italic = true }
 
                 util.sethl "VertSplit" { fg = "#c8c8c8", bg = "None", default = false }
                 util.sethl "Visual" { bg = "#4d564e" }
@@ -262,7 +262,6 @@ plugins:push {
     cmd = { "CccHighlighterEnable" },
 }
 
-vim.opt.termguicolors = true
 plugins:push {
     "https://github.com/kevinhwang91/nvim-ufo",
     -- commit = "a15944ff8e3d570f504f743d55209275ed1169c4",
@@ -273,27 +272,37 @@ plugins:push {
         vim.keymap.set("n", "zR", require("ufo").openAllFolds)
         vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 
+        local handler = function(virtText, lnum, endLnum, width, truncate)
+            local newVirtText = {}
+            local suffix = (" … 󰁂 %d "):format(endLnum - lnum)
+            local sufWidth = vim.fn.strdisplaywidth(suffix)
+            local targetWidth = width - sufWidth
+            local curWidth = 0
+            for _, chunk in ipairs(virtText) do
+                local chunkText = chunk[1]
+                local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+                if targetWidth > curWidth + chunkWidth then
+                    table.insert(newVirtText, chunk)
+                else
+                    chunkText = truncate(chunkText, targetWidth - curWidth)
+                    local hlGroup = chunk[2]
+                    table.insert(newVirtText, { chunkText, hlGroup })
+                    chunkWidth = vim.fn.strdisplaywidth(chunkText)
+                    -- str width returned from truncate() may less than 2nd argument, need padding
+                    if curWidth + chunkWidth < targetWidth then
+                        suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+                    end
+                    break
+                end
+                curWidth = curWidth + chunkWidth
+            end
+            table.insert(newVirtText, { suffix, "NonText" })
+            return newVirtText
+        end
+
         require("ufo").setup {
-            fold_virt_text_handler = function(
-                -- The start_line's text.
-                virtual_text_chunks,
-                -- Start and end lines of fold.
-                start_line,
-                end_line,
-                -- Total text width.
-                text_width,
-                -- fun(str: string, width: number): string Trunctation function.
-                truncate,
-                -- Context for the fold.
-                ctx
-            )
-                -- なんか virtual_text_chunks を使ったやり方がうまくいかん
-                -- return vim.inspect(virtual_text_chunks)
-                -- ので start_line と end_line でお茶を濁す
-                local start = truncate(vim.fn.getline(start_line), 70)
-                local _end = truncate(vim.trim(vim.fn.getline(end_line)), 20)
-                return { { start, "Folded" }, { " … ", "NonText" }, { _end, "Folded" } }
-            end,
+            fold_virt_text_handler = handler,
+
             provider_selector = function(bufnr, filetype, buftype)
                 return { "treesitter", "indent" }
             end,

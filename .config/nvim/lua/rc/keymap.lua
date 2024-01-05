@@ -67,9 +67,8 @@ vim.keymap.set({ "n", "o", "x" }, "+", M.expr_temporal_attention, { expr = true 
 
 -- Section1 fold
 
--- 自分のいない level が 1 の fold だけたたむ
-vim.keymap.set("n", "<Space>z", "zMzA")
--- vim.keymap.set("n", "<Space>z", "zx")
+-- 自分のいない fold だけたたむ
+vim.keymap.set("n", "<Space>z", "zMzv")
 
 -- Section1 search
 

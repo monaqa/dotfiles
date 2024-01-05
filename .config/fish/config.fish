@@ -198,7 +198,7 @@ abbr -a rafnew "cd (raf new)"
 
 if type -q lsd
   abbr -a j "lsd -l"
-  abbr -a jj 'lsd -l --tree --depth 3 --ignore-glob .git'
+  abbr -a jj 'lsd -l --tree --ignore-glob .git --depth 3'
 else if type -q exa
   abbr -a j "exa -a --icons --group-directories-first --long --time-style=long-iso"
 else

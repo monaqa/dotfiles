@@ -20,6 +20,8 @@ vim.cmd [[
 
 require "rc.plugins"
 
+require("rc.diary").setup()
+
 require "rc.autocmd"
 require "rc.option"
 require "rc.abbr"

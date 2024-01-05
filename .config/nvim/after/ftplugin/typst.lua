@@ -1,7 +1,28 @@
-vim.opt_local.shiftwidth = 2
+local uv = vim.loop
+local diary = require "rc.diary"
+local util = require "rc.util"
 
+vim.opt_local.shiftwidth = 2
+vim.opt_local.foldmethod = "manual"
 vim.opt_local.commentstring = "// %s"
-vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", { buffer = true })
+
+-- vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", { buffer = true })
+vim.keymap.set("n", "@o", function()
+    if diary.is_diary_file() then
+        vim.cmd [[!open %:h/preview.pdf]]
+    else
+        vim.cmd [[!open %:r.pdf]]
+    end
+end, { buffer = true })
+
+util.autocmd_vimrc "BufWritePost" {
+    buffer = 0,
+    callback = function()
+        if diary.is_diary_file() then
+            diary.compile(diary.preview_file())
+        end
+    end,
+}
 
 vim.keymap.set(
     "x",

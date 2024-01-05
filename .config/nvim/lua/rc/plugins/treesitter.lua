@@ -107,8 +107,8 @@ plugins:push {
 
         parser_config.typst = {
             install_info = {
-                url = "~/ghq/github.com/uben0/tree-sitter-typst", -- local path or git repo
-                revision = "main",
+                url = "https://github.com/uben0/tree-sitter-typst", -- local path or git repo
+                revision = "master",
                 files = { "src/parser.c", "src/scanner.c" },
             },
             filetype = "typst", -- if filetype does not agrees with parser name

@@ -178,7 +178,8 @@ return {
     font = wezterm.font_with_fallback({
         -- {family="CommitMono-height105", weight=450, stretch="Normal", style="Normal"},
         {family="CommitMono-height105-nokern", weight=450, stretch="Normal", style="Normal"},
-        {family="Hack Nerd Font", weight="Regular", stretch="Normal", italic=false},
+        {family="Hack Nerd Font", weight="Regular", stretch="Normal"},
+        -- {family="Hack Nerd Font", weight="Regular", stretch="Normal", italic=false},
         -- {family="YuGothic", weight="Regular", stretch="Normal"},
         {family="Noto Sans CJK JP", weight="Regular", stretch="Normal"},
         -- {family="BIZ UDPGothic", weight="Regular", stretch="Normal"},
