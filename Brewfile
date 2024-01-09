@@ -44,6 +44,7 @@ cask "visual-studio-code"
 cask "google-japanese-ime"
 cask "slack"
 cask "vlc"
+cask "rancher"
 
 cask "font-hack-nerd-font"
 cask "font-mplus-nerd-font"

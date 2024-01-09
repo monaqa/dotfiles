@@ -8,21 +8,21 @@ vim.opt_local.commentstring = "// %s"
 
 -- vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", { buffer = true })
 vim.keymap.set("n", "@o", function()
-    if diary.is_diary_file() then
-        vim.cmd [[!open %:h/preview.pdf]]
-    else
-        vim.cmd [[!open %:r.pdf]]
-    end
+    vim.cmd [[!open %:r.pdf]]
 end, { buffer = true })
 
-util.autocmd_vimrc "BufWritePost" {
-    buffer = 0,
-    callback = function()
-        if diary.is_diary_file() then
-            diary.compile(diary.preview_file())
-        end
-    end,
-}
+vim.keymap.set("n", "@q", function()
+    vim.cmd [[!typst compile %]]
+end, { buffer = true })
+
+-- util.autocmd_vimrc "BufWritePost" {
+--     buffer = 0,
+--     callback = function()
+--         if diary.is_diary_file() then
+--             diary.compile(diary.preview_file())
+--         end
+--     end,
+-- }
 
 vim.keymap.set(
     "x",

@@ -49,9 +49,16 @@
 (wildcard) @operator
 
 ; VALUE
-(raw_blck "```" @punctuation.delimiter) @text.literal
+(raw_blck
+  "```"
+  @punctuation.delimiter
+  .
+  (blob) @text.literal
+  )
+
 (raw_span "`" @punctuation.delimiter) @text.literal
 (raw_blck lang: (ident) @tag)
+
 (label) @tag
 (ref) @tag
 (number) @constant.numeric

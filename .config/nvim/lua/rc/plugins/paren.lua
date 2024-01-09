@@ -179,8 +179,22 @@ plugins:push {
 
         -- quotes
         for _, quote in ipairs { '"', "'", "`" } do
-            standard.set_quote("i", quote)
+            standard.set_quote("i", quote, {
+                {
+                    priority = 0,
+                },
+            })
         end
+
+        insx.add("'", {
+            enabled = function(ctx)
+                return ctx.filetype == "rust"
+            end,
+            action = function(ctx)
+                ctx.send(ctx.char)
+            end,
+            priority = 1,
+        })
 
         -- pairs
         for open, close in pairs {
@@ -402,7 +416,7 @@ plugins:push {
 
         local recipe_codeblock = {
             {
-                filetype = { "markdown", "obsidian" },
+                filetype = { "markdown", "obsidian", "typst" },
                 input = { "c" },
                 buns = { "```", "```" },
                 kind = { "add" },
@@ -410,7 +424,7 @@ plugins:push {
                 command = { [[']s/^\s*//]] },
             },
             {
-                filetype = { "markdown", "obsidian" },
+                filetype = { "markdown", "obsidian", "typst" },
                 input = { "C" },
                 buns = { "SandwichMarkdownCodeSnippet()", [["```"]] },
                 expr = 1,
@@ -475,7 +489,7 @@ plugins:push {
         local recipe_typst_cmd = {
             {
                 filetype = { "typst" },
-                input = { "c" },
+                input = { "#" },
                 buns = { "SandwichTypstCmdName()", [["]"]] },
                 expr = 1,
                 cursor = "inner_tail",

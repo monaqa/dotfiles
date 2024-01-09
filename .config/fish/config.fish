@@ -83,6 +83,10 @@ set -x PATH "$HOME/.local/bin" $PATH
 set -x PNPM_HOME "$HOME/Library/pnpm"
 set -x PATH "$PNPM_HOME:$PATH"
 
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+set --export --prepend PATH "/Users/monaqa/.rd/bin"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
 # SATySFi
 export SATYSFI_LIB_ROOT=/usr/local/lib-satysfi
 

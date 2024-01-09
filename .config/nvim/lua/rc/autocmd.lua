@@ -406,7 +406,7 @@ util.autocmd_vimrc "BufWritePre" {
             vim.cmd [[%!typstfmt 2>/dev/null]]
         end)
     end,
-    desc = "execute stylua",
+    desc = "execute typstfmt",
 }
 
 -- auto repeatable macro （ドットリピートや通常マクロのほうが直感的なのでボツ）

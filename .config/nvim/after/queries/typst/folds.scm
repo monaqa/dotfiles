@@ -9,5 +9,12 @@
     ])
  .
  (section) @fold
- ; (#offset! @fold 1 1 0 0)
+ (#offset! @fold 0 0 -1 0)
  )
+
+(call
+  item: (builtin) @_builtin
+  (content) @fold
+
+  (#eq? @_builtin "quote")
+  )

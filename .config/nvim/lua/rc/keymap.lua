@@ -68,7 +68,7 @@ vim.keymap.set({ "n", "o", "x" }, "+", M.expr_temporal_attention, { expr = true 
 -- Section1 fold
 
 -- 自分のいない fold だけたたむ
-vim.keymap.set("n", "<Space>z", "zMzv")
+vim.keymap.set("n", "<Space>z", "zMzv", { remap = true })
 
 -- Section1 search
 

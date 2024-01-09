@@ -35,6 +35,8 @@
 
   "sumneko-lua.enableNvimLuaDev": true,
 
+  "sql.database": "postgresql",
+
   "svelte.enable-ts-plugin": true,
 
   "tsserver.enable": true,
