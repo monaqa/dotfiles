@@ -79,6 +79,29 @@ plugins:push {
     config = function(_, opts)
         require("gitsigns").setup(opts)
 
+        local gs = package.loaded.gitsigns
+
+        -- Navigation
+        vim.keymap.set("n", "gj", function()
+            if vim.wo.diff then
+                return "]c"
+            end
+            vim.schedule(function()
+                gs.next_hunk()
+            end)
+            return "<Ignore>"
+        end, { expr = true })
+
+        vim.keymap.set("n", "gk", function()
+            if vim.wo.diff then
+                return "[c"
+            end
+            vim.schedule(function()
+                gs.prev_hunk()
+            end)
+            return "<Ignore>"
+        end, { expr = true })
+
         local function complete_branches(arglead, cmdline, cursorpos)
             local branches = vim.fn.systemlist { "git", "rev-parse", "--symbolic", "--branches", "--tags", "--remotes" }
             branches = vim.tbl_filter(function(cand)
@@ -134,27 +157,6 @@ plugins:push {
                 opts.buffer = bufnr
                 vim.keymap.set(mode, l, r, opts)
             end
-
-            -- Navigation
-            map("n", "gj", function()
-                if vim.wo.diff then
-                    return "]c"
-                end
-                vim.schedule(function()
-                    gs.next_hunk()
-                end)
-                return "<Ignore>"
-            end, { expr = true })
-
-            map("n", "gk", function()
-                if vim.wo.diff then
-                    return "[c"
-                end
-                vim.schedule(function()
-                    gs.prev_hunk()
-                end)
-                return "<Ignore>"
-            end, { expr = true })
 
             -- Actions
             -- map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")

@@ -1,23 +1,21 @@
 -- Vec みたいなやつ。
--- vec({1, 2, 3}):map(function(x) return 2 * x end).into_table()
+-- vec({1, 2, 3}):map(function(x) return 2 * x end).collect()
 -- vec({"foo", "bar"}):contains("baz")
 -- vec({{1}, {2, 3}}):concat()
 -- とかやりたいよね。
 
----@generic T
 ---@class Vec
----@field t `T`[]
+---@field t any
 local Vec = {}
 
----@generic T
----@param t `T`[]
+---@param t any[]
 ---@return Vec
 function Vec.new(t)
     return setmetatable({ t = t }, { __index = Vec })
 end
 
----@generic T
----@param f fun(t: T): T
+---@generic T, U
+---@param f fun(t: T): U
 ---@return Vec
 function Vec:map(f)
     local results = {}
@@ -48,8 +46,8 @@ function Vec:filter(f)
     return Vec.new(results)
 end
 
----@generic T
----@param f fun(t: T): T | nil
+---@generic T, U
+---@param f fun(t: T): U | nil
 ---@return Vec
 function Vec:filter_map(f)
     local results = {}
