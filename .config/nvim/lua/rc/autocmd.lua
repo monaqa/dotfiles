@@ -47,6 +47,9 @@ util.autocmd_vimrc "BufRead" {
         if vim.bo.filetype == "commit" or vim.bo.filetype == "rebase" then
             return
         end
+        if vim.wo.diff then
+            return
+        end
         vim.cmd.normal [[g`"]]
     end,
 }
