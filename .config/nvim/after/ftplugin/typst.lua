@@ -67,3 +67,10 @@ vim.api.nvim_buf_create_user_command(
 )
 
 vim.keymap.set("n", "@p", "<Cmd>PutClipboardImage<CR>", { buffer = true })
+
+vim.keymap.set("n", "<Space>p", function()
+    local reg = vim.fn.getreg "+"
+    local after = vim.fn.substitute(reg, [[\v\[(.*)\]\((.*)\)]], [=[#link("\2")[\1]]=], "g")
+    vim.fn.setreg("+", after)
+    vim.cmd [[put +]]
+end, { buffer = true })

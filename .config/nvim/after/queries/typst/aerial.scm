@@ -6,7 +6,7 @@
    ; (#set! "level" 1)
    )
  .
- (section) @symbol
+ (content) @symbol
  )
 
 ; (heading
