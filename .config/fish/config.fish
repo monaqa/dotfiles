@@ -209,6 +209,10 @@ else
   abbr -a j "ls -Fhla"
 end
 
+if type -q trash-put
+  abbr -a rm "trash-put"
+end
+
 if type -q sk
   set FUZZY_FINDER sk
 else if type -q fzf

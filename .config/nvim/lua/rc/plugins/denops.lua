@@ -99,7 +99,7 @@ local plugins = vec {}
 
 plugins:push { "https://github.com/vim-denops/denops.vim", lazy = false }
 
-plugins:push { "https://github.com/lambdalisue/guise.vim", lazy = false }
+-- plugins:push { "https://github.com/lambdalisue/guise.vim", lazy = false }
 
 plugins:push {
     "https://github.com/4513ECHO/denops-gitter.vim",

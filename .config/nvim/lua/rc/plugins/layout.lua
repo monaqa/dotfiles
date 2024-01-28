@@ -387,4 +387,12 @@ plugins:push {
     end,
 }
 
+plugins:push {
+    "https://github.com/rcarriga/nvim-notify",
+    event = "VeryLazy",
+    config = function()
+        vim.notify = require "notify"
+    end,
+}
+
 return plugins:collect()
