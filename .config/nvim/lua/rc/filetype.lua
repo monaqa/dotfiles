@@ -2,27 +2,44 @@
 local util = require "rc.util"
 local obsidian = require "rc.obsidian"
 
--- §§1 SATySFi
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = "Satyristes",
-    command = [[setfiletype lisp]],
-}
-
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = {
-        "*.saty",
-        "*.satyh",
-        "*.satyh-*",
-        "*.satyg",
-    },
-    callback = function()
+-- §§1 ftdetect
+util.link_filetype { pattern = "Satyristes", filetype = "lisp" }
+util.link_filetype {
+    extension = { "saty", "satyh", "satyh-*", "satyg" },
+    filetype = function()
         if vim.fn.getline(1) == "%SATySFi v0.1.0" then
-            vim.opt_local.filetype = "satysfi_v0_1_0"
+            return "satysfi_v0_1_0"
         else
-            vim.opt_local.filetype = "satysfi"
+            return "satysfi"
         end
     end,
 }
+
+util.link_filetype { extension = "fish", filetype = "fish" }
+util.link_filetype { extension = "mmd", filetype = "mermaid" }
+util.link_filetype { extension = "todome", filetype = "todome" }
+util.link_filetype { extension = "nim", filetype = "nim" }
+util.link_filetype { extension = "jison", filetype = "yacc" }
+util.link_filetype { extension = "jsonl", filetype = "jsonl" }
+util.link_filetype { extension = "d2", filetype = "d2" }
+util.link_filetype { extension = "mdx", filetype = "markdown" }
+util.link_filetype { extension = "typ", filetype = "typst" }
+util.link_filetype { extension = "sus", filetype = "sus" }
+
+util.link_filetype { pattern = "LICENSE", filetype = "license" }
+util.link_filetype { pattern = "*/queries/*/*.scm", filetype = "query" }
+
+-- obsidian
+-- util.autocmd_vimrc { "BufEnter", "BufNewFile" } {
+--     pattern = vim.tbl_map(function(s)
+--         return obsidian.root_dir .. s
+--     end, obsidian.file_pattern),
+--     callback = function()
+--         vim.opt_local.filetype = "obsidian"
+--     end,
+-- }
+
+-- §§1 other scripts
 
 util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.saty",
@@ -36,18 +53,6 @@ util.autocmd_vimrc { "BufRead", "BufNewFile" } {
             { buffer = true }
         )
     end,
-}
-
--- §§1 fish
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = "*.fish",
-    command = [[setlocal filetype=fish]],
-}
-
--- §§1 mermaid
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = "*.mmd",
-    command = [[setlocal filetype=mermaid]],
 }
 
 -- §§1 hydrogen
@@ -87,99 +92,11 @@ util.autocmd_vimrc "FileType" {
     end,
 }
 
--- §§1 todome
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = "*.todome",
-    command = [[setlocal filetype=todome]],
-}
-
 -- §§1 html
 util.autocmd_vimrc { "BufRead", "BufNewFile" } {
     pattern = "*.html",
     callback = function()
         vim.keymap.set("i", "</", "</<C-x><C-o>", { buffer = true })
         vim.bo.shiftwidth = 2
-    end,
-}
-
--- §§1 nim
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = "*.nim",
-    command = [[setfiletype nim]],
-}
-
--- §§1 jison
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = "*.jison",
-    command = [[setfiletype yacc]],
-}
-
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = "LICENSE",
-    callback = function()
-        vim.opt_local.filetype = "license"
-    end,
-}
--- §§1 .init.lua.local
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = [[.init.lua.local]],
-    command = [[setfiletype lua]],
-}
-
--- JSON lines
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = [[*.jsonl]],
-    callback = function()
-        vim.opt_local.filetype = "jsonl"
-    end,
-}
-
--- D2
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = [[*.d2]],
-    callback = function()
-        vim.opt_local.filetype = "d2"
-    end,
-}
-
--- mdx
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = [[*.mdx]],
-    callback = function()
-        vim.opt_local.filetype = "markdown"
-    end,
-}
-
--- query
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = [[*/queries/*/*.scm]],
-    callback = function()
-        vim.opt_local.filetype = "query"
-    end,
-}
-
--- obsidian
-util.autocmd_vimrc { "BufEnter", "BufNewFile" } {
-    pattern = vim.tbl_map(function(s)
-        return obsidian.root_dir .. s
-    end, obsidian.file_pattern),
-    callback = function()
-        vim.opt_local.filetype = "obsidian"
-    end,
-}
-
--- typst
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = [[*.typ]],
-    callback = function()
-        vim.opt_local.filetype = "typst"
-    end,
-}
-
--- typst
-util.autocmd_vimrc { "BufRead", "BufNewFile" } {
-    pattern = [[*.sus]],
-    callback = function()
-        vim.opt_local.filetype = "sus"
     end,
 }
