@@ -694,6 +694,23 @@ vim.keymap.set("c", "<C-n>", "<Down>")
 vim.keymap.set("c", "<Up>", "<C-p>")
 vim.keymap.set("c", "<Down>", "<C-n>")
 
+-- f motion を n/N で繰り返せるようにする submode 案
+
+-- vim.keymap.set({ "n", "x" }, "f", function()
+--     local char = vim.fn.nr2char(vim.fn.getchar())
+--     return "f" .. char .. "<Plug>(submode-f)"
+-- end, { expr = true })
+--
+-- vim.keymap.set({ "n", "x" }, "F", function()
+--     local char = vim.fn.nr2char(vim.fn.getchar())
+--     return "F" .. char .. "<Plug>(submode-F)"
+-- end, { expr = true })
+--
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-f)n", ";<Plug>(submode-f)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-F)n", ",<Plug>(submode-F)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-f)N", ",<Plug>(submode-f)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-F)N", ";<Plug>(submode-F)")
+
 -- Section2 linewise motion
 vim.keymap.set("n", "<Space>m", "<Plug>(matchup-%)")
 
@@ -817,7 +834,18 @@ local function vertical_f(ctx, forward)
     for _ = 1, ctx.count1, 1 do
         vim.fn.search(vertical_f_pattern, flag)
     end
+
+    -- local key = vim.api.nvim_replace_termcodes("<Plug>(submode-vert-f)", true, false, true)
+    -- vim.api.nvim_feedkeys(key, "", true)
 end
+
+-- local function repeat_vertical_f(forward)
+--     local flag = "W"
+--     if not forward then
+--         flag = flag .. "b"
+--     end
+--     vim.fn.search(vertical_f_pattern, flag)
+-- end
 
 local function get_initial_ctx()
     return {
@@ -831,6 +859,7 @@ end
 vim.keymap.set({ "n", "x" }, "<Space>f", function()
     vertical_f(get_initial_ctx(), true)
 end)
+
 vim.keymap.set(
     "o",
     "<Space>f",
@@ -851,6 +880,28 @@ vim.keymap.set(
     end),
     { expr = true }
 )
+
+-- vim.keymap.set("n", "<Plug>(vert-f-next)", repeat_vertical_f)
+--
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-vert-f)n", "<Plug>(vert-f-next)<Plug>(submode-vert-f)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-vert-F)n", "<Plug>(vert-f-next)<Plug>(submode-vert-F)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-vert-f)N", "<Plug>(vert-f-next)<Plug>(submode-vert-f)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-vert-F)N", "<Plug>(vert-f-next)<Plug>(submode-vert-F)")
+
+-- vim.keymap.set({ "n", "x" }, "f", function()
+--     local char = vim.fn.nr2char(vim.fn.getchar())
+--     return "f" .. char .. "<Plug>(submode-f)"
+-- end, { expr = true })
+--
+-- vim.keymap.set({ "n", "x" }, "F", function()
+--     local char = vim.fn.nr2char(vim.fn.getchar())
+--     return "F" .. char .. "<Plug>(submode-F)"
+-- end, { expr = true })
+--
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-f)n", ";<Plug>(submode-f)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-F)n", ",<Plug>(submode-F)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-f)N", ",<Plug>(submode-f)")
+-- vim.keymap.set({ "n", "x" }, "<Plug>(submode-F)N", ";<Plug>(submode-F)")
 
 -- local submode_diffjump = submode.create_mode("diffjump", "g")
 -- submode_diffjump.register_mapping("j", "<Plug>(signify-next-hunk)")

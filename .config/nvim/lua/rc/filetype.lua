@@ -27,6 +27,7 @@ util.link_filetype { extension = "typ", filetype = "typst" }
 util.link_filetype { extension = "sus", filetype = "sus" }
 
 util.link_filetype { pattern = "LICENSE", filetype = "license" }
+util.link_filetype { pattern = ".init.lua.local", filetype = "lua" }
 util.link_filetype { pattern = "*/queries/*/*.scm", filetype = "query" }
 
 -- obsidian
