@@ -381,6 +381,9 @@ plugins:push {
             fold_virt_text_handler = handler,
 
             provider_selector = function(bufnr, filetype, buftype)
+                if filetype == "python" then
+                    return ""
+                end
                 return { "treesitter", "indent" }
             end,
         }

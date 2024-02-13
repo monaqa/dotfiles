@@ -8,10 +8,9 @@ vim.opt_local.smartindent = false
 -- vim.opt_local.foldmethod = "indent"
 
 local first_line = vim.fn.getline(1)
-if first_line == "# %% [markdown]" or first_line == "# %% streamlit" then
+if vim.startswith(first_line, "# %%") then
     vim.opt_local.foldmethod = "expr"
     vim.opt_local.foldexpr = "HydrogenFoldOnlyCode(v:lnum)"
-    vim.opt_local.foldtext = "HydrogenCustomFoldText()"
 end
 
 vim.keymap.set("x", "gq", ":!black - 2>/dev/null<CR>", { buffer = true })
@@ -56,4 +55,20 @@ vim.cmd [[
       endif
       return genericsname . '['
     endfunction
+]]
+
+-- §§1 hydrogen
+vim.cmd [[
+function! HydrogenFoldOnlyCode(lnum) abort
+  if getline(a:lnum + 1) =~ '^\s*# %%'
+    return '0'
+  endif
+  if getline(a:lnum - 1) =~ '^\s*# %% \[markdown\]'
+    return '0'
+  endif
+  if getline(a:lnum - 1) =~ '^\s*# %%'
+    return '1'
+  endif
+  return '='
+endfunction
 ]]

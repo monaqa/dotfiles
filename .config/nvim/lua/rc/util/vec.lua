@@ -25,6 +25,33 @@ function Vec:map(f)
     return Vec.new(results)
 end
 
+---@return Vec
+function Vec:sorted(comp)
+    local ary = self:collect()
+    table.sort(ary, comp)
+    return Vec.new(ary)
+end
+
+---@return Vec
+function Vec:uniq()
+    local map = {}
+    local idx = 1
+    for _, value in ipairs(self:collect()) do
+        if map[value] == nil then
+            map[value] = idx
+            idx = idx + 1
+        end
+    end
+
+    local ary = {}
+
+    for key, value in pairs(t) do
+        ary[value] = key
+    end
+
+    return Vec.new(ary)
+end
+
 ---@generic T
 ---@param f fun(t: T)
 function Vec:for_each(f)

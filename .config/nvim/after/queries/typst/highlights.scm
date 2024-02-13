@@ -98,3 +98,5 @@
 ["(" ")" "{" "}"] @punctuation.bracket
 ["," ";" ".." ":" "sep"] @punctuation.delimiter
 (field "." @punctuation)
+
+(lambda "=>" @punctuation.delimiter)

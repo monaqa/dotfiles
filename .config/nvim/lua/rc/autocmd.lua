@@ -193,7 +193,7 @@ util.autocmd_vimrc "InsertLeave" {
 local function auto_mkdir()
     local dir = vim.fn.expand("<afile>:p:h", nil, nil)
     local is_empty = vim.fn.empty(dir) == 1
-    local is_url = vim.fn.match(dir, [[^\w\+://]]) >= 0
+    local is_url = vim.fn.match(dir, [[\v^(\w|-)+://]]) >= 0
     local is_directory = vim.fn.isdirectory(dir) == 1
     if is_empty or is_url or is_directory then
         return
