@@ -5,6 +5,7 @@ local disable_plugins = {
     "netrwPlugin",
     "netrwSettings",
     "netrwFileHandlers",
+    "matchit",
 }
 
 for _, name in ipairs(disable_plugins) do

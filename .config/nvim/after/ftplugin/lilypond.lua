@@ -104,3 +104,12 @@ vim.keymap.set(
     end)),
     { expr = true, buffer = true, desc = "コード生成用" }
 )
+
+-- local lpeg = require "lpeg"
+-- local P = lpeg.P
+-- local S = lpeg.S
+--
+-- function parse_lilypond_music(s)
+--     local note = S "cdefgab"
+--     return lpeg.match(note, s)
+-- end

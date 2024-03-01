@@ -15,15 +15,6 @@ vim.keymap.set("n", "@q", function()
     vim.cmd [[!typst compile %]]
 end, { buffer = true })
 
--- util.autocmd_vimrc "BufWritePost" {
---     buffer = 0,
---     callback = function()
---         if diary.is_diary_file() then
---             diary.compile(diary.preview_file())
---         end
---     end,
--- }
-
 vim.keymap.set(
     "x",
     "L",
@@ -74,3 +65,15 @@ vim.keymap.set("n", "<Space>p", function()
     vim.fn.setreg("+", after)
     vim.cmd [[put +]]
 end, { buffer = true })
+
+vim.keymap.set({ "n", "x" }, "g=", function()
+    return require("general_converter").operator_convert(function(s)
+        return vim.fn.system("typstfmt", s)
+    end)() .. "V"
+end, { expr = true, buffer = true })
+
+vim.keymap.set("n", "g==", function()
+    return require("general_converter").operator_convert(function(s)
+        return vim.fn.system("typstfmt", s)
+    end)() .. "_"
+end, { expr = true, buffer = true })

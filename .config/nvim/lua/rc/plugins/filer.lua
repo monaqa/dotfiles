@@ -581,7 +581,7 @@ plugins:push {
             -- Window-local options to use for oil buffers
             win_options = {
                 wrap = false,
-                signcolumn = "no",
+                signcolumn = "yes:2",
                 cursorcolumn = false,
                 foldcolumn = "0",
                 spell = false,
@@ -740,6 +740,20 @@ plugins:push {
         --         end
         --     end),
         -- })
+    end,
+}
+
+plugins:push {
+    "https://github.com/refractalize/oil-git-status.nvim",
+
+    dependencies = {
+        "stevearc/oil.nvim",
+    },
+
+    config = function()
+        require("oil-git-status").setup {
+            show_ignored = false, -- show files that match gitignore with !!
+        }
     end,
 }
 

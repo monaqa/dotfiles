@@ -1,6 +1,8 @@
 local util = require "rc.util"
 local vec = require "rc.util.vec"
 
+-- local t = vim.treesitter
+
 local plugins = vec {}
 
 local function cond_dev(plug_path)

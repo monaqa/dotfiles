@@ -24,3 +24,5 @@ Icon
 __pycache__
 
 .ccls-cache/
+
+.memo.local/

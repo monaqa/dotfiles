@@ -1,12 +1,5 @@
 # vim:fdm=marker
 
-# xonsh を試してみるよ！
-# if test -e /opt/homebrew/bin/xonsh
-#   /opt/homebrew/bin/xonsh
-# end
-
-# xonsh が終了したら以下を fallback
-
 # functions {{{
 function gitaddtree -a branch
   cd (git rev-parse --git-common-dir)/../
@@ -76,12 +69,15 @@ set -g fish_ambiguous_width 1
 set -x EDITOR nvim
 set -x LSCOLORS gxfxcxdxbxegedabagacad
 
-# bin at home directory
+# PATH
 set -x PATH "/opt/homebrew/bin" $PATH
-set -x PATH "$HOME/.cargo/bin" $PATH
 set -x PATH "$HOME/.local/bin" $PATH
-set -x PNPM_HOME "$HOME/Library/pnpm"
-set -x PATH "$PNPM_HOME:$PATH"
+set -x PATH "$HOME/go/bin" $PATH
+set -x PATH "$HOME/Library/pnpm" $PATH
+set -x PATH "$HOME/.yarn/bin" $PATH
+set -x PATH "$HOME/.deno/bin" $PATH
+set -x PATH "$HOME/.rye/shims" $PATH
+set -x PATH "$HOME/.cargo/bin" $PATH
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 set --export --prepend PATH "/Users/monaqa/.rd/bin"
@@ -94,21 +90,6 @@ export GPG_TTY=(tty)
 
 # opam configuration
 source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
-
-# gopath
-set -x PATH $HOME/go/bin $PATH
-
-# fzf-preview
-set -x FZF_PREVIEW_PREVIEW_BAT_THEME 'gruvbox'
-
-# Haxe
-set -x HAXE_STD_PATH "/usr/local/lib/haxe/std"
-
-# yarn
-set -x PATH $HOME/.yarn/bin $PATH
-
-# deno
-set -x PATH $HOME/.deno/bin $PATH
 
 # 普通に困るくね？
 set -x HOMEBREW_NO_AUTO_UPDATE 1
@@ -202,9 +183,7 @@ abbr -a rafnew "cd (raf new)"
 
 if type -q lsd
   abbr -a j "lsd -l"
-  abbr -a jj 'lsd -l --tree --ignore-glob .git --depth 3'
-else if type -q exa
-  abbr -a j "exa -a --icons --group-directories-first --long --time-style=long-iso"
+  abbr -a jj 'lsd --tree --ignore-glob .git --depth 3'
 else
   abbr -a j "ls -Fhla"
 end

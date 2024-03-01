@@ -183,6 +183,7 @@ vim.keymap.set("n", "q", toggle_quickfix, { script = true, silent = true })
 -- Section1 terminal
 
 vim.keymap.set("t", "<C-]>", [[<C-\><C-n>]], {})
+vim.keymap.set("t", [[<C-\><C-]>]], "<C-]>", {})
 
 local function terminal_init()
     vim.keymap.set("n", "<CR>", [[i<CR><C-\><C-n>]], { buffer = true })

@@ -26,82 +26,61 @@
 
 snippet score "Description" b
 \version "2.21.82"
+\include "../../../template/bass-tab-score/0.1.0.ly"
+% \include "swing.ly"
 
 \pointAndClickOff
 
-line = {
-	s1 \noBreak s1 \noBreak s1 \noBreak s1 \break
-}
-
-withMinFret =
-#(define-music-function
-		(minFret music)
-		(number? ly:music?)
-	#{
-		\set TabStaff.minimumFret = #minFret
-		#music
-		\set TabStaff.minimumFret = #2
-	#})
-
 \header {
-	title = "${1:タイトル}"
-	composer = "${2:作曲}"
-}
-
-chordmusic = {
-	\tempo 4 = 108
-	\fixed c, {
-		\set TabStaff.minimumFret = #2
-		\set TabStaff.restrainOpenStrings = ##t
-		% \tabFullNotation
-
-		\key a \major
-		% intro
-		${0:r1*4}
-
-		\bar "|."
-	}
+	title = "$1"
+	composer = "$2"
 }
 
 \score {
-	<<
-		\chords {
-			\set chordChanges = ##t
-			\set majorSevenSymbol = \markup { M7 }
-		}
+	\staffs {
+		\tempo 4 = ${3:120}
 
-		\new Staff \with {
-			\omit StringNumber
-			midiInstrument = "electric bass (finger)"
-		}{
-			\clef "bass_8"
-			<<
-				{
-					\chordmusic
-				}
-				{
-					\line
-					\line
-				}
-			>>
-		}
+		% \tempo \markup {
+		%   \rhythm { c4 } = 108
+		%   \hspace #0.4
+		%   (\rhythm { 16[ 16] } = \rhythm { \tuplet 3/2 { 8[ 16] } })
+		% }
 
-		\new TabStaff \with {
-			stringTunings = #bass-tuning
-		} {
-			\huge
-			\chordmusic
-		}
-	>>
+		\fixed c, {
+			% \tripletFeel 16 {
+			\key f \minor
 
-	\layout {
-		\context {
-			\Score
-			proportionalNotationDuration = #(ly:make-moment 1/8)
-			% markFormatter = #format-mark-box-alphabet
+			\remark"Intro"
+			% \longRest 4
+
+			$0
+
+			\bar "|."
+			% }
 		}
+	}{
+		% Intro
+		% \longRest 4
+		% \line
+		% \partialLine 5 \break
+	}{ \chordmode {
+		% \longRest 4
+		% a1:m
 	}
+}
 
-	% \midi {}
+
+\layout {
+	indent = #0
+	\context {
+		\Score
+		proportionalNotationDuration = #(ly:make-moment 1/8)
+	}
+}
+
+\midi {
+	% \tempo 4 = 108
+}
+
 }
 endsnippet

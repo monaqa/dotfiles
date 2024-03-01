@@ -28,3 +28,14 @@ snippet tick "Tick command" b
 #tick("`date '+%Y-%m-%d'`")
 $0
 endsnippet
+
+snippet import-easytable "import easytable" b
+#import "@preview/easytable:0.1.0": easytable, elem
+#import elem: *
+endsnippet
+
+snippet et "use easytable" b
+#easytable({
+	tr[$0]
+})
+endsnippet

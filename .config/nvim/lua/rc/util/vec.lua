@@ -45,7 +45,7 @@ function Vec:uniq()
 
     local ary = {}
 
-    for key, value in pairs(t) do
+    for key, value in pairs(map) do
         ary[value] = key
     end
 

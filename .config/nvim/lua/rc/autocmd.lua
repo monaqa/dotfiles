@@ -222,6 +222,41 @@ util.autocmd_vimrc "BufWritePre" {
     callback = auto_mkdir,
 }
 
+local ignore_indent = false
+vim.keymap.set("n", "<Space>y", function()
+    ignore_indent = true
+    return "y"
+end, { expr = true })
+
+local function remove_common_indent(s)
+    local lines = vim.split(s, "\n")
+    if #lines <= 1 then
+        return s
+    end
+    local n_common_indent = 1000000
+    for _, line in ipairs(lines) do
+        local blank_line = line:find [[^%s*$]]
+        if not blank_line then
+            local _, n_indent = line:find [[^%s*]]
+            if n_indent ~= nil and n_common_indent > n_indent then
+                n_common_indent = n_indent
+            end
+        end
+    end
+
+    local new_lines = {}
+    for _, line in ipairs(lines) do
+        local blank_line = line:find [[^%s*$]]
+        if blank_line then
+            new_lines[#new_lines + 1] = ""
+        else
+            new_lines[#new_lines + 1] = line:sub(n_common_indent + 1)
+        end
+    end
+
+    return table.concat(new_lines, "\n")
+end
+
 util.autocmd_vimrc "TextYankPost" {
     desc = "無名レジスタへの yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）",
     callback = function()
@@ -237,8 +272,13 @@ util.autocmd_vimrc "TextYankPost" {
             vim.fn.setreg("c", vim.fn.getreg('"', nil, nil))
         end
         if event.operator == "y" then
-            vim.fn.setreg("y", vim.fn.getreg('"', nil, nil))
-            vim.fn.setreg("+", vim.fn.getreg('"', nil, nil))
+            local content = vim.fn.getreg('"', nil, nil)
+            if ignore_indent then
+                content = remove_common_indent(content)
+                ignore_indent = false
+            end
+            vim.fn.setreg("y", content)
+            vim.fn.setreg("+", content)
         end
     end,
 }
@@ -388,20 +428,16 @@ util.autocmd_vimrc "BufWritePost" {
     desc = "execute stylua",
 }
 
-util.autocmd_vimrc "BufWritePre" {
-    pattern = { "*.typ" },
-    callback = function()
-        -- fold の状態を保持するために mkview と loadview を入れた
-        -- vim.cmd [[mkview]]
-        -- vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand "%:p")
-        -- vim.cmd [[edit]]
-        -- vim.cmd [[loadview]]
-        keep_cursor(function()
-            vim.cmd [[%!typstfmt 2>/dev/null]]
-        end)
-    end,
-    desc = "execute typstfmt",
-}
+-- util.autocmd_vimrc "BufWritePost" {
+--     pattern = { "*.typ" },
+--     callback = function()
+--         keep_cursor(function()
+--             vim.fn.system([[typstfmt ]] .. vim.fn.expand "%:p")
+--             vim.cmd [[edit]]
+--         end)
+--     end,
+--     desc = "execute typstfmt",
+-- }
 
 -- auto repeatable macro （ドットリピートや通常マクロのほうが直感的なのでボツ）
 

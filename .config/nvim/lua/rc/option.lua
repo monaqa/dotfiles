@@ -84,7 +84,7 @@ vim.opt.history = 10000
 vim.opt.mouse = "a"
 -- 最後の4文字が "fish" だったら "sh" にする
 if vim.opt.shell:get():sub(#vim.opt.shell - 3) == "fish" then
-    vim.opt.shell.set "sh"
+    vim.opt.shell = "sh"
 end
 
 if vim.fn.has "persistent_undo" then
