@@ -1,11 +1,18 @@
 local M = {}
 
----text の前後の空白を取り除く。
----@param text string
----@return string
-function M.trim(text)
-    return text:gsub("^%s*(.-)%s*$", "%1")
-end
+local monaqa = require "monaqa"
+
+M.trim = monaqa.str.trim
+M.cmdcr = monaqa.str.cmdcr
+M.esc = monaqa.str.esc
+M.to_bool = monaqa.logic.to_bool
+M.ifexpr = monaqa.logic.ifexpr
+M.unwrap_or = monaqa.logic.unwrap_or
+M.autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
+M.create_cmd = monaqa.shorthand.create_cmd
+M.link_filetype = monaqa.shorthand.link_filetype
+M.sethl = monaqa.shorthand.sethl
+M.load_cwd_as_plugin = monaqa.shorthand.load_cwd_as_plugin
 
 ---エラーとしてメッセージを出力する。
 ---@param message string
@@ -53,23 +60,6 @@ end
 --     end
 -- end
 
----数値、文字列を Vim script 流スタイルで boolean に変換する。
----@param num number | string | boolean | nil
----@return boolean
-function M.to_bool(num)
-    if num == 0 or num == "" or num == false or num == nil then
-        return false
-    end
-    return true
-end
-
-function M.autocmd_vimrc(event)
-    return function(opts)
-        opts["group"] = "vimrc"
-        vim.api.nvim_create_autocmd(event, opts)
-    end
-end
-
 ---横に広いウィンドウか、縦に広いウィンドウか判定する。
 ---ただし判定基準は割と適当。
 ---@param window_number number | string
@@ -86,44 +76,6 @@ function M.split_window()
         vim.cmd [[vsplit]]
     else
         vim.cmd [[split]]
-    end
-end
-
----escape sequence を付与する。
-function M.esc(text)
-    return "\u{1b}" .. text
-end
-
---- Rust でいう "if cond {A} else {B}" の代替。
---- よく代替扱いされる "cond and A or B" は A が falsy なとき不適切な値となる。
---- たとえば (cond, A, B) == (true, false, 1) のとき、 cond は truen なのに 1 を返す。
---- よって A の型が実行時に決まる Lua ではトラブルのもとになる懸念がある。
----@generic T
----@param condition boolean
----@param true_clause T
----@param false_clause T
----@return T
-function M.ifexpr(condition, true_clause, false_clause)
-    if condition then
-        return true_clause
-    else
-        return false_clause
-    end
-end
-
---- Rust の ".unwrap_or(default_value)" の代替。
---- A or B は A が false のとき不適切な値となる。
---- (A, B) == (false, 1) では、 A が nil ではないのに 1 を返す。
---- よって A の型が実行時に決まる Lua ではトラブルのもとになる懸念がある。
----@generic T
----@param value T | nil
----@param default T
----@return T
-function M.unwrap_or(value, default)
-    if value == nil then
-        return default
-    else
-        return value
     end
 end
 
@@ -145,82 +97,6 @@ function M.motion_autoselect(motion_seq)
         if not (line == init_line and col == init_col) then
             return
         end
-    end
-end
-
-function M.cmdcr(text)
-    return "<Cmd>" .. text .. "<CR>"
-end
-
---- nvim_create_user_command って長ったらしいしオプション省略できないっぽいので。
-function M.create_cmd(name, impl, options)
-    if options == nil then
-        options = {}
-    end
-    vim.api.nvim_create_user_command(name, impl, options)
-end
-
---- グローバルに set_hl する。
-function M.sethl(name)
-    return function(t)
-        if t.default == nil then
-            t.default = false
-        end
-        vim.api.nvim_set_hl(0, name, t)
-    end
-end
-
-function M.load_cwd_as_plugin(source_file_name)
-    local cwd = vim.fn.getcwd()
-    vim.opt.runtimepath:append(cwd)
-    if source_file_name ~= nil then
-        vim.cmd.source(([[%s/%s]]):format(cwd, source_file_name))
-    end
-end
-
----@alias ftypegetter fun(): string
-
----@param opts {filetype: string | ftypegetter, pattern?: string | string[], extension?: string | string[], weak?: boolean}
-function M.link_filetype(opts)
-    local pattern = opts.pattern
-
-    if opts.pattern == nil then
-        if type(opts.extension) == "string" then
-            pattern = "*." .. opts.extension
-        elseif type(opts.extension) == "table" then
-            pattern = vim.tbl_map(function(e)
-                return "*." .. e
-            end, opts.extension)
-        end
-    end
-
-    local get_ftype = opts.filetype
-    local desc
-    if type(get_ftype) == "string" then
-        desc = "Set filetype to " .. get_ftype
-        get_ftype = function()
-            return opts.filetype --[[@as string]]
-        end
-    else
-        desc = "Set filetype using function, which returns " .. get_ftype() .. " in some case"
-    end
-
-    if opts.weak then
-        M.autocmd_vimrc { "BufRead", "BufNewFile" } {
-            pattern = pattern,
-            callback = function()
-                vim.cmd.setfiletype(get_ftype())
-            end,
-            desc = desc,
-        }
-    else
-        M.autocmd_vimrc { "BufRead", "BufNewFile" } {
-            pattern = pattern,
-            callback = function()
-                vim.opt_local.filetype = get_ftype()
-            end,
-            desc = desc,
-        }
     end
 end
 
