@@ -21,6 +21,7 @@ vim.cmd [[
 require "rc.plugins"
 
 require("rc.diary").setup()
+require("monaqa.memo_local").setup()
 
 require "rc.autocmd"
 require "rc.option"

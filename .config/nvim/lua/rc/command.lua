@@ -1,13 +1,14 @@
-local util = require "rc.util"
-local obsidian = require "rc.obsidian"
+local monaqa = require("monaqa")
+local util = require("rc.util")
+local obsidian = require("rc.obsidian")
 -- vim:fdm=marker:fmr=§§,■■
 
 -- §§1 highlight
 util.create_cmd("HighlightGroup", function()
-    print(vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.synID(vim.fn.line ".", vim.fn.col ".", 1)), "name"))
+    print(vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.synID(vim.fn.line("."), vim.fn.col("."), 1)), "name"))
 end)
 util.create_cmd("HighlightItem", function()
-    print(vim.fn.synIDattr(vim.fn.synID(vim.fn.line ".", vim.fn.col ".", 1), "name"))
+    print(vim.fn.synIDattr(vim.fn.synID(vim.fn.line("."), vim.fn.col("."), 1), "name"))
 end)
 
 -- §§1 encoding
@@ -19,15 +20,15 @@ util.create_cmd("AsUtf8", "set fenc=utf-8|w")
 
 -- §§1 diff
 util.create_cmd("DiffThese", function()
-    if vim.fn.winnr "$" == 2 then
-        vim.cmd [[
+    if vim.fn.winnr("$") == 2 then
+        vim.cmd([[
             diffthis
             wincmd w
             diffthis
             wincmd w
-        ]]
+        ]])
     else
-        vim.cmd [[echomsg "Too many windows."]]
+        vim.cmd([[echomsg "Too many windows."]])
     end
 end)
 
@@ -37,10 +38,10 @@ util.create_cmd("DeleteMe", function(meta)
     local force = meta.bang
     if force or not vim.bo.modified then
         local filename = vim.fn.expand("%", nil, nil)
-        vim.cmd [[bdelete!]]
+        vim.cmd([[bdelete!]])
         vim.fn.delete(filename)
     else
-        vim.cmd [[echomsg 'File modified']]
+        vim.cmd([[echomsg 'File modified']])
     end
 end, { bang = true })
 
@@ -48,20 +49,20 @@ util.create_cmd("RenameMe", function(meta)
     local new_fname = meta.args
     local current_fname = vim.fn.expand("%", nil, nil)
     vim.cmd("saveas " .. new_fname)
-    vim.cmd [[bdelete! #]]
+    vim.cmd([[bdelete! #]])
     vim.fn.delete(current_fname)
 end, { nargs = 1 })
-vim.cmd [[
+vim.cmd([[
     cnoreabbrev <expr> RenameMe "RenameMe " . expand('%')
-]]
+]])
 
 -- §§1 行末の空白とか最終行の空行を削除
 util.create_cmd("RemoveUnwantedSpaces", function(meta)
-    local pos_save = vim.fn.getpos "."
+    local pos_save = vim.fn.getpos(".")
     vim.cmd([[keeppatterns ]] .. meta.line1 .. "," .. meta.line2 .. [[s/[ \t\r]\+$//e]])
     while true do
-        if vim.regex([[^\s*$]]):match_str(vim.fn.getline "$") and vim.fn.line "$" ~= 1 then
-            vim.cmd [[silent $delete]]
+        if vim.regex([[^\s*$]]):match_str(vim.fn.getline("$")) and vim.fn.line("$") ~= 1 then
+            vim.cmd([[silent $delete]])
         else
             break
         end
@@ -74,15 +75,15 @@ util.create_cmd("YankCurrentFileName", [[let @+ = expand("%:p")]])
 util.create_cmd("SubstituteCommaPeriod", function(meta)
     local invert = meta.bang
     if invert then
-        vim.cmd [[
+        vim.cmd([[
         keeppatterns %substitute/、/，/g
         keeppatterns %substitute/。/．/g
-        ]]
+        ]])
     else
-        vim.cmd [[
+        vim.cmd([[
         keeppatterns %substitute/，/、/g
         keeppatterns %substitute/．/。/g
-        ]]
+        ]])
     end
 end, { bang = true })
 
@@ -121,16 +122,23 @@ end)
 -- §§1 todome
 util.create_cmd("TodomeOpen", "edit ~/todome/tasks.todome")
 
+-- §§1 todome
+util.create_cmd("Memo", function()
+    local cwd = vim.fn.getcwd()
+    local memo_file = monaqa.memo_local.create_memo_files(cwd)
+    vim.cmd.edit(memo_file)
+end)
+
 -- §§1 Save Clipboard Image
 
 vim.api.nvim_create_user_command(
     "PutClipboardImage",
     require("rc.clipboard").command_put_clipboard_image {
         fn_image_path = function(name)
-            local current_file_dir = vim.fn.expand "%:h"
+            local current_file_dir = vim.fn.expand("%:h")
             local dir = current_file_dir .. "/image/"
             if name == nil or name == "" then
-                name = vim.fn.strftime "%Y-%m-%d-%H-%M-%S"
+                name = vim.fn.strftime("%Y-%m-%d-%H-%M-%S")
             end
             return dir .. name .. ".png"
         end,

@@ -7,6 +7,9 @@
 
 [tig "color"] cursor = yellow red bold
 
+[remote]
+    pushDefault = origin
+
 [commit]
     template = /Users/monaqa/.commit_template
     verbose = true

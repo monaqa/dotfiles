@@ -382,8 +382,9 @@ plugins:push {
         -- -- This can be a function (see :help aerial-open-automatic)
         -- open_automatic = false,
         open_automatic = function()
-            local aerial = require "aerial"
-            return aerial.num_symbols() > 1 and not aerial.was_closed()
+            return false
+            -- local aerial = require "aerial"
+            -- return aerial.num_symbols() > 1 and not aerial.was_closed()
         end,
 
         --
