@@ -1,12 +1,12 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 -- local t = vim.treesitter
 
 local plugins = vec {}
 
 local function cond_dev(plug_path)
-    if vim.fn.getcwd() == vim.fn.expand "~/ghq/github.com/" .. plug_path then
+    if vim.fn.getcwd() == vim.fn.expand("~/ghq/github.com/") .. plug_path then
         util.print_error("WARNING: " .. plug_path .. " is not loaded.", "WarningMsg")
         return false
     end
@@ -107,19 +107,10 @@ plugins:push {
             filetype = "d2", -- if filetype does not agrees with parser name
         }
 
-        parser_config.typst = {
-            install_info = {
-                url = "https://github.com/uben0/tree-sitter-typst", -- local path or git repo
-                revision = "master",
-                files = { "src/parser.c", "src/scanner.c" },
-            },
-            filetype = "typst", -- if filetype does not agrees with parser name
-        }
-
         vim.treesitter.language.register("markdown", { "mdx", "obsidian" })
         vim.treesitter.language.register("gitcommit", { "gina-commit" })
 
-        local parser_install_dir = vim.fn.stdpath "data" .. "/treesitter"
+        local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter"
         vim.opt.runtimepath:prepend(parser_install_dir)
 
         require("nvim-treesitter.configs").setup {
@@ -161,7 +152,7 @@ plugins:push {
                         util.print_error("File too large: tree-sitter disabled.", "WarningMsg")
                         return true
                     end
-                    if vim.fn.line "$" > 20000 then
+                    if vim.fn.line("$") > 20000 then
                         util.print_error("Buffer has too many lines: tree-sitter disabled.", "WarningMsg")
                         return true
                     end
@@ -232,7 +223,7 @@ plugins:push {
 
 plugins:push {
     "https://github.com/nvim-treesitter/playground",
-    cond = cond_dev "nvim-treesitter/playground",
+    cond = cond_dev("nvim-treesitter/playground"),
     ft = { "query" },
 }
 

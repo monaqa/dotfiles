@@ -19,9 +19,9 @@
  (#offset! @fold 0 0 -1 0)
  )
 
-(call
-  item: (builtin) @_builtin
-  (content) @fold
-
-  (#eq? @_builtin "quote")
-  )
+; (call
+;   item: (builtin) @_builtin
+;   (content) @fold
+;
+;   (#eq? @_builtin "quote")
+;   )

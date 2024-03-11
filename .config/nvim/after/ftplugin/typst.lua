@@ -1,18 +1,31 @@
 local uv = vim.loop
-local diary = require "rc.diary"
-local util = require "rc.util"
+local diary = require("rc.diary")
+local util = require("rc.util")
 
 vim.opt_local.shiftwidth = 2
 vim.opt_local.foldmethod = "manual"
 vim.opt_local.commentstring = "// %s"
 
+local function resolve_target()
+    local line = vim.fn.getline(1)
+    local _, _, file = line:find([[^//! target:%s*(%S+)$]])
+    if file ~= nil then
+        return vim.fn.resolve(vim.fn.expand("%:h") .. "/" .. file)
+    else
+        return vim.fn.resolve(vim.fn.expand("%"))
+    end
+end
+
 -- vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", { buffer = true })
 vim.keymap.set("n", "@o", function()
-    vim.cmd [[!open %:r.pdf]]
+    local objective = resolve_target()
+    local target = vim.fn.fnamemodify(objective, ":r") .. ".pdf"
+    vim.cmd([[!open ]] .. target)
 end, { buffer = true })
 
 vim.keymap.set("n", "@q", function()
-    vim.cmd [[!typst compile %]]
+    local objective = resolve_target()
+    vim.cmd([[!typst compile ]] .. objective)
 end, { buffer = true })
 
 vim.keymap.set(
@@ -35,10 +48,10 @@ vim.api.nvim_buf_create_user_command(
     "PutClipboardImage",
     require("rc.clipboard").command_put_clipboard_image {
         fn_image_path = function(name)
-            local current_file_dir = vim.fn.expand "%:h"
+            local current_file_dir = vim.fn.expand("%:h")
             local dir = current_file_dir .. "/image/"
             if name == nil or name == "" then
-                name = vim.fn.strftime "%Y-%m-%d-%H-%M-%S"
+                name = vim.fn.strftime("%Y-%m-%d-%H-%M-%S")
             end
             return dir .. name .. ".png"
         end,
@@ -60,10 +73,10 @@ vim.api.nvim_buf_create_user_command(
 vim.keymap.set("n", "@p", "<Cmd>PutClipboardImage<CR>", { buffer = true })
 
 vim.keymap.set("n", "<Space>p", function()
-    local reg = vim.fn.getreg "+"
+    local reg = vim.fn.getreg("+")
     local after = vim.fn.substitute(reg, [[\v\[(.*)\]\((.*)\)]], [=[#link("\2")[\1]]=], "g")
     vim.fn.setreg("+", after)
-    vim.cmd [[put +]]
+    vim.cmd([[put +]])
 end, { buffer = true })
 
 vim.keymap.set({ "n", "x" }, "g=", function()

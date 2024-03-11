@@ -21,6 +21,7 @@ function M.create_memo_files(dir)
         [[#import "preamble.typ": *; #show: preamble]],
     }, memo_typ)
     vim.fn.writefile({
+        [[// /Users/monaqa/ghq/github.com/monaqa/typst-class-memo/src/lib.typ]],
         [[#import "@local/class-memo:0.1.0": *]],
         [[]],
         [[#let preamble(body) = {]],

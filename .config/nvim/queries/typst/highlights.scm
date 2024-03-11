@@ -64,12 +64,12 @@
 (number) @constant.numeric
 (string) @string
 (bool) @constant.builtin.boolean
-(builtin) @constant.builtin
+; (builtin) @constant.builtin
 (none) @constant.builtin
 (auto) @constant.builtin
 ; (ident) @variable
-(call
-  item: (builtin) @function.builtin)
+; (call
+;   item: (builtin) @function.builtin)
 
 ; MARKUP
 (item "-" @punctuation.special)
