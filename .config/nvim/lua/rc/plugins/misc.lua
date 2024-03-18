@@ -1,5 +1,5 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
@@ -19,7 +19,7 @@ plugins:push {
     ft = { "markdown", "mdx" },
     run = ":call mkdp#util#install()",
     config = function()
-        vim.g.mkdp_markdown_css = vim.fn.expand "~/.config/nvim/resource/github-markdown-light.css"
+        vim.g.mkdp_markdown_css = vim.fn.expand("~/.config/nvim/resource/github-markdown-light.css")
         vim.g.mkdp_auto_close = 0
         vim.g.mkdp_preview_options = {
             disable_sync_scroll = 1,
@@ -82,11 +82,25 @@ plugins:push {
 
 plugins:push {
     "https://github.com/ryicoh/deepl.vim",
+    dependencies = {
+        "https://github.com/monaqa/general-converter.nvim",
+    },
     keys = {
         {
             "@j",
             function()
-                vim.fn["deepl#v"] "JA"
+                return require("general_converter").operator_convert(function(s)
+                    return vim.fn["deepl#translate"](s, "ja")
+                end)()
+            end,
+            expr = true,
+            mode = "n",
+            desc = "DeepL translate to ja",
+        },
+        {
+            "@j",
+            function()
+                vim.fn["deepl#v"]("JA")
             end,
             mode = "x",
             desc = "DeepL translate to ja",
@@ -94,18 +108,29 @@ plugins:push {
         {
             "@e",
             function()
-                vim.fn["deepl#v"] "EN"
+                return require("general_converter").operator_convert(function(s)
+                    return vim.fn["deepl#translate"](s, "en")
+                end)()
+            end,
+            expr = true,
+            mode = "n",
+            desc = "DeepL translate to en",
+        },
+        {
+            "@e",
+            function()
+                vim.fn["deepl#v"]("EN")
             end,
             mode = "x",
             desc = "DeepL translate to en",
         },
     },
     enabled = function()
-        return not (vim.fn.getenv "DEEPL_API_KEY" == vim.NIL)
+        return not (vim.fn.getenv("DEEPL_API_KEY") == vim.NIL)
     end,
     config = function()
         vim.g["deepl#endpoint"] = "https://api-free.deepl.com/v2/translate"
-        vim.g["deepl#auth_key"] = vim.fn.getenv "DEEPL_API_KEY"
+        vim.g["deepl#auth_key"] = vim.fn.getenv("DEEPL_API_KEY")
     end,
 }
 
