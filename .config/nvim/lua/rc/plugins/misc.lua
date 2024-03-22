@@ -90,7 +90,8 @@ plugins:push {
             "@j",
             function()
                 return require("general_converter").operator_convert(function(s)
-                    return vim.fn["deepl#translate"](s, "ja")
+                    local translate_result = vim.fn["deepl#translate"](s, "ja")
+                    return s .. "\n" .. translate_result
                 end)()
             end,
             expr = true,
@@ -109,7 +110,8 @@ plugins:push {
             "@e",
             function()
                 return require("general_converter").operator_convert(function(s)
-                    return vim.fn["deepl#translate"](s, "en")
+                    local translate_result = vim.fn["deepl#translate"](s, "en")
+                    return s .. "\n" .. translate_result
                 end)()
             end,
             expr = true,

@@ -1,9 +1,11 @@
 [
   (set)
-  (let)
+  ; (let)
   (show)
   (call)
   (item)
+  (block)
+  (group)
 ] @indent.begin
 
 (content "[" "]") @indent.begin

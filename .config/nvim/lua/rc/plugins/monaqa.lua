@@ -1,10 +1,10 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
 local function cond_dev(plug_path)
-    if vim.fn.getcwd() == vim.fn.expand "~/ghq/github.com/" .. plug_path then
+    if vim.fn.getcwd() == vim.fn.expand("~/ghq/github.com/") .. plug_path then
         util.print_error("WARNING: " .. plug_path .. " is not loaded.", "WarningMsg")
         return false
     end
@@ -15,7 +15,7 @@ plugins:push { "https://github.com/monaqa/colordinate.vim", enabled = false }
 
 plugins:push {
     "https://github.com/monaqa/dial.nvim",
-    cond = cond_dev "monaqa/dial.nvim",
+    cond = cond_dev("monaqa/dial.nvim"),
     keys = {
         {
             "<C-a>",
@@ -71,7 +71,7 @@ plugins:push {
         },
     },
     config = function()
-        local augend = require "dial.augend"
+        local augend = require("dial.augend")
 
         local function concat(tt)
             local v = {}
@@ -171,13 +171,13 @@ plugins:push {
         end
 
         local lilypond_note = augend.user.new {
-            find = require("dial.augend.common").find_pattern_regex [[\v\C[cdefgab](ees|es|is|iis)?[,']*]],
+            find = require("dial.augend.common").find_pattern_regex([[\v\C[cdefgab](ees|es|is|iis)?[,']*]]),
             ---@param text string
             ---@param addend integer
             ---@param cursor integer
             ---@return { text?: string, cursor?: integer }
             add = function(text, addend, cursor)
-                local tone_start, tone_end = text:find "[abcdefgis]+"
+                local tone_start, tone_end = text:find("[abcdefgis]+")
                 if tone_start == nil or tone_end == nil then
                     return {}
                 end
@@ -338,7 +338,7 @@ plugins:push {
 
 plugins:push {
     "https://github.com/monaqa/modesearch.nvim",
-    cond = cond_dev "monaqa/modesearch.nvim",
+    cond = cond_dev("monaqa/modesearch.nvim"),
     dependencies = {
         "https://github.com/lambdalisue/kensaku.vim",
     },
@@ -346,7 +346,7 @@ plugins:push {
         {
             "/",
             function()
-                return require("modesearch").keymap.prompt.show "rawstr"
+                return require("modesearch").keymap.prompt.show("rawstr")
             end,
             mode = { "n", "x", "o" },
             expr = true,
@@ -369,7 +369,7 @@ plugins:push {
                 prompt = "[rawstr]/",
                 converter = function(query)
                     local case_handler = (function()
-                        if query:find "%u" ~= nil then
+                        if query:find("%u") ~= nil then
                             return [[\C]]
                         else
                             return [[\c]]
@@ -483,12 +483,12 @@ plugins:push {
         },
         {
             "L",
-            util.cmdcr [[call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)]],
+            util.cmdcr([[call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)]]),
             mode = { "n", "x" },
         },
         {
             "H",
-            util.cmdcr [[call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)]],
+            util.cmdcr([[call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)]]),
             mode = { "n", "x" },
         },
     },
@@ -536,7 +536,7 @@ plugins:push {
 plugins:push {
     "https://github.com/monaqa/nvim-treesitter-clipping",
     dependencies = { "https://github.com/thinca/vim-partedit" },
-    cond = cond_dev "monaqa/nvim-treesitter-clipping",
+    cond = cond_dev("monaqa/nvim-treesitter-clipping"),
     keys = {
         { "<Space>c", "<Plug>(ts-clipping-clip)" },
         { mode = { "x", "o" }, "<Space>c", "<Plug>(ts-clipping-select)" },
@@ -545,19 +545,20 @@ plugins:push {
 
 plugins:push {
     "https://github.com/monaqa/general-converter.nvim",
+    cond = cond_dev("monaqa/general-converter.nvim"),
     keys = {
         "gc",
     },
     config = function()
-        local gc_util = require "general_converter.util"
+        local gc_util = require("general_converter.util")
         require("general_converter").setup {
             converters = {
                 {
                     desc = "小文字を大文字にする (abc -> ABC)",
                     converter = gc_util.charwise_converter(function(c)
                         local codepoint = vim.fn.char2nr(c)
-                        local start_codepoint = vim.fn.char2nr "a"
-                        local end_codepoint = vim.fn.char2nr "z"
+                        local start_codepoint = vim.fn.char2nr("a")
+                        local end_codepoint = vim.fn.char2nr("z")
                         if start_codepoint <= codepoint and codepoint <= end_codepoint then
                             codepoint = codepoint - 0x20
                             return vim.fn.nr2char(codepoint)
@@ -569,8 +570,8 @@ plugins:push {
                     desc = "半角文字を全角文字に変換する (abcABC -> ａｂｃＡＢＣ)",
                     converter = gc_util.charwise_converter(function(c)
                         local codepoint = vim.fn.char2nr(c)
-                        local start_codepoint = vim.fn.char2nr "A"
-                        local end_codepoint = vim.fn.char2nr "z"
+                        local start_codepoint = vim.fn.char2nr("A")
+                        local end_codepoint = vim.fn.char2nr("z")
                         if start_codepoint <= codepoint and codepoint <= end_codepoint then
                             codepoint = codepoint + 0xfee0
                             return vim.fn.nr2char(codepoint)
@@ -644,7 +645,7 @@ plugins:push {
                 {
                     desc = "インデントを半分にする",
                     converter = gc_util.linewise_converter(function(line)
-                        local _, indent = line:find "^[ ]*"
+                        local _, indent = line:find("^[ ]*")
                         local indent_after = math.floor(indent / 2)
                         if indent_after >= 0 then
                             line = (" "):rep(indent_after) .. line:sub(indent + 1)
@@ -655,7 +656,7 @@ plugins:push {
                 {
                     desc = "インデントを倍にする",
                     converter = gc_util.linewise_converter(function(line)
-                        local _, indent = line:find "^[ ]*"
+                        local _, indent = line:find("^[ ]*")
                         local indent_after = indent * 2
                         if indent_after >= 0 then
                             line = (" "):rep(indent_after) .. line:sub(indent + 1)
