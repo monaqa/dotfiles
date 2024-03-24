@@ -1,6 +1,6 @@
 -- vim:fdm=marker:fmr=§§,■■
-local util = require "rc.util"
-local obsidian = require "rc.obsidian"
+local util = require("rc.util")
+local obsidian = require("rc.obsidian")
 
 -- §§1 ftdetect
 util.link_filetype { pattern = "Satyristes", filetype = "lisp" }
@@ -23,6 +23,7 @@ util.link_filetype { extension = "jison", filetype = "yacc" }
 util.link_filetype { extension = "jsonl", filetype = "jsonl" }
 util.link_filetype { extension = "d2", filetype = "d2" }
 util.link_filetype { extension = "mdx", filetype = "markdown" }
+util.link_filetype { extension = "nu", filetype = "nu" }
 util.link_filetype { extension = "typ", filetype = "typst" }
 util.link_filetype { extension = "sus", filetype = "sus" }
 
@@ -57,7 +58,7 @@ util.autocmd_vimrc { "BufRead", "BufNewFile" } {
 }
 
 -- §§1 quickfix
-util.autocmd_vimrc "FileType" {
+util.autocmd_vimrc("FileType") {
     pattern = "qf",
     callback = function()
         vim.keymap.set("n", "<CR>", "<CR>", { buffer = true })

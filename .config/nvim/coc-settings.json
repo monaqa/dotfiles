@@ -89,7 +89,10 @@
       "command": "typst-lsp",
       "args": [],
       "filetypes": ["typst"],
-      "trace.server": "verbose"
+      "trace.server": "verbose",
+      "initializationOptions": {
+        "exportPdf": "never"
+      }
     },
     "ccls": {
       "command": "ccls",
@@ -98,10 +101,12 @@
         ".ccls-root",
         "compile_commands.json",
         ".git/",
-      ],
-      "initializationOptions": {
-        "exportPdf": "onSave"
-      }
+      ]
+    },
+    "nu": {
+      "command": "nu",
+      "args": ["--lsp"],
+      "filetypes": ["nu"],
     }
 
   },

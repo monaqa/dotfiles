@@ -28,6 +28,17 @@ vim.keymap.set("n", "@q", function()
     vim.cmd([[!typst compile ]] .. objective)
 end, { buffer = true })
 
+vim.api.nvim_create_augroup("vimrc_typst", { clear = true })
+vim.api.nvim_clear_autocmds { group = "vimrc_typst" }
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = "vimrc_typst",
+    pattern = "*.typ",
+    callback = function()
+        local objective = resolve_target()
+        vim.fn.system { "typst", "compile", objective }
+    end,
+})
+
 vim.keymap.set(
     "x",
     "L",

@@ -1,10 +1,10 @@
 -- vim:fdm=marker:fmr=§§,■■
 
-local util = require "rc.util"
+local util = require("rc.util")
 
 -- §§1 表示設定
 
-util.autocmd_vimrc "StdinReadPost" {
+util.autocmd_vimrc("StdinReadPost") {
     command = "set nomodified",
 }
 
@@ -17,7 +17,7 @@ util.autocmd_vimrc { "WinLeave", "FocusLost", "InsertEnter" } {
     end,
 }
 
-util.autocmd_vimrc "Syntax" {
+util.autocmd_vimrc("Syntax") {
     desc = "minlines と maxlines の設定",
     command = "syn sync minlines=500 maxlines=1000",
 }
@@ -29,19 +29,19 @@ util.autocmd_vimrc { "VimEnter", "WinEnter" } {
         match UnicodeSpaces /[\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/
     ]],
 }
-util.autocmd_vimrc "ColorScheme" {
+util.autocmd_vimrc("ColorScheme") {
     desc = "UnicodeSpaces を Error 色にハイライトする",
     command = "highlight link UnicodeSpaces Error",
 }
 
-util.autocmd_vimrc "VimResized" {
+util.autocmd_vimrc("VimResized") {
     desc = "ウィンドウの画面幅を揃える",
     command = [[Normal! <C-w>=]],
 }
 
 -- autocmd BufRead * autocmd FileType <buffer> ++once
 --   \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif
-util.autocmd_vimrc "BufRead" {
+util.autocmd_vimrc("BufRead") {
     desc = "カーソル位置を閉じたときの場所に戻す",
     callback = function(arg)
         if vim.bo.filetype == "commit" or vim.bo.filetype == "rebase" then
@@ -50,7 +50,7 @@ util.autocmd_vimrc "BufRead" {
         if vim.wo.diff then
             return
         end
-        vim.cmd.normal [[g`"]]
+        vim.cmd.normal([[g`"]])
     end,
 }
 
@@ -58,12 +58,12 @@ util.autocmd_vimrc "BufRead" {
 ---@class LocalrcList
 local LocalrcList = {
     -- 実行しても安全なディレクトリパスを保存しておくところ。
-    whitelist = vim.fn.stdpath "data" .. "/localrc/whitelist",
-    blacklist = vim.fn.stdpath "data" .. "/localrc/blacklist",
+    whitelist = vim.fn.stdpath("data") .. "/localrc/whitelist",
+    blacklist = vim.fn.stdpath("data") .. "/localrc/blacklist",
 
     create_root = function()
-        if vim.fn.filewritable(vim.fn.stdpath "data" .. "/localrc") ~= 2 then
-            vim.fn.mkdir(vim.fn.stdpath "data" .. "/localrc", "p")
+        if vim.fn.filewritable(vim.fn.stdpath("data") .. "/localrc") ~= 2 then
+            vim.fn.mkdir(vim.fn.stdpath("data") .. "/localrc", "p")
         end
     end,
 
@@ -144,7 +144,7 @@ local function try_eval_init_lua_local()
     end
 
     if localrc_list:is_safe(cwd) == false then
-        util.print_error "This directory may contain malicious .init.lua.local file. Deleting the file is recommended."
+        util.print_error("This directory may contain malicious .init.lua.local file. Deleting the file is recommended.")
         return
     end
 
@@ -177,13 +177,13 @@ local function try_eval_init_lua_local()
     )
 end
 
-util.autocmd_vimrc "VimEnter" {
+util.autocmd_vimrc("VimEnter") {
     callback = try_eval_init_lua_local,
 }
 
 -- §§1 editor の機能
 
-util.autocmd_vimrc "InsertLeave" {
+util.autocmd_vimrc("InsertLeave") {
     desc = "挿入モードを抜けたら paste モードを off にする",
     callback = function()
         vim.o.paste = false
@@ -204,7 +204,7 @@ local function auto_mkdir()
     end
 
     vim.fn.inputsave()
-    vim.cmd [[echohl Question]]
+    vim.cmd([[echohl Question]])
     local result = vim.ui.input({
         prompt = ([=["%s" does not exist. Create? [y/N]]=]):format(dir),
         -- highlight = "Question",
@@ -217,7 +217,7 @@ local function auto_mkdir()
     vim.fn.inputrestore()
 end
 
-util.autocmd_vimrc "BufWritePre" {
+util.autocmd_vimrc("BufWritePre") {
     desc = "保存時に必要があれば自動で mkdir する",
     callback = auto_mkdir,
 }
@@ -235,9 +235,9 @@ local function remove_common_indent(s)
     end
     local n_common_indent = 1000000
     for _, line in ipairs(lines) do
-        local blank_line = line:find [[^%s*$]]
+        local blank_line = line:find([[^%s*$]])
         if not blank_line then
-            local _, n_indent = line:find [[^%s*]]
+            local _, n_indent = line:find([[^%s*]])
             if n_indent ~= nil and n_common_indent > n_indent then
                 n_common_indent = n_indent
             end
@@ -246,7 +246,7 @@ local function remove_common_indent(s)
 
     local new_lines = {}
     for _, line in ipairs(lines) do
-        local blank_line = line:find [[^%s*$]]
+        local blank_line = line:find([[^%s*$]])
         if blank_line then
             new_lines[#new_lines + 1] = ""
         else
@@ -257,7 +257,7 @@ local function remove_common_indent(s)
     return table.concat(new_lines, "\n")
 end
 
-util.autocmd_vimrc "TextYankPost" {
+util.autocmd_vimrc("TextYankPost") {
     desc = "無名レジスタへの yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）",
     callback = function()
         local event = vim.v.event
@@ -283,7 +283,7 @@ util.autocmd_vimrc "TextYankPost" {
     end,
 }
 
-util.autocmd_vimrc "VimEnter" {
+util.autocmd_vimrc("VimEnter") {
     desc = "マクロ用のレジスタを消去",
     callback = function()
         vim.fn.setreg("q", "")
@@ -309,17 +309,17 @@ util.autocmd_vimrc "VimEnter" {
 --     end,
 -- }
 
-util.autocmd_vimrc "QuickfixCmdPost" {
+util.autocmd_vimrc("QuickfixCmdPost") {
     pattern = { "l*" },
     command = "lwin",
 }
 
-util.autocmd_vimrc "QuickfixCmdPost" {
+util.autocmd_vimrc("QuickfixCmdPost") {
     pattern = { "[^l]*" },
     command = "cwin",
 }
 
-util.autocmd_vimrc "CmdwinEnter" {
+util.autocmd_vimrc("CmdwinEnter") {
     callback = function(meta)
         local buf = meta.buf
         vim.wo.number = false
@@ -337,13 +337,13 @@ util.autocmd_vimrc "CmdwinEnter" {
 
 -- ESC 時に英数キーを送るのは Karabiner でできるが、検索コマンドからの離脱時にも送りたい
 -- https://rcmdnk.com/blog/2017/03/10/computer-mac-vim/
-util.autocmd_vimrc "CmdlineLeave" {
+util.autocmd_vimrc("CmdlineLeave") {
     pattern = "/",
     callback = function()
         -- 102: EISU
-        vim.fn.system [[
+        vim.fn.system([[
             osascript -e "tell application \"System Events\" to key code 102"
-        ]]
+        ]])
     end,
 }
 
@@ -359,14 +359,14 @@ end
 local function visual_match()
     free_visual_match()
     local in_visual_mode = vim.fn.index({ "v", "" }, vim.fn.mode(0)) ~= -1
-    local selects_one_line = vim.fn.line "v" == vim.fn.line "."
+    local selects_one_line = vim.fn.line("v") == vim.fn.line(".")
     if in_visual_mode and selects_one_line then
-        local len_of_char_of_v = vim.fn.strlen(vim.fn.matchstr(vim.fn.getline "v", ".", vim.fn.col "v" - 1))
-        local len_of_char_of_dot = vim.fn.strlen(vim.fn.matchstr(vim.fn.getline ".", ".", vim.fn.col "." - 1))
-        local first = vim.fn.min { vim.fn.col "v" - 1, vim.fn.col "." - 1 }
+        local len_of_char_of_v = vim.fn.strlen(vim.fn.matchstr(vim.fn.getline("v"), ".", vim.fn.col("v") - 1))
+        local len_of_char_of_dot = vim.fn.strlen(vim.fn.matchstr(vim.fn.getline("."), ".", vim.fn.col(".") - 1))
+        local first = vim.fn.min { vim.fn.col("v") - 1, vim.fn.col(".") - 1 }
         local last = vim.fn.max {
-            vim.fn.col "v" - 2 + len_of_char_of_v,
-            vim.fn.col "." - 2 + len_of_char_of_dot,
+            vim.fn.col("v") - 2 + len_of_char_of_v,
+            vim.fn.col(".") - 2 + len_of_char_of_dot,
         }
         local visible_winids = vim.tbl_filter(function(s)
             return type(s) == "number"
@@ -384,7 +384,7 @@ local function visual_match()
     end
 end
 
-util.autocmd_vimrc "WinLeave" {
+util.autocmd_vimrc("WinLeave") {
     desc = "Free instant visual highlight",
     callback = free_visual_match,
 }
@@ -412,7 +412,7 @@ local function keep_cursor(callback)
     end
 end
 
-util.autocmd_vimrc "BufWritePost" {
+util.autocmd_vimrc("BufWritePost") {
     pattern = { "*.lua", ".init.lua.local" },
     callback = function()
         -- fold の状態を保持するために mkview と loadview を入れた
@@ -421,8 +421,8 @@ util.autocmd_vimrc "BufWritePost" {
         -- vim.cmd [[edit]]
         -- vim.cmd [[loadview]]
         keep_cursor(function()
-            vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand "%:p")
-            vim.cmd [[edit]]
+            vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand("%:p"))
+            vim.cmd([[edit]])
         end)
     end,
     desc = "execute stylua",
@@ -528,7 +528,7 @@ util.autocmd_vimrc "BufWritePost" {
 --     command = "redraw!",
 -- }
 
-local query = require "vim.treesitter.query"
+local query = require("vim.treesitter.query")
 local function bufname_vim_match(match, _, source, predicate)
     local regex = vim.regex(predicate[2])
     local foo = regex:match_str(vim.fn.bufname(source)) ~= nil

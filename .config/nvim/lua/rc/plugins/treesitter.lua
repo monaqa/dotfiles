@@ -81,6 +81,15 @@ plugins:push {
             filetype = "jsonl", -- if filetype does not agrees with parser name
         }
 
+        parser_config.nu = {
+            install_info = {
+                url = "https://github.com/nushell/tree-sitter-nu", -- local path or git repo
+                revision = "main",
+                files = { "src/parser.c" },
+            },
+            filetype = "nu", -- if filetype does not agrees with parser name
+        }
+
         parser_config.denops_gitter = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-denops-gitter", -- local path or git repo
