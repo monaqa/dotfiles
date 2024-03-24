@@ -1,5 +1,7 @@
 # vim:fdm=marker
 
+nu
+
 # functions {{{
 function gitaddtree -a branch
   cd (git rev-parse --git-common-dir)/../
