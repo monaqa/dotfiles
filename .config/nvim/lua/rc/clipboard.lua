@@ -1,6 +1,6 @@
 -- Clipboard の image をいい感じに貼り付けるためのスクリプト。
 
-local util = require "rc.util"
+local util = require("rc.util")
 
 local M = {}
 
@@ -8,7 +8,7 @@ local M = {}
 local function save_cliboard_image(filepath)
     local out = vim.fn.system {
         "osascript",
-        vim.fn.stdpath "config" .. "/resource/save_clipboard_image.applescript",
+        vim.fn.stdpath("config") .. "/resource/save_clipboard_image.applescript",
         vim.fn.fnamemodify(filepath, ":p"),
     }
     if vim.startswith(out, "ERROR") then

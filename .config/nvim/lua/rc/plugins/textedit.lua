@@ -1,5 +1,5 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 -- textedit
@@ -122,7 +122,7 @@ plugins:push {
         --     return { "v", head_pos, tail_pos }
         -- end
 
-        vim.cmd [[
+        vim.cmd([[
             function! CurrentLineA()
               normal! 0
               let head_pos = getpos('.')
@@ -142,7 +142,7 @@ plugins:push {
               \ ? ['v', head_pos, tail_pos]
               \ : 0
             endfunction
-        ]]
+        ]])
 
         vim.fn["textobj#user#plugin"]("jbraces", {
             parens = {
@@ -167,7 +167,7 @@ plugins:push {
             },
         })
 
-        util.autocmd_vimrc "FileType" {
+        util.autocmd_vimrc("FileType") {
             pattern = "tex",
             callback = function()
                 vim.fn["textobj#user#plugin"]("texquote", {
@@ -185,7 +185,7 @@ plugins:push {
             end,
         }
 
-        util.autocmd_vimrc "FileType" {
+        util.autocmd_vimrc("FileType") {
             pattern = "satysfi",
             callback = function()
                 vim.fn["textobj#user#plugin"]("satyblock", {

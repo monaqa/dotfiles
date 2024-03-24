@@ -1,9 +1,9 @@
 -- vim:fdm=marker:fmr=§§,■■
 
 -- §§1 表示設定
-vim.cmd [[
+vim.cmd([[
 language messages en_US.UTF-8
-]]
+]])
 
 vim.opt.belloff = "all"
 vim.opt.lazyredraw = true
@@ -21,7 +21,7 @@ vim.opt.listchars = {
 vim.opt.fillchars = {
     eob = " ",
 }
-vim.opt.formatoptions:append "M"
+vim.opt.formatoptions:append("M")
 
 vim.opt.scrolloff = 0
 -- default は marker にしておく
@@ -58,7 +58,7 @@ vim.opt.diffopt:append { "vertical", "algorithm:histogram" }
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd.colorscheme "gruvbit"
+vim.cmd.colorscheme("gruvbit")
 
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
@@ -66,7 +66,7 @@ vim.opt.shiftwidth = 4
 vim.opt.breakindent = true
 vim.opt.smartindent = false
 vim.opt.virtualedit = "block"
-vim.opt.isfname:remove "="
+vim.opt.isfname:remove("=")
 
 vim.opt.backup = false
 vim.opt.swapfile = false
@@ -87,7 +87,7 @@ if vim.opt.shell:get():sub(#vim.opt.shell - 3) == "fish" then
     vim.opt.shell = "sh"
 end
 
-if vim.fn.has "persistent_undo" then
+if vim.fn.has("persistent_undo") then
     vim.opt.undofile = true
 end
 
@@ -106,10 +106,10 @@ vim.opt.sessionoptions = {
     "winsize",
 }
 
-if vim.fn.executable "rg" then
+if vim.fn.executable("rg") then
     vim.opt.grepprg = "rg --vimgrep --hidden --no-heading --glob " .. "'!tags*'"
     vim.opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
 end
 
 -- 正確にはオプションではないがまあオプションっぽく扱おうということで
-vim.g.python3_host_prog = (vim.fn.getenv "HOME") .. "/.local/share/nvim/venv/neovim/bin/python"
+vim.g.python3_host_prog = (vim.fn.getenv("HOME")) .. "/.local/share/nvim/venv/neovim/bin/python"

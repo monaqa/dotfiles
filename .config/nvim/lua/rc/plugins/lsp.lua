@@ -1,5 +1,5 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
@@ -25,7 +25,7 @@ plugins:push {
         local function coc_service_names(arglead, cmdline, cursorpos)
             return vim.tbl_map(function(service)
                 return service["id"]
-            end, vim.fn.CocAction "services")
+            end, vim.fn.CocAction("services"))
         end
 
         util.create_cmd("CocToggleService", function(meta)
@@ -50,23 +50,23 @@ plugins:push {
         vim.keymap.set("n", "gd", "<C-]>")
 
         vim.keymap.set("n", "t", "<Nop>")
-        vim.keymap.set("n", "td", util.cmdcr "Telescope coc definitions")
-        vim.keymap.set("n", "ti", util.cmdcr "Telescope coc implementations")
-        vim.keymap.set("n", "tr", util.cmdcr "Telescope coc references")
-        vim.keymap.set("n", "ty", util.cmdcr "Telescope coc type_definitions")
-        vim.keymap.set("n", "tA", util.cmdcr "Telescope coc code_actions")
+        vim.keymap.set("n", "td", util.cmdcr("Telescope coc definitions"))
+        vim.keymap.set("n", "ti", util.cmdcr("Telescope coc implementations"))
+        vim.keymap.set("n", "tr", util.cmdcr("Telescope coc references"))
+        vim.keymap.set("n", "ty", util.cmdcr("Telescope coc type_definitions"))
+        vim.keymap.set("n", "tA", util.cmdcr("Telescope coc code_actions"))
         vim.keymap.set("n", "tn", "<Plug>(coc-rename)")
         vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)")
         vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)")
         vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
-        vim.keymap.set("n", "K", util.cmdcr "call CocActionAsync('doHover')")
-        vim.keymap.set("n", "th", util.cmdcr "CocCommand document.toggleInlayHint")
+        vim.keymap.set("n", "K", util.cmdcr("call CocActionAsync('doHover')"))
+        vim.keymap.set("n", "th", util.cmdcr("CocCommand document.toggleInlayHint"))
 
         -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
-        vim.cmd [[
+        vim.cmd([[
             inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()
             inoremap <expr> <Plug>(vimrc-lexima-expand-cr) lexima#expand('<LT>CR>', 'i')
-        ]]
+        ]])
 
         vim.keymap.set("i", "<CR>", function()
             if util.to_bool(vim.fn["coc#pum#visible"]()) then
@@ -113,7 +113,7 @@ plugins:push {
         --     return "<C-h>"
         -- end, {expr = true})
 
-        vim.cmd [[
+        vim.cmd([[
           function! s:check_back_space() abort
             let col = col('.') - 1
             return !col || getline('.')[col - 1]  =~ '\s'
@@ -129,14 +129,14 @@ plugins:push {
             \ coc#pum#visible() ? coc#pum#prev(1) :
             \ pumvisible() ? "\<C-p>":
             \ "\<C-h>"
-        ]]
+        ]])
 
         vim.g.coc_snippet_next = "<C-g><C-j>"
         vim.g.coc_snippet_prev = "<C-g><C-k>"
 
         -- coc の diagnostics の内容を QuiciFix に流し込む。
         local function coc_diag_to_quickfix()
-            local diags = vim.fn["CocAction"] "diagnosticList"
+            local diags = vim.fn["CocAction"]("diagnosticList")
             ---@type any[]
             local entries = vim.tbl_map(function(diag)
                 return {
@@ -156,7 +156,7 @@ plugins:push {
 
         util.create_cmd("CocQuickfix", function()
             coc_diag_to_quickfix()
-            vim.cmd [[cwindow]]
+            vim.cmd([[cwindow]])
         end)
 
         ---diagnostics のある位置にジャンプする。ただし種類に応じて優先順位を付ける。

@@ -1,4 +1,4 @@
-local vec = require "rc.util.vec"
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
@@ -106,7 +106,7 @@ plugins:push {
     dependencies = { "https://github.com/vim-denops/denops.vim" },
     enabled = false,
     config = function()
-        vim.g["gitter#token"] = vim.fn.getenv "GITTER_TOKEN"
+        vim.g["gitter#token"] = vim.fn.getenv("GITTER_TOKEN")
     end,
 }
 

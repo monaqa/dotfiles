@@ -1,5 +1,5 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 -- telescope
@@ -16,21 +16,21 @@ plugins:push {
         {
             "so",
             function()
-                local builtin = require "telescope.builtin"
+                local builtin = require("telescope.builtin")
                 builtin.git_files { prompt_prefix = "𝝋" }
             end,
         },
         {
             "sO",
             function()
-                local builtin = require "telescope.builtin"
+                local builtin = require("telescope.builtin")
                 builtin.find_files { prompt_prefix = "𝝋" }
             end,
         },
         {
             "sb",
             function()
-                local builtin = require "telescope.builtin"
+                local builtin = require("telescope.builtin")
                 builtin.buffers { prompt_prefix = "𝜷" }
             end,
         },
@@ -47,7 +47,7 @@ plugins:push {
         {
             "tq",
             function()
-                local builtin = require "telescope.builtin"
+                local builtin = require("telescope.builtin")
                 builtin.quickfix { prompt_prefix = "𝝄" }
             end,
         },
@@ -60,20 +60,20 @@ plugins:push {
         -- },
     },
     config = function()
-        local actions = require "telescope.actions"
+        local actions = require("telescope.actions")
 
-        require("telescope").load_extension "coc"
-        require("telescope").load_extension "smart_history"
-        require("telescope").load_extension "egrepify"
+        require("telescope").load_extension("coc")
+        require("telescope").load_extension("smart_history")
+        require("telescope").load_extension("egrepify")
         -- require("telescope").load_extension "frecency"
 
         -- manage database history
-        local db_dir = vim.fn.stdpath "data" .. "/databases"
+        local db_dir = vim.fn.stdpath("data") .. "/databases"
         if not util.to_bool(vim.fn.isdirectory(db_dir)) then
             vim.fn.mkdir(db_dir, "p")
         end
 
-        util.autocmd_vimrc "FileType" {
+        util.autocmd_vimrc("FileType") {
             pattern = "TelescopePrompt",
             callback = function()
                 -- vim.b.lexima_disabled = 1

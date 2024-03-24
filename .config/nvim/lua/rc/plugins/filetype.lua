@@ -1,4 +1,4 @@
-local vec = require "rc.util.vec"
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 

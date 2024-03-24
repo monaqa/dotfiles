@@ -1,11 +1,11 @@
 -- Obsidian の編集に関する設定
 local M = {}
 
-local util = require "rc.util"
-local ts_utils = require "nvim-treesitter.ts_utils"
-local query = require "vim.treesitter.query"
+local util = require("rc.util")
+local ts_utils = require("nvim-treesitter.ts_utils")
+local query = require("vim.treesitter.query")
 
-M.root_dir = vim.fn.getenv "HOME" .. "/Documents/obsidian/mogamemo/"
+M.root_dir = vim.fn.getenv("HOME") .. "/Documents/obsidian/mogamemo/"
 M.diary_dir = M.root_dir .. "diary/"
 M.note_dir = M.root_dir .. "note/"
 
@@ -15,7 +15,7 @@ M.file_pattern = {
 }
 
 function M.diary_template()
-    local today = vim.fn.strftime "%Y年%m月%d日"
+    local today = vim.fn.strftime("%Y年%m月%d日")
     local template = ([[
 # %s
 
@@ -47,7 +47,7 @@ function M.get_omni_cands()
         ---@param s string
         ---@return string
         function(s)
-            local idx = s:find "/"
+            local idx = s:find("/")
             return s:sub(idx + 1)
         end,
         relpaths
@@ -58,7 +58,7 @@ end
 function M.open_diary(arg)
     local fname
     if arg == "" then
-        fname = vim.fn.strftime "%Y-%m-%d"
+        fname = vim.fn.strftime("%Y-%m-%d")
     else
         fname = arg
     end
@@ -73,7 +73,7 @@ function M.open_diary_complete(arglead, cmdline, cursorpos)
     local paths = vim.split(vim.fn.globpath(M.diary_dir, "*.md"), "\n", true)
     local cands = vim.tbl_map(function(path)
         local stem = vim.fn.fnamemodify(path, ":t:r")
-        if stem == vim.fn.strftime "%Y-%m-%d" then
+        if stem == vim.fn.strftime("%Y-%m-%d") then
             return nil
         end
         return stem
@@ -104,8 +104,8 @@ end
 function M.omnifunc(findstart, base)
     if util.to_bool(findstart) then
         ---@type string
-        local line = vim.fn.getline "."
-        local start = vim.fn.col "."
+        local line = vim.fn.getline(".")
+        local start = vim.fn.col(".")
         vim.print { line = line, start = start, sub = line:sub(start, start) }
         while start > 0 do
             start = start - 1
@@ -113,7 +113,7 @@ function M.omnifunc(findstart, base)
                 return start
             end
         end
-        return vim.fn.col "." - 1
+        return vim.fn.col(".") - 1
     end
 
     ---@type string[]

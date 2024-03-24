@@ -1,4 +1,4 @@
-local vec = require "rc.util.vec"
+local vec = require("rc.util.vec")
 
 local disable_plugins = {
     "netrw",
@@ -12,7 +12,7 @@ for _, name in ipairs(disable_plugins) do
     vim.g["loaded_" .. name] = 1
 end
 
-local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system {
         "git",
@@ -38,17 +38,17 @@ local plugins = vec {
 -- local
 
 require("lazy").setup(vec({
-    require "rc.plugins.denops",
-    require "rc.plugins.filer",
-    require "rc.plugins.filetype",
-    require "rc.plugins.git",
-    require "rc.plugins.layout",
-    require "rc.plugins.lsp",
-    require "rc.plugins.paren",
-    require "rc.plugins.telescope",
-    require "rc.plugins.textedit",
-    require "rc.plugins.treesitter",
+    require("rc.plugins.denops"),
+    require("rc.plugins.filer"),
+    require("rc.plugins.filetype"),
+    require("rc.plugins.git"),
+    require("rc.plugins.layout"),
+    require("rc.plugins.lsp"),
+    require("rc.plugins.paren"),
+    require("rc.plugins.telescope"),
+    require("rc.plugins.textedit"),
+    require("rc.plugins.treesitter"),
 
-    require "rc.plugins.misc",
-    require "rc.plugins.monaqa",
+    require("rc.plugins.misc"),
+    require("rc.plugins.monaqa"),
 }):concat():collect())

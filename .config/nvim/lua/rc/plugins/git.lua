@@ -1,5 +1,5 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
@@ -51,18 +51,18 @@ plugins:push {
 
         vim.api.nvim_create_user_command("GinaBrowseYank", function(meta)
             vim.cmd(([[%d,%dGina browse --exact --yank :]]):format(meta.line1, meta.line2))
-            vim.cmd [[
+            vim.cmd([[
             let @+ = @"
             echo @+
-        ]]
+        ]])
         end, { range = "%" })
 
         vim.api.nvim_create_user_command("GinaPrChanges", function(meta)
             local branch = meta.args
             if meta.args == "" then
-                local base_ref = vim.trim(vim.fn.system "gh pr view --json baseRefName -q '.baseRefName'")
+                local base_ref = vim.trim(vim.fn.system("gh pr view --json baseRefName -q '.baseRefName'"))
                 if vim.startswith(base_ref, "no ") then
-                    branch = vim.trim(vim.fn.system "git mom")
+                    branch = vim.trim(vim.fn.system("git mom"))
                 else
                     branch = base_ref
                 end
@@ -115,7 +115,7 @@ plugins:push {
             if opts.fargs[1] ~= nil then
                 branch = opts.fargs[1]
             else
-                local branches = complete_branches ""
+                local branches = complete_branches("")
                 for _, item in ipairs { "master", "main" } do
                     if vim.tbl_contains(branches, item) then
                         branch = item

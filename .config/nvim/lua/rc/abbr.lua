@@ -1,17 +1,17 @@
-vim.cmd [==[
+vim.cmd([==[
     cnoreabbrev <expr> w (getcmdtype() .. getcmdline() ==# ":'<,'>w") ? "\<C-u>w" : "w"
     cnoreabbrev <expr> w2 (getcmdtype() .. getcmdline() ==# ":w2") ? "w" : "w2"
     cnoreabbrev <expr> w] (getcmdtype() .. getcmdline() ==# ":w]") ? "w" : "w]"
-]==]
+]==])
 
-vim.cmd [[
+vim.cmd([[
 function! RemoveAbbrTrigger(arg)
   if a:arg
     call getchar()
   endif
   return ""
 endfunction
-]]
+]])
 
 ---@alias abbrrule {from: string, to: string, prepose?: string, prepose_nospace?: string, remove_trigger?: boolean}
 

@@ -1,4 +1,4 @@
-vim.cmd [[
+vim.cmd([[
     let g:vim_markdown_frontmatter = 1
 
     " マークダウンのタイトルのパターンにマッチしたらそのタイトルの深さを返す。
@@ -38,13 +38,13 @@ vim.cmd [[
 
     " 選択テキストをハイパーリンク化
     xnoremap <buffer> L "lc[<C-r>=substitute(getreg("l"), '\n', '', 'g')<CR>](<C-r>=substitute(getreg("+"), '\n', '', 'g')<CR>)<Esc>
-]]
+]])
 
 vim.opt_local.shiftwidth = 4
 vim.opt_local.spell = true
 vim.opt_local.foldmethod = "expr"
 vim.opt_local.foldexpr = "MarkdownLevel(v:lnum)"
-vim.opt_local.suffixesadd:append ".md"
+vim.opt_local.suffixesadd:append(".md")
 -- vim.opt_local.conceallevel = 2
 
 vim.opt_local.comments = {
@@ -58,6 +58,6 @@ vim.opt_local.comments = {
     "b:1. ",
 }
 
-vim.opt_local.formatoptions:remove "c"
-vim.opt_local.formatoptions:append "j"
-vim.opt_local.formatoptions:append "r"
+vim.opt_local.formatoptions:remove("c")
+vim.opt_local.formatoptions:append("j")
+vim.opt_local.formatoptions:append("r")

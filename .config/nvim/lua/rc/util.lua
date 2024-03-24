@@ -1,6 +1,6 @@
 local M = {}
 
-local monaqa = require "monaqa"
+local monaqa = require("monaqa")
 
 M.trim = monaqa.str.trim
 M.cmdcr = monaqa.str.cmdcr
@@ -72,10 +72,10 @@ end
 
 ---横に広ければ鉛直に、縦に広ければ水平に分割する。
 function M.split_window()
-    if M.is_wide_window "." then
-        vim.cmd [[vsplit]]
+    if M.is_wide_window(".") then
+        vim.cmd([[vsplit]])
     else
-        vim.cmd [[split]]
+        vim.cmd([[split]])
     end
 end
 
@@ -88,12 +88,12 @@ end
 ---のように動作する。
 ---@param motion_seq fun()[]
 function M.motion_autoselect(motion_seq)
-    local init_line = vim.fn.line "."
-    local init_col = vim.fn.col "."
+    local init_line = vim.fn.line(".")
+    local init_col = vim.fn.col(".")
     for _, motion in ipairs(motion_seq) do
         motion()
-        local line = vim.fn.line "."
-        local col = vim.fn.col "."
+        local line = vim.fn.line(".")
+        local col = vim.fn.col(".")
         if not (line == init_line and col == init_col) then
             return
         end

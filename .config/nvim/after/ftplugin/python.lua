@@ -16,7 +16,7 @@ end
 vim.keymap.set("x", "gq", ":!black - 2>/dev/null<CR>", { buffer = true })
 
 -- すまん。面倒くさくて
-vim.cmd [[
+vim.cmd([[
     let g:textobj_functioncall_python_generics_patterns = [
     \ {
     \   'header' : '\<\%(\h\k*\.\)*\h\k*',
@@ -55,10 +55,10 @@ vim.cmd [[
       endif
       return genericsname . '['
     endfunction
-]]
+]])
 
 -- §§1 hydrogen
-vim.cmd [[
+vim.cmd([[
 function! HydrogenFoldOnlyCode(lnum) abort
   if getline(a:lnum + 1) =~ '^\s*# %%'
     return '0'
@@ -71,4 +71,4 @@ function! HydrogenFoldOnlyCode(lnum) abort
   endif
   return '='
 endfunction
-]]
+]])

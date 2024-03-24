@@ -1,5 +1,5 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
@@ -7,8 +7,8 @@ plugins:push {
     "https://github.com/hrsh7th/nvim-insx",
     event = "InsertEnter",
     config = function()
-        local standard = require "insx.preset.standard"
-        local insx = require "insx"
+        local standard = require("insx.preset.standard")
+        local insx = require("insx")
         local esc = require("insx.helper.regex").esc
 
         -- standard.set_pair の中身を少し改変
@@ -19,7 +19,7 @@ plugins:push {
             insx.add(
                 close,
                 insx.with(
-                    require "insx.recipe.jump_next" {
+                    require("insx.recipe.jump_next") {
                         jump_pat = {
                             [[\%#]] .. esc(close) .. [[\zs]],
                         },
@@ -33,7 +33,7 @@ plugins:push {
             insx.add(
                 open,
                 insx.with(
-                    require "insx.recipe.auto_pair" {
+                    require("insx.recipe.auto_pair") {
                         open = open,
                         close = close,
                     },
@@ -46,7 +46,7 @@ plugins:push {
             insx.add(
                 "<BS>",
                 insx.with(
-                    require "insx.recipe.delete_pair" {
+                    require("insx.recipe.delete_pair") {
                         open_pat = esc(open),
                         close_pat = esc(close),
                     },
@@ -86,7 +86,7 @@ plugins:push {
             insx.add(
                 "<CR>",
                 insx.with(
-                    require "insx.recipe.fast_break" {
+                    require("insx.recipe.fast_break") {
                         open_pat = esc(open),
                         close_pat = esc(close),
                         split = nil,
@@ -103,7 +103,7 @@ plugins:push {
             insx.add(
                 "<C-]>",
                 insx.with(
-                    require "insx.recipe.fast_wrap" {
+                    require("insx.recipe.fast_wrap") {
                         close = close,
                     },
                     {}
@@ -116,34 +116,34 @@ plugins:push {
 
         insx.add("`", {
             enabled = function(ctx)
-                return ctx.match [[`\%#`]] and vim.tbl_contains({ "markdown", "typst" }, ctx.filetype)
+                return ctx.match([[`\%#`]]) and vim.tbl_contains({ "markdown", "typst" }, ctx.filetype)
             end,
             action = function(ctx)
-                if ctx.match [[```\%#```]] then
+                if ctx.match([[```\%#```]]) then
                     return
                 end
-                ctx.send "``<Left>"
-                ctx.send "``<Left>"
+                ctx.send("``<Left>")
+                ctx.send("``<Left>")
             end,
         })
 
         insx.add([["]], {
             enabled = function(ctx)
-                return ctx.match [["\%#"]] and ctx.filetype == "python"
+                return ctx.match([["\%#"]]) and ctx.filetype == "python"
             end,
             action = function(ctx)
-                if ctx.match [["""\%#"""]] then
+                if ctx.match([["""\%#"""]]) then
                     return
                 end
-                ctx.send [[""<Left>]]
-                ctx.send [[""<Left>]]
+                ctx.send([[""<Left>]])
+                ctx.send([[""<Left>]])
             end,
         })
 
         insx.add(
             "<CR>",
             insx.with(
-                require "insx.recipe.fast_break" {
+                require("insx.recipe.fast_break") {
                     open_pat = [[```\w*]],
                     close_pat = "```",
                     indent = 0,
@@ -157,7 +157,7 @@ plugins:push {
         insx.add(
             "<CR>",
             insx.with(
-                require "insx.recipe.fast_break" {
+                require("insx.recipe.fast_break") {
                     open_pat = [["""\w*]],
                     close_pat = [["""]],
                     indent = 0,
@@ -171,7 +171,7 @@ plugins:push {
         -- html tag like.
         insx.add(
             "<CR>",
-            require "insx.recipe.fast_break" {
+            require("insx.recipe.fast_break") {
                 open_pat = insx.helper.search.Tag.Open,
                 close_pat = insx.helper.search.Tag.Close,
             }
@@ -212,9 +212,9 @@ plugins:push {
                 if vim.fn["coc#pum#info"]()["index"] >= 0 then
                     return vim.api.nvim_replace_termcodes(vim.fn["coc#pum#confirm"](), true, true, true)
                 end
-                return vim.fn.keytrans(vim.fn["insx#expand"] "<CR>")
+                return vim.fn.keytrans(vim.fn["insx#expand"]("<CR>"))
             end
-            return vim.fn.keytrans(vim.fn["insx#expand"] "<CR>")
+            return vim.fn.keytrans(vim.fn["insx#expand"]("<CR>"))
         end, { expr = true, remap = true })
     end,
 }
@@ -288,7 +288,7 @@ plugins:push {
         --     return "+" .. cmd_name .. "<"
         -- end
 
-        vim.cmd [[
+        vim.cmd([[
             function! SandwichGenericsName() abort
               let genericsname = input('generics name: ', '')
               if genericsname ==# ''
@@ -321,7 +321,7 @@ plugins:push {
               return '#' . cmdname . '['
             endfunction
 
-        ]]
+        ]])
 
         -- レシピ集
         local default_recipes = vim.g["sandwich#default_recipes"]
@@ -454,7 +454,7 @@ plugins:push {
             },
             {
                 input = { "g" },
-                external = { "i<", vim.api.nvim_eval [["\<Plug>(textobj-functioncall-generics-a)"]] },
+                external = { "i<", vim.api.nvim_eval([["\<Plug>(textobj-functioncall-generics-a)"]]) },
                 noremap = 0,
                 kind = { "delete", "replace", "query" },
             },

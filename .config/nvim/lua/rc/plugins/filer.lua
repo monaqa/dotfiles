@@ -1,5 +1,5 @@
-local util = require "rc.util"
-local vec = require "rc.util.vec"
+local util = require("rc.util")
+local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
@@ -50,7 +50,7 @@ plugins:push {
             vim.opt_local.signcolumn = "no"
             vim.opt_local.foldcolumn = "0"
 
-            vim.cmd [[
+            vim.cmd([[
             nmap <buffer><expr>
             \ <Plug>(fern-expand-or-enter)
             \ fern#smart#drawer(
@@ -75,7 +75,7 @@ plugins:push {
             \   "\<Plug>(fern-action-expand)",
             \   "\<Plug>(fern-action-collapse)",
             \ )
-        ]]
+        ]])
 
             -- fern の関数には "\<Plug>" な文字列を入れないといけないためか、うまく動かない
 
@@ -143,7 +143,7 @@ plugins:push {
             vim.keymap.set("n", "sw", "<Cmd>bp<CR>", { buffer = true })
         end
 
-        util.autocmd_vimrc "FileType" {
+        util.autocmd_vimrc("FileType") {
             pattern = "fern",
             callback = fern_buffer_config,
         }
@@ -158,14 +158,14 @@ plugins:push {
         {
             "<Space>t",
             function()
-                local aerial = require "aerial"
+                local aerial = require("aerial")
                 aerial.toggle { focus = false }
             end,
         },
         {
             "<Space>i",
             function()
-                local aerial = require "aerial"
+                local aerial = require("aerial")
                 -- aerial.open { focus = false }
                 aerial.focus()
             end,
@@ -489,7 +489,7 @@ plugins:push {
             "sf",
             function()
                 local bufname = vim.api.nvim_buf_get_name(0)
-                if bufname:find "://" then
+                if bufname:find("://") then
                     -- 特殊なバッファなので cwd にする
                     require("oil").open(vim.fn.getcwd())
                 else
@@ -507,7 +507,7 @@ plugins:push {
             "sF",
             function()
                 local bufname = vim.api.nvim_buf_get_name(0)
-                if bufname:find "://" then
+                if bufname:find("://") then
                     -- 特殊なバッファなので cwd にする
                     require("oil").open(vim.fn.getcwd())
                 else
@@ -528,7 +528,7 @@ plugins:push {
         "Oil",
     },
     config = function()
-        local oil = require "oil"
+        local oil = require("oil")
 
         local sort_rules = {
             {
@@ -618,7 +618,7 @@ plugins:push {
                 ["H"] = "actions.parent",
                 ["L"] = {
                     callback = function()
-                        local actions = require "oil.actions"
+                        local actions = require("oil.actions")
                         local entry = require("oil").get_cursor_entry()
                         local preview_win = require("oil.util").get_preview_win()
 
