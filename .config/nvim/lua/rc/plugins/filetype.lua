@@ -31,13 +31,13 @@ plugins:push { "https://github.com/wlangstroth/vim-racket", ft = { "racket" } }
 
 plugins:push { "https://github.com/terrastruct/d2-vim", ft = { "d2" } }
 
-plugins:push {
-    "https://github.com/kaarmu/typst.vim",
-    ft = { "typst" },
-    -- ひとまず以下の issue が解決するまでは
-    -- https://github.com/kaarmu/typst.vim/issues/64
-    commit = "65f9e78c11829a643d1539f3481c0ff875c83603",
-}
+-- plugins:push {
+--     "https://github.com/kaarmu/typst.vim",
+--     ft = { "typst" },
+--     -- ひとまず以下の issue が解決するまでは
+--     -- https://github.com/kaarmu/typst.vim/issues/64
+--     commit = "65f9e78c11829a643d1539f3481c0ff875c83603",
+-- }
 
 plugins:push { "https://github.com/mityu/vim-applescript", ft = { "applescript" } }
 

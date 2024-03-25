@@ -11,6 +11,8 @@ local first_line = vim.fn.getline(1)
 if vim.startswith(first_line, "# %%") then
     vim.opt_local.foldmethod = "expr"
     vim.opt_local.foldexpr = "HydrogenFoldOnlyCode(v:lnum)"
+else
+    vim.opt_local.foldmethod = "manual"
 end
 
 vim.keymap.set("x", "gq", ":!black - 2>/dev/null<CR>", { buffer = true })

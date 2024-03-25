@@ -54,14 +54,19 @@ def vlsp [] {
     nvim
 }
 
+def --env gsw [] {
+    let worktree = git worktree list | sk | awk '{print $1;}';
+    cd $worktree
+}
+
 alias j = ls
+alias jj = lsd --tree --ignore-glob .git --depth 3
 alias g = ghq cd
 alias hg = history grep
 alias rafls = raf lscd
 alias ghpc = gh pr-fuzzy
 alias gs = git swim
 alias v = nvim
-
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {

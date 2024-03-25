@@ -5,6 +5,12 @@ local util = require("rc.util")
 vim.opt_local.shiftwidth = 2
 vim.opt_local.foldmethod = "manual"
 vim.opt_local.commentstring = "// %s"
+vim.opt_local.formatoptions:append("r")
+
+vim.opt_local.comments = {
+    "b:- ",
+    "b:+ ",
+}
 
 local function resolve_target()
     local line = vim.fn.getline(1)

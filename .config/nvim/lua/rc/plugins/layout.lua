@@ -382,7 +382,7 @@ plugins:push {
 
             provider_selector = function(bufnr, filetype, buftype)
                 if filetype == "python" then
-                    return ""
+                    return { "treesitter" }
                 end
                 return { "treesitter", "indent" }
             end,
