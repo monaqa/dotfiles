@@ -3,6 +3,7 @@
 # version = "0.88.1"
 
 use ~/ghq/github.com/nushell/nu_scripts/themes/nu-themes/gruvbox-material-dark-hard.nu
+let colorscheme = (gruvbox-material-dark-hard | upsert hints "#888888")
 
 # External completer example
 # let carapace_completer = {|spans|
@@ -35,6 +36,11 @@ def --env "ghq cd" [] {
   cd $dir
 }
 
+def --env "rafnew" [] {
+    let dir = raf new;
+    cd $dir
+}
+
 def --env "raf lscd" [] {
     let dir = raf ls | sk;
     cd $dir
@@ -59,14 +65,19 @@ def --env gsw [] {
     cd $worktree
 }
 
+alias hg = history grep
 alias j = ls
 alias jj = lsd --tree --ignore-glob .git --depth 3
-alias g = ghq cd
-alias hg = history grep
 alias rafls = raf lscd
-alias ghpc = gh pr-fuzzy
-alias gs = git swim
 alias v = nvim
+
+alias g = ghq cd
+alias ghpc = gh pr-fuzzy
+alias grbc = git rebase --continue
+alias grbm = git rebase (git mom)
+alias gs = git swim
+alias gsc = git switch -c
+alias gsm = git switch (git mom)
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
@@ -152,11 +163,11 @@ $env.config = {
         vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (underscore is the default)
     }
 
-    color_config: (gruvbox-material-dark-hard) # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
+    color_config: $colorscheme # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
     use_grid_icons: true
     footer_mode: "25" # always, never, number_of_rows, auto
     float_precision: 2 # the precision for displaying floats in tables
-    buffer_editor: "" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
+    buffer_editor: "nvim" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
     use_ansi_coloring: true
     bracketed_paste: true # enable bracketed paste, currently useless on windows
     edit_mode: emacs # emacs, vi
@@ -166,10 +177,25 @@ $env.config = {
     highlight_resolved_externals: false # true enables highlighting of external commands in the repl resolved by which.
 
     hooks: {
-        pre_prompt: [{ null }] # run before the prompt is shown
+        pre_prompt: [
+            {
+                condition: {|| $"($nu.default-config-dir)/scripts/local.nu" | path exists},
+                # scripts/local.nu
+                code: "source local.nu"
+            }
+        ] # run before the prompt is shown
         pre_execution: [{ null }] # run before the repl input is run
         env_change: {
-            PWD: [{|before, after| null }] # run if the PWD environment is different since the last repl input
+            PWD: [
+                {
+                    condition: {|_, after| $"($after)/.venv/bin/activate.nu" | path exists},
+                    code: "overlay use .venv/bin/activate.nu"
+                },
+                # {
+                #     condition: {|before, after| 'activate' in (overlay list)},
+                #     code: "overlay hide activate --keep-env [ PWD ]"
+                # },
+            ]
         }
         display_output: "if (term size).columns >= 100 { table -e } else { table }" # run to display the output of a pipeline
         command_not_found: { null } # return an error message when a command is not found
@@ -181,7 +207,7 @@ $env.config = {
         {
             name: completion_menu
             only_buffer_difference: false
-            marker: "| "
+            marker: ""
             type: {
                 layout: columnar
                 columns: 4
@@ -230,25 +256,25 @@ $env.config = {
 
     keybindings: [
         {
-            name: completion_menu
-            modifier: none
-            keycode: tab
-            mode: [emacs vi_normal vi_insert]
-            event: {
-                until: [
-                    { send: menu name: completion_menu }
-                    { send: menunext }
-                    { edit: complete }
-                ]
-            }
-        }
-        {
             name: enter
             modifier: control
             keycode: char_j
             mode: emacs
             event: {send: Enter}
         }
+        # {
+        #     name: completion_menu
+        #     modifier: none
+        #     keycode: tab
+        #     mode: [emacs vi_normal vi_insert]
+        #     event: {
+        #         until: [
+        #             { send: menu name: completion_menu }
+        #             { send: menunext }
+        #             { edit: complete }
+        #         ]
+        #     }
+        # }
         # {
         #     name: history_menu
         #     modifier: control

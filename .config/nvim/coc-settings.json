@@ -23,6 +23,7 @@
   "python.linting.mypyPath": "mypy",
   "python.pythonPath": "/opt/homebrew/bin/python3",
   "python.sortImports.path": "/opt/homebrew/bin/isort",
+  "python.venvPath": ".venv",
 
   "rust-analyzer.check.command": "clippy",
   "rust-analyzer.check.targets": [],

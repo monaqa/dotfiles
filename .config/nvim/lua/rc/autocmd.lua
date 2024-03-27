@@ -223,7 +223,7 @@ util.autocmd_vimrc("BufWritePre") {
 }
 
 local ignore_indent = false
-vim.keymap.set("n", "<Space>y", function()
+vim.keymap.set({ "n", "x" }, "<Space>y", function()
     ignore_indent = true
     return "y"
 end, { expr = true })

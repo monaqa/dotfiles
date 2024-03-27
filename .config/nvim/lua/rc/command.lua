@@ -1,6 +1,5 @@
 local monaqa = require("monaqa")
 local util = require("rc.util")
-local obsidian = require("rc.obsidian")
 -- vim:fdm=marker:fmr=§§,■■
 
 -- §§1 highlight
@@ -107,17 +106,6 @@ util.create_cmd("Normal", function(tbl)
         vim.cmd(i .. cmd .. " " .. code)
     end
 end, { range = true, nargs = 1, bang = true })
-
--- §§1 obsidian
-util.create_cmd("ObsidianList", obsidian.open_fern)
-util.create_cmd("ObsidianOpenDiary", function(meta)
-    obsidian.open_diary(meta.args)
-end, { nargs = "*", complete = obsidian.open_diary_complete })
-util.create_cmd("ObsidianGrep", function()
-    vim.ui.input({ prompt = "g/" }, function(kwd)
-        obsidian.grep_keyword(kwd)
-    end)
-end)
 
 -- §§1 todome
 util.create_cmd("TodomeOpen", "edit ~/todome/tasks.todome")
