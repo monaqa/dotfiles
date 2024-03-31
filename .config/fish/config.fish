@@ -1,6 +1,6 @@
 # vim:fdm=marker
 
-nu
+# nu
 
 # functions {{{
 function gitaddtree -a branch

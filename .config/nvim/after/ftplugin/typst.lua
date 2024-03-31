@@ -1,4 +1,4 @@
-local uv = vim.loop
+local uv = vim.uv
 local diary = require("rc.diary")
 local util = require("rc.util")
 
@@ -41,7 +41,8 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = "*.typ",
     callback = function()
         local objective = resolve_target()
-        vim.fn.system { "typst", "compile", objective }
+        -- vim.fn.system { "typst", "compile", objective }
+        uv.spawn("typst", { args = { "compile", objective } }, function() end)
     end,
 })
 
@@ -89,12 +90,18 @@ vim.api.nvim_buf_create_user_command(
 
 vim.keymap.set("n", "@p", "<Cmd>PutClipboardImage<CR>", { buffer = true })
 
-vim.keymap.set("n", "<Space>p", function()
-    local reg = vim.fn.getreg("+")
-    local after = vim.fn.substitute(reg, [[\v\[(.*)\]\((.*)\)]], [=[#link("\2")[\1]]=], "g")
-    vim.fn.setreg("+", after)
-    vim.cmd([[put +]])
-end, { buffer = true })
+-- vim.keymap.set("n", "<Space>p", function()
+--     local reg = vim.fn.getreg("+")
+--     local after = vim.fn.substitute(reg, [[\v\[(.*)\]\((.*)\)]], [=[#link("\2")[\1]]=], "g")
+--     vim.fn.setreg("+", after)
+--     vim.cmd([[put +]])
+-- end, { buffer = true })
+
+vim.api.nvim_buf_create_user_command(0, "CorrectLinks", function()
+    vim.cmd([=[
+        %s/\v\[(.*)\]\((.*)\)/#link("\2")[\1]/g
+    ]=])
+end, {})
 
 vim.keymap.set({ "n", "x" }, "g=", function()
     return require("general_converter").operator_convert(function(s)

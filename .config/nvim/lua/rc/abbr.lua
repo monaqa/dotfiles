@@ -102,6 +102,7 @@ make_abbrev {
     { from = "tcd", to = "Telescope coc diagnostics" },
     { from = "tf", to = "Telescope find_files" },
     { from = "tg", to = "Telescope live_grep" },
+    { from = "ty", to = "Typscrap" },
     { from = "tod", to = "TodomeOpen" },
     { from = "tmp", to = "Template" },
     { from = "s", to = "%s///g<Left><Left>", remove_trigger = true },
