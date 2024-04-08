@@ -1023,4 +1023,16 @@ vim.keymap.set("n", "gF", "<Cmd>!open <cfile><CR>", {
     desc = "外部の open コマンドを用いてパスを開く",
 })
 
+-- local keystrokes = {}
+--
+-- vim.on_key(function(key)
+--     if vim.fn.mode() == "n" then
+--         keystrokes[#keystrokes + 1] = vim.fn.keytrans(key)
+--     end
+-- end)
+--
+-- vim.keymap.set("n", "@k", function()
+--     vim.print(keystrokes)
+-- end)
+
 return M

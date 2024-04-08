@@ -1,3 +1,4 @@
+local uv = vim.uv
 require("lazy").load { plugins = { "dial.nvim", "general-converter.nvim" } }
 
 vim.b.did_ftplugin = 1
@@ -9,6 +10,18 @@ vim.opt_local.shiftwidth = 2
 
 vim.keymap.set("n", "@q", "<Cmd>!cd %:h; lilypond %:t<CR>", { buffer = true })
 vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", { buffer = true })
+
+vim.api.nvim_create_augroup("vimrc_lilypond", { clear = true })
+vim.api.nvim_clear_autocmds { group = "vimrc_lilypond" }
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = "vimrc_lilypond",
+    pattern = "*.ly",
+    callback = function()
+        local target = vim.fn.expand("%:t")
+        local cwd = vim.fn.expand("%:h")
+        uv.spawn("lilypond", { args = { target }, cwd = cwd }, function() end)
+    end,
+})
 
 vim.opt_local.commentstring = "% %s"
 

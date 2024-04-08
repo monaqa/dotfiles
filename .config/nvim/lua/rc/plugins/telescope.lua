@@ -51,6 +51,14 @@ plugins:push {
                 builtin.quickfix { prompt_prefix = "𝝄" }
             end,
         },
+        {
+            "ss",
+            function()
+                require("telescope").extensions.typscrap.contents {
+                    prompt_prefix = "𝝋",
+                }
+            end,
+        },
         -- {
         --     "si",
         --     function()
@@ -65,7 +73,7 @@ plugins:push {
         require("telescope").load_extension("coc")
         require("telescope").load_extension("smart_history")
         require("telescope").load_extension("egrepify")
-        -- require("telescope").load_extension "frecency"
+        require("telescope").load_extension("typscrap")
 
         -- manage database history
         local db_dir = vim.fn.stdpath("data") .. "/databases"

@@ -3,10 +3,85 @@ local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
+plugins:push {
+    "https://github.com/ellisonleao/gruvbox.nvim",
+    config = function()
+        -- Default options:
+        require("gruvbox").setup {
+            -- terminal_colors = true, -- add neovim terminal colors
+            -- undercurl = true,
+            -- underline = true,
+            -- bold = true,
+            -- italic = {
+            --     strings = true,
+            --     emphasis = true,
+            --     comments = true,
+            --     operators = false,
+            --     folds = true,
+            -- },
+            -- strikethrough = true,
+            -- invert_selection = false,
+            -- invert_signs = false,
+            -- invert_tabline = false,
+            -- invert_intend_guides = false,
+            -- inverse = true, -- invert background for search, diffs, statuslines and errors
+            contrast = "hard", -- can be "hard", "soft" or empty string
+            -- palette_overrides = {},
+            overrides = {
+                -- default highlight groups
+                ["Conceal"] = { link = "GruvboxFg3" },
+                ["Delimiter"] = { fg = "#a16946" },
+                ["Function"] = { link = "GruvboxBlue" },
+                ["Keyword"] = { link = "GruvboxYellow" },
+                ["Operator"] = { link = "GruvboxYellow" },
+                ["WinSeparator"] = { fg = "#c8c8c8", bg = "None" },
+                ["LineNr"] = { fg = "#968772", bg = "#2a2a2a" },
+
+                -- nvim-treesitter highlight groups
+                ["@function.builtin"] = { link = "GruvboxRed" },
+                ["@keyword.conditional"] = { link = "@keyword" },
+                ["@keyword.repeat"] = { link = "@keyword" },
+                ["@variable.member"] = {},
+                ["@type"] = { link = "GruvboxOrange" },
+                ["@field"] = { fg = "#b3d5c8" },
+
+                -- plugin-specific highlight groups
+                ["GitSignsChangeNr"] = { bg = "#314a5c", fg = "#968772" },
+
+                -- user highlight groups
+                ["VisualBlue"] = { bg = "#4d569e" },
+                ["@text.diff.addsign"] = { link = "@string" },
+                ["@text.diff.delsign"] = { link = "@type" },
+                ["@text.diff.indicator"] = { bg = "#555555" },
+            },
+            -- dim_inactive = false,
+            -- transparent_mode = false,
+        }
+    end,
+}
+
 -- colorscheme
 plugins:push {
     "https://github.com/habamax/vim-gruvbit",
     lazy = false,
+    keys = {
+        {
+            "@x",
+            function()
+                if vim.g.colors_name == "gruvbit" then
+                    vim.cmd.colorscheme("gruvbox")
+                else
+                    vim.cmd.colorscheme("gruvbit")
+                end
+            end,
+        },
+        {
+            "@z",
+            function()
+                vim.cmd.edit("~/.config/nvim/lua/rc/plugins/layout.lua")
+            end,
+        },
+    },
     config = function()
         vim.g.gruvbit_transp_bg = 0
 
@@ -397,5 +472,18 @@ plugins:push {
         vim.notify = require("notify")
     end,
 }
+
+-- plugins:push {
+--     "https://github.com/lewis6991/satellite.nvim",
+--     config = function()
+--         require("satellite").setup {
+--             handlers = {
+--                 gitsigns = { enable = false },
+--                 diagnostic = { enable = false },
+--                 marks = { enable = false },
+--             },
+--         }
+--     end,
+-- }
 
 return plugins:collect()

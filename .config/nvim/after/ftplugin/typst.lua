@@ -97,11 +97,13 @@ vim.keymap.set("n", "@p", "<Cmd>PutClipboardImage<CR>", { buffer = true })
 --     vim.cmd([[put +]])
 -- end, { buffer = true })
 
-vim.api.nvim_buf_create_user_command(0, "CorrectLinks", function()
-    vim.cmd([=[
-        %s/\v\[(.*)\]\((.*)\)/#link("\2")[\1]/g
-    ]=])
-end, {})
+vim.api.nvim_buf_create_user_command(0, "CorrectLinks", function(meta)
+    vim.cmd(([=[
+        %s,%ss/\v\[(.*)\]\((.*)\)/#link("\2")[\1]/g
+    ]=]):format(meta.line1, meta.line2))
+end, {
+    range = "%",
+})
 
 vim.keymap.set({ "n", "x" }, "g=", function()
     return require("general_converter").operator_convert(function(s)
