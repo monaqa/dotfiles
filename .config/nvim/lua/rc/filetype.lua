@@ -26,6 +26,7 @@ util.link_filetype { extension = "mdx", filetype = "markdown" }
 util.link_filetype { extension = "nu", filetype = "nu" }
 util.link_filetype { extension = "typ", filetype = "typst" }
 util.link_filetype { extension = "sus", filetype = "sus" }
+util.link_filetype { extension = "mbt", filetype = "moonbit" }
 
 util.link_filetype { pattern = "LICENSE", filetype = "license" }
 util.link_filetype { pattern = ".init.lua.local", filetype = "lua" }

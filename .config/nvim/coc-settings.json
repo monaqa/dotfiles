@@ -5,6 +5,7 @@
     "~/.local/share/nvim/lazy/nvim-insx/lua",
     "~/.local/share/nvim/lazy/dial.nvim/lua",
     "~/.local/share/nvim/lazy/telescope.nvim/lua",
+    "~/.local/share/nvim/lazy/plenary.nvim/lua",
   ],
 
   "deno.codeLens.references": true,

@@ -81,6 +81,7 @@ set -x PATH "$HOME/.deno/bin" $PATH
 set -x PATH "$HOME/.rye/shims" $PATH
 set -x PATH "$HOME/.cargo/bin" $PATH
 set -x PATH "$HOME/.bun/bin" $PATH
+set -x PATH "$HOME/.moon/bin" $PATH
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 set --export --prepend PATH "/Users/monaqa/.rd/bin"

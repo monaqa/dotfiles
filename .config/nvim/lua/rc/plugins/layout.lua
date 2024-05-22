@@ -232,105 +232,114 @@ plugins:push {
 plugins:push { "https://github.com/yasukotelin/shirotelin", lazy = true }
 
 plugins:push {
-    "https://github.com/akinsho/bufferline.nvim",
     lazy = false,
     keys = {
-        { "sN", "<Cmd>BufferLineMoveNext<CR>" },
-        { "sP", "<Cmd>BufferLineMovePrev<CR>" },
-        -- { "sw", "<Cmd>bp | sp | bn | bd<CR>" },
         { "sw", "<Cmd>bp | bd #<CR>" },
     },
-    opts = {
-        options = {
-            diagnostics = "coc",
-            -- separator_style = "thin",
-            separator_style = "slant",
-            indicator = {
-                style = "none",
-                -- style = "underline"
-            },
-            left_trunc_marker = "",
-            right_trunc_marker = "",
-            diagnostics_indicator = function(count, level, diagnostics_dict, context)
-                if level == "error" then
-                    return "🚨" .. count
-                elseif level == "warning" then
-                    return "🐤" .. count
-                end
-                -- return "ℹ️ "
-                return ""
-            end,
-            tab_size = 5,
-            max_name_length = 30,
-            show_close_icon = false,
-            show_buffer_close_icons = false,
-            custom_filter = function(buf_number, buf_numbers)
-                -- filter out filetypes you don't want to see
-                if vim.bo[buf_number].filetype ~= "oil" then
-                    return true
-                end
-            end,
-        },
-
-        highlights = {
-            background = { bg = "#666666", fg = "#bbbbbb" },
-            tab = { bg = "#666666", fg = "#bbbbbb" },
-            tab_selected = { bg = "None", fg = "#ebdbb2" },
-            tab_close = { bg = "#666666", fg = "#bbbbbb" },
-            close_button = { bg = "#666666", fg = "#bbbbbb" },
-            close_button_visible = { bg = "#444444", fg = "#ebdbb2" },
-            close_button_selected = { bg = "None", fg = "#ebdbb2" },
-            buffer_visible = { bg = "#444444", fg = "#ebdbb2" },
-            buffer_selected = { bg = "None", fg = "#ebdbb2" },
-            numbers = { bg = "#666666", fg = "#bbbbbb" },
-            numbers_visible = { bg = "#444444", fg = "#ebdbb2" },
-            numbers_selected = { bg = "None", fg = "#ebdbb2" },
-            diagnostic = { bg = "#666666" },
-            diagnostic_visible = { bg = "#444444" },
-            diagnostic_selected = { bg = "None" },
-            hint = { bg = "#666666", fg = "#bbbbbb" },
-            hint_visible = { bg = "#444444", fg = "#ebdbb2" },
-            hint_selected = { bg = "None", fg = "#ebdbb2" },
-            hint_diagnostic = { bg = "#666666", fg = "#bbbbbb" },
-            hint_diagnostic_visible = { bg = "#444444", fg = "#ebdbb2" },
-            hint_diagnostic_selected = { bg = "None", fg = "#ebdbb2" },
-            info = { bg = "#666666", fg = "#bbbbbb" },
-            info_visible = { bg = "#444444", fg = "#ebdbb2" },
-            info_selected = { bg = "None", fg = "#ebdbb2" },
-            info_diagnostic = { bg = "#666666", fg = "#bbbbbb" },
-            info_diagnostic_visible = { bg = "#444444", fg = "#ebdbb2" },
-            info_diagnostic_selected = { bg = "None", fg = "#ebdbb2" },
-            warning = { bg = "#666666" },
-            warning_visible = { bg = "#444444" },
-            warning_selected = { bg = "None" },
-            warning_diagnostic = { bg = "#666666" },
-            warning_diagnostic_visible = { bg = "#444444" },
-            warning_diagnostic_selected = { bg = "None" },
-            error = { bg = "#666666", fg = "#dd7777" },
-            error_visible = { bg = "#444444", fg = "#dd4444" },
-            error_selected = { bg = "None" },
-            error_diagnostic = { bg = "#666666", fg = "#dd7777" },
-            error_diagnostic_visible = { bg = "#444444", fg = "#dd4444" },
-            error_diagnostic_selected = { bg = "None" },
-            modified = { bg = "#666666" },
-            modified_visible = { bg = "#444444" },
-            modified_selected = { bg = "None" },
-            duplicate_selected = { bg = "None" },
-            duplicate_visible = { bg = "#444444" },
-            duplicate = { bg = "#666666" },
-            indicator_selected = { bg = "None", fg = "#ebdbb2" },
-            pick_selected = { bg = "None", fg = "#ebdbb2" },
-            pick_visible = { bg = "#444444", fg = "#ebdbb2" },
-            pick = { bg = "#666666", fg = "#bbbbbb" },
-            offset_separator = { bg = "#666666", fg = "#ebdbb2" },
-
-            fill = { bg = "#c8c8c8" },
-            separator = { bg = "#666666", fg = "#c8c8c8" },
-            separator_visible = { bg = "#444444", fg = "#c8c8c8" },
-            separator_selected = { bg = "None", fg = "#c8c8c8" },
-        },
-    },
+    "https://github.com/romgrk/barbar.nvim",
 }
+
+-- plugins:push {
+--     "https://github.com/akinsho/bufferline.nvim",
+--     tag = "v4.5.0",
+--     lazy = false,
+--     keys = {
+--         { "sN", "<Cmd>BufferLineMoveNext<CR>" },
+--         { "sP", "<Cmd>BufferLineMovePrev<CR>" },
+--         -- { "sw", "<Cmd>bp | sp | bn | bd<CR>" },
+--         { "sw", "<Cmd>bp | bd #<CR>" },
+--     },
+--     opts = {
+--         options = {
+--             diagnostics = "coc",
+--             -- separator_style = "thin",
+--             separator_style = "slant",
+--             indicator = {
+--                 style = "none",
+--                 -- style = "underline"
+--             },
+--             left_trunc_marker = "",
+--             right_trunc_marker = "",
+--             diagnostics_indicator = function(count, level, diagnostics_dict, context)
+--                 if level == "error" then
+--                     return "🚨" .. count
+--                 elseif level == "warning" then
+--                     return "🐤" .. count
+--                 end
+--                 -- return "ℹ️ "
+--                 return ""
+--             end,
+--             tab_size = 5,
+--             max_name_length = 30,
+--             show_close_icon = false,
+--             show_buffer_close_icons = false,
+--             custom_filter = function(buf_number, buf_numbers)
+--                 -- filter out filetypes you don't want to see
+--                 if vim.bo[buf_number].filetype ~= "oil" then
+--                     return true
+--                 end
+--             end,
+--         },
+--
+--         highlights = {
+--             background = { bg = "#666666", fg = "#bbbbbb" },
+--             tab = { bg = "#666666", fg = "#bbbbbb" },
+--             tab_selected = { bg = "None", fg = "#ebdbb2" },
+--             tab_close = { bg = "#666666", fg = "#bbbbbb" },
+--             close_button = { bg = "#666666", fg = "#bbbbbb" },
+--             close_button_visible = { bg = "#444444", fg = "#ebdbb2" },
+--             close_button_selected = { bg = "None", fg = "#ebdbb2" },
+--             buffer_visible = { bg = "#444444", fg = "#ebdbb2" },
+--             buffer_selected = { bg = "None", fg = "#ebdbb2" },
+--             numbers = { bg = "#666666", fg = "#bbbbbb" },
+--             numbers_visible = { bg = "#444444", fg = "#ebdbb2" },
+--             numbers_selected = { bg = "None", fg = "#ebdbb2" },
+--             diagnostic = { bg = "#666666" },
+--             diagnostic_visible = { bg = "#444444" },
+--             diagnostic_selected = { bg = "None" },
+--             hint = { bg = "#666666", fg = "#bbbbbb" },
+--             hint_visible = { bg = "#444444", fg = "#ebdbb2" },
+--             hint_selected = { bg = "None", fg = "#ebdbb2" },
+--             hint_diagnostic = { bg = "#666666", fg = "#bbbbbb" },
+--             hint_diagnostic_visible = { bg = "#444444", fg = "#ebdbb2" },
+--             hint_diagnostic_selected = { bg = "None", fg = "#ebdbb2" },
+--             info = { bg = "#666666", fg = "#bbbbbb" },
+--             info_visible = { bg = "#444444", fg = "#ebdbb2" },
+--             info_selected = { bg = "None", fg = "#ebdbb2" },
+--             info_diagnostic = { bg = "#666666", fg = "#bbbbbb" },
+--             info_diagnostic_visible = { bg = "#444444", fg = "#ebdbb2" },
+--             info_diagnostic_selected = { bg = "None", fg = "#ebdbb2" },
+--             warning = { bg = "#666666" },
+--             warning_visible = { bg = "#444444" },
+--             warning_selected = { bg = "None" },
+--             warning_diagnostic = { bg = "#666666" },
+--             warning_diagnostic_visible = { bg = "#444444" },
+--             warning_diagnostic_selected = { bg = "None" },
+--             error = { bg = "#666666", fg = "#dd7777" },
+--             error_visible = { bg = "#444444", fg = "#dd4444" },
+--             error_selected = { bg = "None" },
+--             error_diagnostic = { bg = "#666666", fg = "#dd7777" },
+--             error_diagnostic_visible = { bg = "#444444", fg = "#dd4444" },
+--             error_diagnostic_selected = { bg = "None" },
+--             modified = { bg = "#666666" },
+--             modified_visible = { bg = "#444444" },
+--             modified_selected = { bg = "None" },
+--             duplicate_selected = { bg = "None" },
+--             duplicate_visible = { bg = "#444444" },
+--             duplicate = { bg = "#666666" },
+--             indicator_selected = { bg = "None", fg = "#ebdbb2" },
+--             pick_selected = { bg = "None", fg = "#ebdbb2" },
+--             pick_visible = { bg = "#444444", fg = "#ebdbb2" },
+--             pick = { bg = "#666666", fg = "#bbbbbb" },
+--             offset_separator = { bg = "#666666", fg = "#ebdbb2" },
+--
+--             fill = { bg = "#c8c8c8" },
+--             separator = { bg = "#666666", fg = "#c8c8c8" },
+--             separator_visible = { bg = "#444444", fg = "#c8c8c8" },
+--             separator_selected = { bg = "None", fg = "#c8c8c8" },
+--         },
+--     },
+-- }
 
 plugins:push {
     "https://github.com/nvim-lualine/lualine.nvim",
@@ -470,6 +479,47 @@ plugins:push {
     event = "VeryLazy",
     config = function()
         vim.notify = require("notify")
+    end,
+}
+
+plugins:push {
+    "https://github.com/shellRaining/hlchunk.nvim",
+    event = { "UIEnter" },
+    config = function()
+        local ft = require("hlchunk.utils.filetype")
+        require("hlchunk").setup {
+            chunk = {
+                enable = true,
+                notify = true,
+                use_treesitter = true,
+                -- details about support_filetypes and exclude_filetypes in https://github.com/shellRaining/hlchunk.nvim/blob/main/lua/hlchunk/utils/filetype.lua
+                support_filetypes = ft.support_filetypes,
+                exclude_filetypes = ft.exclude_filetypes,
+                chars = {
+                    horizontal_line = "─",
+                    vertical_line = "│",
+                    left_top = "╭",
+                    left_bottom = "╰",
+                    right_arrow = ">",
+                },
+                style = {
+                    { fg = "#806d9c" },
+                    { fg = "#c21f30" }, -- this fg is used to highlight wrong chunk
+                },
+                textobject = "",
+                max_file_size = 1024 * 1024,
+                error_sign = true,
+            },
+            indent = {
+                enable = false,
+            },
+            line_num = {
+                enable = false,
+            },
+            blank = {
+                enable = false,
+            },
+        }
     end,
 }
 

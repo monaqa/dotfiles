@@ -44,6 +44,7 @@ plugins:push {
         -- require("nvim-treesitter.install").compilers = { "gcc-11" }
 
         local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+
         parser_config.todome = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-todome", -- local path or git repo
@@ -51,6 +52,7 @@ plugins:push {
             },
             filetype = "todome", -- if filetype does not agrees with parser name
         }
+
         parser_config.mermaid = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-mermaid", -- local path or git repo
@@ -58,6 +60,7 @@ plugins:push {
             },
             filetype = "mermaid", -- if filetype does not agrees with parser name
         }
+
         parser_config.satysfi = {
             install_info = {
                 url = "https://github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
@@ -66,6 +69,7 @@ plugins:push {
             },
             filetype = "satysfi", -- if filetype does not agrees with parser name
         }
+
         parser_config.satysfi_v0_1_0 = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
@@ -73,6 +77,7 @@ plugins:push {
             },
             filetype = "satysfi_v0_1_0", -- if filetype does not agrees with parser name
         }
+
         parser_config.jsonl = {
             install_info = {
                 url = "https://github.com/monaqa/tree-sitter-jsonl", -- local path or git repo
@@ -114,6 +119,15 @@ plugins:push {
                 files = { "src/parser.c", "src/scanner.cc" },
             },
             filetype = "d2", -- if filetype does not agrees with parser name
+        }
+
+        parser_config.moonbit = {
+            install_info = {
+                url = "https://github.com/moonbitlang/tree-sitter-moonbit",
+                revision = "main",
+                files = { "src/parser.c", "src/scanner.c" },
+            },
+            filetype = "moonbit",
         }
 
         vim.treesitter.language.register("markdown", { "mdx", "obsidian" })
@@ -250,6 +264,25 @@ plugins:push {
             mode = "x",
         },
     },
+}
+
+plugins:push {
+    "https://github.com/Wansmer/treesj",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    keys = {
+        {
+            "<space>s",
+            function()
+                require("treesj").toggle()
+            end,
+        },
+    },
+    config = function()
+        require("treesj").setup {
+            use_default_keymaps = false,
+            max_join_length = 99999,
+        }
+    end,
 }
 
 return plugins:collect()

@@ -78,6 +78,22 @@ vim.keymap.set(
                 ["r14"] = "r2~4.",
                 ["r15"] = "r2~4~8.",
                 ["r16"] = "r1",
+                ["x1"] = [[\xNote 16]],
+                ["x2"] = [[\xNote 8]],
+                ["x3"] = [[\xNote 8.]],
+                ["x4"] = [[\xNote 4]],
+                ["x5"] = [[\xNote 4~16]],
+                ["x6"] = [[\xNote 4.]],
+                ["x7"] = [[\xNote 4~8.]],
+                ["x8"] = [[\xNote 2]],
+                ["x9"] = [[\xNote 2~16]],
+                ["x10"] = [[\xNote 2~8]],
+                ["x11"] = [[\xNote 2~8.]],
+                ["x12"] = [[\xNote 2.]],
+                ["x13"] = [[\xNote 2~4~16]],
+                ["x14"] = [[\xNote 2~4.]],
+                ["x15"] = [[\xNote 2~4~8.]],
+                ["x16"] = [[\xNote 1]],
             })[value]
             results[#results + 1] = new_value
         end

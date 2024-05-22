@@ -25,3 +25,8 @@
 ;
 ;   (#eq? @_builtin "quote")
 ;   )
+
+(raw_blck
+  (blob) @fold
+  (#offset! @fold 1 0 0 0)
+  )

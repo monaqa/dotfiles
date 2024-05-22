@@ -548,9 +548,22 @@ plugins:push {
     cond = cond_dev("monaqa/general-converter.nvim"),
     keys = {
         "gc",
+        "gy",
     },
     config = function()
         local gc_util = require("general_converter.util")
+
+        local function yank_pandoc_result(lang_from, lang_to)
+            return function(s)
+                local cmd = ("pandoc -f %s -t %s"):format(lang_from, lang_to)
+                local result = vim.fn.system(cmd, s)
+                vim.fn.setreg([["]], result)
+                vim.fn.setreg([[0]], result)
+                vim.fn.setreg([[+]], result)
+                return s
+            end
+        end
+
         require("general_converter").setup {
             converters = {
                 {
@@ -664,9 +677,15 @@ plugins:push {
                         return line
                     end),
                 },
+                {
+                    desc = "pandoc で変換し、クリップボードにいれる (typst -> markdown)",
+                    converter = yank_pandoc_result("typst", "markdown+hard_line_breaks"),
+                    labels = { "pandoc" },
+                },
             },
         }
         vim.keymap.set({ "n", "x" }, "gc", require("general_converter").operator_convert(), { expr = true })
+        vim.keymap.set({ "n", "x" }, "gy", require("general_converter").operator_convert("pandoc"), { expr = true })
     end,
 }
 

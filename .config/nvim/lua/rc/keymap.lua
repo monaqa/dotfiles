@@ -678,12 +678,10 @@ vim.keymap.set("n", "cm(", "vi)``c")
 vim.keymap.set("n", "cm{", "vi}``c")
 vim.keymap.set("n", "cm[", "vi]``c")
 
-vim.keymap.set({ "x", "o" }, [[a']], [[2i']])
-vim.keymap.set({ "x", "o" }, [[a"]], [[2i"]])
-vim.keymap.set({ "x", "o" }, [[a`]], [[2i`]])
-vim.keymap.set({ "x", "o" }, [[m']], [[a']])
-vim.keymap.set({ "x", "o" }, [[m"]], [[a"]])
-vim.keymap.set({ "x", "o" }, [[m`]], [[a`]])
+for _, quote in ipairs { '"', "'", "`" } do
+    vim.keymap.set({ "x", "o" }, "a" .. quote, "2i" .. quote)
+    vim.keymap.set({ "x", "o" }, "m" .. quote, "a" .. quote)
+end
 
 -- Command mode mapping
 
