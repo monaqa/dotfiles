@@ -194,6 +194,12 @@ local function terminal_init()
     vim.keymap.set("n", "p", [[pi]], { buffer = true })
     vim.keymap.set("n", "<C-]>", [[<Nop>]], { buffer = true })
 
+    vim.keymap.set("v", "gb", function()
+        local region = vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"), { type = vim.fn.mode() })
+        local url = table.concat(region, "")
+        vim.ui.open(url)
+    end, { buffer = true })
+
     -- vim.keymap.set("n", "I",
     --     [["i\<C-a>" .. repeat("\<Right>", <SID>calc_cursor_right_num())]],
     --     {buffer = true, expr = true}

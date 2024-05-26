@@ -680,12 +680,11 @@ plugins:push {
                 {
                     desc = "pandoc で変換し、クリップボードにいれる (typst -> markdown)",
                     converter = yank_pandoc_result("typst", "markdown+hard_line_breaks"),
-                    labels = { "pandoc" },
+                    labels = { "typst-pandoc" },
                 },
             },
         }
         vim.keymap.set({ "n", "x" }, "gc", require("general_converter").operator_convert(), { expr = true })
-        vim.keymap.set({ "n", "x" }, "gy", require("general_converter").operator_convert("pandoc"), { expr = true })
     end,
 }
 

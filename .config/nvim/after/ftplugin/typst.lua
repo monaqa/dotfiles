@@ -99,16 +99,22 @@ vim.keymap.set("n", "@p", "<Cmd>PutClipboardImage<CR>", { buffer = true })
 
 vim.api.nvim_buf_create_user_command(0, "CorrectLinks", function(meta)
     vim.cmd(([=[
-        %s,%ss/\v\[(.*)\]\((.*)\)/#link("\2")[\1]/g
+        keeppatterns %s,%ss/\v\[(.*)\]\((.*)\)/#link("\2")[\1]/g
     ]=]):format(meta.line1, meta.line2))
 end, {
     range = "%",
 })
 
-vim.keymap.set({ "n", "x" }, "g=", function()
+vim.keymap.set("n", "g=", function()
     return require("general_converter").operator_convert(function(s)
         return vim.fn.system("typstfmt", s)
     end)() .. "V"
+end, { expr = true, buffer = true })
+
+vim.keymap.set("x", "g=", function()
+    return require("general_converter").operator_convert(function(s)
+        return vim.fn.system("typstfmt", s)
+    end)()
 end, { expr = true, buffer = true })
 
 vim.keymap.set("n", "g==", function()
@@ -116,3 +122,5 @@ vim.keymap.set("n", "g==", function()
         return vim.fn.system("typstfmt", s)
     end)() .. "_"
 end, { expr = true, buffer = true })
+
+vim.keymap.set({ "n", "x" }, "gy", require("general_converter").operator_convert("pandoc"), { expr = true })
