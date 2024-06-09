@@ -31,7 +31,10 @@ end, { buffer = true })
 
 vim.keymap.set("n", "@q", function()
     local objective = resolve_target()
-    vim.cmd([[!typst compile ]] .. objective)
+    vim.cmd(
+        [[!typst compile --input typscrap_root=/Users/monaqa/ghq/github.com/monaqa/typscrap-contents/content/ ]]
+            .. objective
+    )
 end, { buffer = true })
 
 vim.api.nvim_create_augroup("vimrc_typst", { clear = true })
@@ -42,7 +45,14 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     callback = function()
         local objective = resolve_target()
         -- vim.fn.system { "typst", "compile", objective }
-        uv.spawn("typst", { args = { "compile", objective } }, function() end)
+        uv.spawn("typst", {
+            args = {
+                "compile",
+                "--input",
+                "typscrap_root=/Users/monaqa/ghq/github.com/monaqa/typscrap-contents/content/",
+                objective,
+            },
+        }, function() end)
     end,
 })
 
@@ -123,4 +133,4 @@ vim.keymap.set("n", "g==", function()
     end)() .. "_"
 end, { expr = true, buffer = true })
 
-vim.keymap.set({ "n", "x" }, "gy", require("general_converter").operator_convert("pandoc"), { expr = true })
+vim.keymap.set({ "n", "x" }, "gy", require("general_converter").operator_convert("typst-pandoc"), { expr = true })

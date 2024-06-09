@@ -202,7 +202,13 @@ else if type -q fzf
   set FUZZY_FINDER fzf
 end
 if test -n "$FUZZY_FINDER"
-  abbr -a g "cd (ghq list -p | $FUZZY_FINDER || pwd)"
+  function __ghq_list_fuzzy
+    if set -l d ( ghq list | $FUZZY_FINDER ) && test -n "$d"
+      echo "pushd ~/ghq/$d"
+    end
+  end
+  abbr -a g --function __ghq_list_fuzzy
+
   abbr -a tg "tmux a -t (tmux list-sessions | $FUZZY_FINDER | cut -d : -f 1)"
   # mercurial とかぶっていることに注意
   abbr -a hg "history | $FUZZY_FINDER"
@@ -222,8 +228,15 @@ if test -n "$FUZZY_FINDER"
   abbr -a ghgv   "gh gist list | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh gist view --web {}"
 
   # downloads
-  abbr -a vdown  "exa -a -s created -r ~/Downloads/ | $FUZZY_FINDER | xargs -I{} nvim ~/Downloads/{}"
-  abbr -a odown  "exa -a -s created -r ~/Downloads/ | $FUZZY_FINDER | xargs -I{} open ~/Downloads/{}"
+  function __open_download
+    if set -l d ( exa -a -s created -r ~/Downloads/ | $FUZZY_FINDER ) && test -n "$d"
+      echo "open ~/Downloads/$d"
+    end
+  end
+  abbr -a vdown "nvim oil://~/Downloads/"
+  abbr -a odown --function __nvim_open_download
+
+  # abbr -a vdown  "exa -a -s created -r ~/Downloads/ | $FUZZY_FINDER | xargs -I{} nvim ~/Downloads/{}"
 
   # git swim worktree
   abbr -a gsw "cd (echo (git worktree list | $FUZZY_FINDER || pwd) | awk '{print \$1;}')"

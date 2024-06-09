@@ -5,7 +5,8 @@ vim.cmd([[
 language messages en_US.UTF-8
 ]])
 
-vim.opt.belloff = "all"
+vim.opt.belloff = {}
+vim.opt.visualbell = true
 vim.opt.lazyredraw = true
 vim.opt.ttyfast = true
 vim.opt.ambiwidth = "single"

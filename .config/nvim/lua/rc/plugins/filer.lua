@@ -480,8 +480,6 @@ plugins:push {
     "https://github.com/stevearc/oil.nvim",
     -- `vim <dir>` のときも自動で開いてほしい
     lazy = false,
-    -- なんか最新版だとファイル編集できなくなった。LSP feature が原因？
-    commit = "24027ed8d7f3ee5c38cfd713915e2e16d89e79b3",
     keys = {
         { "gf" },
         {
@@ -671,6 +669,9 @@ plugins:push {
                 is_always_hidden = function(name, bufnr)
                     return false
                 end,
+                -- Sort file names in a more intuitive order for humans. Is less performant,
+                -- so you may want to set to false if you work with large directories.
+                natural_order = true,
                 sort = {
                     -- sort order can be "asc" or "desc"
                     -- see :help oil-columns to see which columns are sortable
