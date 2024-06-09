@@ -59,6 +59,17 @@ plugins:push {
                 }
             end,
         },
+        {
+            "sG",
+            function()
+                require("lazy").load { plugins = { "typscrap.nvim" } }
+                local root = require("typscrap.config").root_dir
+                require("telescope").extensions.egrepify.egrepify {
+                    prompt_prefix = "𝜸",
+                    cwd = root,
+                }
+            end,
+        },
         -- {
         --     "si",
         --     function()
