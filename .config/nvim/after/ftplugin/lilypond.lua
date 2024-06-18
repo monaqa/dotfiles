@@ -2,9 +2,9 @@ local uv = vim.uv
 require("lazy").load { plugins = { "dial.nvim", "general-converter.nvim" } }
 
 vim.b.did_ftplugin = 1
-vim.opt_local.runtimepath:append {
-    "/opt/homebrew/share/lilypond/2.24.1/vim",
-}
+-- vim.opt_local.runtimepath:append {
+--     "/opt/homebrew/share/lilypond/2.24.1/vim",
+-- }
 
 vim.opt_local.shiftwidth = 2
 
@@ -134,11 +134,54 @@ vim.keymap.set(
     { expr = true, buffer = true, desc = "コード生成用" }
 )
 
--- local lpeg = require "lpeg"
--- local P = lpeg.P
--- local S = lpeg.S
---
--- function parse_lilypond_music(s)
---     local note = S "cdefgab"
---     return lpeg.match(note, s)
--- end
+--- query とキャプチャ名を与えて、マッチする node 、value の列を返す。
+local function find_matches(query, capture_name, root)
+    local q = vim.treesitter.query.parse("lilypond", query)
+    return vim.iter(q:iter_captures(root, 0))
+        :filter(function(id, node, metadata, match)
+            return q.captures[id] == capture_name
+        end)
+        :map(function(id, node, metadata, match)
+            local sr, sc, er, ec = node:range()
+            local lines = vim.fn.getregion({ 0, sr + 1, sc + 1, 0 }, { 0, er + 1, ec, 0 })
+            return { node = node, region = { s = { sr + 1, sc + 1 }, e = { er + 1, ec } }, lines = lines }
+        end)
+        :totable()
+end
+
+local parser = vim.treesitter.get_parser(0, "lilypond")
+local node = parser:parse()[1]:root()
+
+local parse = vim.treesitter.query.parse
+
+local query_key = vim.treesitter.query.parse(
+    "lilypond",
+    [[
+    (
+     (command) @_cmd_key
+     .
+     (note_item) @note
+     .
+     (command) @major_minor
+     (#eq? @_cmd_key "\\key")
+     )
+    ]]
+)
+
+local query_pitch = vim.treesitter.query.parse(
+    "lilypond",
+    [[
+        (pitch) @pitch
+    ]]
+)
+
+local matches = vim.iter(query_key:iter_captures(node, 0))
+    :map(function(id, node, metadata, match)
+        local sr, sc, er, ec = node:range()
+        local value = vim.fn.getregion({ 0, sr + 1, sc + 1, 0 }, { 0, er + 1, ec, 0 })[1]
+        return { id = query_key.captures[id], value = value }
+    end)
+    :totable()
+
+local matches = find_matches([[(pitch) @pitch]])
+vim.print(matches)

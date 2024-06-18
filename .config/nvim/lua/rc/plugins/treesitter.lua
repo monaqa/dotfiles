@@ -53,6 +53,14 @@ plugins:push {
             filetype = "todome", -- if filetype does not agrees with parser name
         }
 
+        parser_config.lilypond = {
+            install_info = {
+                url = "~/ghq/github.com/monaqa/tree-sitter-lilypond", -- local path or git repo
+                files = { "src/parser.c" },
+            },
+            filetype = "lilypond", -- if filetype does not agrees with parser name
+        }
+
         parser_config.mermaid = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-mermaid", -- local path or git repo

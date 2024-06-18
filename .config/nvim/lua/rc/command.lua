@@ -20,14 +20,13 @@ util.create_cmd("AsUtf8", "set fenc=utf-8|w")
 -- §§1 diff
 util.create_cmd("DiffThese", function()
     if vim.fn.winnr("$") == 2 then
-        vim.cmd([[
-            diffthis
-            wincmd w
-            diffthis
-            wincmd w
-        ]])
+        vim.cmd.diffoff { bang = true }
+        vim.cmd.diffthis()
+        vim.cmd.wincmd("w")
+        vim.cmd.diffthis()
+        vim.cmd.wincmd("w")
     else
-        vim.cmd([[echomsg "Too many windows."]])
+        vim.cmd.echomsg([[Too many windows.]])
     end
 end)
 

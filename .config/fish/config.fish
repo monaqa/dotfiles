@@ -78,10 +78,10 @@ set -x PATH "$HOME/go/bin" $PATH
 set -x PATH "$HOME/Library/pnpm" $PATH
 set -x PATH "$HOME/.yarn/bin" $PATH
 set -x PATH "$HOME/.deno/bin" $PATH
-set -x PATH "$HOME/.rye/shims" $PATH
 set -x PATH "$HOME/.cargo/bin" $PATH
 set -x PATH "$HOME/.bun/bin" $PATH
-set -x PATH "$HOME/.moon/bin" $PATH
+# set -x PATH "$HOME/.moon/bin" $PATH
+# set -x PATH "$HOME/.rye/shims" $PATH
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 set --export --prepend PATH "/Users/monaqa/.rd/bin"

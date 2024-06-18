@@ -88,14 +88,10 @@
       "filetypes": ["todome"],
       "trace.server": "verbose"
     },
-    "typst-ls": {
-      "command": "typst-lsp",
+    "tinymist": {
+      "command": "tinymist",
       "args": [],
-      "filetypes": ["typst"],
-      "trace.server": "verbose",
-      "initializationOptions": {
-        "exportPdf": "never"
-      }
+      "filetypes": ["typst"]
     },
     "ccls": {
       "command": "ccls",
