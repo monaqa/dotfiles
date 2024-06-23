@@ -418,14 +418,12 @@ util.autocmd_vimrc("BufWritePost") {
     pattern = { "*.lua", ".init.lua.local" },
     callback = function()
         -- fold の状態を保持するために mkview と loadview を入れた
-        -- vim.cmd [[mkview]]
-        -- vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand "%:p")
-        -- vim.cmd [[edit]]
-        -- vim.cmd [[loadview]]
+        vim.cmd([[mkview]])
         keep_cursor(function()
             vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand("%:p"))
             vim.cmd([[edit]])
         end)
+        vim.cmd([[loadview]])
     end,
     desc = "execute stylua",
 }

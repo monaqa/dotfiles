@@ -59,7 +59,7 @@ vim.opt.diffopt:append { "vertical", "algorithm:histogram" }
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd.colorscheme("gruvbit")
+vim.cmd.colorscheme("colorimetry")
 
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
