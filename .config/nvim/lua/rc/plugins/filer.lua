@@ -153,7 +153,7 @@ plugins:push {
 plugins:push {
     "https://github.com/stevearc/aerial.nvim",
     dependencies = { "https://github.com/kyazdani42/nvim-web-devicons" },
-    lazy = false,
+    -- lazy = false,
     keys = {
         {
             "<Space>t",

@@ -138,6 +138,8 @@ local function try_eval_init_lua_local()
         return
     end
 
+    vim.deprecate(".init.lua.local", ".nvim.lua", "0.11.0")
+
     if localrc_list:is_safe(cwd) then
         vim.cmd(([[luafile %s]]):format(init_lua_local))
         return

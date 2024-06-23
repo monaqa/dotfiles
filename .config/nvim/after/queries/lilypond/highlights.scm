@@ -29,3 +29,4 @@
 (accent) @punctuation.delimiter
 (accent) @text.strong
 
+(pitch) @field

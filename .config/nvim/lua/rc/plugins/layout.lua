@@ -66,19 +66,28 @@ plugins:push {
     lazy = false,
     keys = {
         {
+            "@c",
+            function()
+                vim.cmd.colorscheme("colorimetry")
+            end,
+        },
+        {
             "@x",
             function()
-                if vim.g.colors_name == "gruvbit" then
-                    vim.cmd.colorscheme("gruvbox")
-                else
-                    vim.cmd.colorscheme("gruvbit")
-                end
+                vim.cmd.colorscheme("gruvbit")
             end,
         },
         {
             "@z",
             function()
-                vim.cmd.edit("~/.config/nvim/lua/rc/plugins/layout.lua")
+                vim.cmd.edit("~/.config/nvim/colors/colorimetry.lua")
+                local bufnr = vim.fn.bufnr()
+                util.autocmd_vimrc("BufWritePost") {
+                    buffer = bufnr,
+                    callback = function()
+                        vim.cmd.colorscheme("colorimetry")
+                    end,
+                }
             end,
         },
     },
@@ -423,56 +432,56 @@ plugins:push {
 --     cmd = { "CccHighlighterEnable" },
 -- }
 
-plugins:push {
-    "https://github.com/kevinhwang91/nvim-ufo",
-    -- commit = "a15944ff8e3d570f504f743d55209275ed1169c4",
-    dependencies = {
-        "https://github.com/kevinhwang91/promise-async",
-    },
-    config = function()
-        vim.keymap.set("n", "zR", require("ufo").openAllFolds)
-        vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
-
-        local handler = function(virtText, lnum, endLnum, width, truncate)
-            local newVirtText = {}
-            local suffix = (" … 󰁂 %d "):format(endLnum - lnum)
-            local sufWidth = vim.fn.strdisplaywidth(suffix)
-            local targetWidth = width - sufWidth
-            local curWidth = 0
-            for _, chunk in ipairs(virtText) do
-                local chunkText = chunk[1]
-                local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-                if targetWidth > curWidth + chunkWidth then
-                    table.insert(newVirtText, chunk)
-                else
-                    chunkText = truncate(chunkText, targetWidth - curWidth)
-                    local hlGroup = chunk[2]
-                    table.insert(newVirtText, { chunkText, hlGroup })
-                    chunkWidth = vim.fn.strdisplaywidth(chunkText)
-                    -- str width returned from truncate() may less than 2nd argument, need padding
-                    if curWidth + chunkWidth < targetWidth then
-                        suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
-                    end
-                    break
-                end
-                curWidth = curWidth + chunkWidth
-            end
-            table.insert(newVirtText, { suffix, "NonText" })
-            return newVirtText
-        end
-
-        require("ufo").setup {
-            fold_virt_text_handler = handler,
-
-            provider_selector = function(bufnr, filetype, buftype)
-                if filetype == "python" then
-                    return { "treesitter" }
-                end
-                return { "treesitter", "indent" }
-            end,
-        }
-    end,
-}
+-- plugins:push {
+--     "https://github.com/kevinhwang91/nvim-ufo",
+--     -- commit = "a15944ff8e3d570f504f743d55209275ed1169c4",
+--     dependencies = {
+--         "https://github.com/kevinhwang91/promise-async",
+--     },
+--     config = function()
+--         vim.keymap.set("n", "zR", require("ufo").openAllFolds)
+--         vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
+--
+--         local handler = function(virtText, lnum, endLnum, width, truncate)
+--             local newVirtText = {}
+--             local suffix = (" … 󰁂 %d "):format(endLnum - lnum)
+--             local sufWidth = vim.fn.strdisplaywidth(suffix)
+--             local targetWidth = width - sufWidth
+--             local curWidth = 0
+--             for _, chunk in ipairs(virtText) do
+--                 local chunkText = chunk[1]
+--                 local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+--                 if targetWidth > curWidth + chunkWidth then
+--                     table.insert(newVirtText, chunk)
+--                 else
+--                     chunkText = truncate(chunkText, targetWidth - curWidth)
+--                     local hlGroup = chunk[2]
+--                     table.insert(newVirtText, { chunkText, hlGroup })
+--                     chunkWidth = vim.fn.strdisplaywidth(chunkText)
+--                     -- str width returned from truncate() may less than 2nd argument, need padding
+--                     if curWidth + chunkWidth < targetWidth then
+--                         suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+--                     end
+--                     break
+--                 end
+--                 curWidth = curWidth + chunkWidth
+--             end
+--             table.insert(newVirtText, { suffix, "NonText" })
+--             return newVirtText
+--         end
+--
+--         require("ufo").setup {
+--             fold_virt_text_handler = handler,
+--
+--             provider_selector = function(bufnr, filetype, buftype)
+--                 if filetype == "python" then
+--                     return { "treesitter" }
+--                 end
+--                 return { "treesitter", "indent" }
+--             end,
+--         }
+--     end,
+-- }
 
 plugins:push {
     "https://github.com/rcarriga/nvim-notify",

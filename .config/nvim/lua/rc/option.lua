@@ -69,6 +69,7 @@ vim.opt.smartindent = false
 vim.opt.virtualedit = "block"
 vim.opt.isfname:remove("=")
 
+vim.opt.exrc = true
 vim.opt.backup = false
 vim.opt.swapfile = false
 

@@ -91,6 +91,7 @@ plugins:push {
 
 plugins:push {
     "https://github.com/kana/vim-textobj-user",
+    lazy = true,
     -- まあまあ面倒くさいからいいや
     -- keys = {
     --     {"il", mode = {"x", "o"}},
