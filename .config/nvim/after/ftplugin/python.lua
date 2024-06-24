@@ -74,3 +74,10 @@ function! HydrogenFoldOnlyCode(lnum) abort
   return '='
 endfunction
 ]])
+
+require("lazy").load { plugins = { "vim-altr" } }
+
+vim.fn["altr#define"] {
+    "src/*/%.py",
+    "tests/*/test_%.py",
+}

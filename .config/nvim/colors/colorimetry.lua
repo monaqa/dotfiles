@@ -193,7 +193,7 @@ sethl("@field") {}
 sethl("@float") {}
 sethl("@function") { fg = fg.e2 }
 sethl("@function.method") { fg = fg.e2 }
-sethl("@function.builtin") { fg = fg.e4 }
+sethl("@function.builtin") { fg = fg.e3 }
 sethl("@function.call") { fg = fg.e2 }
 sethl("@function.macro") { fg = fg.e3 }
 sethl("@include") {}
