@@ -1,12 +1,8 @@
 (
- (heading
-   ; "="
-   (text) @name
-   (#set! "kind" "Interface")
-   ; (#set! "level" 1)
-   )
+ (heading (_) @name)
  .
  (content) @symbol
+ (#set! "kind" "Interface")
  )
 
 ; (heading

@@ -11,7 +11,7 @@
 (tagged field: (_) @field)
 
 "#" @punctuation.delimiter
-(content ["[" "]"] @punctuation.delimiter)
+; (content ["[" "]"] @punctuation.delimiter)
 
 ; (content "#" @field . (ident) @field)
 ; (content "#" @field [(import) (let)] @field)
@@ -80,7 +80,7 @@
 (heading "====" ) @text.title.weak
 (heading "=====" ) @text.title.weak
 (heading "======" ) @text.title.weak
-(url) @tag
+(url) @text.uri
 (emph) @text.underline
 (strong) @text.strong
 (symbol) @constant.character
@@ -95,8 +95,24 @@
 "end" @punctuation.delimiter
 
 (escape) @constant.character.escape
-["(" ")" "{" "}"] @punctuation.bracket
+["(" ")" "{" "}" "[" "]"] @punctuation.bracket
 ["," ";" ".." ":" "sep"] @punctuation.delimiter
 (field "." @punctuation)
 
 (lambda "=>" @punctuation.delimiter)
+
+(call
+  item:
+  (call
+    item: (ident) @_cmd_name
+    (group (string) @text.uri)
+    )
+  (content (_) @text.reference)
+  (#eq? @_cmd_name "link")
+  )
+
+(call
+  item: (ident) @_cmd_name
+  (content) @text.quote
+  (#eq? @_cmd_name "quote")
+  )

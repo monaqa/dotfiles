@@ -1,10 +1,5 @@
 ;; extends
 (
- (comment) @comment.doccomment
- (#match? @comment.doccomment "^---.*$")
- )
-
-(
  (comment) @comment
  (#bufname-vim-match? "foo\\.lua")
  )

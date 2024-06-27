@@ -42,105 +42,105 @@ end
 
 -- §§1 基本色
 local fg = {
-    w0 = "#e3decf",
-    y0 = "#e8e294",
-    g0 = "#cde9b0",
-    e0 = "#bee9dc",
-    b0 = "#c7e1fd",
-    v0 = "#dfd7ff",
-    p0 = "#f7d1ec",
-    r0 = "#ffd1c3",
-    o0 = "#fdd89d",
-    w1 = "#ccc7b9",
-    y1 = "#d3cc67",
-    g1 = "#add691",
-    e1 = "#97d6ca",
-    b1 = "#a5ccf3",
-    v1 = "#c8befb",
-    p1 = "#e7b5dd",
-    r1 = "#f6b5a8",
-    o1 = "#efbe74",
-    w2 = "#b6b1a3",
-    y2 = "#beb630",
-    g2 = "#8dc372",
-    e2 = "#6cc3b8",
-    b2 = "#83b6e9",
-    v2 = "#b1a5f1",
-    p2 = "#d799cd",
-    r2 = "#e9998d",
-    o2 = "#e0a446",
-    w3 = "#a09b8e",
-    y3 = "#aba000",
-    g3 = "#6db052",
-    e3 = "#37b0a7",
-    b3 = "#60a0df",
-    v3 = "#9c8be7",
-    p3 = "#c77ebd",
-    r3 = "#db7d73",
-    o3 = "#d28b00",
-    w4 = "#8b8679",
-    y4 = "#978a00",
-    g4 = "#4a9d2d",
-    e4 = "#009d96",
-    b4 = "#398bd4",
-    v4 = "#8772dd",
-    p4 = "#b662ae",
-    r4 = "#cc6159",
-    o4 = "#c27000",
-    w5 = "#767165",
-    y5 = "#857400",
-    g5 = "#1d8900",
-    e5 = "#008a85",
-    b5 = "#0074c8",
-    v5 = "#7457d2",
-    p5 = "#a5459e",
-    r5 = "#bc4240",
-    o5 = "#b25500",
+    w0 = "#e0ded7",
+    y0 = "#efde9b",
+    g0 = "#cae9b8",
+    e0 = "#bbe9e3",
+    b0 = "#c4e1ff",
+    v0 = "#ddd7ff",
+    p0 = "#f5d1f3",
+    r0 = "#ffd0d5",
+    o0 = "#fdd7ab",
+    w1 = "#cac7c0",
+    y1 = "#dcc778",
+    g1 = "#add59d",
+    e1 = "#99d5cf",
+    b1 = "#a6cbf5",
+    v1 = "#c6befb",
+    p1 = "#e3b7e0",
+    r1 = "#efb6bd",
+    o1 = "#edbd8b",
+    w2 = "#b3b1aa",
+    y2 = "#c9b054",
+    g2 = "#90c183",
+    e2 = "#75c1bc",
+    b2 = "#88b6e5",
+    v2 = "#b0a7ec",
+    p2 = "#d19dcd",
+    r2 = "#df9ca5",
+    o2 = "#dca46c",
+    w3 = "#9e9b94",
+    y3 = "#b69927",
+    g3 = "#73ad69",
+    e3 = "#4eada9",
+    b3 = "#6aa0d6",
+    v3 = "#9a8fdc",
+    p3 = "#bf84ba",
+    r3 = "#ce828e",
+    o3 = "#cb8c4b",
+    w4 = "#88867f",
+    y4 = "#a38300",
+    g4 = "#55994f",
+    e4 = "#129997",
+    b4 = "#4a8bc7",
+    v4 = "#8578cd",
+    p4 = "#ad6ba7",
+    r4 = "#bd6978",
+    o4 = "#ba7325",
+    w5 = "#74716b",
+    y5 = "#916c00",
+    g5 = "#358634",
+    e5 = "#008685",
+    b5 = "#2676b7",
+    v5 = "#7160bd",
+    p5 = "#9b5295",
+    r5 = "#ac4f62",
+    o5 = "#a95a00",
 }
 
 local bg = {
     w0 = "#1e212b",
-    y0 = "#341c00",
-    g0 = "#00311a",
-    b0 = "#00225a",
-    p0 = "#2f0056",
-    r0 = "#490016",
-    w1 = "#2a2d38",
-    y1 = "#3e2a00",
-    g1 = "#003c29",
-    b1 = "#003163",
-    p1 = "#391760",
-    r1 = "#540f25",
-    w2 = "#363a45",
-    y2 = "#493802",
-    g2 = "#004838",
-    b2 = "#003f6c",
-    p2 = "#442a69",
-    r2 = "#5e2434",
-    w3 = "#434753",
-    y3 = "#534623",
-    g3 = "#075447",
-    b3 = "#044c74",
-    p3 = "#4f3b72",
-    r3 = "#673644",
-    w4 = "#515561",
-    y4 = "#5e553c",
-    g4 = "#2d6057",
-    b4 = "#2a5a7d",
-    p4 = "#5a4c7b",
-    r4 = "#6f4855",
+    y0 = "#2d2000",
+    g0 = "#002a20",
+    b0 = "#00224a",
+    p0 = "#251549",
+    r0 = "#37141e",
+    w1 = "#272a35",
+    y1 = "#342909",
+    g1 = "#04332b",
+    b1 = "#002c51",
+    p1 = "#2c2150",
+    r1 = "#3f2029",
+    w2 = "#30343f",
+    y2 = "#3c331b",
+    g2 = "#173b36",
+    b2 = "#103658",
+    p2 = "#352c56",
+    r2 = "#462b34",
+    w3 = "#3a3d49",
+    y3 = "#443d2c",
+    g3 = "#274441",
+    b3 = "#21405e",
+    p3 = "#3d375d",
+    r3 = "#4d363f",
+    w4 = "#434753",
+    y4 = "#4c473c",
+    g4 = "#354d4d",
+    b4 = "#314a65",
+    p4 = "#464364",
+    r4 = "#54414b",
 }
 
 vim.g.terminal_color_0 = bg.w1
-vim.g.terminal_color_1 = fg.r4
-vim.g.terminal_color_2 = fg.g4
-vim.g.terminal_color_3 = fg.y4
-vim.g.terminal_color_4 = fg.b3
-vim.g.terminal_color_5 = fg.p4
-vim.g.terminal_color_6 = fg.e3
-vim.g.terminal_color_7 = fg.w4
+vim.g.terminal_color_1 = fg.r3
+vim.g.terminal_color_2 = fg.g3
+vim.g.terminal_color_3 = fg.y3
+vim.g.terminal_color_4 = fg.b2
+vim.g.terminal_color_5 = fg.p3
+vim.g.terminal_color_6 = fg.e2
+vim.g.terminal_color_7 = fg.w3
 vim.g.terminal_color_8 = bg.w4
-vim.g.terminal_color_9 = fg.r4
+vim.g.terminal_color_9 = fg.r3
 vim.g.terminal_color_10 = fg.g1
 vim.g.terminal_color_11 = fg.y1
 vim.g.terminal_color_12 = fg.b1
@@ -149,45 +149,47 @@ vim.g.terminal_color_14 = fg.e1
 vim.g.terminal_color_15 = fg.w1
 
 -- §§1 defaults
-sethl("Normal") { fg = fg.w1, bg = bg.w0 }
+sethl("Normal") { fg = fg.w0, bg = bg.w0 }
 
 sethl("ColorColumn") { bg = bg.w2 }
-sethl("Conceal") { fg = fg.w5 }
-sethl("CurSearch") { bg = bg.b1 }
+sethl("Conceal") { fg = fg.w5, bg = bg.w2 }
 sethl("Cursor") { reverse = true }
 sethl("CursorColumn") { bg = bg.w3 }
 sethl("CursorLine") { link = "CursorColumn" }
 sethl("Directory") { fg = fg.g2 }
-sethl("DiffAdd") { bg = bg.g0 }
-sethl("DiffChange") { bg = bg.b0 }
-sethl("DiffDelete") { bg = bg.r0 }
+sethl("DiffAdd") { bg = bg.g1 }
+sethl("DiffChange") { bg = bg.b1 }
+sethl("DiffDelete") { bg = bg.r1 }
 sethl("DiffText") { bg = bg.b2 }
-sethl("EndOfBuffer") { bg = bg.w2 }
+sethl("EndOfBuffer") { bg = bg.w1 }
 sethl("TermCursor") { reverse = true }
 sethl("ErrorMsg") { fg = fg.r4 }
-sethl("WinSeparator") { fg = fg.w4 }
+sethl("WinSeparator") { fg = fg.w2 }
 sethl("Folded") { fg = fg.v1 }
 sethl("FoldColumn") { bg = bg.w1, fg = fg.w4 }
 sethl("SignColumn") { bg = bg.w1, fg = fg.w4 }
-sethl("IncSearch") { bg = bg.b2 }
 sethl("Substitute") { bg = bg.b2 }
 
-sethl("LineNr") { bg = bg.w2 }
-sethl("CursorLineNr") { bg = bg.w2 }
+sethl("LineNr") { bg = bg.w1 }
+sethl("CursorLineNr") { bg = bg.w1 }
 sethl("MatchParen") { bg = bg.p4, bold = true }
 sethl("ModeMsg") { bold = true }
 sethl("MoreMsg") { fg = fg.b2 }
 sethl("NonText") { fg = fg.w4, bg = bg.w2 }
+sethl("SpecialKey") { fg = fg.w4, bg = bg.w2 }
 
 sethl("NormalFloat") { fg = fg.w1, bg = bg.w3 }
 sethl("FloatBorder") { link = "WinSeparator" }
 sethl("FloatTitle") { bold = true }
 sethl("FloatFooter") { italic = true }
-sethl("PmenuSel") { bg = bg.w4 }
+sethl("PmenuSel") { bg = bg.g4 }
 sethl("Question") { fg = fg.o2 }
 sethl("QuickfixLine") { fg = fg.e3 }
+
 sethl("Search") { bg = bg.b4 }
-sethl("SpecialKey") { fg = fg.w5, bg = bg.w4 }
+sethl("CurSearch") { bg = bg.b4, bold = true }
+sethl("IncSearch") { bg = bg.b3 }
+
 sethl("SpellBad") { underdotted = true, fg = fg.r0 }
 sethl("SpellCap") { underdotted = true, fg = fg.w0 }
 sethl("SpellLocal") { underdotted = true, fg = fg.w0 }
@@ -202,15 +204,16 @@ sethl("VisualBlue") { bg = bg.p2 }
 
 -- §§1 nvim-treesitter
 
-sethl("@attribute") {}
-sethl("@boolean") { fg = fg.p4 }
-sethl("@character") {}
+sethl("@attribute") { fg = fg.o0 }
+sethl("@attribute.builtin") { fg = fg.o2 }
+sethl("@boolean") { fg = fg.p2 }
+sethl("@character") { fg = fg.y2 }
 sethl("@character.special") {}
-sethl("@comment") { fg = fg.w5 }
-sethl("@comment.documentation") { fg = fg.w3, bold = true }
+sethl("@comment") { fg = fg.w4 }
+sethl("@comment.documentation") { fg = fg.w2 }
 sethl("@conditional") {}
-sethl("@constant") { fg = fg.p2 }
-sethl("@constant.builtin") { fg = fg.p4 }
+sethl("@constant") { fg = fg.p1 }
+sethl("@constant.builtin") { fg = fg.p3 }
 sethl("@constant.macro") {}
 sethl("@constructor") {}
 sethl("@debug") {}
@@ -220,33 +223,35 @@ sethl("@float") {}
 sethl("@function") { fg = fg.e2 }
 sethl("@function.method") { fg = fg.e1 }
 sethl("@function.builtin") { fg = fg.e3 }
-sethl("@function.call") { fg = fg.e2 }
-sethl("@function.macro") { fg = fg.e3 }
+sethl("@function.call") { fg = fg.e1 }
+sethl("@function.macro") { fg = fg.e2 }
 sethl("@include") {}
-sethl("@keyword") { fg = fg.y2 }
+sethl("@keyword") { fg = fg.y0 }
 sethl("@label") {}
 sethl("@markup.raw") { fg = fg.o3 }
 sethl("@markup.heading") { fg = fg.y3, bold = true }
 sethl("@method") {}
 sethl("@method.call") {}
+sethl("@module") { fg = fg.w0 }
 sethl("@namespace") {}
 sethl("@none") { bg = "NONE", fg = "NONE" }
 sethl("@number") {}
-sethl("@operator") { fg = fg.v2 }
+sethl("@operator") { fg = fg.v1 }
 sethl("@parameter") { fg = fg.b0 }
 sethl("@preproc") {}
 sethl("@property") { fg = fg.w0 }
-sethl("@punctuation") { fg = fg.o0 }
-sethl("@punctuation.delimiter") { fg = fg.o5 }
+sethl("@punctuation") { fg = fg.o1 }
+sethl("@punctuation.delimiter") { fg = fg.o4 }
+sethl("@punctuation.bracket") { fg = fg.w1 }
 sethl("@punctuation.special") { fg = fg.o2 }
 sethl("@repeat") {}
 sethl("@storageclass") {}
-sethl("@string") { fg = fg.g3 }
-sethl("@string.documentation") { fg = fg.g1 }
+sethl("@string") { fg = fg.g2 }
+sethl("@string.documentation") { fg = fg.g0 }
 sethl("@symbol") {}
-sethl("@tag") {}
-sethl("@tag.attribute") {}
-sethl("@tag.delimiter") {}
+sethl("@tag") { fg = fg.o0 }
+sethl("@tag.attribute") { fg = fg.o0 }
+sethl("@tag.delimiter") { fg = fg.o4 }
 sethl("@text") {}
 sethl("@text.danger") {}
 sethl("@text.diff.add") { link = "DiffAdd" }
@@ -258,38 +263,39 @@ sethl("@text.diff.indicator") { bg = bg.w4 }
 sethl("@text.emphasis") { italic = true }
 sethl("@text.environment") {}
 sethl("@text.environment.name") {}
-sethl("@text.literal") { fg = fg.g2 }
+sethl("@text.literal") { fg = fg.g0 }
 sethl("@text.math") {}
 sethl("@text.note") {}
-sethl("@text.quote") {}
+sethl("@text.quote") { fg = fg.w2 }
 sethl("@text.reference") { fg = fg.b0 }
 sethl("@text.strike") { strikethrough = true }
 sethl("@text.strong") { bold = true }
-sethl("@text.title") { fg = fg.y2, bold = true }
+sethl("@text.title") { fg = fg.y1, bold = true }
 sethl("@text.title.weak") { fg = fg.y0 }
 sethl("@text.todo") {}
 sethl("@text.underline") { underline = true }
-sethl("@text.uri") { fg = fg.v5 }
+sethl("@text.uri") { fg = fg.v3 }
 sethl("@text.warning") {}
-sethl("@type") { fg = fg.b2 }
-sethl("@type.builtin") { fg = fg.b3 }
+sethl("@type") { fg = fg.b1 }
+sethl("@type.builtin") { fg = fg.b2 }
 sethl("@type.definition") {}
 sethl("@type.qualifier") {}
+sethl("@variable") { fg = fg.w0 }
 sethl("@variable.parameter") { fg = fg.b0 }
 sethl("@variable.builtin") { fg = fg.v2 }
-sethl("@variable.member") { fg = fg.b0 }
+sethl("@variable.member") { fg = fg.w0 }
 
 sethl("@field") { fg = fg.b0 }
 
 -- §§1 plugin-specific
-sethl("GitSignsStagedAddNr") { bg = bg.g4, fg = fg.g0 }
-sethl("GitSignsStagedChangeNr") { bg = bg.b4, fg = fg.b0 }
-sethl("GitSignsStagedDeleteNr") { bg = bg.r4, fg = fg.r0 }
-sethl("GitSignsStagedChangeDeleteNr") { bg = bg.p4, fg = fg.p0 }
-sethl("GitSignsAddNr") { bg = bg.g2, fg = fg.g5 }
-sethl("GitSignsChangeNr") { bg = bg.b2, fg = fg.b5 }
-sethl("GitSignsDeleteNr") { bg = bg.r2, fg = fg.r5 }
-sethl("GitSignsChangeDeleteNr") { bg = bg.p2, fg = fg.p5 }
+sethl("GitSignsStagedAddNr") { bg = bg.g3, fg = fg.g0 }
+sethl("GitSignsStagedChangeNr") { bg = bg.b3, fg = fg.b0 }
+sethl("GitSignsStagedDeleteNr") { bg = bg.r3, fg = fg.r0 }
+sethl("GitSignsStagedChangeDeleteNr") { bg = bg.p3, fg = fg.p0 }
+sethl("GitSignsAddNr") { bg = bg.g1, fg = fg.g1 }
+sethl("GitSignsChangeNr") { bg = bg.b1, fg = fg.b1 }
+sethl("GitSignsDeleteNr") { bg = bg.r1, fg = fg.r1 }
+sethl("GitSignsChangeDeleteNr") { bg = bg.p1, fg = fg.p1 }
 
 -- §§1 Vim-syntax aliases
 sethl("Boolean") { link = "@boolean" }
