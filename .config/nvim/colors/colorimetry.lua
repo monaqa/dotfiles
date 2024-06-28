@@ -133,8 +133,8 @@ local bg = {
 
 vim.g.terminal_color_0 = bg.w1
 vim.g.terminal_color_1 = fg.r3
-vim.g.terminal_color_2 = fg.g3
-vim.g.terminal_color_3 = fg.y3
+vim.g.terminal_color_2 = fg.g2
+vim.g.terminal_color_3 = fg.y2
 vim.g.terminal_color_4 = fg.b2
 vim.g.terminal_color_5 = fg.p3
 vim.g.terminal_color_6 = fg.e2
@@ -152,7 +152,7 @@ vim.g.terminal_color_15 = fg.w1
 sethl("Normal") { fg = fg.w0, bg = bg.w0 }
 
 sethl("ColorColumn") { bg = bg.w2 }
-sethl("Conceal") { fg = fg.w5, bg = bg.w2 }
+sethl("Conceal") { fg = fg.w4, bg = bg.w0 }
 sethl("Cursor") { reverse = true }
 sethl("CursorColumn") { bg = bg.w3 }
 sethl("CursorLine") { link = "CursorColumn" }
@@ -161,7 +161,7 @@ sethl("DiffAdd") { bg = bg.g1 }
 sethl("DiffChange") { bg = bg.b1 }
 sethl("DiffDelete") { bg = bg.r1 }
 sethl("DiffText") { bg = bg.b2 }
-sethl("EndOfBuffer") { bg = bg.w1 }
+sethl("EndOfBuffer") { bg = bg.w0 }
 sethl("TermCursor") { reverse = true }
 sethl("ErrorMsg") { fg = fg.r4 }
 sethl("WinSeparator") { fg = fg.w2 }
@@ -208,7 +208,7 @@ sethl("@attribute") { fg = fg.o0 }
 sethl("@attribute.builtin") { fg = fg.o2 }
 sethl("@boolean") { fg = fg.p2 }
 sethl("@character") { fg = fg.y2 }
-sethl("@character.special") {}
+sethl("@character.special") { fg = fg.y3 }
 sethl("@comment") { fg = fg.w4 }
 sethl("@comment.documentation") { fg = fg.w2 }
 sethl("@conditional") {}
@@ -226,27 +226,31 @@ sethl("@function.builtin") { fg = fg.e3 }
 sethl("@function.call") { fg = fg.e1 }
 sethl("@function.macro") { fg = fg.e2 }
 sethl("@include") {}
-sethl("@keyword") { fg = fg.y0 }
-sethl("@label") {}
-sethl("@markup.raw") { fg = fg.o3 }
-sethl("@markup.heading") { fg = fg.y3, bold = true }
+sethl("@keyword") { fg = fg.y1 }
+sethl("@label") { fg = fg.v2 }
+sethl("@markup.raw") { fg = fg.g1 }
+sethl("@markup.heading") { fg = fg.y1, bold = true }
+sethl("@markup.heading.weak") { fg = fg.y2 }
 sethl("@method") {}
 sethl("@method.call") {}
-sethl("@module") { fg = fg.w0 }
+sethl("@module") { fg = fg.o1 }
 sethl("@namespace") {}
 sethl("@none") { bg = "NONE", fg = "NONE" }
-sethl("@number") {}
+sethl("@number") { fg = fg.p2 }
 sethl("@operator") { fg = fg.v1 }
 sethl("@parameter") { fg = fg.b0 }
 sethl("@preproc") {}
 sethl("@property") { fg = fg.w0 }
-sethl("@punctuation") { fg = fg.o1 }
+sethl("@punctuation") { fg = fg.o3 }
 sethl("@punctuation.delimiter") { fg = fg.o4 }
-sethl("@punctuation.bracket") { fg = fg.w1 }
-sethl("@punctuation.special") { fg = fg.o2 }
+sethl("@punctuation.bracket") { fg = fg.o3 }
+sethl("@punctuation.special") { fg = fg.o3 }
 sethl("@repeat") {}
 sethl("@storageclass") {}
 sethl("@string") { fg = fg.g2 }
+sethl("@string.special") { fg = fg.g3 }
+sethl("@string.regexp") { fg = fg.g3 }
+sethl("@string.escape") { fg = fg.e4 }
 sethl("@string.documentation") { fg = fg.g0 }
 sethl("@symbol") {}
 sethl("@tag") { fg = fg.o0 }
@@ -276,8 +280,8 @@ sethl("@text.todo") {}
 sethl("@text.underline") { underline = true }
 sethl("@text.uri") { fg = fg.v3 }
 sethl("@text.warning") {}
-sethl("@type") { fg = fg.b1 }
-sethl("@type.builtin") { fg = fg.b2 }
+sethl("@type") { fg = fg.b2 }
+sethl("@type.builtin") { fg = fg.b3 }
 sethl("@type.definition") {}
 sethl("@type.qualifier") {}
 sethl("@variable") { fg = fg.w0 }
@@ -296,6 +300,10 @@ sethl("GitSignsAddNr") { bg = bg.g1, fg = fg.g1 }
 sethl("GitSignsChangeNr") { bg = bg.b1, fg = fg.b1 }
 sethl("GitSignsDeleteNr") { bg = bg.r1, fg = fg.r1 }
 sethl("GitSignsChangeDeleteNr") { bg = bg.p1, fg = fg.p1 }
+
+sethl("GinaChangesAdded") { fg = fg.g1 }
+sethl("GinaChangesRemoved") { fg = fg.r1 }
+sethl("GinaChangesPath") { fg = fg.w1 }
 
 -- §§1 Vim-syntax aliases
 sethl("Boolean") { link = "@boolean" }
