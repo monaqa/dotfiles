@@ -9,7 +9,7 @@ plugins:push {
         "https://github.com/fannheyward/telescope-coc.nvim",
         "https://github.com/nvim-telescope/telescope-smart-history.nvim",
         "https://github.com/kkharji/sqlite.lua",
-        "https://github.com/fdschmidt93/telescope-egrepify.nvim",
+        "telescope-egrepify.nvim",
     },
     cmd = { "Telescope" },
     keys = {
@@ -207,7 +207,9 @@ plugins:push {
 }
 
 plugins:push {
-    "https://github.com/fdschmidt93/telescope-egrepify.nvim",
+    "https://github.com/monaqa/telescope-egrepify.nvim",
+    branch = "fix-trailing_space",
+    lazy = true,
     dependencies = { "https://github.com/nvim-lua/plenary.nvim" },
 }
 
