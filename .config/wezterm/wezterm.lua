@@ -1,48 +1,8 @@
-local wezterm = require 'wezterm';
-
--- The filled in variant of the < symbol
-local SOLID_LEFT_ARROW = utf8.char(0xe0ba)
-
--- The filled in variant of the > symbol
-local SOLID_RIGHT_ARROW = utf8.char(0xe0b8)
+local wezterm = require("wezterm")
+local tab = require("tab")
+local colorimetry = require("colorimetry")
 
 local MAX_TAB_WIDTH = 60
-
----@param dir_name string
----@return string
-local function stem(dir_name)
-    if dir_name:find("/", 1, true) == nil then
-        return dir_name
-    end
-    if dir_name:find("/.worktree/", 1, true) ~= nil then
-        local idx = dir_name:find("/.worktree/", 1, true)
-        return dir_name:sub(idx + 11)
-    end
-    local rev_dir = dir_name:reverse()
-    return rev_dir:sub(1, rev_dir:find("/", 1, true) - 1):reverse()
-end
-
----@param text string
----@param max_len integer
----@return string
-local function trim_middle(text, max_len)
-    if #text <= max_len then
-        return text
-    end
-    local len_start = max_len // 2
-    local len_end = max_len - len_start - 1
-    return text:sub(1, len_start) .. "…" .. text:sub(#text - len_end + 1, #text)
-end
-
-local function align_spaces(text, width)
-    if #text >= width then
-        return "", ""
-    end
-    local left_n_spaces = (width - #text) // 2
-    local left_spaces = (" "):rep(left_n_spaces)
-    local right_spaces = (" "):rep(width - #text - left_n_spaces)
-    return left_spaces, right_spaces
-end
 
 ---@param home_dir string
 ---@return string[]
@@ -61,61 +21,14 @@ local function path_env(home_dir)
     }
 end
 
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-    local max_text_width = max_width - 2
-    local edge_background = "#3c3836"
-    local background = "#504945"
-    local foreground = "#948570"
-    if tab.is_active then
-        background = "#7a7068"
-        foreground = "#ebdbb2"
-        -- elseif hover then
-        --   background = "#3b3052"
-        --   foreground = "#909090"
-    end
-    local edge_foreground = background
-
-    local pane = tab.active_pane
-    local current_ps = stem(pane.foreground_process_name)
-    local current_dir = stem(pane.current_working_dir)
-
-    local ps_title
-    if current_ps == nil or current_ps == "fish" then
-        ps_title = ""
-    else
-        ps_title = ([[(%s) ]]):format(trim_middle(current_ps, 8))
-    end
-    -- local dir_title = trim_middle(current_dir, MAX_TAB_WIDTH - #ps_title)
-
-    local title_width = max_text_width - #ps_title
-    local dir_title = trim_middle(current_dir, title_width)
-    local left_spaces, right_spaces = align_spaces(ps_title .. dir_title, max_text_width)
-
-    return {
-        {Background={Color=edge_background}},
-        {Foreground={Color=edge_foreground}},
-        {Text=SOLID_LEFT_ARROW},
-        {Background={Color=background}},
-        {Foreground={Color=foreground}},
-        {Attribute={Intensity="Normal"}},
-        {Text=left_spaces},
-        {Text=ps_title},
-        {Attribute={Intensity="Bold"}},
-        {Text=dir_title},
-        {Text=right_spaces},
-        {Attribute={Intensity="Normal"}},
-        {Background={Color=edge_background}},
-        {Foreground={Color=edge_foreground}},
-        {Text=SOLID_RIGHT_ARROW},
-    }
-end)
+wezterm.on("format-tab-title", tab.format_tab_title)
 
 wezterm.on("toggle-bg-opacity", function(window, pane)
     local overrides = window:get_config_overrides() or {}
     if overrides.window_background_opacity then
         overrides.window_background_opacity = nil
     else
-        overrides.window_background_opacity = 0.0
+        overrides.window_background_opacity = 1.0
     end
     window:set_config_overrides(overrides)
 end)
@@ -123,15 +36,28 @@ end)
 wezterm.on("toggle-mode-screenshare", function(window, pane)
     local overrides = window:get_config_overrides() or {}
     if not overrides.font_size then
-        overrides.window_background_opacity = nil
+        overrides.window_background_opacity = 1.0
         overrides.font_size = 22.0
         overrides.enable_tab_bar = false
     else
-        overrides.window_background_opacity = 0.0
+        overrides.window_background_opacity = colorimetry.opacity.bg
         overrides.font_size = nil
         overrides.enable_tab_bar = nil
     end
     window:set_config_overrides(overrides)
+end)
+
+wezterm.on("update-status", function(window, pane)
+    local pinfo = pane:get_foreground_process_info()
+    window:set_right_status(window:active_workspace())
+    -- local overrides = window:get_config_overrides() or {}
+    -- if pinfo.name == "nvim" then
+    --     overrides.window_background_opacity = 0.0
+    -- else
+    --     overrides.window_background_opacity = colorimetry.opacity.bg
+    -- end
+    -- window:set_config_overrides(overrides)
+    window:set_left_status(pinfo.name)
 end)
 
 -- wezterm.on("update-right-status", function(window, pane)
@@ -152,39 +78,29 @@ wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
     f:flush()
     f:close()
     window:perform_action(
-    wezterm.action{
-        SpawnCommandInNewTab = {
-            set_environment_variables = { PATH = table.concat(path_env("monaqa"), ":")},
-            args = { "nvim", name },
-        }
-    },
-    pane
+        wezterm.action {
+            SpawnCommandInNewTab = {
+                set_environment_variables = { PATH = table.concat(path_env("monaqa"), ":") },
+                args = { "nvim", name },
+            },
+        },
+        pane
     )
     wezterm.sleep_ms(1000)
     os.remove(name)
 end)
 
--- color theme
--- local scheme = wezterm.get_builtin_color_schemes()["Gruvbox Dark"]
-local scheme = wezterm.get_builtin_color_schemes()["Gruvbox dark, medium (base16)"]
-scheme.compose_cursor = "gray"
-
 return {
-    default_prog = {"/opt/homebrew/bin/fish", "-l"},
+    default_prog = { "/opt/homebrew/bin/fish", "-l" },
     -- default_prog = {"/opt/homebrew/bin/fish", "-c", [[tmux new-session -A -s "default"]]},
     -- font config
     -- /Users/monaqa/Library/Fonts/Hack Regular Nerd Font Complete.ttf, CoreText
     -- font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
-    font = wezterm.font_with_fallback({
-        -- {family="CommitMono-height105", weight=450, stretch="Normal", style="Normal"},
-        {family="CommitMono-height105-nokern", weight=450, stretch="Normal", style="Normal"},
-        {family="Hack Nerd Font", weight="Regular", stretch="Normal"},
-        -- {family="Hack Nerd Font", weight="Regular", stretch="Normal", italic=false},
-        -- {family="YuGothic", weight="Regular", stretch="Normal"},
-        {family="Noto Sans CJK JP", weight="Regular", stretch="Normal"},
-        -- {family="BIZ UDPGothic", weight="Regular", stretch="Normal"},
-        -- {family="IBM Plex Sans JP", weight="Regular", stretch="Normal"},
-    }),
+    font = wezterm.font_with_fallback {
+        { family = "CommitMono-height105-nokern", weight = 450, stretch = "Normal", style = "Normal" },
+        { family = "Hack Nerd Font", weight = "Regular", stretch = "Normal" },
+        { family = "Noto Sans CJK JP", weight = "Regular", stretch = "Normal" },
+    },
 
     font_size = 16.0,
     use_ime = true,
@@ -196,28 +112,27 @@ return {
 
     -- colors
     color_schemes = {
-        ["Gruvbox-monaqa-oriented"] = scheme,
+        ["colorimetry"] = colorimetry.scheme,
     },
-    color_scheme = "Gruvbox-monaqa-oriented",
+    color_scheme = "colorimetry",
+    colors = colorimetry.config_colors,
 
     -- tab
     -- window_decolations = "TITLE" | "RESIZE",
-    hide_tab_bar_if_only_one_tab = true,
-    use_fancy_tab_bar = false,
-    tab_max_width = MAX_TAB_WIDTH + 2,
-    window_frame = {
-        font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
-    },
+    hide_tab_bar_if_only_one_tab = false,
+    -- tab_max_width = MAX_TAB_WIDTH + 2,
+    use_fancy_tab_bar = true,
+    window_frame = tab.window_frame,
     window_decorations = "RESIZE",
     -- tab_bar_at_bottom = true,
 
     -- window
     adjust_window_size_when_changing_font_size = false,
-    window_background_opacity = 1.0,
-    text_background_opacity = 0.85,
+    window_background_opacity = colorimetry.opacity.bg,
+    text_background_opacity = colorimetry.opacity.fg,
     window_padding = {
-        left = "1cell",
-        right = "1cell",
+        left = "0.5cell",
+        right = "0.5cell",
         -- top = "2.5cell",
         top = "0.3cell",
         bottom = "0cell",
@@ -225,81 +140,119 @@ return {
     -- status_update_interval = 1000,
     canonicalize_pasted_newlines = "None",
 
+    debug_key_events = true,
+
     -- key mappings
     -- disable_default_key_bindings = true,
-    send_composed_key_when_left_alt_is_pressed=false,
+    send_composed_key_when_left_alt_is_pressed = false,
     key_map_preference = "Physical",
     -- leader = { key = "s", mods = "CTRL", timeout_milliseconds=1000 },
     keys = {
         -- works as a hotkey
-        {key="Enter", mods="CMD", action="ToggleFullScreen"},
-        {key=" ", mods="CMD", action="HideApplication"},
+        { key = "Enter", mods = "CMD", action = "ToggleFullScreen" },
+        { key = " ", mods = "CMD", action = "HideApplication" },
 
-        {key="f", mods="CMD", action=wezterm.action.SpawnCommandInNewWindow {
-            args = {"/opt/homebrew/bin/fish"}
-        }},
+        {
+            key = "f",
+            mods = "CMD",
+            action = wezterm.action.SpawnCommandInNewWindow {
+                args = { "/opt/homebrew/bin/fish" },
+            },
+        },
 
         -- works as default
 
-        {key="q", mods="CTRL", action=wezterm.action{SendString="\x11"}},
-        {key = "Tab", mods="CTRL", action="DisableDefaultAssignment"},
-        {key = "Tab", mods="CTRL|SHIFT", action="DisableDefaultAssignment"},
+        { key = "q", mods = "CTRL", action = wezterm.action { SendString = "\x11" } },
+        { key = "Tab", mods = "CTRL", action = "DisableDefaultAssignment" },
+        { key = "Tab", mods = "CTRL|SHIFT", action = "DisableDefaultAssignment" },
 
         -- change font size
 
-        -- { key = ";", mods="CMD|SHIFT", action="IncreaseFontSize"},
-        -- { key = "-", mods="CMD|SHIFT", action="ResetFontSize"},
-        -- { key = "-", mods="CMD|SHIFT", action="ResetFontSize"},
+        -- { key = "raw:27", mods = "CMD|SHIFT", action = "ResetFontSize" },
+        { key = "!", mods = "CMD|SHIFT", action = "ResetFontSize" },
+        { key = "raw:27", mods = "CMD", action = "DecreaseFontSize" },
+        { key = "raw:41", mods = "CMD|SHIFT", action = "IncreaseFontSize" },
+        { key = "0", mods = "CMD|CTRL", action = "ResetFontSize" },
 
-        { key = "raw:27", mods="CMD|SHIFT", action="ResetFontSize"},
-        { key = "raw:27", mods="CMD", action="DecreaseFontSize"},
-        { key = "raw:41", mods="CMD|SHIFT", action="IncreaseFontSize"},
-        -- { key = "a", mods="CMD|CTRL", action="IncreaseFontSize"},
-        -- { key = "x", mods="CMD|CTRL", action="DecreaseFontSize"},
-        { key = "0", mods="CMD|CTRL", action="ResetFontSize"},
-
-        {key = "u", mods="CMD|SHIFT", action=wezterm.action.CharSelect{}},
+        { key = "u", mods = "CMD|SHIFT", action = wezterm.action.CharSelect {} },
 
         -- タブの生成、移動、削除
-        -- {key = "t", mods="CMD", action=wezterm.action{SpawnCommandInNewTab={cwd = "/Users/monaqa"}}},
-        -- {key = "t", mods="CMD|SHIFT", action=wezterm.action{ActivateTabRelative=1}},
-        -- {key = "n", mods="CMD", action=wezterm.action{ActivateTabRelative=1}},
-        -- {key = "p", mods="CMD", action=wezterm.action{ActivateTabRelative=-1}},
-        -- {key = "n", mods="CMD|SHIFT", action=wezterm.action{MoveTabRelative=1}},
-        -- {key = "p", mods="CMD|SHIFT", action=wezterm.action{MoveTabRelative=-1}},
-        -- {key = "q", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
-        -- {key = "d", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=false}}},
-        -- {key = "s", mods="CMD", action="ShowTabNavigator"},
-        -- {key = "w", mods="CMD", action="SpawnWindow"},
-
-        -- tmux 連携 (\x13 == <C-s>)
-
-        {key = "t", mods="CMD", action=wezterm.action.SendString "\x13c"},
-        {key = "t", mods="CMD|SHIFT", action=wezterm.action.SendString "\x13C"},
-        {key = "h", mods="CMD", action=wezterm.action.SendString "\x13p"},
-        {key = "l", mods="CMD", action=wezterm.action.SendString "\x13n"},
-        {key = "j", mods="CMD", action=wezterm.action.SendString "\x13\x0a"},
-        {key = "k", mods="CMD", action=wezterm.action.SendString "\x13\x0b"},
-
-        {key = "d", mods="CMD", action=wezterm.action.SendString "\x13q"},
-        {key = "d", mods="CMD|SHIFT", action=wezterm.action.SendString "\x13Q"},
-        -- {key = "w", mods="CMD", action=wezterm.action.SendString "\x13Q"},
+        -- thanks to sankantsu: https://zenn.dev/sankantsu/articles/e713d52825dbbb
+        { key = "t", mods = "CMD", action = wezterm.action { SpawnCommandInNewTab = { cwd = "/Users/monaqa" } } },
+        {
+            key = "t",
+            mods = "CMD|SHIFT",
+            action = wezterm.action.PromptInputLine {
+                description = "(wezterm) Create new workspace:",
+                action = wezterm.action_callback(function(window, pane, line)
+                    if line then
+                        window:perform_action(
+                            wezterm.action.SwitchToWorkspace {
+                                name = line,
+                            },
+                            pane
+                        )
+                    end
+                end),
+            },
+        },
+        {
+            mods = "CMD",
+            key = "s",
+            action = wezterm.action_callback(function(win, pane)
+                -- workspace のリストを作成
+                local workspaces = {}
+                for i, name in ipairs(wezterm.mux.get_workspace_names()) do
+                    table.insert(workspaces, {
+                        id = name,
+                        label = string.format("%d. %s", i, name),
+                    })
+                end
+                local current = wezterm.mux.get_active_workspace()
+                -- 選択メニューを起動
+                win:perform_action(
+                    wezterm.action.InputSelector {
+                        action = wezterm.action_callback(function(_, _, id, label)
+                            if not id and not label then
+                                wezterm.log_info("Workspace selection canceled") -- 入力が空ならキャンセル
+                            else
+                                win:perform_action(wezterm.action.SwitchToWorkspace { name = id }, pane) -- workspace を移動
+                            end
+                        end),
+                        title = "Select workspace",
+                        choices = workspaces,
+                        fuzzy = true,
+                        -- fuzzy_description = string.format("Select workspace: %s -> ", current), -- requires nightly build
+                    },
+                    pane
+                )
+            end),
+        },
+        { key = "h", mods = "CMD", action = wezterm.action { ActivateTabRelative = -1 } },
+        { key = "l", mods = "CMD", action = wezterm.action { ActivateTabRelative = 1 } },
+        { key = "j", mods = "CMD", action = wezterm.action.SwitchWorkspaceRelative(1) },
+        { key = "k", mods = "CMD", action = wezterm.action.SwitchWorkspaceRelative(-1) },
+        { key = "d", mods = "CMD", action = wezterm.action { CloseCurrentPane = { confirm = false } } },
 
         -- window の分割、移動
-        -- {key = "_", mods="CMD", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
+        { key = "_", mods = "CMD", action = wezterm.action { SplitVertical = { domain = "CurrentPaneDomain" } } },
         -- -- CMD + | で縦分割
-        -- {key = "raw:93", mods="CMD|SHIFT", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
-        -- {key = "h", mods="CMD", action=wezterm.action{ActivatePaneDirection="Left"}},
-        -- {key = "j", mods="CMD", action=wezterm.action{ActivatePaneDirection="Down"}},
-        -- {key = "k", mods="CMD", action=wezterm.action{ActivatePaneDirection="Up"}},
-        -- {key = "l", mods="CMD", action=wezterm.action{ActivatePaneDirection="Right"}},
+        {
+            key = "raw:93",
+            mods = "CMD|SHIFT",
+            action = wezterm.action { SplitHorizontal = { domain = "CurrentPaneDomain" } },
+        },
 
-        {key = "y", mods="CMD", action=wezterm.action{EmitEvent="trigger-nvim-with-scrollback"}},
+        { key = "h", mods = "ALT", action = wezterm.action { ActivatePaneDirection = "Left" } },
+        { key = "j", mods = "ALT", action = wezterm.action { ActivatePaneDirection = "Down" } },
+        { key = "k", mods = "ALT", action = wezterm.action { ActivatePaneDirection = "Up" } },
+        { key = "l", mods = "ALT", action = wezterm.action { ActivatePaneDirection = "Right" } },
 
-        {key = "u", mods="CMD", action=wezterm.action{EmitEvent="toggle-bg-opacity"}},
-        {key = "z", mods="CMD", action=wezterm.action{EmitEvent="toggle-mode-screenshare"}},
+        { key = "y", mods = "CMD", action = wezterm.action { EmitEvent = "trigger-nvim-with-scrollback" } },
+
+        { key = "u", mods = "CMD", action = wezterm.action { EmitEvent = "toggle-bg-opacity" } },
+        { key = "z", mods = "CMD", action = wezterm.action { EmitEvent = "toggle-mode-screenshare" } },
         -- {key = "d", mods="CMD", action="ShowDebugOverlay"},
         -- { key = "z", mods="CMD", action="TogglePaneZoomState"},
     },
-
 }

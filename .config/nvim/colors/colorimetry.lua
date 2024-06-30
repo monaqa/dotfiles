@@ -149,7 +149,7 @@ vim.g.terminal_color_14 = fg.e1
 vim.g.terminal_color_15 = fg.w1
 
 -- §§1 defaults
-sethl("Normal") { fg = fg.w0, bg = bg.w0 }
+sethl("Normal") { fg = fg.w0 }
 
 sethl("ColorColumn") { bg = bg.w2 }
 sethl("Conceal") { fg = fg.w4, bg = bg.w0 }
@@ -161,7 +161,7 @@ sethl("DiffAdd") { bg = bg.g1 }
 sethl("DiffChange") { bg = bg.b1 }
 sethl("DiffDelete") { bg = bg.r1 }
 sethl("DiffText") { bg = bg.b2 }
-sethl("EndOfBuffer") { bg = bg.w0 }
+sethl("EndOfBuffer") {}
 sethl("TermCursor") { reverse = true }
 sethl("ErrorMsg") { fg = fg.r4 }
 sethl("WinSeparator") { fg = fg.w2 }
