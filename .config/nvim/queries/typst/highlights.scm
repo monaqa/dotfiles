@@ -74,12 +74,12 @@
 ; MARKUP
 (item "-" @punctuation.special)
 (term ["/" ":"] @punctuation.special)
-(heading "=" (text) @text.underline ) @text.title
-(heading "==" ) @text.title
-(heading "===" ) @text.title
-(heading "====" ) @text.title.weak
-(heading "=====" ) @text.title.weak
-(heading "======" ) @text.title.weak
+(heading "=" (_) @text.underline ) @markup.heading
+(heading "==" ) @markup.heading
+(heading "===" ) @markup.heading
+(heading "====" ) @markup.heading.weak
+(heading "=====" ) @markup.heading.weak
+(heading "======" ) @markup.heading.weak
 (url) @text.uri
 (emph) @text.underline
 (strong) @text.strong

@@ -49,7 +49,7 @@ end)
 
 wezterm.on("update-status", function(window, pane)
     local pinfo = pane:get_foreground_process_info()
-    window:set_right_status(window:active_workspace())
+    window:set_left_status(" «" .. window:active_workspace() .. "» ")
     -- local overrides = window:get_config_overrides() or {}
     -- if pinfo.name == "nvim" then
     --     overrides.window_background_opacity = 0.0
@@ -57,7 +57,7 @@ wezterm.on("update-status", function(window, pane)
     --     overrides.window_background_opacity = colorimetry.opacity.bg
     -- end
     -- window:set_config_overrides(overrides)
-    window:set_left_status(pinfo.name)
+    -- window:set_left_status(pinfo.name)
 end)
 
 -- wezterm.on("update-right-status", function(window, pane)

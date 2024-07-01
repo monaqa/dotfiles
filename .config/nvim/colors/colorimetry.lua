@@ -152,7 +152,7 @@ vim.g.terminal_color_15 = fg.w1
 sethl("Normal") { fg = fg.w0 }
 
 sethl("ColorColumn") { bg = bg.w2 }
-sethl("Conceal") { fg = fg.w4, bg = bg.w0 }
+sethl("Conceal") { fg = fg.w3 }
 sethl("Cursor") { reverse = true }
 sethl("CursorColumn") { bg = bg.w3 }
 sethl("CursorLine") { link = "CursorColumn" }
@@ -171,14 +171,14 @@ sethl("SignColumn") { bg = bg.w1, fg = fg.w4 }
 sethl("Substitute") { bg = bg.b2 }
 
 sethl("LineNr") { bg = bg.w1 }
-sethl("CursorLineNr") { bg = bg.w1 }
+sethl("CursorLineNr") { bg = bg.w1, bold = true }
 sethl("MatchParen") { bg = bg.p4, bold = true }
 sethl("ModeMsg") { bold = true }
 sethl("MoreMsg") { fg = fg.b2 }
 sethl("NonText") { fg = fg.w4, bg = bg.w2 }
 sethl("SpecialKey") { fg = fg.w4, bg = bg.w2 }
 
-sethl("NormalFloat") { fg = fg.w1, bg = bg.w3 }
+sethl("NormalFloat") { fg = fg.w1, bg = bg.b3 }
 sethl("FloatBorder") { link = "WinSeparator" }
 sethl("FloatTitle") { bold = true }
 sethl("FloatFooter") { italic = true }
@@ -190,10 +190,10 @@ sethl("Search") { bg = bg.b4 }
 sethl("CurSearch") { bg = bg.b4, bold = true }
 sethl("IncSearch") { bg = bg.b3 }
 
-sethl("SpellBad") { underdotted = true, fg = fg.r0 }
-sethl("SpellCap") { underdotted = true, fg = fg.w0 }
-sethl("SpellLocal") { underdotted = true, fg = fg.w0 }
-sethl("SpellRare") { underdotted = true, fg = fg.w0 }
+sethl("SpellBad") { undercurl = true, sp = fg.r3 }
+sethl("SpellCap") { undercurl = true, sp = fg.b3 }
+sethl("SpellLocal") { undercurl = true, sp = fg.g3 }
+sethl("SpellRare") { undercurl = true, sp = fg.y3 }
 sethl("StatusLine") { reverse = true }
 sethl("Visual") { bg = bg.p4 }
 sethl("WarningMsg") { fg = fg.y1 }
