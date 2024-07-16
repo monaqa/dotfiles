@@ -149,7 +149,7 @@ vim.g.terminal_color_14 = fg.e1
 vim.g.terminal_color_15 = fg.w1
 
 -- §§1 defaults
-sethl("Normal") { fg = fg.w0 }
+sethl("Normal") { fg = fg.w1 }
 
 sethl("ColorColumn") { bg = bg.w2 }
 sethl("Conceal") { fg = fg.w3 }
@@ -178,7 +178,7 @@ sethl("MoreMsg") { fg = fg.b2 }
 sethl("NonText") { fg = fg.w4, bg = bg.w2 }
 sethl("SpecialKey") { fg = fg.w4, bg = bg.w2 }
 
-sethl("NormalFloat") { fg = fg.w1, bg = bg.b3 }
+sethl("NormalFloat") { fg = fg.w0, bg = bg.b3 }
 sethl("FloatBorder") { link = "WinSeparator" }
 sethl("FloatTitle") { bold = true }
 sethl("FloatFooter") { italic = true }
@@ -241,7 +241,7 @@ sethl("@number") { fg = fg.p2 }
 sethl("@operator") { fg = fg.v1 }
 sethl("@parameter") { fg = fg.b0 }
 sethl("@preproc") {}
-sethl("@property") { fg = fg.w0 }
+sethl("@property") {}
 sethl("@punctuation") { fg = fg.o3 }
 sethl("@punctuation.delimiter") { fg = fg.o4 }
 sethl("@punctuation.bracket") { fg = fg.o3 }
@@ -285,10 +285,10 @@ sethl("@type") { fg = fg.b2 }
 sethl("@type.builtin") { fg = fg.b3 }
 sethl("@type.definition") {}
 sethl("@type.qualifier") {}
-sethl("@variable") { fg = fg.w0 }
+sethl("@variable") {}
 sethl("@variable.parameter") { fg = fg.b0 }
 sethl("@variable.builtin") { fg = fg.v2 }
-sethl("@variable.member") { fg = fg.w0 }
+sethl("@variable.member") {}
 
 sethl("@field") { fg = fg.b0 }
 
@@ -306,7 +306,7 @@ sethl("GinaChangesAdded") { fg = fg.g1 }
 sethl("GinaChangesRemoved") { fg = fg.r1 }
 sethl("GinaChangesPath") { fg = fg.w1 }
 
-sethl("NotifyBackground") { bg = bg.w1 }
+sethl("NotifyBackground") { bg = bg.w2 }
 
 -- §§1 Vim-syntax aliases
 sethl("Boolean") { link = "@boolean" }

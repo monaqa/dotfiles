@@ -138,7 +138,7 @@ return {
     -- status_update_interval = 1000,
     canonicalize_pasted_newlines = "None",
 
-    debug_key_events = true,
+    debug_key_events = false,
 
     -- key mappings
     -- disable_default_key_bindings = true,
@@ -223,14 +223,16 @@ return {
                         title = "Select workspace",
                         choices = workspaces,
                         fuzzy = true,
-                        -- fuzzy_description = string.format("Select workspace: %s -> ", current), -- requires nightly build
+                        fuzzy_description = string.format("Select workspace: %s -> ", current), -- requires nightly build
                     },
                     pane
                 )
             end),
         },
-        { key = "h", mods = "CMD", action = wezterm.action { ActivateTabRelative = -1 } },
-        { key = "l", mods = "CMD", action = wezterm.action { ActivateTabRelative = 1 } },
+        { key = "h", mods = "CMD", action = wezterm.action.ActivateTabRelative(-1) },
+        { key = "l", mods = "CMD", action = wezterm.action.ActivateTabRelative(1) },
+        { key = "h", mods = "CMD|SHIFT", action = wezterm.action.MoveTabRelative(-1) },
+        { key = "l", mods = "CMD|SHIFT", action = wezterm.action.MoveTabRelative(1) },
         { key = "j", mods = "CMD", action = wezterm.action.SwitchWorkspaceRelative(1) },
         { key = "k", mods = "CMD", action = wezterm.action.SwitchWorkspaceRelative(-1) },
         { key = "d", mods = "CMD", action = wezterm.action { CloseCurrentPane = { confirm = false } } },

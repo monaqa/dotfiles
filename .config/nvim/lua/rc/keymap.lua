@@ -1016,10 +1016,6 @@ vim.keymap.set("v", "A", function()
     return util.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$A", "A")
 end, { expr = true })
 
-vim.keymap.set("n", "@t", function()
-    vim.cmd([[TodomeOpen]])
-end)
-
 vim.keymap.set("n", "ts", "<Cmd>Inspect<CR>")
 
 -- TODO: 'path' を読んでもっといい感じに開く
