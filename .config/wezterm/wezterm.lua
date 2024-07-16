@@ -4,22 +4,20 @@ local colorimetry = require("colorimetry")
 
 local MAX_TAB_WIDTH = 60
 
----@param home_dir string
----@return string[]
-local function path_env(home_dir)
-    return {
-        "/opt/homebrew/bin",
-        "/opt/homebrew/sbin",
-        "/usr/local/bin",
-        "/usr/bin",
-        "/bin",
-        "/usr/sbin",
-        "/sbin",
-        ("%s/.local/bin"):format(home_dir),
-        ("%s/.cargo/bin"):format(home_dir),
-        ("%s/.deno/bin"):format(home_dir),
-    }
-end
+local HOME_DIR = "/Users/monaqa"
+
+local path_env = {
+    "/opt/homebrew/bin",
+    "/opt/homebrew/sbin",
+    "/usr/local/bin",
+    "/usr/bin",
+    "/bin",
+    "/usr/sbin",
+    "/sbin",
+    ("%s/.local/bin"):format(HOME_DIR),
+    ("%s/.cargo/bin"):format(HOME_DIR),
+    ("%s/.deno/bin"):format(HOME_DIR),
+}
 
 wezterm.on("format-tab-title", tab.format_tab_title)
 
@@ -80,7 +78,7 @@ wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
     window:perform_action(
         wezterm.action {
             SpawnCommandInNewTab = {
-                set_environment_variables = { PATH = table.concat(path_env("monaqa"), ":") },
+                set_environment_variables = { PATH = table.concat(path_env, ":") },
                 args = { "nvim", name },
             },
         },
@@ -178,7 +176,7 @@ return {
 
         -- タブの生成、移動、削除
         -- thanks to sankantsu: https://zenn.dev/sankantsu/articles/e713d52825dbbb
-        { key = "t", mods = "CMD", action = wezterm.action { SpawnCommandInNewTab = { cwd = "/Users/monaqa" } } },
+        { key = "t", mods = "CMD", action = wezterm.action { SpawnCommandInNewTab = { cwd = HOME_DIR } } },
         {
             key = "t",
             mods = "CMD|SHIFT",
@@ -189,6 +187,9 @@ return {
                         window:perform_action(
                             wezterm.action.SwitchToWorkspace {
                                 name = line,
+                                spawn = {
+                                    cwd = HOME_DIR,
+                                },
                             },
                             pane
                         )

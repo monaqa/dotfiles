@@ -201,6 +201,7 @@ sethl("Whitespace") { fg = fg.v5 }
 
 -- §§1 monaqa-specific
 sethl("VisualBlue") { bg = bg.p2 }
+sethl("LilypondAccidental") { fg = fg.r0 }
 
 -- §§1 nvim-treesitter
 
@@ -304,6 +305,8 @@ sethl("GitSignsChangeDeleteNr") { bg = bg.p1, fg = fg.p1 }
 sethl("GinaChangesAdded") { fg = fg.g1 }
 sethl("GinaChangesRemoved") { fg = fg.r1 }
 sethl("GinaChangesPath") { fg = fg.w1 }
+
+sethl("NotifyBackground") { bg = bg.w1 }
 
 -- §§1 Vim-syntax aliases
 sethl("Boolean") { link = "@boolean" }

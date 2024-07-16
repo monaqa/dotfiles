@@ -45,7 +45,7 @@ plugins:push {
 
         local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 
-        parser_config.todome = {
+        parser_config["todome"] = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-todome", -- local path or git repo
                 files = { "src/parser.c", "src/scanner.cc" },
@@ -53,7 +53,7 @@ plugins:push {
             filetype = "todome", -- if filetype does not agrees with parser name
         }
 
-        parser_config.lilypond = {
+        parser_config["lilypond"] = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-lilypond", -- local path or git repo
                 files = { "src/parser.c" },
@@ -61,7 +61,7 @@ plugins:push {
             filetype = "lilypond", -- if filetype does not agrees with parser name
         }
 
-        parser_config.mermaid = {
+        parser_config["mermaid"] = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-mermaid", -- local path or git repo
                 files = { "src/parser.c" },
@@ -69,7 +69,7 @@ plugins:push {
             filetype = "mermaid", -- if filetype does not agrees with parser name
         }
 
-        parser_config.satysfi = {
+        parser_config["satysfi"] = {
             install_info = {
                 url = "https://github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
                 files = { "src/parser.c", "src/scanner.c" },
@@ -78,7 +78,7 @@ plugins:push {
             filetype = "satysfi", -- if filetype does not agrees with parser name
         }
 
-        parser_config.satysfi_v0_1_0 = {
+        parser_config["satysfi_v0_1_0"] = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
                 files = { "src/parser.c", "src/scanner.c" },
@@ -86,7 +86,7 @@ plugins:push {
             filetype = "satysfi_v0_1_0", -- if filetype does not agrees with parser name
         }
 
-        parser_config.jsonl = {
+        parser_config["jsonl"] = {
             install_info = {
                 url = "https://github.com/monaqa/tree-sitter-jsonl", -- local path or git repo
                 files = { "src/parser.c" },
@@ -94,7 +94,7 @@ plugins:push {
             filetype = "jsonl", -- if filetype does not agrees with parser name
         }
 
-        parser_config.nu = {
+        parser_config["nu"] = {
             install_info = {
                 url = "https://github.com/nushell/tree-sitter-nu", -- local path or git repo
                 revision = "main",
@@ -103,7 +103,7 @@ plugins:push {
             filetype = "nu", -- if filetype does not agrees with parser name
         }
 
-        parser_config.denops_gitter = {
+        parser_config["denops_gitter"] = {
             install_info = {
                 url = "~/ghq/github.com/monaqa/tree-sitter-denops-gitter", -- local path or git repo
                 files = { "src/parser.c" },
@@ -111,7 +111,7 @@ plugins:push {
             filetype = "gitter", -- if filetype does not agrees with parser name
         }
 
-        parser_config.unifieddiff = {
+        parser_config["unifieddiff"] = {
             install_info = {
                 url = "https://github.com/monaqa/tree-sitter-unifieddiff",
                 -- url = "~/ghq/github.com/monaqa/tree-sitter-unifieddiff",
@@ -120,7 +120,7 @@ plugins:push {
             filetype = "diff", -- if filetype does not agrees with parser name
         }
 
-        parser_config.d2 = {
+        parser_config["d2"] = {
             install_info = {
                 url = "https://github.com/pleshevskiy/tree-sitter-d2", -- local path or git repo
                 revision = "main",
@@ -129,13 +129,22 @@ plugins:push {
             filetype = "d2", -- if filetype does not agrees with parser name
         }
 
-        parser_config.moonbit = {
+        parser_config["moonbit"] = {
             install_info = {
                 url = "https://github.com/moonbitlang/tree-sitter-moonbit",
                 revision = "main",
                 files = { "src/parser.c", "src/scanner.c" },
             },
             filetype = "moonbit",
+        }
+
+        parser_config["pkl"] = {
+            install_info = {
+                url = "https://github.com/apple/tree-sitter-pkl",
+                revision = "main",
+                files = { "src/parser.c", "src/scanner.c" },
+            },
+            filetype = "pkl",
         }
 
         vim.treesitter.language.register("markdown", { "mdx", "obsidian" })
@@ -149,7 +158,6 @@ plugins:push {
             ensure_installed = {
                 "bash",
                 "css",
-                -- "diff",
                 "dot",
                 "html",
                 "json",
@@ -165,9 +173,9 @@ plugins:push {
                 "yaml",
 
                 -- custom grammar
+                -- "satysfi",
+                -- "satysfi_v0_1_0",
                 "mermaid",
-                "satysfi",
-                "satysfi_v0_1_0",
                 "todome",
             },
             highlight = {

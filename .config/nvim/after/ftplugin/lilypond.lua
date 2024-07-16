@@ -1,6 +1,5 @@
 local uv = vim.uv
 require("lazy").load { plugins = { "dial.nvim", "general-converter.nvim" } }
-
 -- vim.b.did_ftplugin = 1
 -- vim.opt_local.runtimepath:append {
 --     "/opt/homebrew/share/lilypond/2.24.1/vim",
@@ -299,7 +298,7 @@ local function highlight_non_scale_note()
             ---@type {s : [integer, integer], e : [integer, integer]}
             local region = pitch.region
 
-            vim.api.nvim_buf_add_highlight(0, ns, "Special", region.s[1] - 1, region.s[2] - 1, region.e[2])
+            vim.api.nvim_buf_add_highlight(0, ns, "LilypondAccidental", region.s[1] - 1, region.s[2] - 1, region.e[2])
             -- vim.api.nvim_buf_set_extmark(0, ns, region.s[1] - 1, region.s[2] - 1, {
             --     end_row = region.e[1] - 1,
             --     end_col = region.e[2],

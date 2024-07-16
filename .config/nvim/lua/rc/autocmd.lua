@@ -370,9 +370,12 @@ local function visual_match()
             vim.fn.col("v") - 2 + len_of_char_of_v,
             vim.fn.col(".") - 2 + len_of_char_of_dot,
         }
-        local visible_winids = vim.tbl_filter(function(s)
-            return type(s) == "number"
-        end, vim.tbl_flatten(vim.fn.winlayout()))
+        local visible_winids = vim.iter(vim.fn.winlayout())
+            :flatten(math.huge)
+            :filter(function(s)
+                return type(s) == "number"
+            end)
+            :totable()
         for _, winid in ipairs(visible_winids) do
             local visual_match_id = vim.fn.matchadd(
                 "VisualBlue",

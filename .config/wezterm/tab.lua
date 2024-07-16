@@ -42,32 +42,18 @@ local function align_spaces(text, width)
 end
 
 function M.format_tab_title(tab, tabs, panes, config, hover, max_width)
-    -- local max_text_width = max_width - 2
-    -- local edge_background = bg.w0
-    -- local background = bg.w2
-    -- local foreground = fg.w0
-    -- if tab.is_active then
-    --     background = bg.b4
-    --     foreground = fg.b0
-    -- end
-    -- local edge_foreground = background
-
     local pane = tab.active_pane
     local current_ps = stem(pane.foreground_process_name)
-    local current_dir = stem(pane.current_working_dir)
+    local current_dir = stem(pane.current_working_dir.path)
 
     local ps_title
     if current_ps == nil or current_ps == "fish" then
         ps_title = ""
+    elseif current_ps == "nvim" then
+        ps_title = " "
     else
         ps_title = ([[(%s) ]]):format(trim_middle(current_ps, 8))
     end
-    -- local dir_title = trim_middle(current_dir, MAX_TAB_WIDTH - #ps_title)
-
-    -- local title_width = max_text_width - #ps_title
-    -- local dir_title = trim_middle(current_dir, title_width)
-    -- local left_spaces, right_spaces = align_spaces(ps_title .. current_dir, max_text_width)
-
 
     return {
         {Attribute={Intensity="Normal"}},

@@ -37,3 +37,27 @@ endsnippet
 snippet ust "React useState hook with type" b
 const [$1, set${1/\w+/\u${0}/}] = useState<$3>(${2:null});
 endsnippet
+
+snippet loader "loader" b
+export const loader = async () => {
+	$0
+	return json({$1});
+};
+endsnippet
+
+snippet action "action" b
+import { ActionFunctionArgs, redirect } from "@remix-run/node";
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+	$0
+	return redirect("$1");
+};
+endsnippet
+
+snippet useloader "useLoaderData" b
+const { $1 } = useLoaderData<typeof loader>();
+endsnippet
+
+snippet useaction "useActionData" b
+const errors = useActionData<typeof action>();
+endsnippet
