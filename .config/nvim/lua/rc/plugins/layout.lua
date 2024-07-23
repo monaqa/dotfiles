@@ -190,135 +190,137 @@ plugins:push {
         { "sP", "<Cmd>BufferLineMovePrev<CR>" },
         { "sw", "<Cmd>bp | bd #<CR>" },
     },
-    opts = {
-        options = {
-            diagnostics = "coc",
-            -- separator_style = "thin",
-            separator_style = "slant",
-            indicator = {
-                style = "none",
-                -- style = "underline"
-            },
-            left_trunc_marker = "",
-            right_trunc_marker = "",
-            diagnostics_indicator = function(count, level, diagnostics_dict, context)
-                if level == "error" then
-                    return "🚨" .. count
-                elseif level == "warning" then
-                    return "🐤" .. count
-                end
-                -- return "ℹ️ "
-                return ""
-            end,
-            tab_size = 5,
-            max_name_length = 30,
-            show_close_icon = false,
-            show_buffer_close_icons = false,
-            ---@param buf {name: string, path: string, bufnr: integer, buffers: integer[], tabnr: integer}
-            name_formatter = function(buf) -- buf contains:
-                local filetype = vim.bo[buf.bufnr].filetype
-                if filetype == "oil" then
-                    return vim.iter(vim.split(buf.path, "/", { trimempty = true })):last()
-                end
-                if filetype == "gin-diff" then
-                    local _, _, inner = buf.path:find("%%22(.+)%%22")
-                    return inner
-                end
-                if filetype == "gin-status" then
-                    return "«gin status»"
-                end
-                return buf.name
-            end,
-            get_element_icon = function(element)
-                -- element consists of {filetype: string, path: string, extension: string, directory: string}
-                if element.filetype == "" then
-                    return "", "Normal"
-                end
-                if element.filetype == "oil" then
-                    return "", "Directory"
-                end
-                if element.filetype == "gin-diff" then
-                    return "𝜕", "DiffChange"
-                end
-                -- fallback to default
-                local icon, hl =
-                    require("nvim-web-devicons").get_icon_by_filetype(element.filetype, { default = false })
-                return icon, hl
-            end,
-            custom_filter = function(buf_number, buf_numbers)
-                local filetype = vim.bo[buf_number].filetype
-                local ignore_filetypes = {
-                    -- "gin-status",
-                    "oil",
-                }
-
-                for _, ignore_filetype in ipairs(ignore_filetypes) do
-                    if filetype == ignore_filetype then
-                        return false
+    config = function()
+        require("bufferline").setup {
+            options = {
+                diagnostics = "coc",
+                -- separator_style = "thin",
+                separator_style = "slant",
+                indicator = {
+                    style = "none",
+                    -- style = "underline"
+                },
+                left_trunc_marker = "",
+                right_trunc_marker = "",
+                diagnostics_indicator = function(count, level, diagnostics_dict, context)
+                    if level == "error" then
+                        return "🚨" .. count
+                    elseif level == "warning" then
+                        return "🐤" .. count
                     end
-                end
-                return true
-            end,
-        },
+                    -- return "ℹ️ "
+                    return ""
+                end,
+                tab_size = 5,
+                max_name_length = 30,
+                show_close_icon = false,
+                show_buffer_close_icons = false,
+                ---@param buf {name: string, path: string, bufnr: integer, buffers: integer[], tabnr: integer}
+                name_formatter = function(buf) -- buf contains:
+                    local filetype = vim.bo[buf.bufnr].filetype
+                    if filetype == "oil" then
+                        return vim.iter(vim.split(buf.path, "/", { trimempty = true })):last()
+                    end
+                    if filetype == "gin-diff" then
+                        local _, _, inner = buf.path:find("%%22(.+)%%22")
+                        return inner
+                    end
+                    if filetype == "gin-status" then
+                        return "«gin status»"
+                    end
+                    return buf.name
+                end,
+                get_element_icon = function(element)
+                    -- element consists of {filetype: string, path: string, extension: string, directory: string}
+                    if element.filetype == "" then
+                        return "", "Normal"
+                    end
+                    if element.filetype == "oil" then
+                        return "", "Directory"
+                    end
+                    if element.filetype == "gin-diff" then
+                        return "𝜕", "DiffChange"
+                    end
+                    -- fallback to default
+                    local icon, hl =
+                        require("nvim-web-devicons").get_icon_by_filetype(element.filetype, { default = false })
+                    return icon, hl
+                end,
+                custom_filter = function(buf_number, buf_numbers)
+                    local filetype = vim.bo[buf_number].filetype
+                    local ignore_filetypes = {
+                        -- "gin-status",
+                        "oil",
+                    }
 
-        highlights = {
-            background = { bg = bg.w4, fg = fg.w3 },
-            tab = { bg = bg.w4, fg = fg.w0 },
-            tab_selected = { bg = "None", fg = fg.o0 },
-            tab_close = { bg = bg.w4, fg = fg.f3 },
-            -- close_button = { bg = bg.w4, fg = fg.f3 },
-            -- close_button_visible = { bg = "#444444", fg = fg.o0 },
-            -- close_button_selected = { bg = "None", fg = fg.o0 },
-            buffer_visible = { bg = bg.y4, fg = fg.y0 },
-            buffer_selected = { bg = "None", fg = fg.w0 },
-            numbers = { bg = bg.w4, fg = fg.f3 },
-            numbers_visible = { bg = bg.w2, fg = fg.o0 },
-            numbers_selected = { bg = "None", fg = fg.o0 },
-            diagnostic = { bg = bg.w4 },
-            diagnostic_visible = { bg = bg.w2 },
-            diagnostic_selected = { bg = "None" },
-            hint = { bg = bg.w4, fg = fg.f3 },
-            hint_visible = { bg = bg.w2, fg = fg.o0 },
-            hint_selected = { bg = "None", fg = fg.o0 },
-            hint_diagnostic = { bg = bg.w4, fg = fg.f3 },
-            hint_diagnostic_visible = { bg = bg.w2, fg = fg.o0 },
-            hint_diagnostic_selected = { bg = "None", fg = fg.o0 },
-            info = { bg = bg.w4, fg = fg.f3 },
-            info_visible = { bg = bg.w2, fg = fg.o0 },
-            info_selected = { bg = "None", fg = fg.o0 },
-            info_diagnostic = { bg = bg.w4, fg = fg.f3 },
-            info_diagnostic_visible = { bg = bg.w2, fg = fg.o0 },
-            info_diagnostic_selected = { bg = "None", fg = fg.o0 },
-            warning = { bg = bg.w4 },
-            warning_visible = { bg = bg.w2 },
-            warning_selected = { bg = "None" },
-            warning_diagnostic = { bg = bg.w4 },
-            warning_diagnostic_visible = { bg = bg.w2 },
-            warning_diagnostic_selected = { bg = "None" },
-            error = { bg = bg.w4, fg = fg.r5 },
-            error_visible = { bg = bg.w2, fg = fg.r1 },
-            error_selected = { bg = "None" },
-            error_diagnostic = { bg = bg.w4, fg = fg.r5 },
-            error_diagnostic_visible = { bg = bg.w2, fg = fg.r1 },
-            error_diagnostic_selected = { bg = "None" },
-            modified = { bg = bg.w4 },
-            modified_visible = { bg = bg.w2 },
-            modified_selected = { bg = "None" },
-            duplicate_selected = { bg = "None" },
-            duplicate_visible = { bg = bg.w2 },
-            duplicate = { bg = bg.w4 },
-            indicator_selected = { bg = "None", fg = fg.o0 },
-            pick_selected = { bg = "None", fg = fg.o0 },
-            pick_visible = { bg = bg.w2, fg = fg.o0 },
-            pick = { bg = bg.w4, fg = fg.f3 },
-            offset_separator = { bg = bg.w4, fg = fg.o0 },
+                    for _, ignore_filetype in ipairs(ignore_filetypes) do
+                        if filetype == ignore_filetype then
+                            return false
+                        end
+                    end
+                    return true
+                end,
+            },
 
-            fill = { bg = fg.w3 },
-            separator = { bg = bg.w4, fg = fg.w4 },
-            separator_visible = { bg = bg.y4, fg = fg.w4 },
-            separator_selected = { bg = "None", fg = fg.w4 },
-        },
-    },
+            highlights = {
+                background = { bg = bg.w4, fg = fg.w3 },
+                tab = { bg = bg.w4, fg = fg.w0 },
+                tab_selected = { bg = "None", fg = fg.o0 },
+                tab_close = { bg = bg.w4, fg = fg.f3 },
+                -- close_button = { bg = bg.w4, fg = fg.f3 },
+                -- close_button_visible = { bg = "#444444", fg = fg.o0 },
+                -- close_button_selected = { bg = "None", fg = fg.o0 },
+                buffer_visible = { bg = bg.y4, fg = fg.y0 },
+                buffer_selected = { bg = "None", fg = fg.w0 },
+                numbers = { bg = bg.w4, fg = fg.f3 },
+                numbers_visible = { bg = bg.w2, fg = fg.o0 },
+                numbers_selected = { bg = "None", fg = fg.o0 },
+                diagnostic = { bg = bg.w4 },
+                diagnostic_visible = { bg = bg.w2 },
+                diagnostic_selected = { bg = "None" },
+                hint = { bg = bg.w4, fg = fg.f3 },
+                hint_visible = { bg = bg.w2, fg = fg.o0 },
+                hint_selected = { bg = "None", fg = fg.o0 },
+                hint_diagnostic = { bg = bg.w4, fg = fg.f3 },
+                hint_diagnostic_visible = { bg = bg.w2, fg = fg.o0 },
+                hint_diagnostic_selected = { bg = "None", fg = fg.o0 },
+                info = { bg = bg.w4, fg = fg.f3 },
+                info_visible = { bg = bg.w2, fg = fg.o0 },
+                info_selected = { bg = "None", fg = fg.o0 },
+                info_diagnostic = { bg = bg.w4, fg = fg.f3 },
+                info_diagnostic_visible = { bg = bg.w2, fg = fg.o0 },
+                info_diagnostic_selected = { bg = "None", fg = fg.o0 },
+                warning = { bg = bg.w4 },
+                warning_visible = { bg = bg.w2 },
+                warning_selected = { bg = "None" },
+                warning_diagnostic = { bg = bg.w4 },
+                warning_diagnostic_visible = { bg = bg.w2 },
+                warning_diagnostic_selected = { bg = "None" },
+                error = { bg = bg.w4, fg = fg.r5 },
+                error_visible = { bg = bg.w2, fg = fg.r1 },
+                error_selected = { bg = "None" },
+                error_diagnostic = { bg = bg.w4, fg = fg.r5 },
+                error_diagnostic_visible = { bg = bg.w2, fg = fg.r1 },
+                error_diagnostic_selected = { bg = "None" },
+                modified = { bg = bg.w4 },
+                modified_visible = { bg = bg.w2 },
+                modified_selected = { bg = "None" },
+                duplicate_selected = { bg = "None" },
+                duplicate_visible = { bg = bg.w2 },
+                duplicate = { bg = bg.w4 },
+                indicator_selected = { bg = "None", fg = fg.o0 },
+                pick_selected = { bg = "None", fg = fg.o0 },
+                pick_visible = { bg = bg.w2, fg = fg.o0 },
+                pick = { bg = bg.w4, fg = fg.f3 },
+                offset_separator = { bg = bg.w4, fg = fg.o0 },
+
+                fill = { bg = fg.w3 },
+                separator = { bg = bg.w4, fg = fg.w4 },
+                separator_visible = { bg = bg.y4, fg = fg.w4 },
+                separator_selected = { bg = "None", fg = fg.w4 },
+            },
+        }
+    end,
 }
 
 plugins:push {
