@@ -8,8 +8,9 @@ vim.opt_local.commentstring = "// %s"
 vim.opt_local.formatoptions:append("r")
 
 vim.opt_local.comments = {
-    "b:- ",
-    "b:+ ",
+    "b:-",
+    "b:+",
+    "b:1.",
 }
 
 local function resolve_target()
@@ -64,12 +65,6 @@ vim.keymap.set(
         buffer = true,
     }
 )
-
-vim.opt_local.comments = {
-    "nb:>",
-    "b:-",
-    "b:1. ",
-}
 
 vim.api.nvim_buf_create_user_command(
     0,

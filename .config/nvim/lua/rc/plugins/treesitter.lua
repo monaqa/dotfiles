@@ -148,7 +148,8 @@ plugins:push {
         }
 
         vim.treesitter.language.register("markdown", { "mdx", "obsidian" })
-        vim.treesitter.language.register("gitcommit", { "gina-commit" })
+        vim.treesitter.language.register("gitcommit", { "gina-commit", "gin-commit" })
+        vim.treesitter.language.register("unifieddiff", { "gin-diff" })
 
         local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter"
         vim.opt.runtimepath:prepend(parser_install_dir)

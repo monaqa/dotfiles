@@ -3,67 +3,12 @@ local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
-plugins:push {
-    "https://github.com/ellisonleao/gruvbox.nvim",
-    config = function()
-        -- Default options:
-        require("gruvbox").setup {
-            -- terminal_colors = true, -- add neovim terminal colors
-            -- undercurl = true,
-            -- underline = true,
-            -- bold = true,
-            -- italic = {
-            --     strings = true,
-            --     emphasis = true,
-            --     comments = true,
-            --     operators = false,
-            --     folds = true,
-            -- },
-            -- strikethrough = true,
-            -- invert_selection = false,
-            -- invert_signs = false,
-            -- invert_tabline = false,
-            -- invert_intend_guides = false,
-            -- inverse = true, -- invert background for search, diffs, statuslines and errors
-            contrast = "hard", -- can be "hard", "soft" or empty string
-            -- palette_overrides = {},
-            overrides = {
-                -- default highlight groups
-                ["Conceal"] = { link = "GruvboxFg3" },
-                ["Delimiter"] = { fg = "#a16946" },
-                ["Function"] = { link = "GruvboxBlue" },
-                ["Keyword"] = { link = "GruvboxYellow" },
-                ["Operator"] = { link = "GruvboxYellow" },
-                ["WinSeparator"] = { fg = "#c8c8c8", bg = "None" },
-                ["LineNr"] = { fg = "#968772", bg = "#2a2a2a" },
-
-                -- nvim-treesitter highlight groups
-                ["@function.builtin"] = { link = "GruvboxRed" },
-                ["@keyword.conditional"] = { link = "@keyword" },
-                ["@keyword.repeat"] = { link = "@keyword" },
-                ["@variable.member"] = {},
-                ["@type"] = { link = "GruvboxOrange" },
-                ["@field"] = { fg = "#b3d5c8" },
-
-                -- plugin-specific highlight groups
-                ["GitSignsChangeNr"] = { bg = "#314a5c", fg = "#968772" },
-
-                -- user highlight groups
-                ["VisualBlue"] = { bg = "#4d569e" },
-                ["@text.diff.addsign"] = { link = "@string" },
-                ["@text.diff.delsign"] = { link = "@type" },
-                ["@text.diff.indicator"] = { bg = "#555555" },
-            },
-            -- dim_inactive = false,
-            -- transparent_mode = false,
-        }
-    end,
-}
+local fg = require("monaqa.colorimetry").fg
+local bg = require("monaqa.colorimetry").bg
 
 -- colorscheme
 plugins:push {
     "https://github.com/habamax/vim-gruvbit",
-    lazy = false,
     keys = {
         {
             "@c",
@@ -236,18 +181,6 @@ plugins:push {
     end,
 }
 
--- vim.cmd.colorscheme ""
-
-plugins:push { "https://github.com/yasukotelin/shirotelin", lazy = true }
-
--- plugins:push {
---     lazy = false,
---     keys = {
---         { "sw", "<Cmd>bp | bd #<CR>" },
---     },
---     "https://github.com/romgrk/barbar.nvim",
--- }
-
 plugins:push {
     "https://github.com/akinsho/bufferline.nvim",
     tag = "v4.6.1",
@@ -255,7 +188,6 @@ plugins:push {
     keys = {
         { "sN", "<Cmd>BufferLineMoveNext<CR>" },
         { "sP", "<Cmd>BufferLineMovePrev<CR>" },
-        -- { "sw", "<Cmd>bp | sp | bn | bd<CR>" },
         { "sw", "<Cmd>bp | bd #<CR>" },
     },
     opts = {
@@ -282,70 +214,109 @@ plugins:push {
             max_name_length = 30,
             show_close_icon = false,
             show_buffer_close_icons = false,
-            custom_filter = function(buf_number, buf_numbers)
-                -- filter out filetypes you don't want to see
-                if vim.bo[buf_number].filetype ~= "oil" then
-                    return true
+            ---@param buf {name: string, path: string, bufnr: integer, buffers: integer[], tabnr: integer}
+            name_formatter = function(buf) -- buf contains:
+                local filetype = vim.bo[buf.bufnr].filetype
+                if filetype == "oil" then
+                    return vim.iter(vim.split(buf.path, "/", { trimempty = true })):last()
                 end
+                if filetype == "gin-diff" then
+                    local _, _, inner = buf.path:find("%%22(.+)%%22")
+                    return inner
+                end
+                if filetype == "gin-status" then
+                    return "«gin status»"
+                end
+                return buf.name
+            end,
+            get_element_icon = function(element)
+                -- element consists of {filetype: string, path: string, extension: string, directory: string}
+                if element.filetype == "" then
+                    return "", "Normal"
+                end
+                if element.filetype == "oil" then
+                    return "", "Directory"
+                end
+                if element.filetype == "gin-diff" then
+                    return "𝜕", "DiffChange"
+                end
+                -- fallback to default
+                local icon, hl =
+                    require("nvim-web-devicons").get_icon_by_filetype(element.filetype, { default = false })
+                return icon, hl
+            end,
+            custom_filter = function(buf_number, buf_numbers)
+                -- local filetype = vim.bo[buf_number].filetype
+                -- local ignore_filetypes = {
+                --     -- "gin-status",
+                --     -- "oil",
+                -- }
+                --
+                -- for _, ignore_filetype in ipairs(ignore_filetypes) do
+                --     if filetype == ignore_filetype then
+                --         return false
+                --     end
+                -- end
+                return true
             end,
         },
 
         highlights = {
-            background = { bg = "#666666", fg = "#bbbbbb" },
-            tab = { bg = "#666666", fg = "#bbbbbb" },
-            tab_selected = { bg = "None", fg = "#ebdbb2" },
-            tab_close = { bg = "#666666", fg = "#bbbbbb" },
-            close_button = { bg = "#666666", fg = "#bbbbbb" },
-            close_button_visible = { bg = "#444444", fg = "#ebdbb2" },
-            close_button_selected = { bg = "None", fg = "#ebdbb2" },
-            buffer_visible = { bg = "#444444", fg = "#ebdbb2" },
-            buffer_selected = { bg = "None", fg = "#ebdbb2" },
-            numbers = { bg = "#666666", fg = "#bbbbbb" },
-            numbers_visible = { bg = "#444444", fg = "#ebdbb2" },
-            numbers_selected = { bg = "None", fg = "#ebdbb2" },
-            diagnostic = { bg = "#666666" },
-            diagnostic_visible = { bg = "#444444" },
+            background = { bg = bg.w4, fg = fg.w3 },
+            tab = { bg = bg.w4, fg = fg.w0 },
+            tab_selected = { bg = "None", fg = fg.o0 },
+            tab_close = { bg = bg.w4, fg = fg.f3 },
+            -- close_button = { bg = bg.w4, fg = fg.f3 },
+            -- close_button_visible = { bg = "#444444", fg = fg.o0 },
+            -- close_button_selected = { bg = "None", fg = fg.o0 },
+            buffer_visible = { bg = bg.y4, fg = fg.y0 },
+            buffer_selected = { bg = "None", fg = fg.w0 },
+            numbers = { bg = bg.w4, fg = fg.f3 },
+            numbers_visible = { bg = bg.w2, fg = fg.o0 },
+            numbers_selected = { bg = "None", fg = fg.o0 },
+            diagnostic = { bg = bg.w4 },
+            diagnostic_visible = { bg = bg.w2 },
             diagnostic_selected = { bg = "None" },
-            hint = { bg = "#666666", fg = "#bbbbbb" },
-            hint_visible = { bg = "#444444", fg = "#ebdbb2" },
-            hint_selected = { bg = "None", fg = "#ebdbb2" },
-            hint_diagnostic = { bg = "#666666", fg = "#bbbbbb" },
-            hint_diagnostic_visible = { bg = "#444444", fg = "#ebdbb2" },
-            hint_diagnostic_selected = { bg = "None", fg = "#ebdbb2" },
-            info = { bg = "#666666", fg = "#bbbbbb" },
-            info_visible = { bg = "#444444", fg = "#ebdbb2" },
-            info_selected = { bg = "None", fg = "#ebdbb2" },
-            info_diagnostic = { bg = "#666666", fg = "#bbbbbb" },
-            info_diagnostic_visible = { bg = "#444444", fg = "#ebdbb2" },
-            info_diagnostic_selected = { bg = "None", fg = "#ebdbb2" },
-            warning = { bg = "#666666" },
-            warning_visible = { bg = "#444444" },
+            hint = { bg = bg.w4, fg = fg.f3 },
+            hint_visible = { bg = bg.w2, fg = fg.o0 },
+            hint_selected = { bg = "None", fg = fg.o0 },
+            hint_diagnostic = { bg = bg.w4, fg = fg.f3 },
+            hint_diagnostic_visible = { bg = bg.w2, fg = fg.o0 },
+            hint_diagnostic_selected = { bg = "None", fg = fg.o0 },
+            info = { bg = bg.w4, fg = fg.f3 },
+            info_visible = { bg = bg.w2, fg = fg.o0 },
+            info_selected = { bg = "None", fg = fg.o0 },
+            info_diagnostic = { bg = bg.w4, fg = fg.f3 },
+            info_diagnostic_visible = { bg = bg.w2, fg = fg.o0 },
+            info_diagnostic_selected = { bg = "None", fg = fg.o0 },
+            warning = { bg = bg.w4 },
+            warning_visible = { bg = bg.w2 },
             warning_selected = { bg = "None" },
-            warning_diagnostic = { bg = "#666666" },
-            warning_diagnostic_visible = { bg = "#444444" },
+            warning_diagnostic = { bg = bg.w4 },
+            warning_diagnostic_visible = { bg = bg.w2 },
             warning_diagnostic_selected = { bg = "None" },
-            error = { bg = "#666666", fg = "#dd7777" },
-            error_visible = { bg = "#444444", fg = "#dd4444" },
+            error = { bg = bg.w4, fg = fg.r5 },
+            error_visible = { bg = bg.w2, fg = fg.r1 },
             error_selected = { bg = "None" },
-            error_diagnostic = { bg = "#666666", fg = "#dd7777" },
-            error_diagnostic_visible = { bg = "#444444", fg = "#dd4444" },
+            error_diagnostic = { bg = bg.w4, fg = fg.r5 },
+            error_diagnostic_visible = { bg = bg.w2, fg = fg.r1 },
             error_diagnostic_selected = { bg = "None" },
-            modified = { bg = "#666666" },
-            modified_visible = { bg = "#444444" },
+            modified = { bg = bg.w4 },
+            modified_visible = { bg = bg.w2 },
             modified_selected = { bg = "None" },
             duplicate_selected = { bg = "None" },
-            duplicate_visible = { bg = "#444444" },
-            duplicate = { bg = "#666666" },
-            indicator_selected = { bg = "None", fg = "#ebdbb2" },
-            pick_selected = { bg = "None", fg = "#ebdbb2" },
-            pick_visible = { bg = "#444444", fg = "#ebdbb2" },
-            pick = { bg = "#666666", fg = "#bbbbbb" },
-            offset_separator = { bg = "#666666", fg = "#ebdbb2" },
+            duplicate_visible = { bg = bg.w2 },
+            duplicate = { bg = bg.w4 },
+            indicator_selected = { bg = "None", fg = fg.o0 },
+            pick_selected = { bg = "None", fg = fg.o0 },
+            pick_visible = { bg = bg.w2, fg = fg.o0 },
+            pick = { bg = bg.w4, fg = fg.f3 },
+            offset_separator = { bg = bg.w4, fg = fg.o0 },
 
-            fill = { bg = "#c8c8c8" },
-            separator = { bg = "#666666", fg = "#c8c8c8" },
-            separator_visible = { bg = "#444444", fg = "#c8c8c8" },
-            separator_selected = { bg = "None", fg = "#c8c8c8" },
+            fill = { bg = fg.w3 },
+            separator = { bg = bg.w4, fg = fg.w4 },
+            separator_visible = { bg = bg.y4, fg = fg.w4 },
+            separator_selected = { bg = "None", fg = fg.w4 },
         },
     },
 }
@@ -353,78 +324,118 @@ plugins:push {
 plugins:push {
     "https://github.com/nvim-lualine/lualine.nvim",
     lazy = false,
-    opts = {
-        sections = {
-            lualine_b = {
-                function()
-                    local bufname = vim.fn.bufname()
-                    if bufname:find("oil://", 1, true) ~= nil then
-                        local cwd = require("oil").get_current_dir()
-                        local dir_rel = vim.fn.fnamemodify(cwd, ":.")
-                        if vim.startswith(dir_rel, "/") then
-                            return "[oil] " .. dir_rel
-                        else
-                            return "[oil] ./" .. dir_rel
+    config = function()
+        local theme_colorimetry = {
+            command = {
+                a = { bg = fg.v5, fg = fg.w0, gui = "bold" },
+                b = { bg = fg.v1, fg = bg.w0 },
+                c = { bg = fg.v0, fg = bg.w0 },
+            },
+            inactive = {
+                a = { bg = fg.w5, fg = fg.w0, gui = "bold" },
+                b = { bg = fg.w2, fg = bg.w4 },
+                c = { bg = fg.w1, fg = bg.w4 },
+            },
+            insert = {
+                a = { bg = fg.e5, fg = fg.w0, gui = "bold" },
+                b = { bg = fg.e1, fg = bg.w0 },
+                c = { bg = fg.e0, fg = bg.w0 },
+            },
+            normal = {
+                a = { bg = fg.b5, fg = fg.w0, gui = "bold" },
+                b = { bg = fg.b1, fg = bg.w0 },
+                c = { bg = fg.b0, fg = bg.w1 },
+            },
+            replace = {
+                a = { bg = fg.o5, fg = fg.w0, gui = "bold" },
+                b = { bg = fg.o1, fg = bg.w0 },
+                c = { bg = fg.o0, fg = bg.w0 },
+            },
+            visual = {
+                a = { bg = fg.p5, fg = fg.w0, gui = "bold" },
+                b = { bg = fg.p1, fg = bg.w0 },
+                c = { bg = fg.p0, fg = fg.w0 },
+            },
+            terminal = {
+                a = { bg = fg.r5, fg = fg.w0, gui = "bold" },
+                b = { bg = fg.r1, fg = bg.w0 },
+                c = { bg = fg.r0, fg = fg.w0 },
+            },
+        }
+
+        require("lualine").setup {
+            sections = {
+                lualine_b = {
+                    function()
+                        local bufname = vim.fn.bufname()
+                        if bufname:find("oil://", 1, true) ~= nil then
+                            local cwd = require("oil").get_current_dir()
+                            local dir_rel = vim.fn.fnamemodify(cwd, ":.")
+                            if vim.startswith(dir_rel, "/") then
+                                return "[oil] " .. dir_rel
+                            else
+                                return "[oil] ./" .. dir_rel
+                            end
                         end
-                    end
-                    local index = bufname:find("://", 1, true)
-                    if index ~= nil then
-                        return "[" .. bufname:sub(1, index - 1) .. "]"
-                    end
-                    return [[%f %m]]
-                end,
+                        local index = bufname:find("://", 1, true)
+                        if index ~= nil then
+                            return "[" .. bufname:sub(1, index - 1) .. "]"
+                        end
+                        return [[%f %m]]
+                    end,
+                },
+                lualine_c = {
+                    function()
+                        -- table.insert(_G.debug_lualine, vim.fn["coc#status"]())
+                        -- return vim.pesc(vim.fn["coc#status"]())
+                        return (vim.fn["coc#status"]()):gsub("%%", "%%%%")
+                    end,
+                },
+                lualine_y = {
+                    function()
+                        local branch = vim.fn["gina#component#repo#branch"]()
+                        -- table.insert(_G.debug_lualine, branch)
+                        local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+                        if branch == "" then
+                            return cwd
+                        else
+                            return cwd .. " │ " .. vim.fn["gina#component#repo#branch"]()
+                        end
+                    end,
+                },
+                lualine_z = {
+                    function()
+                        local n = #tostring(vim.fn.line("$"))
+                        n = math.max(n, 3)
+                        return "%" .. n .. [[l/%-3L:%-2c]]
+                    end,
+                },
             },
-            lualine_c = {
-                function()
-                    -- table.insert(_G.debug_lualine, vim.fn["coc#status"]())
-                    -- return vim.pesc(vim.fn["coc#status"]())
-                    return (vim.fn["coc#status"]()):gsub("%%", "%%%%")
-                end,
+            -- winbar = {
+            --     lualine_c = {'filename'},
+            -- },
+            -- inactive_winbar = {
+            --     lualine_a = {},
+            --     lualine_b = {},
+            --     lualine_c = {'filename'},
+            --     lualine_x = {},
+            --     lualine_y = {},
+            --     lualine_z = {}
+            -- },
+            options = {
+                theme = theme_colorimetry,
+                section_separators = { "", "" },
+                component_separators = { "", "" },
+                globalstatus = true,
+                refresh = {
+                    statusline = 10000,
+                    -- statusline = 1000,
+                    tabline = 10000,
+                    winbar = 10000,
+                },
             },
-            lualine_y = {
-                function()
-                    local branch = vim.fn["gina#component#repo#branch"]()
-                    -- table.insert(_G.debug_lualine, branch)
-                    local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-                    if branch == "" then
-                        return cwd
-                    else
-                        return cwd .. " │ " .. vim.fn["gina#component#repo#branch"]()
-                    end
-                end,
-            },
-            lualine_z = {
-                function()
-                    local n = #tostring(vim.fn.line("$"))
-                    n = math.max(n, 3)
-                    return "%" .. n .. [[l/%-3L:%-2c]]
-                end,
-            },
-        },
-        -- winbar = {
-        --     lualine_c = {'filename'},
-        -- },
-        -- inactive_winbar = {
-        --     lualine_a = {},
-        --     lualine_b = {},
-        --     lualine_c = {'filename'},
-        --     lualine_x = {},
-        --     lualine_y = {},
-        --     lualine_z = {}
-        -- },
-        options = {
-            theme = "tomorrow",
-            section_separators = { "", "" },
-            component_separators = { "", "" },
-            globalstatus = true,
-            refresh = {
-                statusline = 10000,
-                -- statusline = 1000,
-                tabline = 10000,
-                winbar = 10000,
-            },
-        },
-    },
+        }
+    end,
 }
 
 -- plugins:push {

@@ -74,6 +74,13 @@ plugins:push {
 }
 
 plugins:push {
+    "https://github.com/lambdalisue/vim-gin",
+    config = function()
+        vim.g.gin_proxy_apply_without_confirm = 1
+    end,
+}
+
+plugins:push {
     "https://github.com/lewis6991/gitsigns.nvim",
     lazy = false,
     config = function(_, opts)
