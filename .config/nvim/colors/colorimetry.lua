@@ -163,6 +163,7 @@ sethl("@punctuation.special") { fg = fg.o3 }
 sethl("@repeat") {}
 sethl("@storageclass") {}
 sethl("@string") { fg = fg.g2 }
+sethl("@string.field") { fg = fg.g1 }
 sethl("@string.special") { fg = fg.g3 }
 sethl("@string.regexp") { fg = fg.g3 }
 sethl("@string.escape") { fg = fg.e4 }

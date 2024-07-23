@@ -246,17 +246,17 @@ plugins:push {
                 return icon, hl
             end,
             custom_filter = function(buf_number, buf_numbers)
-                -- local filetype = vim.bo[buf_number].filetype
-                -- local ignore_filetypes = {
-                --     -- "gin-status",
-                --     -- "oil",
-                -- }
-                --
-                -- for _, ignore_filetype in ipairs(ignore_filetypes) do
-                --     if filetype == ignore_filetype then
-                --         return false
-                --     end
-                -- end
+                local filetype = vim.bo[buf_number].filetype
+                local ignore_filetypes = {
+                    -- "gin-status",
+                    "oil",
+                }
+
+                for _, ignore_filetype in ipairs(ignore_filetypes) do
+                    if filetype == ignore_filetype then
+                        return false
+                    end
+                end
                 return true
             end,
         },
@@ -354,12 +354,12 @@ plugins:push {
             visual = {
                 a = { bg = fg.p5, fg = fg.w0, gui = "bold" },
                 b = { bg = fg.p1, fg = bg.w0 },
-                c = { bg = fg.p0, fg = fg.w0 },
+                c = { bg = fg.p0, fg = bg.w0 },
             },
             terminal = {
                 a = { bg = fg.r5, fg = fg.w0, gui = "bold" },
                 b = { bg = fg.r1, fg = bg.w0 },
-                c = { bg = fg.r0, fg = fg.w0 },
+                c = { bg = fg.r0, fg = bg.w0 },
             },
         }
 

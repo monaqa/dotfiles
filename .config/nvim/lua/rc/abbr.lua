@@ -76,7 +76,7 @@ make_abbrev {
     { from = "fmt", to = 'call CocActionAsync("format")' },
     { from = "gby", to = "GinaBrowseYank" },
     { from = "gc", to = "Gin commit" },
-    { from = "gl", to = "GinLog --all --graph --oneline" },
+    { from = "gl", to = "GinLog" },
     { from = "gpc", to = "GinaPrChanges" },
     { from = "gs", to = "GinStatus ++opener=split" },
     { from = "git", to = "Gin" },
