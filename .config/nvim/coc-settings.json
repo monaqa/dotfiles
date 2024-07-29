@@ -114,7 +114,7 @@
   "[rust]": {"coc.preferences.formatOnSave": true },
   "[css]": {"coc.preferences.formatOnSave": true },
   "[javascript][typescript][typescriptreact]": {"coc.preferences.formatOnSave": true },
-  "[svelte]": {"coc.preferences.formatOnSave": true },
+  "[svelte]": {"coc.preferences.formatOnSave": false },
   "[toml]": {"coc.preferences.formatOnSave": false },
 
   "codeLens.enable": false,

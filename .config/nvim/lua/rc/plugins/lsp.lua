@@ -60,6 +60,7 @@ plugins:push {
         vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)")
         vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
         vim.keymap.set("n", "K", util.cmdcr("call CocActionAsync('doHover')"))
+        vim.keymap.set("n", "tf", util.cmdcr("call CocActionAsync('format')"))
         vim.keymap.set("n", "th", util.cmdcr("CocCommand document.toggleInlayHint"))
 
         -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする

@@ -70,7 +70,6 @@ make_abbrev {
     { from = "cl", to = "CocList" },
     { from = "clc", to = "CocLocalConfig" },
     { from = "cm", to = "Capture messages" },
-    { from = "cq", to = "CocQuickfix" },
     { from = "cr", to = "CocRestart" },
     { from = "dia", to = "Typscrap" },
     { from = "fmt", to = 'call CocActionAsync("format")' },

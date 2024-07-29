@@ -3,7 +3,8 @@ local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
--- plugins:push { "https://github.com/glidenote/memolist.vim" }
+plugins:push { "https://github.com/notomo/lreload.nvim" }
+
 plugins:push {
     "https://github.com/haya14busa/vim-asterisk",
     keys = {
