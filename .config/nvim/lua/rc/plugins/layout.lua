@@ -102,6 +102,9 @@ plugins:push {
                     if filetype == "gin-status" then
                         return "«gin status»"
                     end
+                    if filetype == "typst" and buf.name == "index.typ" then
+                        return "(" .. vim.iter(vim.split(buf.path, "/", { trimempty = true })):nth(-2) .. ")"
+                    end
                     return buf.name
                 end,
                 get_element_icon = function(element)
@@ -114,6 +117,9 @@ plugins:push {
                     end
                     if element.filetype == "gin-diff" then
                         return "𝜕", "DiffChange"
+                    end
+                    if element.filetype == "typst" then
+                        return "𝐓", "@string"
                     end
                     -- fallback to default
                     local icon, hl =
@@ -264,7 +270,8 @@ plugins:push {
                         if index ~= nil then
                             return "[" .. bufname:sub(1, index - 1) .. "]"
                         end
-                        return [[%f %m]]
+                        local fname = vim.fn.fnamemodify(bufname, ":.")
+                        return fname .. [[ %m]]
                     end,
                 },
                 lualine_c = {
