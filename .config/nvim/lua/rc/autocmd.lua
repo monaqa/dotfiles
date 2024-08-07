@@ -539,3 +539,19 @@ local function bufname_vim_match(match, _, source, predicate)
 end
 
 query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
+
+-- §§1 Terminal
+
+util.autocmd_vimrc("TermOpen") {
+    pattern = "*",
+    callback = function()
+        vim.cmd.startinsert()
+    end,
+}
+
+util.autocmd_vimrc("TermClose") {
+    pattern = "*",
+    callback = function()
+        vim.cmd.bdelete { bang = true, args = { vim.fn.expand("<abuf>") } }
+    end,
+}

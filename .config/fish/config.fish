@@ -68,7 +68,9 @@ fish_default_key_bindings
 
 # basic
 set -g fish_ambiguous_width 1
-set -x EDITOR nvim
+if not set -q EDITOR
+  set -x EDITOR nvim
+end
 set -x LSCOLORS gxfxcxdxbxegedabagacad
 
 # PATH
@@ -118,7 +120,7 @@ set -x MANPAGER 'nvim +Man!'
 # abbr {{{
 # abbr は universal 変数として格納される．
 # リセットしたい場合は以下のコマンドを実行
-# for a in (abbr --list); abbr --erase $a; end
+for a in (abbr --list); abbr --erase $a; end
 
 abbr -a cp    "cp -i"
 abbr -a mv    "mv -i"
@@ -162,7 +164,16 @@ abbr -a jnb  "jupyter notebook"
 abbr -a jlb  "jupyter lab"
 
 # vim
-abbr -a v    "nvim"
+alias edit "$EDITOR"
+function choose_editor
+    if test "$EDITOR" = "nvim"
+        echo nvim
+    else
+        echo edit
+    end
+end
+
+abbr -a v --function choose_editor
 abbr -a vtex "env NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim"
 abbr -a mkvs "mkdir .vimsessions"
 abbr -a rmvs "rm .vimsessions/*"

@@ -56,7 +56,7 @@
   "vim-asterisk": { "branch": "master", "commit": "77e97061d6691637a034258cc415d98670698459" },
   "vim-colortemplate": { "branch": "master", "commit": "dc851fdc8ec54a4c24d574b8701e9d8a27071970" },
   "vim-edgemotion": { "branch": "master", "commit": "8d16bd92f6203dfe44157d43be7880f34fd5c060" },
-  "vim-gin": { "branch": "main", "commit": "6daee3786b7dd7ad779c4a7904aa008695a2e6f2" },
+  "vim-guise": { "branch": "main", "commit": "1759cc936583490af76c36e0a25546329b2b9921" },
   "vim-javascript": { "branch": "master", "commit": "c470ce1399a544fe587eab950f571c83cccfbbdc" },
   "vim-maketable": { "branch": "master", "commit": "d72e73f333c64110524197ec637897bd1464830f" },
   "vim-operator-replace": { "branch": "master", "commit": "1345a556a321a092716e149d4765a5e17c0e9f0f" },

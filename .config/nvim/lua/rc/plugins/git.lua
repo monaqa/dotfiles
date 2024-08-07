@@ -73,14 +73,14 @@ plugins:push {
     end,
 }
 
-plugins:push {
-    "https://github.com/lambdalisue/vim-gin",
-    config = function()
-        vim.g.gin_proxy_apply_without_confirm = 1
-        vim.g.gin_proxy_editor_opener = "horizontal drop"
-        vim.g.gin_log_default_args = { "--all", "--graph", "--oneline" }
-    end,
-}
+-- plugins:push {
+--     "https://github.com/lambdalisue/vim-gin",
+--     config = function()
+--         vim.g.gin_proxy_apply_without_confirm = 1
+--         vim.g.gin_proxy_editor_opener = "horizontal drop"
+--         vim.g.gin_log_default_args = { "--all", "--graph", "--oneline" }
+--     end,
+-- }
 
 plugins:push {
     "https://github.com/lewis6991/gitsigns.nvim",
