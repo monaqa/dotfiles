@@ -22,6 +22,11 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end,
 })
 
+local fg = require("colorimetry.palette").fg
+local bg = require("colorimetry.palette").bg
+
+vim.api.nvim_set_hl(0, "LilypondAccidental", { fg = fg.r2 })
+
 vim.opt_local.commentstring = "% %s"
 
 vim.keymap.set("n", "<Up>", function()

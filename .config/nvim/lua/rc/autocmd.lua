@@ -544,14 +544,16 @@ query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
 
 util.autocmd_vimrc("TermOpen") {
     pattern = "*",
-    callback = function()
-        vim.cmd.startinsert()
+    callback = function(meta)
+        if not vim.endswith(meta.file, "fish") then
+            vim.cmd.startinsert()
+        end
     end,
 }
 
 util.autocmd_vimrc("TermClose") {
     pattern = "*",
     callback = function()
-        vim.cmd.bdelete { bang = true, args = { vim.fn.expand("<abuf>") } }
+        pcall(vim.cmd.bdelete, { bang = true, args = { vim.fn.expand("<abuf>") } })
     end,
 }

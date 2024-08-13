@@ -72,7 +72,7 @@ vim.keymap.set("n", "<Space>z", "zMzv", { remap = true })
 
 -- Section1 search
 
-vim.keymap.set("n", "<C-l>", ":<C-u>nohlsearch<CR><C-l>", {})
+vim.keymap.set("n", "<C-l>", "<Cmd>nohlsearch<CR><C-l>", {})
 
 -- 検索 with temporal attention
 vim.keymap.set(

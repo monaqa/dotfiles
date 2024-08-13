@@ -85,6 +85,8 @@ set -x PATH "$HOME/.bun/bin" $PATH
 # set -x PATH "$HOME/.moon/bin" $PATH
 # set -x PATH "$HOME/.rye/shims" $PATH
 
+set -x XDG_CONFIG_HOME "$HOME/.config"
+
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 set --export --prepend PATH "/Users/monaqa/.rd/bin"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

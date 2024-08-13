@@ -78,6 +78,8 @@ make_abbrev {
     { from = "gl", to = "Gina log --all --graph" },
     { from = "gpc", to = "GinaPrChanges" },
     { from = "gs", to = "Gina status -s --opener=split" },
+    -- { from = "gs", to = "horizontal term lazygit" },
+    { from = "gg", to = "horizontal term lazygit" },
     { from = "git", to = "Gina" },
     { from = "it", to = "InspectTree" },
     { from = "l", to = "Lazy" },
