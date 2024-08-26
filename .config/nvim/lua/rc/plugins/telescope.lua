@@ -9,6 +9,7 @@ plugins:push {
         "https://github.com/fannheyward/telescope-coc.nvim",
         "https://github.com/nvim-telescope/telescope-smart-history.nvim",
         "https://github.com/kkharji/sqlite.lua",
+        "https://github.com/nvim-telescope/telescope-frecency.nvim",
         "telescope-egrepify.nvim",
     },
     cmd = { "Telescope" },
@@ -52,7 +53,7 @@ plugins:push {
             end,
         },
         {
-            "ss",
+            "sm",
             function()
                 require("telescope").extensions.typscrap.contents {
                     prompt_prefix = "𝝋",
@@ -70,13 +71,13 @@ plugins:push {
                 }
             end,
         },
-        -- {
-        --     "si",
-        --     function()
-        --         local extensions = require("telescope").extensions
-        --         extensions.frecency.frecency { prompt_prefix = "𝑓", workspace = "CWD" }
-        --     end,
-        -- },
+        {
+            "ss",
+            function()
+                local extensions = require("telescope").extensions
+                extensions.frecency.frecency { prompt_prefix = "𝑓", workspace = "CWD" }
+            end,
+        },
     },
     config = function()
         local actions = require("telescope.actions")
@@ -85,6 +86,13 @@ plugins:push {
         require("telescope").load_extension("smart_history")
         require("telescope").load_extension("egrepify")
         require("telescope").load_extension("typscrap")
+        require("telescope").load_extension("frecency")
+
+        require("frecency.config").setup {
+            auto_validate = true,
+            ignore_patterns = { "*/.git", "*/.git/*", "*/.DS_Store" },
+            matcher = "fuzzy",
+        }
 
         -- manage database history
         local db_dir = vim.fn.stdpath("data") .. "/databases"

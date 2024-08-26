@@ -89,15 +89,6 @@ util.create_cmd("EditFtplugin", function()
     vim.cmd.edit { "~/.config/nvim/after/ftplugin/" .. vim.opt_local.filetype:get() .. ".lua" }
 end)
 
--- §§1 memolist.vim + telescope
-util.create_cmd("MemoFind", function()
-    require("telescope.builtin").find_files { cwd = "~/memo" }
-end)
-
-util.create_cmd("MemoFind", function()
-    require("telescope.builtin").live_grep { cwd = "~/memo" }
-end)
-
 util.create_cmd("Normal", function(tbl)
     local code = vim.api.nvim_replace_termcodes(tbl.args, true, true, true)
     local cmd = util.ifexpr(tbl.bang, "normal!", "normal")
@@ -109,12 +100,10 @@ end, { range = true, nargs = 1, bang = true })
 -- §§1 todome
 util.create_cmd("TodomeOpen", "edit ~/todome/tasks.todome")
 
--- §§1 todome
-util.create_cmd("Memo", function()
-    local cwd = vim.fn.getcwd()
-    local memo_file = monaqa.memo_local.create_memo_files(cwd)
-    vim.cmd.edit(memo_file)
-end)
+monaqa.shorthand.create_cmd("Split", function(meta)
+    util.split_window()
+    vim.cmd(meta.args)
+end, { nargs = 1 })
 
 -- §§1 Save Clipboard Image
 

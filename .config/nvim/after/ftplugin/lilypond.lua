@@ -1,4 +1,6 @@
 local uv = vim.uv
+local util = require("rc.util")
+
 require("lazy").load { plugins = { "dial.nvim", "general-converter.nvim" } }
 -- vim.b.did_ftplugin = 1
 -- vim.opt_local.runtimepath:append {
@@ -324,6 +326,45 @@ if not vim.b.loaded then
 end
 
 vim.b.loaded = true
+
+local cmds = {
+    "acciaccatura",
+    "appoggiatura",
+    "grace",
+    "slashedGrace",
+    "partialLine",
+    "break",
+    "line",
+    "remark",
+    "longRest",
+}
+
+local function omnifunc(findstart, base)
+    if util.to_bool(findstart) then
+        ---@type string
+        local line = vim.fn.getline(".")
+        local start = vim.fn.col(".")
+        vim.print { line = line, start = start, sub = line:sub(start, start) }
+        while start > 0 do
+            start = start - 1
+            if line:sub(start, start) == "\\" then
+                return start
+            end
+        end
+        return vim.fn.col(".") - 1
+    end
+
+    ---@type string[]
+    return vim.iter(cmds)
+        :filter(function(s)
+            return vim.regex("^" .. base):match_str(s) ~= nil
+        end)
+        :totable()
+end
+
+_G.vimrc.omnifunc.lilypond = omnifunc
+
+vim.opt_local.omnifunc = "v:lua.vimrc.omnifunc.lilypond"
 
 -- vim.api.nvim_create_autocmd()
 

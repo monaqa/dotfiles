@@ -450,6 +450,7 @@ mode_winresize.register_mapping("<", "<C-w><")
 
 -- Section1 operator/text editing
 
+-- Section2 general
 -- どうせ空行1行なんて put するようなもんじゃないし、空行で上書きされるの嫌よね
 vim.keymap.set("n", "dd", function()
     if vim.v.count1 == 1 and vim.v.register == [["]] and vim.fn.getline(".") == "" then
@@ -512,7 +513,78 @@ end
 vim.keymap.set("n", "<Space>a", increment_char(1), { expr = true })
 vim.keymap.set("n", "<Space>x", increment_char(-1), { expr = true })
 
+-- Section2 :normal command alternative
 local ns_id = vim.api.nvim_create_namespace("vimrc")
+
+local function term(s)
+    return vim.api.nvim_replace_termcodes(s, true, true, true)
+end
+
+local maps = {
+    -- <C-m> は <CR> と同じなのでちゃんと `<CR>` できることを保証しておく
+    ["<C-m>"] = "<C-m>",
+
+    -- <C-c> はキャンセル用でいいのではないか
+    ["<C-c>"] = "<Esc>",
+
+    -- <C-v> は特殊文字を入力する最後の砦なので残しておこうかな
+    ["<C-v>"] = "<C-v>",
+
+    ["<C-a>"] = "<C-v><C-a>",
+    ["<C-b>"] = "<C-v><C-b>",
+    ["<C-d>"] = "<C-v><C-d>",
+    ["<C-e>"] = "<C-v><C-e>",
+    ["<C-f>"] = "<C-v><C-f>",
+    ["<C-g>"] = "<C-v><C-g>",
+    ["<C-h>"] = "<C-v><C-h>",
+    ["<C-i>"] = "<C-v><C-i>",
+    ["<C-j>"] = "<C-v><C-j>",
+    ["<C-k>"] = "<C-v><C-k>",
+    ["<C-l>"] = "<C-v><C-l>",
+    ["<C-n>"] = "<C-v><C-n>",
+    ["<C-o>"] = "<C-v><C-o>",
+    ["<C-p>"] = "<C-v><C-p>",
+    ["<C-q>"] = "<C-v><C-q>",
+    ["<C-r>"] = "<C-v><C-r>",
+    ["<C-s>"] = "<C-v><C-s>",
+    ["<C-t>"] = "<C-v><C-t>",
+    ["<C-u>"] = "<C-v><C-u>",
+    ["<C-w>"] = "<C-v><C-w>",
+    ["<C-x>"] = "<C-v><C-x>",
+    ["<C-y>"] = "<C-v><C-y>",
+    ["<C-z>"] = "<C-v><C-z>",
+}
+
+-- 一時的に特定のマッピングを上書き適用する。上書きしたぶんを unmap する関数を返す。
+local function temporal_cmap()
+    local maplist = vim.iter(vim.fn.maplist())
+        :filter(function(m)
+            return m.mode == "c"
+        end)
+        :totable()
+
+    for k, v in pairs(maps) do
+        vim.keymap.set("c", k, v)
+    end
+    vim.keymap.set("c", "<Esc>", function()
+        if vim.fn.getcmdline() == "" then
+            return "<Esc>"
+        else
+            return "<C-v><Esc>"
+        end
+    end, { expr = true })
+
+    return function()
+        for k, _ in pairs(maps) do
+            vim.keymap.del("c", k)
+        end
+        vim.keymap.del("c", "<Esc>")
+
+        vim.iter(maplist):each(function(m)
+            vim.fn.mapset(m)
+        end)
+    end
+end
 
 vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
     local cursor_line = vim.fn.line(".")
@@ -531,12 +603,14 @@ vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
     vim.cmd.normal { args = { "A" }, bang = true }
     vim.cmd.redraw { bang = true }
 
+    local unmap = temporal_cmap()
     while not finished do
         vim.ui.input({ prompt = ":'<,'>normal " }, function(cmd)
             if cmd == nil or cmd == "" then
                 finished = true
             else
-                vim.cmd.normal { args = { "iu" }, bang = true }
+                -- 1回の編集ごとに undo が戻るようにする
+                vim.cmd.normal { args = { term("i<C-g>u") }, bang = true }
                 vim.cmd.normal {
                     args = { cmd },
                     range = { start_line, end_line },
@@ -545,6 +619,7 @@ vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
             end
         end)
     end
+    unmap()
 
     vim.api.nvim_buf_del_extmark(0, ns_id, mark_id)
 

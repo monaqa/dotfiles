@@ -542,14 +542,14 @@ query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
 
 -- §§1 Terminal
 
-util.autocmd_vimrc("TermOpen") {
-    pattern = "*",
-    callback = function(meta)
-        if not vim.endswith(meta.file, "fish") then
-            vim.cmd.startinsert()
-        end
-    end,
-}
+-- util.autocmd_vimrc("TermOpen") {
+--     pattern = "*",
+--     callback = function(meta)
+--         if not vim.endswith(meta.file, "fish") then
+--             vim.cmd.startinsert()
+--         end
+--     end,
+-- }
 
 util.autocmd_vimrc("TermClose") {
     pattern = "*",

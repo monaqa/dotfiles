@@ -679,7 +679,7 @@ plugins:push {
                 },
                 {
                     desc = "pandoc で変換し、クリップボードにいれる (typst -> markdown)",
-                    converter = yank_pandoc_result("typst", "markdown+hard_line_breaks"),
+                    converter = yank_pandoc_result("typst", "markdown+hard_line_breaks-simple_tables"),
                     labels = { "typst-pandoc" },
                 },
             },
