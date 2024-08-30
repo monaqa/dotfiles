@@ -1,14 +1,17 @@
 -- vim:fdm=marker:fmr=§§,■■
 
-local util = require("rc.util")
+local monaqa = require("monaqa")
+local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
+local to_bool = monaqa.logic.to_bool
+local mapset_local = monaqa.shorthand.mapset_local
 
 -- §§1 表示設定
-
-util.autocmd_vimrc("StdinReadPost") {
+autocmd_vimrc("StdinReadPost") {
+    desc = [[標準入力から nvim を開いたときに編集された扱いにしない]],
     command = "set nomodified",
 }
 
-util.autocmd_vimrc { "WinLeave", "FocusLost", "InsertEnter" } {
+autocmd_vimrc { "WinLeave", "FocusLost", "InsertEnter" } {
     desc = "temporal attention の設定初期化",
     callback = function()
         vim.opt_local.cursorline = false
@@ -17,31 +20,29 @@ util.autocmd_vimrc { "WinLeave", "FocusLost", "InsertEnter" } {
     end,
 }
 
-util.autocmd_vimrc("Syntax") {
+autocmd_vimrc("Syntax") {
     desc = "minlines と maxlines の設定",
     command = "syn sync minlines=500 maxlines=1000",
 }
 
-util.autocmd_vimrc { "VimEnter", "WinEnter" } {
+autocmd_vimrc { "VimEnter", "WinEnter" } {
     desc = "全角スペースハイライト (https://qiita.com/tmsanrinsha/items/d6c11f2b7788eb24c776)",
     command = [[
         highlight link UnicodeSpaces Error
         match UnicodeSpaces /[\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/
     ]],
 }
-util.autocmd_vimrc("ColorScheme") {
+autocmd_vimrc("ColorScheme") {
     desc = "UnicodeSpaces を Error 色にハイライトする",
     command = "highlight link UnicodeSpaces Error",
 }
 
-util.autocmd_vimrc("VimResized") {
+autocmd_vimrc("VimResized") {
     desc = "ウィンドウの画面幅を揃える",
     command = [[Normal! <C-w>=]],
 }
 
--- autocmd BufRead * autocmd FileType <buffer> ++once
---   \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif
-util.autocmd_vimrc("BufRead") {
+autocmd_vimrc("BufRead") {
     desc = "カーソル位置を閉じたときの場所に戻す",
     callback = function(arg)
         if vim.bo.filetype == "commit" or vim.bo.filetype == "rebase" then
@@ -54,138 +55,24 @@ util.autocmd_vimrc("BufRead") {
     end,
 }
 
--- §§1 .init.lua.local
----@class LocalrcList
-local LocalrcList = {
-    -- 実行しても安全なディレクトリパスを保存しておくところ。
-    whitelist = vim.fn.stdpath("data") .. "/localrc/whitelist",
-    blacklist = vim.fn.stdpath("data") .. "/localrc/blacklist",
+autocmd_vimrc("VimEnter") {
+    desc = [[.init.lua.local に対してエラーを返す]],
+    callback = function()
+        local cwd = vim.fn.getcwd()
+        local init_lua_local = ("%s/.init.lua.local"):format(cwd)
 
-    create_root = function()
-        if vim.fn.filewritable(vim.fn.stdpath("data") .. "/localrc") ~= 2 then
-            vim.fn.mkdir(vim.fn.stdpath("data") .. "/localrc", "p")
+        -- 無けりゃあ用はないぜ
+        if not to_bool(vim.fn.filereadable(init_lua_local)) then
+            return
         end
+
+        vim.notify(".init.lua.local はもう使えません‥。", vim.log.levels.ERROR, {})
     end,
-
-    ---保存されたパスの一覧を取得する。
-    ---@param self LocalrcList
-    ---@return string[]
-    get_whitelist = function(self)
-        if util.to_bool(vim.fn.filereadable(self.whitelist)) then
-            return vim.fn.readfile(self.whitelist)
-        end
-        return {}
-    end,
-
-    ---保存されたパスの一覧を取得する。
-    ---@param self LocalrcList
-    ---@return string[]
-    get_blacklist = function(self)
-        if util.to_bool(vim.fn.filereadable(self.blacklist)) then
-            return vim.fn.readfile(self.blacklist)
-        end
-        return {}
-    end,
-
-    ---安全なパスを追加する。
-    ---@param self LocalrcList
-    ---@param dir string
-    append_whitelist = function(self, dir)
-        local fullpath = vim.fn.fnamemodify(dir, ":p")
-        self:create_root()
-        vim.fn.writefile({ fullpath }, self.whitelist, "a")
-    end,
-
-    ---危険なパスを追加する。
-    ---@param self LocalrcList
-    ---@param dir string
-    append_blacklist = function(self, dir)
-        local fullpath = vim.fn.fnamemodify(dir, ":p")
-        self:create_root()
-        vim.fn.writefile({ fullpath }, self.blacklist, "a")
-    end,
-
-    ---与えられたパスがホワイトリストに登録されていれば true を返す。
-    ---@param self LocalrcList
-    ---@param path string
-    ---@return boolean | nil
-    is_safe = function(self, path)
-        local fullpath = vim.fn.fnamemodify(path, ":p")
-        local black_dirs = self:get_blacklist()
-        for _, dir in ipairs(black_dirs) do
-            if dir == fullpath then
-                return false
-            end
-        end
-        local white_dirs = self:get_whitelist()
-        for _, dir in ipairs(white_dirs) do
-            if dir == fullpath then
-                return true
-            end
-        end
-        return nil
-    end,
-}
-
-local localrc_list = setmetatable({}, { __index = LocalrcList })
-
-local function try_eval_init_lua_local()
-    local cwd = vim.fn.getcwd()
-    local init_lua_local = ("%s/.init.lua.local"):format(cwd)
-
-    -- 無けりゃあ用はないぜ
-    if not util.to_bool(vim.fn.filereadable(init_lua_local)) then
-        return
-    end
-
-    vim.deprecate(".init.lua.local", ".nvim.lua", "0.11.0")
-
-    if localrc_list:is_safe(cwd) then
-        vim.cmd(([[luafile %s]]):format(init_lua_local))
-        return
-    end
-
-    if localrc_list:is_safe(cwd) == false then
-        util.print_error("This directory may contain malicious .init.lua.local file. Deleting the file is recommended.")
-        return
-    end
-
-    vim.ui.select(
-        {
-            "Don't want to decide now (default)",
-            "Add to whitelist and execute .init.lua.local immediately",
-            "Add to whitelist but not execute .init.lua.local this time",
-            "Add to BLACKLIST",
-        },
-        {
-            prompt = ".init.lua.local file is found. How do you handle this?",
-        },
-        ---@param item string
-        ---@param idx integer
-        function(item, idx)
-            if idx == 1 then
-                return
-            elseif idx == 2 then
-                localrc_list:append_whitelist(cwd)
-                vim.cmd(([[luafile %s]]):format(init_lua_local))
-            elseif idx == 3 then
-                localrc_list:append_whitelist(cwd)
-            elseif idx == 4 then
-                localrc_list:append_blacklist(cwd)
-            else
-                return
-            end
-        end
-    )
-end
-
-util.autocmd_vimrc("VimEnter") {
-    callback = try_eval_init_lua_local,
 }
 
 -- §§1 editor の機能
 
-util.autocmd_vimrc("InsertLeave") {
+autocmd_vimrc("InsertLeave") {
     desc = "挿入モードを抜けたら paste モードを off にする",
     callback = function()
         vim.o.paste = false
@@ -200,7 +87,7 @@ local function auto_mkdir()
     if is_empty or is_url or is_directory then
         return
     end
-    if util.to_bool(vim.v.cmdbang) then
+    if to_bool(vim.v.cmdbang) then
         vim.fn.mkdir(dir, "p")
         return
     end
@@ -219,7 +106,7 @@ local function auto_mkdir()
     vim.fn.inputrestore()
 end
 
-util.autocmd_vimrc("BufWritePre") {
+autocmd_vimrc("BufWritePre") {
     desc = "保存時に必要があれば自動で mkdir する",
     callback = auto_mkdir,
 }
@@ -259,7 +146,7 @@ local function remove_common_indent(s)
     return table.concat(new_lines, "\n")
 end
 
-util.autocmd_vimrc("TextYankPost") {
+autocmd_vimrc("TextYankPost") {
     desc = "無名レジスタへの yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）",
     callback = function()
         local event = vim.v.event
@@ -285,61 +172,45 @@ util.autocmd_vimrc("TextYankPost") {
     end,
 }
 
-util.autocmd_vimrc("VimEnter") {
+autocmd_vimrc("VimEnter") {
     desc = "マクロ用のレジスタを消去",
     callback = function()
         vim.fn.setreg("q", "")
     end,
 }
 
--- util.autocmd_vimrc "VimEnter" {
---     desc = ".todome が cwd にあればそれを開く",
---     callback = function()
---         if #vim.v.argv > 2 then
---             -- Workaround: nvim を引数付きで開いた場合は後続処理を行わない。
---             -- 引数無しで開けば vim.v.argv は
---             -- {"nvim への絶対パス", "--embed"} みたいな配列になるため、
---             -- それ以外を弾く形。
---             return
---         end
---         if util.to_bool(vim.fn.filereadable ".todome") then
---             vim.cmd.edit ".todome"
---             vim.cmd.setfiletype "todome"
---             -- なぜか BufRead が発火しない
---             vim.cmd.normal [[g`"]]
---         end
---     end,
--- }
-
-util.autocmd_vimrc("QuickfixCmdPost") {
+autocmd_vimrc("QuickfixCmdPost") {
+    desc = "Quickfix のコマンドが実行された Quickfix window を開く (locationlist 版)",
     pattern = { "l*" },
     command = "lwin",
 }
 
-util.autocmd_vimrc("QuickfixCmdPost") {
+autocmd_vimrc("QuickfixCmdPost") {
+    desc = "Quickfix のコマンドが実行された Quickfix window を開く",
     pattern = { "[^l]*" },
     command = "cwin",
 }
 
-util.autocmd_vimrc("CmdwinEnter") {
+autocmd_vimrc("CmdwinEnter") {
+    desc = "cmdwin 用の調整",
     callback = function(meta)
         local buf = meta.buf
-        vim.wo.number = false
-        vim.wo.relativenumber = false
-        vim.wo.signcolumn = "no"
-        vim.wo.foldcolumn = "0"
-        vim.api.nvim_buf_set_keymap(buf, "n", "<C-f>", "<C-f>", {})
-        vim.api.nvim_buf_set_keymap(buf, "n", "<C-u>", "<C-u>", {})
-        vim.api.nvim_buf_set_keymap(buf, "n", "<C-b>", "<C-b>", {})
-        vim.api.nvim_buf_set_keymap(buf, "n", "<C-d>", "<C-d>", {})
-        vim.api.nvim_buf_set_keymap(buf, "n", "<Esc>", ":q<CR>", {})
-        vim.api.nvim_buf_set_keymap(buf, "n", "<CR>", "<CR>", { nowait = true })
+        vim.opt_local.number = false
+        vim.opt_local.relativenumber = false
+        vim.opt_local.signcolumn = "no"
+        vim.opt_local.foldcolumn = "0"
+        mapset_local.n("<C-f>") { "<C-f>" }
+        mapset_local.n("<C-u>") { "<C-u>" }
+        mapset_local.n("<C-b>") { "<C-b>" }
+        mapset_local.n("<C-d>") { "<C-d>" }
+        mapset_local.n("<Esc>") { ":q<CR>" }
+        mapset_local.n("<CR>") { "<CR>", nowait = true }
     end,
 }
 
 -- ESC 時に英数キーを送るのは Karabiner でできるが、検索コマンドからの離脱時にも送りたい
 -- https://rcmdnk.com/blog/2017/03/10/computer-mac-vim/
-util.autocmd_vimrc("CmdlineLeave") {
+autocmd_vimrc("CmdlineLeave") {
     pattern = "/",
     callback = function()
         -- 102: EISU
@@ -389,12 +260,12 @@ local function visual_match()
     end
 end
 
-util.autocmd_vimrc("WinLeave") {
+autocmd_vimrc("WinLeave") {
     desc = "Free instant visual highlight",
     callback = free_visual_match,
 }
 
-util.autocmd_vimrc { "CursorMoved", "CursorHold" } {
+autocmd_vimrc { "CursorMoved", "CursorHold" } {
     desc = "Free instant visual highlight",
     callback = visual_match,
 }
@@ -417,7 +288,7 @@ local function keep_cursor(callback)
     end
 end
 
-util.autocmd_vimrc("BufWritePost") {
+autocmd_vimrc("BufWritePost") {
     pattern = { "*.lua", ".init.lua.local" },
     callback = function()
         -- fold の状態を保持するために mkview と loadview を入れた
@@ -431,7 +302,7 @@ util.autocmd_vimrc("BufWritePost") {
     desc = "execute stylua",
 }
 
--- util.autocmd_vimrc "BufWritePost" {
+-- autocmd "BufWritePost" {
 --     pattern = { "*.typ" },
 --     callback = function()
 --         keep_cursor(function()
@@ -445,7 +316,7 @@ util.autocmd_vimrc("BufWritePost") {
 -- auto repeatable macro （ドットリピートや通常マクロのほうが直感的なのでボツ）
 
 -- local auto_repeatable = false
--- util.autocmd_vimrc "VimEnter" {
+-- autocmd "VimEnter" {
 --     pattern = "*",
 --     callback = function()
 --         vim.fn.setreg("p", "")
@@ -474,7 +345,7 @@ util.autocmd_vimrc("BufWritePost") {
 --     desc = "execute text_changed",
 -- }
 --
--- util.autocmd_vimrc "TextChanged" {
+-- autocmd "TextChanged" {
 --     pattern = "*",
 --     callback = function()
 --         if vim.fn.reg_recording() == "p" then
@@ -527,7 +398,7 @@ util.autocmd_vimrc("BufWritePost") {
 --     return not cursor_at(match, a, source, predicate)
 -- end, false)
 --
--- util.autocmd_vimrc "CursorMoved" {
+-- autocmd "CursorMoved" {
 --     command = "redraw!",
 -- }
 
@@ -542,7 +413,7 @@ query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
 
 -- §§1 Terminal
 
--- util.autocmd_vimrc("TermOpen") {
+-- autocmd("TermOpen") {
 --     pattern = "*",
 --     callback = function(meta)
 --         if not vim.endswith(meta.file, "fish") then
@@ -551,7 +422,7 @@ query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
 --     end,
 -- }
 
-util.autocmd_vimrc("TermClose") {
+autocmd_vimrc("TermClose") {
     pattern = "*",
     callback = function()
         pcall(vim.cmd.bdelete, { bang = true, args = { vim.fn.expand("<abuf>") } })

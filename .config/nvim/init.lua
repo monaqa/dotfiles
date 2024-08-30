@@ -1,5 +1,3 @@
----@type integer
-local augroup = vim.api.nvim_create_augroup("vimrc", { clear = true })
 ---vimrc 専用の属性を格納するテーブル
 _G.vimrc = {
     -- operator
@@ -11,17 +9,15 @@ _G.vimrc = {
     fn = {},
 }
 
--- 正直このあたりよくわかってません
--- https://wiredool.hatenadiary.org/entry/20120618/1340019962
-vim.cmd([[
-  filetype plugin indent on
-  syntax enable
-]])
+-- vimrc 用の augroup を作成しておく（どこからでも参照しうるので最初に）
+vim.api.nvim_create_augroup("vimrc", { clear = true })
+
+-- filetype の検出、
+-- 詳細は `:h :filetype` または `:e $VIMRUNTIME/filetype.lua`
+vim.cmd.filetype { "plugin", "indent", "on" }
+vim.cmd.syntax("enable")
 
 require("rc.plugins")
-
-require("rc.diary").setup()
-require("monaqa.memo_local").setup()
 
 require("rc.autocmd")
 require("rc.option")

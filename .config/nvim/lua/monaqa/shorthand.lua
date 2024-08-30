@@ -82,4 +82,47 @@ function M.load_cwd_as_plugin(source_file_name)
     end
 end
 
+---@alias mapset_inner fun(t: vim.keymap.set.Opts):nil
+
+--- キーマップ定義のショートハンド。
+---@param mode string | string[]
+---@param buffer_local boolean?
+---@return fun(string): mapset_inner
+local function mapset_with_mode(mode, buffer_local)
+    ---@param lhs string
+    return function(lhs)
+        ---@param t vim.keymap.set.Opts
+        return function(t)
+            local body = t[1]
+            t[1] = nil
+            if t.buffer == nil then
+                t.buffer = buffer_local
+            end
+            vim.keymap.set(mode, lhs, body, t)
+        end
+    end
+end
+
+M.mapset = {
+    n = mapset_with_mode("n"),
+    x = mapset_with_mode("x"),
+    o = mapset_with_mode("o"),
+    i = mapset_with_mode("i"),
+    c = mapset_with_mode("c"),
+    t = mapset_with_mode("t"),
+    nxo = mapset_with_mode { "n", "x", "o" },
+    ic = mapset_with_mode { "i", "c" },
+}
+
+M.mapset_local = {
+    n = mapset_with_mode("n", true),
+    x = mapset_with_mode("x", true),
+    o = mapset_with_mode("o", true),
+    i = mapset_with_mode("i", true),
+    c = mapset_with_mode("c", true),
+    t = mapset_with_mode("t", true),
+    nxo = mapset_with_mode({ "n", "x", "o" }, true),
+    ic = mapset_with_mode({ "i", "c" }, true),
+}
+
 return M
