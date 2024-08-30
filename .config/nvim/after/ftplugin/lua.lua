@@ -12,3 +12,5 @@ vim.keymap.set("n", "g==", function()
         return vim.fn.system("stylua -", s)
     end)() .. "_"
 end, { expr = true, buffer = true })
+
+vim.keymap.set("ia", "!=", "~=")

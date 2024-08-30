@@ -407,12 +407,31 @@ plugins:push {
             { input = { [[\{]], [[\}]] }, buns = { [[\{]], [[\}]] }, nesting = 1 },
         }
 
-        local recipe_link = {
-            { filetype = { "rst" }, input = { "l" }, buns = { "`", " <>`_" }, nesting = 0 },
-            { filetype = { "rst" }, input = { "L" }, buns = { "` <", ">`_" }, nesting = 0 },
-            { filetype = { "markdown", "obsidian" }, input = { "l" }, buns = { "[", "]()" }, nesting = 0 },
-            { filetype = { "markdown", "obsidian" }, input = { "L" }, buns = { "[](", ")" }, nesting = 0 },
-        }
+        local recipe_link = vim.iter({
+            { filetype = { "markdown" }, pattern = "[$body]($dest)" },
+            { filetype = { "rst" }, pattern = "`$body <$dest>`_" },
+            { filetype = { "typst" }, pattern = '#link("$dest")[$body]' },
+        })
+            :map(function(t)
+                return {
+                    {
+                        -- $dest を空にして $body 部分で囲む
+                        filetype = t.filetype,
+                        input = { "l" },
+                        buns = vim.split(t.pattern:gsub("$dest", ""), "$body"),
+                        nesting = 0,
+                    },
+                    {
+                        -- $body を空にして $dest 部分で囲む
+                        filetype = t.filetype,
+                        input = { "L" },
+                        buns = vim.split(t.pattern:gsub("$body", ""), "$dest"),
+                        nesting = 0,
+                    },
+                }
+            end)
+            :flatten()
+            :totable()
 
         local recipe_codeblock = {
             {

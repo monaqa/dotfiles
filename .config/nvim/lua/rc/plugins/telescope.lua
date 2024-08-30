@@ -74,8 +74,19 @@ plugins:push {
         {
             "ss",
             function()
-                local extensions = require("telescope").extensions
-                extensions.frecency.frecency { prompt_prefix = "𝑓", workspace = "CWD" }
+                local frecency = require("telescope").extensions.frecency.frecency
+                if vim.startswith(vim.fn.getcwd(), vim.env.HOME .. "/ghq") then
+                    frecency {
+                        prompt_prefix = "𝑓",
+                        workspace = "CWD",
+                        prompt_title = "Frecent Files (in-project)",
+                    }
+                else
+                    frecency {
+                        prompt_prefix = "𝑓",
+                        prompt_title = "Frecent Files (global)",
+                    }
+                end
             end,
         },
     },

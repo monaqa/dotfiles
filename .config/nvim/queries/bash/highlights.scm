@@ -157,5 +157,7 @@
     ">>"
 ] @operator
 
+(command_substitution "`" @punctuation.delimiter)
+
 ;; }}}
 ;; vim:fdm=marker

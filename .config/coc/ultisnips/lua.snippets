@@ -55,27 +55,47 @@ end
 endsnippet
 
 snippet nnoremap "vim.keymap.set (normal)" b
-vim.keymap.set("n", "$1", "$2")
+vim.keymap.set("n", "$1", function()
+	$0
+end, { buffer = true })
 endsnippet
 
-snippet inoremap "vim.keymap.set (normal)" b
-vim.keymap.set("i", "$1", "$2")
+snippet inoremap "vim.keymap.set (insert)" b
+vim.keymap.set("i", "$1", function()
+	$0
+end, { buffer = true })
 endsnippet
 
-snippet cnoremap "vim.keymap.set (normal)" b
-vim.keymap.set("c", "$1", "$2")
+snippet xnoremap "vim.keymap.set (visual)" b
+vim.keymap.set("x", "$1", function()
+	$0
+end, { buffer = true })
 endsnippet
 
-snippet xnoremap "vim.keymap.set (normal)" b
-vim.keymap.set("x", "$1", "$2")
+snippet onoremap "vim.keymap.set (op-pend)" b
+vim.keymap.set("o", "$1", function()
+	$0
+end, { buffer = true })
 endsnippet
 
-snippet onoremap "vim.keymap.set (normal)" b
-vim.keymap.set("o", "$1", "$2")
+snippet cnoremap "vim.keymap.set (command-line)" b
+vim.keymap.set("c", "$1", function()
+	$0
+end, { buffer = true })
 endsnippet
 
-snippet noremap "vim.keymap.set (normal)" b
-vim.keymap.set({"n", "x", "o"}, "$1", "$2")
+snippet noremap "vim.keymap.set (normal-like mode)" b
+vim.keymap.set({"n", "x", "o"}, "$1", function()
+	$0
+end, { buffer = true })
+endsnippet
+
+snippet iabbrev "vim.keymap.set (insert abbrev)" b
+vim.keymap.set("ia", "$1", "$2")
+endsnippet
+
+snippet cabbrev "vim.keymap.set (command-line abbrev)" b
+vim.keymap.set("ca", "$1", "$2")
 endsnippet
 
 snippet command "Description" b

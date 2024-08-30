@@ -448,6 +448,19 @@ mode_winresize.register_mapping("-", "<C-w>-")
 mode_winresize.register_mapping(">", "<C-w>>")
 mode_winresize.register_mapping("<", "<C-w><")
 
+-- favorite buffer
+local favorite_buffer = nil
+vim.keymap.set("n", "s*", function()
+    favorite_buffer = vim.fn.bufnr()
+    vim.notify("Saved as favorite buffer: " .. vim.fn.bufname(favorite_buffer))
+end)
+
+vim.keymap.set("n", "s<Space>", function()
+    if favorite_buffer ~= nil then
+        vim.cmd.buffer(favorite_buffer)
+    end
+end)
+
 -- Section1 operator/text editing
 
 -- Section2 general
