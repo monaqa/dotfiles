@@ -1,5 +1,6 @@
 local util = require("rc.util")
 local vec = require("rc.util.vec")
+local mapset = require("monaqa").shorthand.mapset
 
 local plugins = vec {}
 
@@ -253,6 +254,11 @@ plugins:push {
         },
     },
     config = function()
+        mapset.n("sr") { "<Nop>", nowait = true }
+        mapset.n("srb") { "<Nop>", nowait = true }
+        mapset.n("sd") { "<Nop>", nowait = true }
+        mapset.n("sdb") { "<Nop>", nowait = true }
+
         -- 全体設定
         vim.fn["operator#sandwich#set"]("all", "all", "highlight", 0)
 

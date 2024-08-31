@@ -9,10 +9,11 @@ M.to_bool = monaqa.logic.to_bool
 M.ifexpr = monaqa.logic.ifexpr
 M.unwrap_or = monaqa.logic.unwrap_or
 M.autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
-M.create_cmd = monaqa.shorthand.create_cmd
 M.link_filetype = monaqa.shorthand.link_filetype
 M.sethl = monaqa.shorthand.sethl
 M.load_cwd_as_plugin = monaqa.shorthand.load_cwd_as_plugin
+M.is_wide_window = monaqa.window.is_wide
+M.split_window = monaqa.window.wise_split
 
 ---エラーとしてメッセージを出力する。
 ---@param message string
@@ -22,6 +23,14 @@ function M.print_error(message, hl)
         hl = "Error"
     end
     vim.api.nvim_echo({ { message, hl } }, true, {})
+end
+
+--- nvim_create_user_command って長ったらしいしオプション省略できないっぽいので。
+function M.create_cmd(name, impl, options)
+    if options == nil then
+        options = {}
+    end
+    vim.api.nvim_create_user_command(name, impl, options)
 end
 
 ---ある要素を n 回繰り返した array を返す。
@@ -59,25 +68,6 @@ end
 --         vim.tbl_map(func, xs)
 --     end
 -- end
-
----横に広いウィンドウか、縦に広いウィンドウか判定する。
----ただし判定基準は割と適当。
----@param window_number number | string
----@return boolean
-function M.is_wide_window(window_number)
-    local wd = vim.fn.winwidth(window_number)
-    local ht = vim.fn.winheight(window_number)
-    return wd > 2.2 * ht
-end
-
----横に広ければ鉛直に、縦に広ければ水平に分割する。
-function M.split_window()
-    if M.is_wide_window(".") then
-        vim.cmd([[vsplit]])
-    else
-        vim.cmd([[split]])
-    end
-end
 
 ---モーションに優先順位をつけ、高いものから順に実行する。
 ---ただしカーソルが動いたらその時点で処理を止める。つまり、

@@ -20,4 +20,9 @@ function M.esc(text)
     return "\u{1b}" .. text
 end
 
+--- <C-g> などの特殊文字を変換する。
+function M.term(text)
+    return vim.api.nvim_replace_termcodes(text, true, true, true)
+end
+
 return M

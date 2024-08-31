@@ -2,102 +2,64 @@
 -- キーマッピング関連。
 -- そのキーマップが適切に動くようにするための関数や autocmd もここに載せる。
 
-local M = {}
+local monaqa = require("monaqa")
+local mapset = monaqa.shorthand.mapset
+local create_cmd = monaqa.shorthand.create_cmd
+local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
+local logic = monaqa.logic
+local window = monaqa.window
 
 local util = require("rc.util")
 local submode = require("rc.submode")
 
-vim.keymap.set("c", "<C-c>", "<C-f>")
+mapset.c("<C-c>") { "<C-f>" }
 
 -- Section1 changing display
 
 -- Z を表示の toggle に使う
-vim.keymap.set("n", "ZZ", "<Nop>")
-vim.keymap.set("n", "ZQ", "<Nop>")
+mapset.n("ZZ") { "<Nop>" }
+mapset.n("ZQ") { "<Nop>" }
+mapset.n("Z") {
+    desc = [[wrap の toggle]],
+    function()
+        vim.opt_local.wrap = not vim.opt_local.wrap:get()
+    end,
+    silent = true,
+    nowait = true,
+}
 
--- local function toggle_column()
---     if vim.opt_local.signcolumn == "yes:2" and vim.opt_local.foldcolumn == "0" then
---         vim.opt_local.foldcolumn = "4"
---         vim.opt_local.signcolumn = "no"
---     else
---         vim.opt_local.foldcolumn = "0"
---         vim.opt_local.signcolumn = "yes:2"
---     end
--- end
---
--- vim.keymap.set("n", "Z", toggle_column, { silent = true, nowait = true })
-
-vim.keymap.set("n", "Z", function()
-    vim.opt_local.wrap = not vim.opt_local.wrap:get()
-end, { silent = true, nowait = true })
-
-vim.api.nvim_create_augroup("vimrc_temporal", { clear = true })
-
-function M.temporal_attention()
-    vim.opt_local.cursorline = true
-    vim.opt_local.cursorcolumn = true
-    vim.api.nvim_create_autocmd("CursorMoved", {
-        once = true,
-        group = "vimrc_temporal",
-        callback = function()
-            vim.opt_local.cursorline = false
-            vim.opt_local.cursorcolumn = false
-        end,
-    })
-end
-
-function M.temporal_relnum()
-    vim.opt_local.relativenumber = true
-    vim.api.nvim_create_autocmd("CursorMoved", {
-        once = true,
-        group = "vimrc_temporal",
-        callback = function()
-            vim.opt_local.relativenumber = false
-        end,
-    })
-end
-
-function M.expr_temporal_attention()
-    M.temporal_attention()
-    M.temporal_relnum()
-    return ""
-end
-
-vim.keymap.set({ "n", "o", "x" }, "+", M.expr_temporal_attention, { expr = true })
+mapset.nxo("+") {
+    desc = [[temporal attention]],
+    function()
+        vim.opt_local.relativenumber = true
+        vim.opt_local.cursorline = true
+        vim.opt_local.cursorcolumn = true
+        autocmd_vimrc("CursorMoved") {
+            once = true,
+            callback = function()
+                vim.opt_local.relativenumber = false
+                vim.opt_local.cursorline = false
+                vim.opt_local.cursorcolumn = false
+            end,
+        }
+    end,
+}
 
 -- Section1 fold
-
--- 自分のいない fold だけたたむ
-vim.keymap.set("n", "<Space>z", "zMzv", { remap = true })
+mapset.n("<Space>z") { "zMzv", desc = [[自分のいない fold だけたたむ]] }
 
 -- Section1 search
+mapset.n("<C-l>") {
+    desc = [[redraw 時に nohlsearch もついでにやる]],
+    "<Cmd>nohlsearch<CR><C-l>",
+}
 
-vim.keymap.set("n", "<C-l>", "<Cmd>nohlsearch<CR><C-l>", {})
+mapset.n("n") { expr = true, "'Nn'[v:searchforward]", desc = [[v:searchforward によらず一定にする]] }
+mapset.n("N") { expr = true, "'nN'[v:searchforward]", desc = [[v:searchforward によらず一定にする]] }
 
--- 検索 with temporal attention
-vim.keymap.set(
-    "n",
-    "n",
-    util.trim([[
-    'Nn'[v:searchforward]
-]]),
-    { expr = true }
-)
-
-vim.keymap.set(
-    "n",
-    "N",
-    util.trim([[
-    'nN'[v:searchforward]
-]]),
-    { expr = true }
-)
-
--- VISUAL モードから簡単に検索
 -- http://vim.wikia.com/wiki/Search_for_visually_selected_text
-vim.keymap.set(
-    "x",
-    "*",
+mapset.x("*") {
+    desc = [[VISUAL モードから検索]],
     table.concat {
         -- 選択範囲を検索クエリに用いるため、m レジスタに格納。
         -- ビジュアルモードはここで抜ける。
@@ -108,11 +70,10 @@ vim.keymap.set(
         -- 先ほど検索した範囲にカーソルが移るように、手前に戻す
         [[N]],
     },
-    {}
-)
-vim.keymap.set(
-    "x",
-    "R",
+}
+
+mapset.x("R") {
+    desc = [[VISUAL モードから置換]],
     table.concat {
         -- 選択範囲を置換後のクエリに用いるため、m レジスタに格納。
         -- ビジュアルモードはここで抜ける。
@@ -126,158 +87,111 @@ vim.keymap.set(
         -- 上と同様の置換を、ファイル先頭に戻って再度カーソルの位置まで行う。
         [[1,''-&&<CR>]],
     },
-    {}
-)
+}
 
 -- Section2 QuickFix search
-vim.keymap.set("n", "g/", function()
-    local query
-    vim.ui.input({ prompt = "g/" }, function(text)
-        query = text
-    end)
-    if query == nil then
-        return
-    end
-    local search_range
-    vim.ui.select({
-        ("[default] Current dirctory (%s)"):format(vim.fn.getcwd()),
-        "Current file",
-    }, {
-        prompt = "select grep range",
-    }, function(item, idx)
-        if idx == 1 then
-            search_range = "."
-        elseif idx == 2 then
-            search_range = "%"
-        else
-            search_range = "."
-        end
-    end)
-    vim.fn.setreg("/", [[\v]] .. query)
-    -- hlsearch の有効化
-    vim.o.hlsearch = vim.o.hlsearch
-
-    -- vim.cmd([[silent grep ]] .. vim.fn.string(query) .. " " .. search_range)
-    return [[:silent grep ]] .. vim.fn.string(query) .. " " .. search_range
-end, { expr = true })
-
-vim.keymap.set("n", "<C-n>", util.cmdcr("cnext") .. "zz", {})
-vim.keymap.set("n", "<C-p>", util.cmdcr("cprevious") .. "zz", {})
--- local mode_qfmove = submode.create_mode("qfmove", "g")
--- mode_qfmove.register_mapping("j", util.cmdcr "cn" .. "zz")
--- mode_qfmove.register_mapping("k", util.cmdcr "cp" .. "zz")
+mapset.n("<C-n>") { "<Cmd>cnext<CR>zz", desc = [[QuickFix next + focus center]] }
+mapset.n("<C-p>") { "<Cmd>cprevious<CR>zz", desc = [[QuickFix prev + focus center]] }
 
 -- https://qiita.com/lighttiger2505/items/166a4705f852e8d7cd0d
--- Toggle QuickFix
-local function toggle_quickfix()
-    local nr1 = vim.fn.winnr("$")
-    vim.cmd([[cwindow]])
-    local nr2 = vim.fn.winnr("$")
-    if nr1 == nr2 then
-        vim.cmd([[cclose]])
-    end
-end
-
-vim.keymap.set("n", "q", toggle_quickfix, { script = true, silent = true })
+mapset.n("q") {
+    desc = [[toggle QuickFix window]],
+    silent = true,
+    function()
+        local nr1 = vim.fn.winnr("$")
+        vim.cmd.cwindow()
+        local nr2 = vim.fn.winnr("$")
+        if nr1 == nr2 then
+            vim.cmd.cclose()
+        end
+    end,
+}
 
 -- Section1 terminal
+mapset.t("<C-]>") { [[<C-\><C-n>]] }
+mapset.t([[<C-\><C-n>]]) { "<C-]>" }
 
-vim.keymap.set("t", "<C-]>", [[<C-\><C-n>]], {})
-vim.keymap.set("t", [[<C-\><C-]>]], "<C-]>", {})
+autocmd_vimrc("TermOpen") {
+    callback = function()
+        local mapset = monaqa.shorthand.mapset_local
 
-local function terminal_init()
-    vim.keymap.set("n", "<CR>", [[i<CR><C-\><C-n>]], { buffer = true })
-    vim.keymap.set("n", "sw", [[:<C-u>bd!<CR>]], { buffer = true })
-    vim.keymap.set("n", "t", [[:<C-u>let g:current_terminal_job_id = b:terminal_job_id<CR>]], { buffer = true })
-    vim.keymap.set("n", "dd", [[i<C-u><C-\><C-n>]], { buffer = true })
-    vim.keymap.set("n", "A", [[i<C-e>]], { buffer = true })
-    vim.keymap.set("n", "p", [[pi]], { buffer = true })
-    vim.keymap.set("n", "<C-]>", [[<Nop>]], { buffer = true })
+        mapset.n("<CR>") { [[i<CR><C-\><C-n>]] }
+        mapset.n("sw") { [[<Cmd>bdelete!<CR>]] }
+        mapset.n("t") { [[<Cmd>let g:current_terminal_job_id = b:terminal_job_id<CR>]] }
+        mapset.n("dd") { [[i<C-u><C-\><C-n>]] }
+        mapset.n("A") { [[i<C-e>]] }
+        mapset.n("p") { [[pi]] }
+        mapset.n("<C-]>") { [[<Nop>]] }
 
-    vim.keymap.set("v", "gb", function()
-        local region = vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"), { type = vim.fn.mode() })
-        local url = table.concat(region, "")
-        vim.ui.open(url)
-    end, { buffer = true })
+        mapset.x("gb") {
+            desc = [[選択範囲の改行を取っ払って URL として開く]],
+            function()
+                local region = vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"), { type = vim.fn.mode() })
+                local url = table.concat(region, "")
+                vim.ui.open(url)
+            end,
+        }
 
-    -- vim.keymap.set("n", "I",
-    --     [["i\<C-a>" .. repeat("\<Right>", <SID>calc_cursor_right_num())]],
-    --     {buffer = true, expr = true}
-    -- )
+        mapset.n("u") {
+            desc = [[REPL の履歴を1つ上に戻す]],
+            expr = true,
+            replace_keycodes = false,
+            [["i" .. repeat("<Up>", v:count1) .. "<C-\><C-n>"]],
+        }
+        mapset.n("<C-r>") {
+            desc = [[REPL の履歴を1つ下に戻す]],
+            expr = true,
+            replace_keycodes = false,
+            [["i" .. repeat("<Down>", v:count1) .. "<C-\><C-n>"]],
+        }
 
-    vim.keymap.set(
-        "n",
-        "u",
-        [["i" .. repeat("<Up>", v:count1) .. "<C-\><C-n>"]],
-        { buffer = true, expr = true, replace_keycodes = false }
-    )
-    -- vim.keymap.set("n", "u", [[i<Up><C-\><C-n>]], { buffer = true })
-    vim.keymap.set(
-        "n",
-        "<C-r>",
-        [["i" .. repeat("<Down>", v:count1) .. "<C-\><C-n>"]],
-        { buffer = true, expr = true, replace_keycodes = false }
-    )
-    -- vim.keymap.set("n", "<C-r>", [[i<Down><C-\><C-n>]], { buffer = true })
-
-    vim.opt_local.wrap = true
-    vim.opt_local.number = false
-    vim.opt_local.signcolumn = "no"
-    vim.opt_local.foldcolumn = "0"
-end
-
-util.autocmd_vimrc("TermOpen") {
-    callback = terminal_init,
-    -- buffer = true
+        vim.opt_local.wrap = true
+        vim.opt_local.number = false
+        vim.opt_local.signcolumn = "no"
+        vim.opt_local.foldcolumn = "0"
+    end,
 }
 
 vim.g.current_terminal_bufid = -1
 
-local function open_terminal()
-    util.split_window()
-    vim.cmd([[terminal fish]])
-    vim.g.current_terminal_job_id = vim.b.terminal_job_id
-    vim.g.current_terminal_bufid = vim.fn.bufnr()
-end
-
-local function open_term_window()
-    if vim.g.current_terminal_bufid > 0 and util.to_bool(vim.fn.bufexists(vim.g.current_terminal_bufid)) then
-        util.split_window()
-        vim.cmd.buffer { vim.g.current_terminal_bufid }
-    else
-        open_terminal()
-    end
-end
-
-vim.keymap.set("n", "st", open_term_window, {})
+mapset.n("st") {
+    desc = [[terminal window を開く]],
+    function()
+        window.wise_split()
+        if vim.g.current_terminal_bufid > 0 and logic.to_bool(vim.fn.bufexists(vim.g.current_terminal_bufid)) then
+            vim.cmd.buffer { vim.g.current_terminal_bufid }
+        else
+            vim.cmd.terminal("fish")
+            vim.g.current_terminal_job_id = vim.b.terminal_job_id
+            vim.g.current_terminal_bufid = vim.fn.bufnr()
+        end
+    end,
+}
 
 -- Section2 send string to terminal buffer
-
----ペースト時に bracketed paste mode を有効にする。
 ---@type boolean
-_G.vimrc.state.bracketed_paste_mode = true
+local bracketed_paste_mode = true
 
-vim.api.nvim_create_user_command("ToggleBracketedPasteMode", function()
-    _G.vimrc.state.bracketed_paste_mode = not _G.vimrc.state.bracketed_paste_mode
-    if _G.vimrc.state.bracketed_paste_mode then
-        vim.api.nvim_echo({ { "bracketed_paste_mode: on", "Normal" } }, true, {})
-    else
-        vim.api.nvim_echo({ { "bracketed_paste_mode: off", "Normal" } }, true, {})
-    end
-end, {})
+create_cmd("ToggleBracketedPasteMode") {
+    desc = [[ペースト時に bracketed paste mode を有効にする。]],
+    function()
+        bracketed_paste_mode = not bracketed_paste_mode
+        vim.notify("bracketed_paste_mode: " .. logic.ifexpr(bracketed_paste_mode, "on", "off"))
+    end,
+}
 
-local function reformat_cmdstring(str)
-    str = util.trim(str)
-    if _G.vimrc.state.bracketed_paste_mode then
-        return util.esc("[200~") .. str .. "\n" .. util.esc("[201~\n")
+local function reformat_cmdstring(body)
+    body = vim.trim(body)
+    if bracketed_paste_mode then
+        return monaqa.str.esc("[200~") .. body .. "\n" .. monaqa.str.esc("[201~\n")
     else
-        return str .. "\n"
+        return body .. "\n"
     end
 end
 
 function _G.vimrc.op.send_terminal(type)
     local sel_save = vim.o.selection
-    vim.o.selection = "inclusive"
+    vim.opt.selection = "inclusive"
     local m_reg = vim.fn.getreg("m", nil, nil)
 
     local visual_range
@@ -290,93 +204,40 @@ function _G.vimrc.op.send_terminal(type)
     local content = vim.fn.getreg("m", nil, nil)
     vim.fn.chansend(vim.g.current_terminal_job_id, reformat_cmdstring(content))
 
-    vim.o.selection = sel_save
+    vim.opt.selection = sel_save
     vim.fn.setreg("m", m_reg, nil)
 end
 
-vim.keymap.set({ "n", "x" }, "S", function()
-    vim.o.operatorfunc = "v:lua.vimrc.op.send_terminal"
-    return "g@"
-end, { expr = true })
+mapset.nx("S") {
+    desc = [[send-terminal operator]],
+    expr = true,
+    function()
+        vim.o.operatorfunc = "v:lua.vimrc.op.send_terminal"
+        return "g@"
+    end,
+}
 
-vim.keymap.set({ "n" }, "SS", function()
-    vim.o.operatorfunc = "v:lua.vimrc.op.send_terminal"
-    return "g@_"
-end, { expr = true, nowait = true })
-
-vim.api.nvim_create_user_command("WeztermNewPane", function()
-    _G.vimrc.state.wezterm_terminal_pane_id = vim.fn.system("wezterm cli split-pane --horizontal", nil)
-end, {})
-vim.api.nvim_create_user_command("WeztermNewWindow", function()
-    _G.vimrc.state.wezterm_terminal_pane_id =
-        vim.fn.system("wezterm cli spawn --new-window --cwd " .. vim.fn.getcwd(nil, nil), nil)
-end, {})
-vim.api.nvim_create_user_command("WeztermUnlinkPane", function()
-    _G.vimrc.state.wezterm_terminal_pane_id = nil
-end, {})
-
-vim.keymap.set({ "n", "x" }, "T", function()
-    vim.o.operatorfunc = "v:lua.vimrc.op.send_wezterm"
-    return "g@"
-end, { expr = true })
-
-vim.keymap.set({ "n" }, "TT", function()
-    vim.o.operatorfunc = "v:lua.vimrc.op.send_wezterm"
-    return "g@_"
-end, { expr = true, nowait = true })
-
-local function reformat_cmdstring_wezterm(str)
-    str = util.trim(str)
-    if _G.vimrc.state.bracketed_paste_mode then
-        return str .. util.esc("[201~") .. "\n" .. util.esc("[200~\n")
-    else
-        return str .. "\n"
-    end
-end
-
-local function send_wezterm(text)
-    local command = "wezterm cli send-text --pane-id " .. _G.vimrc.state.wezterm_terminal_pane_id
-    vim.fn.system(command, reformat_cmdstring_wezterm(text))
-end
-
-function _G.vimrc.op.send_wezterm(type)
-    if _G.vimrc.state.wezterm_terminal_pane_id == nil then
-        vim.api.nvim_echo(
-            { { "There is no active wezterm pane to send. execute :WeztermNewPane to spawn new pane.", "Error" } },
-            true,
-            {}
-        )
-        return
-    end
-
-    local sel_save = vim.o.selection
-    vim.o.selection = "inclusive"
-    local m_reg = vim.fn.getreg("m", nil, nil)
-
-    local visual_range
-    if type == "line" then
-        visual_range = "'[V']"
-    else
-        visual_range = "`[V`]"
-    end
-    vim.cmd("normal! " .. visual_range .. '"my')
-    local content = vim.fn.getreg("m", nil, nil)
-    send_wezterm(content)
-
-    vim.o.selection = sel_save
-    vim.fn.setreg("m", m_reg, nil)
-end
+mapset.n("SS") {
+    desc = [[send-terminal line]],
+    expr = true,
+    nowait = true,
+    function()
+        vim.o.operatorfunc = "v:lua.vimrc.op.send_terminal"
+        return "g@_"
+    end,
+}
 
 -- Section1 input Japanese character
 
-vim.keymap.set({ "n", "x", "o" }, "fj", "f<C-k>j")
-vim.keymap.set({ "x", "o" }, "tj", "t<C-k>j")
-vim.keymap.set({ "n", "x", "o" }, "Fj", "F<C-k>j")
-vim.keymap.set({ "x", "o" }, "Tj", "T<C-k>j")
+mapset.nxo("fj") { "f<C-k>j" }
+mapset.nxo("Fj") { "F<C-k>j" }
+mapset.xo("tj") { "t<C-k>j" }
+mapset.xo("Tj") { "T<C-k>j" }
 
 vim.fn.digraph_setlist {
     -- これを設定することで， fjj を本来の fj と同じ効果にできる．
     { "jj", "j" },
+
     -- カッコ
     { "j(", "（" },
     { "j)", "）" },
@@ -404,16 +265,16 @@ vim.fn.digraph_setlist {
 
 -- Section1 window/buffer
 
-vim.keymap.set("n", "s", "<Nop>", {})
+mapset.n("s") { "<Nop>", desc = [[window/buffer 操作の prefix にする]] }
 
--- vim.keymap.set("n", "ss", util.split_window, {})
+-- window を増やす、減らす
+mapset.n("s_") { "<Cmd>split<CR>" }
+mapset.n("s<Bar>") { "<Cmd>vsplit<CR>" }
+mapset.n("sv") { "<Cmd>vsplit<CR>" }
+mapset.n("sq") { "<Cmd>close<CR>" }
 
-vim.keymap.set("n", "s_", util.cmdcr("split"), {})
-vim.keymap.set("n", "s<Bar>", util.cmdcr("vsplit"), {})
-vim.keymap.set("n", "sv", util.cmdcr("vsplit"), {})
-vim.keymap.set("n", "sq", util.cmdcr("close"), {})
-
---- 面倒がらずにちゃんと <C-w> 使おうよ…と思ったがやっぱり面倒くさい
+-- <C-w> による window 操作のショートカット
+-- 面倒がらずにちゃんと <C-w> 使おうよ…と思ったがやっぱり面倒くさい
 for _, char in ipairs {
     "x", -- exchange! 知らなかった
     "h",
@@ -426,17 +287,20 @@ for _, char in ipairs {
     "L",
     "=",
 } do
-    vim.keymap.set("n", "s" .. char, "<C-w>" .. char, {})
+    mapset.n("s" .. char) { "<C-w>" .. char }
 end
 
-vim.keymap.set("n", "sT", util.cmdcr("tabnew %"))
-vim.keymap.set("n", "sQ", util.cmdcr("tabclose"))
-vim.keymap.set("n", "s:", "q:G")
-vim.keymap.set("n", "s?", "q?G")
-vim.keymap.set("n", "s/", "q/G")
-vim.keymap.set("n", "-", "<C-^>")
+-- タブページ
+mapset.n("sT") { "<Cmd>tabnew %<CR>" }
+mapset.n("sQ") { "<Cmd>tabclose<CR>" }
 
-vim.keymap.set("n", "srb", "<Nop>", { nowait = true })
+-- 特殊な window
+mapset.n("s:") { "q:G" }
+mapset.n("s?") { "q?G" }
+mapset.n("s/") { "q/G" }
+
+-- buffer 切り替え
+mapset.n("-") { "<C-^>" }
 
 local mode_bufmove = submode.create_mode("bufmove", "s")
 mode_bufmove.register_mapping("n", util.cmdcr("bn"))
@@ -448,56 +312,27 @@ mode_winresize.register_mapping("-", "<C-w>-")
 mode_winresize.register_mapping(">", "<C-w>>")
 mode_winresize.register_mapping("<", "<C-w><")
 
--- favorite buffer
 local favorite_buffer = nil
-vim.keymap.set("n", "s*", function()
-    favorite_buffer = vim.fn.bufnr()
-    vim.notify("Saved as favorite buffer: " .. vim.fn.bufname(favorite_buffer))
-end)
-
-vim.keymap.set("n", "s<Space>", function()
-    if favorite_buffer ~= nil then
-        vim.cmd.buffer(favorite_buffer)
-    end
-end)
+mapset.n("s*") {
+    desc = [[Register favorite buffer]],
+    function()
+        favorite_buffer = vim.fn.bufnr()
+        vim.notify("Saved as favorite buffer: " .. vim.fn.bufname(favorite_buffer))
+    end,
+}
+mapset.n("s<Space>") {
+    desc = [[Set the favorite buffer if exists]],
+    function()
+        if favorite_buffer ~= nil then
+            vim.cmd.buffer(favorite_buffer)
+        end
+    end,
+}
 
 -- Section1 operator/text editing
 
 -- Section2 general
--- どうせ空行1行なんて put するようなもんじゃないし、空行で上書きされるの嫌よね
-vim.keymap.set("n", "dd", function()
-    if vim.v.count1 == 1 and vim.v.register == [["]] and vim.fn.getline(".") == "" then
-        return [["_dd]]
-    else
-        return "dd"
-    end
-end, { expr = true })
-
-vim.keymap.set("i", "<C-r><C-r>", [[<C-g>u<C-r>"]], {})
-vim.keymap.set("i", "<C-r><CR>", [[<C-g>u<C-r>0]], {})
-vim.keymap.set("i", "<C-r><Space>", [[<C-g>u<C-r>+]], {})
-vim.keymap.set("c", "<C-r><C-r>", [[<C-r>"]], {})
-vim.keymap.set("c", "<C-r><CR>", [[<C-r>0]], {})
-vim.keymap.set("c", "<C-r><Space>", [[<C-r>+]], {})
-
-vim.keymap.set("n", "<Space>p", util.cmdcr("put +"), {})
-vim.keymap.set("n", "<Space>P", util.cmdcr("put! +"), {})
-
-local function visual_replace(register)
-    return function()
-        local reg_body = vim.fn.getreg(register, nil, nil)
-        vim.cmd([[normal! "]] .. register .. "p")
-        vim.fn.setreg(register, reg_body)
-    end
-end
-
-vim.keymap.set("x", "<Space>p", visual_replace("+"), {})
--- TODO: v:register を渡せる visual_replace
-vim.keymap.set("x", "p", visual_replace('"'), {})
-
--- vim.keymap.set("n", "R", "gR", {})
-
-vim.keymap.set("n", "<Space><CR>", "a<CR><Esc>")
+mapset.n("<Space><CR>") { "a<CR><Esc>" }
 
 -- 改行だけを入力する dot-repeatable なマッピング
 local function append_new_lines(offset_line)
@@ -510,8 +345,16 @@ local function append_new_lines(offset_line)
     end)
 end
 
-vim.keymap.set("n", "<Space>o", append_new_lines(0), { expr = true })
-vim.keymap.set("n", "<Space>O", append_new_lines(-1), { expr = true })
+mapset.n("<Space>o") {
+    desc = [[直後の行に空行を挿入]],
+    expr = true,
+    append_new_lines(0),
+}
+mapset.n("<Space>O") {
+    desc = [[直前の行に空行を挿入]],
+    expr = true,
+    append_new_lines(-1),
+}
 
 local function increment_char(direction)
     return require("peridot").repeatable_edit(function(ctx)
@@ -522,54 +365,92 @@ local function increment_char(direction)
         vim.cmd([[normal! gv"mp]])
     end)
 end
+mapset.n("<Space>a") {
+    desc = [[カーソル下の文字の Unicode codepoint を 1 増やす]],
+    expr = true,
+    increment_char(1),
+}
+mapset.n("<Space>x") {
+    desc = [[カーソル下の文字の Unicode codepoint を 1 減らす]],
+    expr = true,
+    increment_char(-1),
+}
 
-vim.keymap.set("n", "<Space>a", increment_char(1), { expr = true })
-vim.keymap.set("n", "<Space>x", increment_char(-1), { expr = true })
+-- Section2 cut / put / replace
+mapset.n("dd") {
+    desc = [[wiser dd]],
+    expr = true,
+    function()
+        -- どうせ空行1行なんて put するようなもんじゃないし、空行で上書きされるの嫌よね
+        if vim.v.count1 == 1 and vim.v.register == [["]] and vim.fn.getline(".") == "" then
+            return [["_dd]]
+        else
+            return "dd"
+        end
+    end,
+}
+mapset.i("<C-r><C-r>") { [[<C-g>u<C-r>"]] }
+mapset.i("<C-r><CR>") { "<C-g>u<C-r>0" }
+mapset.i("<C-r><Space>") { "<C-g>u<C-r>+" }
+mapset.c("<C-r><C-r>") { [[<C-r>"]] }
+mapset.c("<C-r><CR>") { "<C-r>0" }
+mapset.c("<C-r><Space>") { "<C-r>+" }
+mapset.n("<Space>p") { "<Cmd>put +<CR>" }
+mapset.n("<Space>P") { "<Cmd>put! +<CR>" }
+
+-- TODO: v:register を渡せる visual_replace
+local function visual_replace(register)
+    return function()
+        local reg_body = vim.fn.getreg(register, nil, nil)
+        vim.cmd([[normal! "]] .. register .. "p")
+        vim.fn.setreg(register, reg_body)
+    end
+end
+
+mapset.x("<Space>p") { visual_replace("+"), desc = [[replace with '+' register]] }
+mapset.x("p") { visual_replace('"'), desc = [[replace with unnamed register]] }
 
 -- Section2 :normal command alternative
 local ns_id = vim.api.nvim_create_namespace("vimrc")
 
-local function term(s)
-    return vim.api.nvim_replace_termcodes(s, true, true, true)
-end
-
-local maps = {
-    -- <C-m> は <CR> と同じなのでちゃんと `<CR>` できることを保証しておく
-    ["<C-m>"] = "<C-m>",
-
-    -- <C-c> はキャンセル用でいいのではないか
-    ["<C-c>"] = "<Esc>",
-
-    -- <C-v> は特殊文字を入力する最後の砦なので残しておこうかな
-    ["<C-v>"] = "<C-v>",
-
-    ["<C-a>"] = "<C-v><C-a>",
-    ["<C-b>"] = "<C-v><C-b>",
-    ["<C-d>"] = "<C-v><C-d>",
-    ["<C-e>"] = "<C-v><C-e>",
-    ["<C-f>"] = "<C-v><C-f>",
-    ["<C-g>"] = "<C-v><C-g>",
-    ["<C-h>"] = "<C-v><C-h>",
-    ["<C-i>"] = "<C-v><C-i>",
-    ["<C-j>"] = "<C-v><C-j>",
-    ["<C-k>"] = "<C-v><C-k>",
-    ["<C-l>"] = "<C-v><C-l>",
-    ["<C-n>"] = "<C-v><C-n>",
-    ["<C-o>"] = "<C-v><C-o>",
-    ["<C-p>"] = "<C-v><C-p>",
-    ["<C-q>"] = "<C-v><C-q>",
-    ["<C-r>"] = "<C-v><C-r>",
-    ["<C-s>"] = "<C-v><C-s>",
-    ["<C-t>"] = "<C-v><C-t>",
-    ["<C-u>"] = "<C-v><C-u>",
-    ["<C-w>"] = "<C-v><C-w>",
-    ["<C-x>"] = "<C-v><C-x>",
-    ["<C-y>"] = "<C-v><C-y>",
-    ["<C-z>"] = "<C-v><C-z>",
-}
-
 -- 一時的に特定のマッピングを上書き適用する。上書きしたぶんを unmap する関数を返す。
 local function temporal_cmap()
+    local maps = {
+        -- <C-m> は <CR> と同じなのでちゃんと `<CR>` できることを保証しておく
+        ["<C-m>"] = "<C-m>",
+
+        -- <C-c> はキャンセル用でいいのではないか
+        ["<C-c>"] = "<Esc>",
+
+        -- <C-v> は特殊文字を入力する最後の砦なので残しておこうかな
+        ["<C-v>"] = "<C-v>",
+
+        ["<C-a>"] = "<C-v><C-a>",
+        ["<C-b>"] = "<C-v><C-b>",
+        ["<C-d>"] = "<C-v><C-d>",
+        ["<C-e>"] = "<C-v><C-e>",
+        ["<C-f>"] = "<C-v><C-f>",
+        ["<C-g>"] = "<C-v><C-g>",
+        ["<C-h>"] = "<C-v><C-h>",
+        ["<C-i>"] = "<C-v><C-i>",
+        ["<C-j>"] = "<C-v><C-j>",
+        ["<C-k>"] = "<C-v><C-k>",
+        ["<C-l>"] = "<C-v><C-l>",
+        ["<C-n>"] = "<C-v><C-n>",
+        ["<C-o>"] = "<C-v><C-o>",
+        ["<C-p>"] = "<C-v><C-p>",
+        ["<C-q>"] = "<C-v><C-q>",
+        ["<C-r>"] = "<C-v><C-r>",
+        ["<C-s>"] = "<C-v><C-s>",
+        ["<C-t>"] = "<C-v><C-t>",
+        ["<C-u>"] = "<C-v><C-u>",
+        ["<C-w>"] = "<C-v><C-w>",
+        ["<C-x>"] = "<C-v><C-x>",
+        ["<C-y>"] = "<C-v><C-y>",
+        ["<C-z>"] = "<C-v><C-z>",
+    }
+
+    -- save default c-keymaps
     local maplist = vim.iter(vim.fn.maplist())
         :filter(function(m)
             return m.mode == "c"
@@ -577,200 +458,115 @@ local function temporal_cmap()
         :totable()
 
     for k, v in pairs(maps) do
-        vim.keymap.set("c", k, v)
+        mapset.c(k) { v }
     end
-    vim.keymap.set("c", "<Esc>", function()
-        if vim.fn.getcmdline() == "" then
-            return "<Esc>"
-        else
-            return "<C-v><Esc>"
-        end
-    end, { expr = true })
+    mapset.c("<Esc>") {
+        desc = [[明らかなキャンセル以外は <Esc> 文字をそのまま出力]],
+        expr = true,
+        function()
+            if vim.fn.getcmdline() == "" then
+                return "<Esc>"
+            else
+                return "<C-v><Esc>"
+            end
+        end,
+    }
 
+    -- 後片付け関数
     return function()
         for k, _ in pairs(maps) do
             vim.keymap.del("c", k)
         end
         vim.keymap.del("c", "<Esc>")
 
+        -- restore default c-keymaps
         vim.iter(maplist):each(function(m)
             vim.fn.mapset(m)
         end)
     end
 end
 
-vim.keymap.set("x", "<Plug>(vimrc-visual-successive-normal)", function()
-    local cursor_line = vim.fn.line(".")
-    local other_line = vim.fn.line("v")
-    local start_line = util.ifexpr(cursor_line < other_line, cursor_line, other_line)
-    local end_line = util.ifexpr(cursor_line < other_line, other_line, cursor_line)
+mapset.x("C") {
+    desc = [[:normal の改善版]],
+    function()
+        local cursor_line = vim.fn.line(".")
+        local other_line = vim.fn.line("v")
+        local start_line = util.ifexpr(cursor_line < other_line, cursor_line, other_line)
+        local end_line = util.ifexpr(cursor_line < other_line, other_line, cursor_line)
 
-    local mark_id = vim.api.nvim_buf_set_extmark(0, ns_id, start_line - 1, 0, {
-        end_row = end_line,
-        end_col = 0,
-        hl_group = "Visual",
-    })
-    local finished = false
+        local mark_id = vim.api.nvim_buf_set_extmark(0, ns_id, start_line - 1, 0, {
+            end_row = end_line,
+            end_col = 0,
+            hl_group = "Visual",
+        })
+        local finished = false
 
-    -- 何もしない normal コマンドを実行して VISUAL mode から抜ける。これ以外良い方法が思いつかない
-    vim.cmd.normal { args = { "A" }, bang = true }
-    vim.cmd.redraw { bang = true }
+        -- 何もしない normal コマンドを実行して VISUAL mode から抜ける。これ以外良い方法が思いつかない
+        vim.cmd.normal { args = { "A" }, bang = true }
+        vim.cmd.redraw { bang = true }
 
-    local unmap = temporal_cmap()
-    while not finished do
-        vim.ui.input({ prompt = ":'<,'>normal " }, function(cmd)
-            if cmd == nil or cmd == "" then
-                finished = true
-            else
-                -- 1回の編集ごとに undo が戻るようにする
-                vim.cmd.normal { args = { term("i<C-g>u") }, bang = true }
-                vim.cmd.normal {
-                    args = { cmd },
-                    range = { start_line, end_line },
-                }
-                vim.cmd.redraw { bang = true }
-            end
-        end)
-    end
-    unmap()
+        local unmap = temporal_cmap()
+        while not finished do
+            vim.ui.input({ prompt = ":'<,'>normal " }, function(cmd)
+                if cmd == nil or cmd == "" then
+                    finished = true
+                else
+                    -- 1回の編集ごとに undo が戻るようにする
+                    vim.cmd.normal { args = { monaqa.str.term("i<C-g>u") }, bang = true }
+                    vim.cmd.normal {
+                        args = { cmd },
+                        range = { start_line, end_line },
+                    }
+                    vim.cmd.redraw { bang = true }
+                end
+            end)
+        end
+        unmap()
 
-    vim.api.nvim_buf_del_extmark(0, ns_id, mark_id)
+        vim.api.nvim_buf_del_extmark(0, ns_id, mark_id)
 
-    -- `gv` で再選択できるよう選択領域を restore
-    vim.cmd(tostring(start_line))
-    vim.cmd.normal([[V]])
-    vim.cmd(tostring(end_line))
-    vim.cmd.normal([[V]])
-end)
-vim.keymap.set("x", "C", "<Plug>(vimrc-visual-successive-normal)")
+        -- `gv` で再選択できるよう選択領域を restore
+        vim.cmd(tostring(start_line))
+        vim.cmd.normal([[V]])
+        vim.cmd(tostring(end_line))
+        vim.cmd.normal([[V]])
+    end,
+}
 
 -- Section1 motion/text object
 
 -- Section2 charwise motion
+mapset.i("<C-Space>") { "<Space>", desc = "誤爆を防ぐため" }
 
-vim.keymap.set("i", "<C-b>", "<C-g>U<Left>")
-vim.keymap.set("i", "<C-f>", "<C-g>U<Right>")
-vim.keymap.set("i", "<C-Space>", "<Space>")
+mapset.i("<C-b>") { "<C-g>U<Left>" }
+mapset.i("<C-f>") { "<C-g>U<Right>" }
 
-vim.keymap.set("i", "<C-Space>", "<Space>")
-
--- smart home/end
-vim.keymap.set({ "n", "x" }, "<Space>h", function()
-    local str_before_cursor = vim.fn.strpart(vim.fn.getline("."), 0, vim.fn.col(".") - 1)
-    local move_cmd
-    -- カーソル前がインデントしかないかどうかでコマンドを変える
-    if vim.regex([[^\s*$]]):match_str(str_before_cursor) then
-        move_cmd = "0"
-    else
-        move_cmd = "^"
-    end
-
-    util.motion_autoselect {
-        function()
-            vim.cmd("normal! g" .. move_cmd)
-        end,
-        function()
-            vim.cmd("normal! " .. move_cmd)
-        end,
-    }
-end)
-vim.keymap.set("o", "<Space>h", "^")
-
--- smart end
-vim.keymap.set("n", "<Space>l", function()
-    util.motion_autoselect {
-        function()
-            vim.cmd("normal! g$")
-        end,
-        function()
-            vim.cmd("normal! $")
-        end,
-    }
-end)
-
--- vim.keymap.set("x", "<Space>l", "$h")
--- VISUAL モードにおいても基本的には行末移動。ただし、
--- 矩形選択時かつカーソルが既に行末にある時に限り、
--- 選択した行範囲にあるすべての行末を覆えるような長方形とする。
-vim.keymap.set("x", "<Space>l", function()
-    local cursor = vim.fn.getcurpos()
-    local lnum_cursor = cursor[2]
-    local col_cursor = cursor[3]
-    local line_cursor = vim.fn.getline(lnum_cursor)
-
-    -- 行末移動
-    vim.fn.cursor { lnum_cursor, #line_cursor }
-    local new_col_cursor = vim.fn.getcurpos()[3]
-    -- 行末移動によりカーソルの位置が変わっていたらそこで処理を終了する
-    if col_cursor ~= new_col_cursor then
-        return
-    end
-
-    -- 矩形選択、かつすでにカーソルが既に行末にある場合
-    if vim.fn.mode(1) == "\u{16}" then
-        local other_end = vim.fn.getpos("v")
-        local lnum_other = other_end[2]
-        local lnum_start = util.ifexpr(lnum_cursor > lnum_other, lnum_other, lnum_cursor)
-        local lnum_end = util.ifexpr(lnum_cursor > lnum_other, lnum_cursor, lnum_other)
-        local lines = vim.fn.getline(lnum_start, lnum_end)
-        local dispwidth_max = 0
-        for _, line in ipairs(lines) do
-            local dispwidth = vim.fn.strdisplaywidth(line)
-            if dispwidth_max < dispwidth then
-                dispwidth_max = dispwidth
-            end
+-- inner-word motion
+mapset.o("u") { "t_" }
+mapset.o("U") {
+    desc = [[camelCase の次の大文字の手前までを選択する]],
+    function()
+        for _ = 1, vim.v.count1, 1 do
+            vim.fn.search("[A-Z]", "", vim.fn.line("."))
         end
-        local dispwidth_cursor = vim.fn.strdisplaywidth(vim.fn.getline(lnum_cursor))
-        if dispwidth_max > dispwidth_cursor then
-            vim.fn.cursor { lnum_cursor, #line_cursor, dispwidth_max - dispwidth_cursor, dispwidth_max }
-        end
-    end
-end)
+    end,
+}
 
--- vim.keymap.set("o", "<Space>l", "$")
--- vim.keymap.set("o", "<Space>l", function ()
---     vim.cmd"normal! m["
---     vim.cmd"normal! $"
---     if vim.v.count == vim.v.count1 then
---         vim.cmd(("normal! %sh"):format(vim.v.count))
---     end
---     vim.cmd"normal! m]"
--- end)
-vim.keymap.set(
-    "o",
-    "<Space>l",
-    require("peridot").repeatable_textobj(function(ctx)
-        vim.cmd("normal! v$h")
-        if ctx.set_count then
-            vim.cmd(("normal! %sh"):format(ctx.count))
-        end
-    end),
-    { expr = true }
-)
+mapset.nxo("m)") { "])" }
+mapset.nxo("m}") { "]}" }
+mapset.x("m]") { "i]o``", desc = "対応する角カッコの終了手前までを選択" }
+mapset.n("dm]") { "vi]o``d", desc = "対応する角カッコの終了手前までを削除" }
+mapset.n("cm]") { "vi]o``c", desc = "対応する角カッコの終了手前までを置換" }
 
-vim.keymap.set("o", "u", "t_")
-vim.keymap.set("o", "U", function()
-    for _ = 1, vim.v.count1, 1 do
-        vim.fn.search("[A-Z]", "", vim.fn.line("."))
-    end
-end)
-
-vim.keymap.set({ "n", "x", "o" }, "m)", "])")
-vim.keymap.set({ "n", "x", "o" }, "m}", "]}")
-vim.keymap.set("x", "m]", "i]o``")
-vim.keymap.set("x", "m(", "i)``")
-vim.keymap.set("x", "m{", "i}``")
-vim.keymap.set("x", "m[", "i]``")
-
-vim.keymap.set("n", "dm]", "vi]o``d")
-vim.keymap.set("n", "dm(", "vi)``d")
-vim.keymap.set("n", "dm{", "vi}``d")
-vim.keymap.set("n", "dm[", "vi]``d")
-
-vim.keymap.set("n", "cm]", "vi]o``c")
-vim.keymap.set("n", "cm(", "vi)``c")
-vim.keymap.set("n", "cm{", "vi}``c")
-vim.keymap.set("n", "cm[", "vi]``c")
+mapset.x("m(") { "i)``" }
+mapset.x("m{") { "i}``" }
+mapset.x("m[") { "i]``" }
+mapset.n("dm(") { "vi)``d" }
+mapset.n("dm{") { "vi}``d" }
+mapset.n("dm[") { "vi]``d" }
+mapset.n("cm(") { "vi)``c" }
+mapset.n("cm{") { "vi}``c" }
+mapset.n("cm[") { "vi]``c" }
 
 for _, quote in ipairs { '"', "'", "`" } do
     vim.keymap.set({ "x", "o" }, "a" .. quote, "2i" .. quote)
@@ -779,13 +575,13 @@ end
 
 -- Command mode mapping
 
-vim.keymap.set("c", "<C-a>", "<Home>")
-vim.keymap.set("c", "<C-b>", "<Left>")
-vim.keymap.set("c", "<C-f>", "<Right>")
-vim.keymap.set("c", "<C-p>", "<Up>")
-vim.keymap.set("c", "<C-n>", "<Down>")
-vim.keymap.set("c", "<Up>", "<C-p>")
-vim.keymap.set("c", "<Down>", "<C-n>")
+mapset.c("<C-a>") { "<Home>" }
+mapset.c("<C-b>") { "<Left>" }
+mapset.c("<C-f>") { "<Right>" }
+mapset.c("<C-p>") { "<Up>" }
+mapset.c("<C-n>") { "<Down>" }
+mapset.c("<Up>") { "<C-p>" }
+mapset.c("<Down>") { "<C-n>" }
 
 -- f motion を n/N で繰り返せるようにする submode 案
 
@@ -804,41 +600,126 @@ vim.keymap.set("c", "<Down>", "<C-n>")
 -- vim.keymap.set({ "n", "x" }, "<Plug>(submode-f)N", ",<Plug>(submode-f)")
 -- vim.keymap.set({ "n", "x" }, "<Plug>(submode-F)N", ";<Plug>(submode-F)")
 
--- Section2 linewise motion
-vim.keymap.set("n", "<Space>m", "<Plug>(matchup-%)")
+-- Section 3 smart <Home>
+mapset.nx("<Space>h") {
+    desc = [[smart <Home>]],
+    function()
+        local str_before_cursor = vim.fn.strpart(vim.fn.getline("."), 0, vim.fn.col(".") - 1)
+        local move_cmd = logic.ifexpr(
+            vim.regex([[^\s*$]]):match_str(str_before_cursor) ~= nil, "0", "^"
+        )
 
-vim.keymap.set("n", "j", function()
-    if vim.v.count == 0 then
-        return "gj"
-    else
-        return "j"
-    end
-end, { expr = true })
-vim.keymap.set("n", "k", function()
-    if vim.v.count == 0 then
-        return "gk"
-    else
-        return "k"
-    end
-end, { expr = true })
-vim.keymap.set("x", "j", function()
-    if vim.v.count == 0 and vim.fn.mode(0) == "v" then
-        return "gj"
-    else
-        return "j"
-    end
-end, { expr = true })
-vim.keymap.set("x", "k", function()
-    if vim.v.count == 0 and vim.fn.mode(0) == "v" then
-        return "gk"
-    else
-        return "k"
-    end
-end, { expr = true })
+        util.motion_autoselect {
+            function()
+                vim.cmd("normal! g" .. move_cmd)
+            end,
+            function()
+                vim.cmd("normal! " .. move_cmd)
+            end,
+        }
+    end,
+}
+mapset.o("<Space>h") { "^" }
+
+-- Section 3 smart <End>
+mapset.n("<Space>l") {
+    desc = [[smart <End>]],
+    function()
+        util.motion_autoselect {
+            function()
+                vim.cmd("normal! g$")
+            end,
+            function()
+                vim.cmd("normal! $")
+            end,
+        }
+    end,
+}
+
+mapset.x("<Space>l") {
+    desc = [[矩形選択時かつカーソルが既に行末にある時に限り、選択した行範囲にあるすべての行末を覆えるような長方形とする。]],
+    function()
+        local cursor = vim.fn.getcurpos()
+        local lnum_cursor = cursor[2]
+        local col_cursor = cursor[3]
+        local line_cursor = vim.fn.getline(lnum_cursor)
+
+        -- 行末移動
+        vim.fn.cursor { lnum_cursor, #line_cursor }
+        local new_col_cursor = vim.fn.getcurpos()[3]
+        -- 行末移動によりカーソルの位置が変わっていたらそこで処理を終了する
+        if col_cursor ~= new_col_cursor then
+            return
+        end
+
+        -- 矩形選択、かつすでにカーソルが既に行末にある場合
+        if vim.fn.mode(1) == "\u{16}" then
+            local other_end = vim.fn.getpos("v")
+            local lnum_other = other_end[2]
+            local lnum_start = util.ifexpr(lnum_cursor > lnum_other, lnum_other, lnum_cursor)
+            local lnum_end = util.ifexpr(lnum_cursor > lnum_other, lnum_cursor, lnum_other)
+            local lines = vim.fn.getline(lnum_start, lnum_end)
+            local dispwidth_max = 0
+            for _, line in ipairs(lines) do
+                local dispwidth = vim.fn.strdisplaywidth(line)
+                if dispwidth_max < dispwidth then
+                    dispwidth_max = dispwidth
+                end
+            end
+            local dispwidth_cursor = vim.fn.strdisplaywidth(vim.fn.getline(lnum_cursor))
+            if dispwidth_max > dispwidth_cursor then
+                vim.fn.cursor { lnum_cursor, #line_cursor, dispwidth_max - dispwidth_cursor, dispwidth_max }
+            end
+        end
+    end,
+}
+
+mapset.o("<Space>l") {
+    desc = [[カウントを指定すると、その分だけ行末から文字を削った範囲を対象とする]],
+    expr = true,
+    require("peridot").repeatable_textobj(function(ctx)
+        vim.cmd("normal! v$h")
+        if ctx.set_count then
+            vim.cmd(("normal! %sh"):format(ctx.count))
+        end
+    end),
+}
+
+-- Section2 linewise motion
+mapset.n("j") {
+    desc = [[smart j]],
+    expr = true,
+    function()
+        return logic.ifexpr(vim.v.count == 0, "gj", "j")
+    end,
+}
+mapset.n("k") {
+    desc = [[smart k]],
+    expr = true,
+    function()
+        return logic.ifexpr(vim.v.count == 0, "gk", "k")
+    end,
+}
+
+mapset.x("j") {
+    desc = [[smart j]],
+    expr = true,
+    function()
+        return logic.ifexpr(vim.v.count == 0 and vim.fn.mode(0) == "v", "gj", "j")
+    end,
+}
+mapset.x("k") {
+    desc = [[smart k]],
+    expr = true,
+    function()
+        return logic.ifexpr(vim.v.count == 0 and vim.fn.mode(0) == "v", "gk", "k")
+    end,
+}
 
 -- Vertical WORD (vWORD) 単位での移動
 _G.vimrc.state.par_motion_continuous = false
-util.autocmd_vimrc("CursorMoved") {
+autocmd_vimrc "CursorMoved" {
+    desc = [[paragraph motion の continuous フラグを切る]],
     callback = function()
         _G.vimrc.state.par_motion_continuous = false
     end,
@@ -846,27 +727,27 @@ util.autocmd_vimrc("CursorMoved") {
 
 -- <C-j>/<C-k> は基本的に `{` / `}` モーションと同じだが、
 -- 連続した <C-j>/<C-k> による移動では jumplist が更新されない
-function _G.vimrc.motion.smart_par(forward)
-    vim.cmd(table.concat {
-        util.ifexpr(_G.vimrc.state.par_motion_continuous, "keepjumps ", ""),
-        "normal! ",
-        tostring(vim.v.count1),
-        util.ifexpr(forward, "}", "{"),
-    })
+function _G.vimrc.motion.smart_par(motion)
+    vim.cmd.normal {
+        args = { tostring(vim.v.count1) .. motion },
+        bang = true,
+        mods = {
+            keepjumps = _G.vimrc.state.par_motion_continuous,
+        }
+    }
 end
 
-vim.keymap.set(
-    { "n", "x", "o" },
-    "<C-j>",
-    util.cmdcr("call v:lua.vimrc.motion.smart_par(v:true)")
-        .. util.cmdcr("lua _G.vimrc.state.par_motion_continuous = true")
-)
-vim.keymap.set(
-    { "n", "x", "o" },
-    "<C-k>",
-    util.cmdcr("call v:lua.vimrc.motion.smart_par(v:false)")
-        .. util.cmdcr("lua _G.vimrc.state.par_motion_continuous = true")
-)
+mapset.nxo("<C-j>") {
+    desc = [[smart paragraph motion (down)]],
+    "<Cmd>call v:lua.vimrc.motion.smart_par('}')<CR>"
+    .. "<Cmd>lua _G.vimrc.state.par_motion_continuous = true<CR>"
+}
+
+mapset.nxo("<C-k>") {
+    desc = [[smart paragraph motion (up)]],
+    "<Cmd>call v:lua.vimrc.motion.smart_par('{')<CR>"
+    .. "<Cmd>lua _G.vimrc.state.par_motion_continuous = true<CR>"
+}
 
 -- vertical f motion
 -- TODO: プラグイン化したくなってきたのう
@@ -927,18 +808,7 @@ local function vertical_f(ctx, forward)
     for _ = 1, ctx.count1, 1 do
         vim.fn.search(vertical_f_pattern, flag)
     end
-
-    -- local key = vim.api.nvim_replace_termcodes("<Plug>(submode-vert-f)", true, false, true)
-    -- vim.api.nvim_feedkeys(key, "", true)
 end
-
--- local function repeat_vertical_f(forward)
---     local flag = "W"
---     if not forward then
---         flag = flag .. "b"
---     end
---     vim.fn.search(vertical_f_pattern, flag)
--- end
 
 local function get_initial_ctx()
     return {
@@ -949,58 +819,33 @@ local function get_initial_ctx()
     }
 end
 
-vim.keymap.set({ "n", "x" }, "<Space>f", function()
-    vertical_f(get_initial_ctx(), true)
-end)
-
-vim.keymap.set(
-    "o",
-    "<Space>f",
+mapset.nx("<Space>f") {
+    desc = [[Vertical f motion]],
+    function()
+        vertical_f(get_initial_ctx(), true)
+    end,
+}
+mapset.o("<Space>f") {
+    desc = [[Vertical f motion]],
+    expr = true,
     require("peridot").repeatable_textobj(function(ctx)
         vertical_f(ctx, true)
     end),
-    { expr = true }
-)
+}
 
-vim.keymap.set({ "n", "x" }, "<Space>F", function()
-    vertical_f(get_initial_ctx(), false)
-end)
-vim.keymap.set(
-    "o",
-    "<Space>F",
+mapset.nx("<Space>F") {
+    desc = [[Vertical f motion]],
+    function()
+        vertical_f(get_initial_ctx(), false)
+    end,
+}
+mapset.o("<Space>F") {
+    desc = [[Vertical f motion]],
+    expr = true,
     require("peridot").repeatable_textobj(function(ctx)
         vertical_f(ctx, false)
     end),
-    { expr = true }
-)
-
--- vim.keymap.set("n", "<Plug>(vert-f-next)", repeat_vertical_f)
---
--- vim.keymap.set({ "n", "x" }, "<Plug>(submode-vert-f)n", "<Plug>(vert-f-next)<Plug>(submode-vert-f)")
--- vim.keymap.set({ "n", "x" }, "<Plug>(submode-vert-F)n", "<Plug>(vert-f-next)<Plug>(submode-vert-F)")
--- vim.keymap.set({ "n", "x" }, "<Plug>(submode-vert-f)N", "<Plug>(vert-f-next)<Plug>(submode-vert-f)")
--- vim.keymap.set({ "n", "x" }, "<Plug>(submode-vert-F)N", "<Plug>(vert-f-next)<Plug>(submode-vert-F)")
-
--- vim.keymap.set({ "n", "x" }, "f", function()
---     local char = vim.fn.nr2char(vim.fn.getchar())
---     return "f" .. char .. "<Plug>(submode-f)"
--- end, { expr = true })
---
--- vim.keymap.set({ "n", "x" }, "F", function()
---     local char = vim.fn.nr2char(vim.fn.getchar())
---     return "F" .. char .. "<Plug>(submode-F)"
--- end, { expr = true })
---
--- vim.keymap.set({ "n", "x" }, "<Plug>(submode-f)n", ";<Plug>(submode-f)")
--- vim.keymap.set({ "n", "x" }, "<Plug>(submode-F)n", ",<Plug>(submode-F)")
--- vim.keymap.set({ "n", "x" }, "<Plug>(submode-f)N", ",<Plug>(submode-f)")
--- vim.keymap.set({ "n", "x" }, "<Plug>(submode-F)N", ";<Plug>(submode-F)")
-
--- local submode_diffjump = submode.create_mode("diffjump", "g")
--- submode_diffjump.register_mapping("j", "<Plug>(signify-next-hunk)")
--- submode_diffjump.register_mapping("k", "<Plug>(signify-prev-hunk)")
--- vim.keymap.set("n", "gj", "<Plug>(signify-next-hunk)")
--- vim.keymap.set("n", "gk", "<Plug>(signify-prev-hunk)")
+}
 
 -- Section1 Macros
 
@@ -1011,7 +856,7 @@ vim.keymap.set(
 -- デフォルトのレジスタ @q は Vim の開始ごとに初期化される。
 
 local function keymap_toggle_macro()
-    if util.to_bool(vim.fn.reg_recording()) then
+    if logic.to_bool(vim.fn.reg_recording()) then
         -- 既に記録中の時は止める
         return "q"
     end
@@ -1060,67 +905,65 @@ local function keymap_cancel_macro()
     }
 end
 
-vim.keymap.set("n", "Q", keymap_toggle_macro, { expr = true })
-vim.keymap.set("n", "<C-q>", function()
-    if vim.fn.reg_recording() == "" then
-        return keymap_play_macro()
-    else
-        return keymap_cancel_macro()
-    end
-end, { expr = true })
-vim.keymap.set("n", "@", "<Nop>")
-vim.keymap.set("n", "@:", "@:")
+mapset.n("Q") { keymap_toggle_macro, expr = true }
+mapset.n("<C-q>") {
+    desc = [[Play / Cancel Macro]],
+    expr = true,
+    function()
+        if vim.fn.reg_recording() == "" then
+            return keymap_play_macro()
+        else
+            return keymap_cancel_macro()
+        end
+    end,
+}
+
+mapset.n("@") { "Nop" }
+mapset.n("@:") { "@:" }
 
 -- Section1 特殊キー
 for i = 1, 12, 1 do
-    vim.keymap.set({ "n", "x", "o" }, ("<F%s>"):format(i), "<Nop>")
+    mapset.nxo(("<F%s>"):format(i)) { "<Nop>" }
 end
-vim.keymap.set({ "n", "x", "o", "i", "c", "s" }, "<M-F1>", "<Nop>")
-vim.keymap.set({ "i", "c", "s" }, "<F1>", "<Nop>")
-vim.keymap.set({ "n", "x", "o" }, "<Space>", "<Nop>")
-vim.keymap.set({ "n", "x", "o" }, "<CR>", "<Nop>")
+mapset.with_mode { "n", "x", "o", "i", "c", "s" } ("<M-F1>") { "<Nop>" }
+mapset.with_mode { "i", "c", "s" } ("<F1>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" } ("<Space>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" } ("<CR>") { "<Nop>" }
 
 -- Section1 その他
-vim.keymap.set("n", "<C-h>", "g;")
-vim.keymap.set("n", "<C-g>", "g,")
+
+-- Changelist
+mapset.n("<C-h>") { "g;" }
+mapset.n("<C-g>") { "g," }
 
 -- <C-x> 絶妙に押しづらいから…
-vim.keymap.set("i", "<C-g>", "<C-x>")
+mapset.i("<C-g>") { "<C-x>" }
 
 -- 直前の単語を full uppercase にする。
 -- vimrc 読書会より。
 -- thanks to thinca
-vim.keymap.set("i", "<C-l>", "<Esc>gUvbgi")
-
-vim.keymap.set("n", "gf", "gF")
-
-vim.keymap.set({ "i", "c" }, "<C-v>u", "<C-r>=nr2char(0x)<Left>")
+mapset.i("<C-l>") { "<Esc>gUvbgi" }
+mapset.n("gf") { "gF" }
+mapset.ic("<C-v>u") { "<C-r>=nr2char(0x)<Left>" }
 
 -- https://github.com/ompugao/vim-bundle/blob/074e7b22320ad4bfba4da5516e53b498ace35a89/vimrc
-vim.keymap.set("v", "I", function()
-    return util.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$I", "I")
-end, { expr = true })
-vim.keymap.set("v", "A", function()
-    return util.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$A", "A")
-end, { expr = true })
+mapset.x("I") {
+    desc = [[行選択モードでも複数行に挿入できる I]],
+    expr = true,
+    function()
+        return util.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$I", "I")
+    end,
+}
+mapset.x("A") {
+    desc = [[行選択モードでも複数行に挿入できる A]],
+    expr = true,
+    function()
+        return util.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$A", "A")
+    end,
+}
 
-vim.keymap.set("n", "ts", "<Cmd>Inspect<CR>")
-
--- TODO: 'path' を読んでもっといい感じに開く
-vim.keymap.set("n", "gF", "<Cmd>!open <cfile><CR>", {
+mapset.n("ts") { "<Cmd>Inspect<CR>" }
+mapset.n("gF") {
     desc = "外部の open コマンドを用いてパスを開く",
-})
-
--- local keystrokes = {}
---
--- vim.on_key(function(key)
---     if vim.fn.mode() == "n" then
---         keystrokes[#keystrokes + 1] = vim.fn.keytrans(key)
---     end
--- end)
---
--- vim.keymap.set("n", "@k", function()
---     vim.print(keystrokes)
--- end)
-
-return M
+    "<Cmd>!open <cfile><CR>",
+}

@@ -55,47 +55,103 @@ end
 endsnippet
 
 snippet nnoremap "vim.keymap.set (normal)" b
-vim.keymap.set("n", "$1", function()
-	$0
-end, { buffer = true })
-endsnippet
-
-snippet inoremap "vim.keymap.set (insert)" b
-vim.keymap.set("i", "$1", function()
-	$0
-end, { buffer = true })
+mapset.n("$1") {
+	desc = [[]],
+	function ()
+		$0
+	end,
+}
 endsnippet
 
 snippet xnoremap "vim.keymap.set (visual)" b
-vim.keymap.set("x", "$1", function()
-	$0
-end, { buffer = true })
+mapset.x("$1") {
+	desc = [[]],
+	function ()
+		$0
+	end,
+}
 endsnippet
 
 snippet onoremap "vim.keymap.set (op-pend)" b
-vim.keymap.set("o", "$1", function()
-	$0
-end, { buffer = true })
+mapset.o("$1") {
+	desc = [[]],
+	function ()
+		$0
+	end,
+}
+endsnippet
+
+snippet inoremap "vim.keymap.set (insert)" b
+mapset.i("$1") {
+	desc = [[]],
+	function ()
+		$0
+	end,
+}
 endsnippet
 
 snippet cnoremap "vim.keymap.set (command-line)" b
-vim.keymap.set("c", "$1", function()
-	$0
-end, { buffer = true })
+mapset.c("$1") {
+	desc = [[]],
+	function ()
+		$0
+	end,
+}
 endsnippet
 
 snippet noremap "vim.keymap.set (normal-like mode)" b
-vim.keymap.set({"n", "x", "o"}, "$1", function()
-	$0
-end, { buffer = true })
+mapset.nxo("$1") {
+	desc = [[]],
+	function ()
+		$0
+	end,
+}
 endsnippet
 
-snippet iabbrev "vim.keymap.set (insert abbrev)" b
-vim.keymap.set("ia", "$1", "$2")
+snippet inoreabbrev "vim.keymap.set (insert abbrev)" b
+mapset.ia("$1") {
+	desc = [[]],
+	function ()
+		$0
+	end,
+}
 endsnippet
 
-snippet cabbrev "vim.keymap.set (command-line abbrev)" b
-vim.keymap.set("ca", "$1", "$2")
+snippet cnoreabbrev "vim.keymap.set (command-line abbrev)" b
+mapset.ca("$1") {
+	desc = [[]],
+	function ()
+		$0
+	end,
+}
+endsnippet
+
+snippet nmap "vim.keymap.set (normal short)" b
+mapset.n("$1") { "$2" }
+endsnippet
+
+snippet xmap "vim.keymap.set (visual short)" b
+mapset.x("$1") { "$2" }
+endsnippet
+
+snippet omap "vim.keymap.set (op-pend short)" b
+mapset.o("$1") { "$2" }
+endsnippet
+
+snippet imap "vim.keymap.set (insert short)" b
+mapset.i("$1") { "$2" }
+endsnippet
+
+snippet cmap "vim.keymap.set (command-line short)" b
+mapset.c("$1") { "$2" }
+endsnippet
+
+snippet iabbr "vim.keymap.set (insert abbrev short)" b
+mapset.ia("$1") { "$2" }
+endsnippet
+
+snippet cabbr "vim.keymap.set (command-line abbrev short)" b
+mapset.ca("$1") { "$2" }
 endsnippet
 
 snippet command "Description" b
@@ -108,4 +164,8 @@ snippet expr "Lua expression block" w
 (function()
 	return $0
 end)()
+endsnippet
+
+snippet cmd "Description" w
+<Cmd>$0<CR>
 endsnippet

@@ -1,20 +1,54 @@
 -- Vim の組み込み API などのショートハンド。
 local M = {}
 
+local logic = require("monaqa.logic")
+
 --- group が vimrc の autocmd を作成する。
+---@param event string | string[]
+---@return fun(opts: vim.api.keyset.create_autocmd):nil
 function M.autocmd_vimrc(event)
+    ---@param opts vim.api.keyset.create_autocmd
     return function(opts)
         opts["group"] = "vimrc"
         vim.api.nvim_create_autocmd(event, opts)
     end
 end
 
+--- @class monaqa.cmd_args
+--- @field buffer? boolean | number
+--- @field addr? any
+--- @field bang? boolean
+--- @field bar? boolean
+--- @field complete? any
+--- @field count? any
+--- @field desc? any
+--- @field force? boolean
+--- @field keepscript? boolean
+--- @field nargs? any
+--- @field preview? any
+--- @field range? any
+--- @field register? boolean
+
 --- nvim_create_user_command って長ったらしいしオプション省略できないっぽいので。
-function M.create_cmd(name, impl, options)
-    if options == nil then
-        options = {}
+---@param name string
+---@return fun(t: monaqa.cmd_args)
+function M.create_cmd(name)
+    ---@param t monaqa.cmd_args
+    return function(t)
+        local body = t[1]
+        t[1] = nil
+        if t.buffer ~= nil then
+            local buffer = logic.ifexpr(t.buffer == true, 0, t.buffer)
+            t.buffer = nil
+            vim.api.nvim_buf_create_user_command(buffer, name, body, t)
+        else
+            vim.api.nvim_create_user_command(name, body, t)
+        end
     end
-    vim.api.nvim_create_user_command(name, impl, options)
+    -- if options == nil then
+    --     options = {}
+    -- end
+    -- vim.api.nvim_create_user_command(name, impl, options)
 end
 
 ---@alias ftypegetter fun(): string
@@ -104,25 +138,74 @@ local function mapset_with_mode(mode, buffer_local)
 end
 
 M.mapset = {
+    --- NORMAL mode のキーマップを定義する。
     n = mapset_with_mode("n"),
+    --- VISUAL mode のキーマップを定義する。
     x = mapset_with_mode("x"),
+    --- OPERATOR-PENDING mode のキーマップを定義する。
     o = mapset_with_mode("o"),
+    --- INSERT mode のキーマップを定義する。
     i = mapset_with_mode("i"),
+    --- COMMAND-LINE mode のキーマップを定義する。
     c = mapset_with_mode("c"),
+    --- SELECT mode のキーマップを定義する。
+    s = mapset_with_mode("x"),
+    --- TERMINAL mode のキーマップを定義する。
     t = mapset_with_mode("t"),
+
+    --- NORMAL / VISUAL キーマップ（オペレータ/モーションなど）
+    nx = mapset_with_mode { "n", "x" },
+    --- VISUAL / SELECT キーマップ（制御文字を用いた VISUAL キーマップなど）
+    xs = mapset_with_mode { "x", "s" },
+    --- VISUAL / OPERATOR-PENDING キーマップ（モーション、text object など）
+    xo = mapset_with_mode { "x", "o" },
+
+    --- NORMAL-like mode のキーマップ（モーションなど）
     nxo = mapset_with_mode { "n", "x", "o" },
+    --- INSERT-like mode のキーマップ（文字入力など）
     ic = mapset_with_mode { "i", "c" },
+
+    --- iabbrev を定義する。
+    ia = mapset_with_mode("ia"),
+    --- cabbrev を定義する。
+    ca = mapset_with_mode("ca"),
+
+    --- モードを文字列で指定してキーマップを定義する。
+    with_mode = mapset_with_mode,
 }
 
 M.mapset_local = {
+    --- NORMAL mode の buffer-local キーマップを定義する。
     n = mapset_with_mode("n", true),
+    --- VISUAL mode の buffer-local キーマップを定義する。
     x = mapset_with_mode("x", true),
+    --- OPERATOR-PENDING mode の buffer-local キーマップを定義する。
     o = mapset_with_mode("o", true),
+    --- INSERT mode の buffer-local キーマップを定義する。
     i = mapset_with_mode("i", true),
+    --- COMMAND-LINE mode の buffer-local キーマップを定義する。
     c = mapset_with_mode("c", true),
+    --- SELECT mode の buffer-local キーマップを定義する。
+    s = mapset_with_mode("s", true),
+    --- TERMINAL mode の buffer-local キーマップを定義する。
     t = mapset_with_mode("t", true),
+
+    --- NORMAL / VISUAL の buffer-local キーマップ。
+    nx = mapset_with_mode({ "n", "x" }, true),
+    --- VISUAL / SELECT の buffer-local キーマップ。
+    xs = mapset_with_mode({ "x", "s" }, true),
+    --- VISUAL / OPERATOR-PENDING の buffer-local キーマップ。
+    xo = mapset_with_mode({ "x", "o" }, true),
+
+    --- NORMAL-like モードの buffer-local キーマップ。
     nxo = mapset_with_mode({ "n", "x", "o" }, true),
+    --- INSERT-like モードの buffer-local キーマップ。
     ic = mapset_with_mode({ "i", "c" }, true),
+
+    --- buffer-local iabbrev を定義する。
+    ia = mapset_with_mode("ia", true),
+    --- buffer-local cabbrev を定義する。
+    ca = mapset_with_mode("ca", true),
 }
 
 return M

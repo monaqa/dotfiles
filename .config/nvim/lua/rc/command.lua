@@ -100,7 +100,7 @@ end, { range = true, nargs = 1, bang = true })
 -- §§1 todome
 util.create_cmd("TodomeOpen", "edit ~/todome/tasks.todome")
 
-monaqa.shorthand.create_cmd("Split", function(meta)
+util.create_cmd("Split", function(meta)
     util.split_window()
     vim.cmd(meta.args)
 end, { nargs = 1 })
