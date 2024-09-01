@@ -4,6 +4,14 @@ local mapset = require("monaqa").shorthand.mapset
 
 local plugins = vec {}
 
+local function concat(tt)
+    local v = {}
+    for _, t in ipairs(tt) do
+        vim.list_extend(v, t)
+    end
+    return v
+end
+
 plugins:push {
     "https://github.com/hrsh7th/nvim-insx",
     event = "InsertEnter",
@@ -523,7 +531,7 @@ plugins:push {
             },
         }
 
-        vim.g["sandwich#recipes"] = util.list_concat {
+        vim.g["sandwich#recipes"] = concat {
             default_recipes,
             recipe_general,
             recipe_japanese,

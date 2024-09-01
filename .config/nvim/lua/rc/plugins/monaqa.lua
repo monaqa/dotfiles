@@ -5,7 +5,7 @@ local plugins = vec {}
 
 local function cond_dev(plug_path)
     if vim.fn.getcwd() == vim.fn.expand("~/ghq/github.com/") .. plug_path then
-        util.print_error("WARNING: " .. plug_path .. " is not loaded.", "WarningMsg")
+        vim.notify("WARNING: " .. plug_path .. " is not loaded.", vim.log.levels.WARN)
         return false
     end
     return true

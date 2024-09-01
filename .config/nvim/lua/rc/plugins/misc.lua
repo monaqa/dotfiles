@@ -1,4 +1,5 @@
-local util = require("rc.util")
+local monaqa = require("monaqa")
+local create_cmd = monaqa.shorthand.create_cmd
 local vec = require("rc.util.vec")
 
 local plugins = vec {}
@@ -273,12 +274,16 @@ plugins:push {
         vim.g["partedit#opener"] = ":vsplit"
         vim.g["partedit#prefix_pattern"] = [[\v\s*]]
 
-        util.create_cmd("ParteditCodeblock", function(meta)
-            local line_codeblock_start = vim.fn.getline(meta.line1 - 1)
-            local filetype = vim.fn.matchstr(line_codeblock_start, [[\v```\zs[-a-zA-Z0-9]+\ze]])
-            local options = { filetype = filetype }
-            vim.fn["partedit#start"](meta.line1, meta.line2, options)
-        end, { range = true })
+        create_cmd("ParteditCodeblock") {
+            desc = [[Markdown のコードブロックを選択し、filetype をよしなに設定して partedit を開く。]],
+            range = true,
+            function(meta)
+                local line_codeblock_start = vim.fn.getline(meta.line1 - 1)
+                local filetype = vim.fn.matchstr(line_codeblock_start, [[\v```\zs[-a-zA-Z0-9]+\ze]])
+                local options = { filetype = filetype }
+                vim.fn["partedit#start"](meta.line1, meta.line2, options)
+            end,
+        }
     end,
 }
 

@@ -1,4 +1,6 @@
 local util = require("rc.util")
+local monaqa = require("monaqa")
+local create_cmd = monaqa.shorthand.create_cmd
 local vec = require("rc.util.vec")
 
 local plugins = vec {}
@@ -28,9 +30,14 @@ plugins:push {
             end, vim.fn.CocAction("services"))
         end
 
-        util.create_cmd("CocToggleService", function(meta)
-            vim.fn.CocAction("toggleService", meta.args)
-        end, { nargs = 1, complete = coc_service_names })
+        create_cmd("CocToggleService") {
+            desc = [[引数に与えた coc のサービスを有効化・無効化する]],
+            nargs = 1,
+            complete = coc_service_names,
+            function(meta)
+                vim.fn.CocAction("toggleService", meta.args)
+            end,
+        }
 
         vim.opt.tagfunc = "CocTagFunc"
 
@@ -155,10 +162,13 @@ plugins:push {
             vim.fn.setqflist({}, "a", { title = "Coc diagnostics" })
         end
 
-        util.create_cmd("CocQuickfix", function()
-            coc_diag_to_quickfix()
-            vim.cmd([[cwindow]])
-        end)
+        create_cmd("CocQuickfix") {
+            desc = [[coc.nvim の診断情報を QuiciFix に表示する]],
+            function()
+                coc_diag_to_quickfix()
+                vim.cmd([[cwindow]])
+            end,
+        }
 
         ---diagnostics のある位置にジャンプする。ただし種類に応じて優先順位を付ける。
         ---つまり、エラーがあればまずエラーにジャンプする。

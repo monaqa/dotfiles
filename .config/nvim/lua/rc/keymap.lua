@@ -9,7 +9,6 @@ local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
 local logic = monaqa.logic
 local window = monaqa.window
 
-local util = require("rc.util")
 local submode = require("rc.submode")
 
 mapset.c("<C-c>") { "<C-f>" }
@@ -303,8 +302,8 @@ mapset.n("s/") { "q/G" }
 mapset.n("-") { "<C-^>" }
 
 local mode_bufmove = submode.create_mode("bufmove", "s")
-mode_bufmove.register_mapping("n", util.cmdcr("bn"))
-mode_bufmove.register_mapping("p", util.cmdcr("bp"))
+mode_bufmove.register_mapping("n", "<Cmd>bn<CR>")
+mode_bufmove.register_mapping("p", "<Cmd>bp<CR>")
 
 local mode_winresize = submode.create_mode("winresize", "s")
 mode_winresize.register_mapping("+", "<C-w>+")
@@ -340,7 +339,7 @@ local function append_new_lines(offset_line)
         local curpos = vim.fn.line(".")
         local pos_line = curpos + offset_line
         local n_lines = ctx.count1
-        local lines = util.rep_elem("", n_lines)
+        local lines = vim.fn["repeat"]({ "" }, n_lines)
         vim.fn.append(pos_line, lines)
     end)
 end
@@ -491,8 +490,8 @@ mapset.x("C") {
     function()
         local cursor_line = vim.fn.line(".")
         local other_line = vim.fn.line("v")
-        local start_line = util.ifexpr(cursor_line < other_line, cursor_line, other_line)
-        local end_line = util.ifexpr(cursor_line < other_line, other_line, cursor_line)
+        local start_line = logic.ifexpr(cursor_line < other_line, cursor_line, other_line)
+        local end_line = logic.ifexpr(cursor_line < other_line, other_line, cursor_line)
 
         local mark_id = vim.api.nvim_buf_set_extmark(0, ns_id, start_line - 1, 0, {
             end_row = end_line,
@@ -605,11 +604,9 @@ mapset.nx("<Space>h") {
     desc = [[smart <Home>]],
     function()
         local str_before_cursor = vim.fn.strpart(vim.fn.getline("."), 0, vim.fn.col(".") - 1)
-        local move_cmd = logic.ifexpr(
-            vim.regex([[^\s*$]]):match_str(str_before_cursor) ~= nil, "0", "^"
-        )
+        local move_cmd = logic.ifexpr(vim.regex([[^\s*$]]):match_str(str_before_cursor) ~= nil, "0", "^")
 
-        util.motion_autoselect {
+        monaqa.edit.motion_autoselect {
             function()
                 vim.cmd("normal! g" .. move_cmd)
             end,
@@ -625,7 +622,7 @@ mapset.o("<Space>h") { "^" }
 mapset.n("<Space>l") {
     desc = [[smart <End>]],
     function()
-        util.motion_autoselect {
+        monaqa.edit.motion_autoselect {
             function()
                 vim.cmd("normal! g$")
             end,
@@ -656,8 +653,8 @@ mapset.x("<Space>l") {
         if vim.fn.mode(1) == "\u{16}" then
             local other_end = vim.fn.getpos("v")
             local lnum_other = other_end[2]
-            local lnum_start = util.ifexpr(lnum_cursor > lnum_other, lnum_other, lnum_cursor)
-            local lnum_end = util.ifexpr(lnum_cursor > lnum_other, lnum_cursor, lnum_other)
+            local lnum_start = logic.ifexpr(lnum_cursor > lnum_other, lnum_other, lnum_cursor)
+            local lnum_end = logic.ifexpr(lnum_cursor > lnum_other, lnum_cursor, lnum_other)
             local lines = vim.fn.getline(lnum_start, lnum_end)
             local dispwidth_max = 0
             for _, line in ipairs(lines) do
@@ -718,7 +715,7 @@ mapset.x("k") {
 
 -- Vertical WORD (vWORD) 単位での移動
 _G.vimrc.state.par_motion_continuous = false
-autocmd_vimrc "CursorMoved" {
+autocmd_vimrc("CursorMoved") {
     desc = [[paragraph motion の continuous フラグを切る]],
     callback = function()
         _G.vimrc.state.par_motion_continuous = false
@@ -733,20 +730,18 @@ function _G.vimrc.motion.smart_par(motion)
         bang = true,
         mods = {
             keepjumps = _G.vimrc.state.par_motion_continuous,
-        }
+        },
     }
 end
 
 mapset.nxo("<C-j>") {
     desc = [[smart paragraph motion (down)]],
-    "<Cmd>call v:lua.vimrc.motion.smart_par('}')<CR>"
-    .. "<Cmd>lua _G.vimrc.state.par_motion_continuous = true<CR>"
+    "<Cmd>call v:lua.vimrc.motion.smart_par('}')<CR>" .. "<Cmd>lua _G.vimrc.state.par_motion_continuous = true<CR>",
 }
 
 mapset.nxo("<C-k>") {
     desc = [[smart paragraph motion (up)]],
-    "<Cmd>call v:lua.vimrc.motion.smart_par('{')<CR>"
-    .. "<Cmd>lua _G.vimrc.state.par_motion_continuous = true<CR>"
+    "<Cmd>call v:lua.vimrc.motion.smart_par('{')<CR>" .. "<Cmd>lua _G.vimrc.state.par_motion_continuous = true<CR>",
 }
 
 -- vertical f motion
@@ -764,9 +759,9 @@ local function vertical_f(ctx, forward)
         pattern = [[^\%<.l\s*\zs]]
     end
 
-    local delta = util.ifexpr(forward, 1, -1)
+    local delta = logic.ifexpr(forward, 1, -1)
     local start_line = vim.fn.line(".") + delta
-    local end_line = vim.fn.line(util.ifexpr(forward, "w$", "w0"))
+    local end_line = vim.fn.line(logic.ifexpr(forward, "w$", "w0"))
     local chars = {}
     for line = start_line, end_line, delta do
         ---@type string
@@ -895,13 +890,13 @@ local function keymap_cancel_macro()
     end
     return table.concat {
         -- 現在のレジスタに入っているコマンド列を一旦 reg_content に退避
-        util.cmdcr(("let reg_content = @%s"):format(register)),
+        ("<Cmd>let reg_content = @%s<CR>"):format(register),
         -- マクロの記録を停止
         "q",
         -- 対象としていたレジスタの中身を先程退避したものに入れ替える
-        util.cmdcr(("let @%s = reg_content"):format(register)),
+        ("<Cmd>let @%s = reg_content<CR>"):format(register),
         -- キャンセルした旨を表示
-        util.cmdcr(("echo 'Recording cancelled: @%s'"):format(register)),
+        ("<Cmd>echo 'Recording cancelled: @%s'<CR>"):format(register),
     }
 end
 
@@ -925,10 +920,10 @@ mapset.n("@:") { "@:" }
 for i = 1, 12, 1 do
     mapset.nxo(("<F%s>"):format(i)) { "<Nop>" }
 end
-mapset.with_mode { "n", "x", "o", "i", "c", "s" } ("<M-F1>") { "<Nop>" }
-mapset.with_mode { "i", "c", "s" } ("<F1>") { "<Nop>" }
-mapset.with_mode { "n", "x", "o" } ("<Space>") { "<Nop>" }
-mapset.with_mode { "n", "x", "o" } ("<CR>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o", "i", "c", "s" }("<M-F1>") { "<Nop>" }
+mapset.with_mode { "i", "c", "s" }("<F1>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" }("<Space>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" }("<CR>") { "<Nop>" }
 
 -- Section1 その他
 
@@ -951,14 +946,14 @@ mapset.x("I") {
     desc = [[行選択モードでも複数行に挿入できる I]],
     expr = true,
     function()
-        return util.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$I", "I")
+        return logic.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$I", "I")
     end,
 }
 mapset.x("A") {
     desc = [[行選択モードでも複数行に挿入できる A]],
     expr = true,
     function()
-        return util.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$A", "A")
+        return logic.ifexpr(vim.fn.mode(0) == "V", "<C-v>0o$A", "A")
     end,
 }
 

@@ -7,7 +7,7 @@ local plugins = vec {}
 
 local function cond_dev(plug_path)
     if vim.fn.getcwd() == vim.fn.expand("~/ghq/github.com/") .. plug_path then
-        util.print_error("WARNING: " .. plug_path .. " is not loaded.", "WarningMsg")
+        vim.notify("WARNING: " .. plug_path .. " is not loaded.", vim.log.levels.WARN)
         return false
     end
     return true
@@ -189,11 +189,11 @@ plugins:push {
                     local max_filesize = 1024 * 1024 -- 1 MB
                     local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
                     if ok and stats and stats.size > max_filesize then
-                        util.print_error("File too large: tree-sitter disabled.", "WarningMsg")
+                        vim.notify("File too large: tree-sitter disabled.", vim.log.levels.WARN)
                         return true
                     end
                     if vim.fn.line("$") > 20000 then
-                        util.print_error("Buffer has too many lines: tree-sitter disabled.", "WarningMsg")
+                        vim.notify("Buffer has too many lines: tree-sitter disabled.", vim.log.levels.WARN)
                         return true
                     end
                 end,

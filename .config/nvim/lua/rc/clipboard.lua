@@ -22,7 +22,7 @@ function M.put_clipboard_image(image_path, markup_string)
     local parent_dir = vim.fn.fnamemodify(image_path, ":p:h")
     if not util.to_bool(vim.fn.isdirectory(parent_dir)) then
         vim.fn.mkdir(parent_dir, "p")
-        util.print_error("Created new directory: " .. parent_dir, "WarningMsg")
+        vim.notify("Created new directory: " .. parent_dir)
     end
     save_cliboard_image(image_path)
     vim.fn.append(".", markup_string)
