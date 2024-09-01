@@ -17,7 +17,7 @@ vim.api.nvim_create_augroup("vimrc", { clear = true })
 vim.cmd.filetype { "plugin", "indent", "on" }
 vim.cmd.syntax("enable")
 
-require("rc.plugins")
+require("rc.lazy")
 
 require("rc.autocmd")
 require("rc.option")
