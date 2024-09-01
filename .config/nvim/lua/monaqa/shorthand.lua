@@ -45,10 +45,24 @@ function M.create_cmd(name)
             vim.api.nvim_create_user_command(name, body, t)
         end
     end
-    -- if options == nil then
-    --     options = {}
-    -- end
-    -- vim.api.nvim_create_user_command(name, impl, options)
+end
+
+--- nvim_create_user_command って長ったらしいしオプション省略できないっぽいので。
+---@param name string
+---@return fun(t: monaqa.cmd_args)
+function M.create_cmd_local(name)
+    ---@param t monaqa.cmd_args
+    return function(t)
+        local body = t[1]
+        t[1] = nil
+        if t.buffer ~= nil then
+            local buffer = logic.ifexpr(t.buffer == true, 0, t.buffer)
+            t.buffer = nil
+            vim.api.nvim_buf_create_user_command(buffer, name, body, t)
+        else
+            vim.api.nvim_buf_create_user_command(0, name, body, t)
+        end
+    end
 end
 
 ---@alias ftypegetter fun(): string
