@@ -7,6 +7,7 @@
     "~/.local/share/nvim/lazy/telescope.nvim/lua",
     "~/.local/share/nvim/lazy/plenary.nvim/lua",
   ],
+  "Lua.format.enable": false,
 
   "deno.codeLens.references": true,
   "deno.codeLens.referencesAllFunctions": true,
@@ -111,7 +112,6 @@
   },
 
   "[python]": {"coc.preferences.formatOnSave": true },
-  "[lua]": {"coc.preferences.formatOnSave": true },
   "[rust]": {"coc.preferences.formatOnSave": true },
   "[go]": {"coc.preferences.formatOnSave": true },
   "[css]": {"coc.preferences.formatOnSave": true },

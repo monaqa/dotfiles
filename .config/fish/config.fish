@@ -234,6 +234,14 @@ if test -n "$FUZZY_FINDER"
   # raf
   abbr -a rafls  "cd (raf ls | $FUZZY_FINDER || pwd)"
 
+  # scores
+  function __score_list_fuzzy
+    if set -l d (fd --base-directory ~/ghq/local/monaqa/bass-scores/scores --type d --exact-depth 2 | $FUZZY_FINDER ) && test -n "$d"
+      echo "pushd ~/ghq/local/monaqa/bass-scores/scores/$d"
+    end
+  end
+  abbr -a scores --function __score_list_fuzzy
+
   # gh
   abbr -a ghpc   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr checkout {}"
   abbr -a ghpv   "gh pr list --json number,title --jq '.[] | [.number, .title] | @tsv' | $FUZZY_FINDER | awk '{print \$1}' | xargs -I{} gh pr view --web {}"

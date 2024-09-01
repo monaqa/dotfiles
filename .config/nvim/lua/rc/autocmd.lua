@@ -277,29 +277,29 @@ end, { expr = true })
 
 -- §§1 保存時のコマンド実行
 
--- ---@param callback fun(): nil
--- local function keep_cursor(callback)
---     local curwin_id = vim.fn.win_getid()
---     local view = vim.fn.winsaveview()
---     local _, _ = pcall(callback)
---     if vim.fn.win_getid() == curwin_id then
---         vim.fn.winrestview(view)
---     end
--- end
+---@param callback fun(): nil
+local function keep_cursor(callback)
+    local curwin_id = vim.fn.win_getid()
+    local view = vim.fn.winsaveview()
+    local _, _ = pcall(callback)
+    if vim.fn.win_getid() == curwin_id then
+        vim.fn.winrestview(view)
+    end
+end
 
--- autocmd_vimrc("BufWritePost") {
---     pattern = { "*.lua", ".init.lua.local" },
---     callback = function()
---         -- fold の状態を保持するために mkview と loadview を入れた
---         vim.cmd([[mkview]])
---         keep_cursor(function()
---             vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand("%:p"))
---             vim.cmd([[edit]])
---         end)
---         vim.cmd([[loadview]])
---     end,
---     desc = "execute stylua",
--- }
+autocmd_vimrc("BufWritePost") {
+    pattern = { "*.lua", ".init.lua.local" },
+    callback = function()
+        -- fold の状態を保持するために mkview と loadview を入れた
+        vim.cmd([[mkview]])
+        keep_cursor(function()
+            vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand("%:p"))
+            vim.cmd([[edit]])
+        end)
+        vim.cmd([[loadview]])
+    end,
+    desc = "execute stylua",
+}
 
 -- autocmd "BufWritePost" {
 --     pattern = { "*.typ" },

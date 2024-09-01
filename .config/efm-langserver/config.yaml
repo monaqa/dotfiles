@@ -5,6 +5,12 @@ tools:
     # lint-command: "satysfi_lint"
     lint-command: "satysfi-typelint"
 
+  lua-stylua: &lua-stylua
+    format-command: "stylua -"
+    format-stdin: true
+
 languages:
   satysfi:
     - <<: *satysfi-lint
+  lua:
+    - <<: *lua-stylua
