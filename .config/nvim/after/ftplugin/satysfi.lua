@@ -1,3 +1,5 @@
+local mapset = require("monaqa").shorthand.mapset_local
+
 vim.opt_local.path:append {
     ".",
     "/usr/local/share/satysfi/dist/packages",
@@ -20,4 +22,10 @@ vim.opt_local.foldminlines = 5
 vim.opt_local.commentstring = "% %s"
 vim.opt_local.indentkeys:append {
     "0*",
+}
+
+mapset.n("@o") { ":!open %:r.pdf<CR>" }
+mapset.n("@q") { ":!satysfi %<CR>" }
+mapset.n("@Q") {
+    ":!satysfi --debug-show-bbox --debug-show-space --debug-show-block-bbox --debug-show-block-space --debug-show-overfull %<CR>",
 }
