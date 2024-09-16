@@ -14,8 +14,7 @@ vim.api.nvim_create_augroup("vimrc", { clear = true })
 
 -- filetype の検出、
 -- 詳細は `:h :filetype` または `:e $VIMRUNTIME/filetype.lua`
-vim.cmd.filetype { "plugin", "indent", "on" }
-vim.cmd.syntax("enable")
+-- vim.cmd.syntax("enable")
 
 require("rc.lazy")
 

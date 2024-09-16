@@ -1,4 +1,5 @@
 local monaqa = require("monaqa")
+local mapset = monaqa.shorthand.mapset
 local create_cmd = monaqa.shorthand.create_cmd
 local vec = require("rc.util.vec")
 
@@ -8,6 +9,43 @@ plugins:push {
     "https://github.com/lambdalisue/vim-guise",
     config = function()
         vim.g.guise_edit_opener = "split"
+    end,
+}
+
+plugins:push {
+    "https://github.com/4513ECHO/nvim-keycastr",
+    cmd = { "KeyCastr" },
+    config = function()
+        local keycastr = require("keycastr")
+
+        keycastr.config.set {
+            ignore_mouse = true,
+            position = "SE",
+            win_config = {
+                border = "rounded",
+            },
+        }
+
+        local active = false
+
+        create_cmd("KeyCastr") {
+            function()
+                if active then
+                    keycastr.disable()
+                    active = false
+                else
+                    keycastr.enable()
+                    active = true
+                end
+            end,
+        }
+
+        mapset.n("<F5>") {
+            function()
+                keycastr.disable()
+                keycastr.enable()
+            end,
+        }
     end,
 }
 

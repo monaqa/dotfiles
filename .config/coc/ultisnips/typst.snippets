@@ -66,6 +66,22 @@ snippet cetz "use cetz" b
 })
 endsnippet
 
+snippet fletcher "use fletcher" b
+#import "@preview/fletcher:0.5.1" as fletcher: diagram, node, edge
+
+#diagram(
+	debug: true,
+	spacing: (20pt, 10pt),
+	{
+		import fletcher.shapes: *
+
+		node(name: <node1>, (0, 0), stroke: teal, shape: circle)[Node1]
+		node(name: <node2>, (2, 0), stroke: teal, shape: circle)[Node2]
+		edge(<node1>, <node2>, "->")
+	}
+)
+endsnippet
+
 snippet scrap "scrap command" w
 #scrap("$0")
 endsnippet

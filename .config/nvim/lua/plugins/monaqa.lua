@@ -693,7 +693,7 @@ plugins:push {
     dir = "~/ghq/github.com/monaqa/typscrap.nvim",
     config = function()
         require("typscrap").setup {
-            root_dir = "~/ghq/github.com/monaqa/typscrap-contents/content",
+            root_dir = "~/Documents/typscrap-contents/content",
         }
     end,
 }

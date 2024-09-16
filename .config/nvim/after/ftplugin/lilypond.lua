@@ -234,6 +234,8 @@ local key_to_scale_notes = {
 
     ["b\\major"] = { "b", "cis", "dis", "e", "fis", "gis", "ais" },
     ["gis\\minor"] = { "b", "cis", "dis", "e", "fis", "gis", "ais" },
+
+    ["fis\\major"] = { "fis", "gis", "ais", "b", "cis", "dis", "f" },
 }
 
 local function create_query_str(scale_notes)
