@@ -61,6 +61,15 @@ plugins:push {
             end,
         },
         {
+            "sM",
+            function()
+                require("telescope").extensions.typscrap.contents {
+                    prompt_prefix = "𝝋",
+                    hidden = true,
+                }
+            end,
+        },
+        {
             "sG",
             function()
                 require("lazy").load { plugins = { "typscrap.nvim" } }
