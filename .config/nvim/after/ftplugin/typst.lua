@@ -144,5 +144,3 @@ mapset.nx("gy") {
     expr = true,
     require("general_converter").operator_convert("typst-pandoc"),
 }
-
-vim.keymap.set({ "n", "x" }, "gy", require("general_converter").operator_convert("typst-pandoc"), { expr = true })

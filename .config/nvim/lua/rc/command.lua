@@ -45,7 +45,7 @@ create_cmd("DiffThese") {
             vim.cmd.diffthis()
             vim.cmd.wincmd("w")
         else
-            vim.cmd.echomsg([[Too many windows.]])
+            vim.notify([[Too many windows.]], vim.log.levels.ERROR)
         end
     end,
 }
