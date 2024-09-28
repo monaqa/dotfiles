@@ -1,6 +1,9 @@
 local util = require("rc.util")
 local monaqa = require("monaqa")
+local motion_autoselect = monaqa.edit.motion_autoselect
+local logic = monaqa.logic
 local create_cmd = monaqa.shorthand.create_cmd
+local mapset = monaqa.shorthand.mapset
 local vec = require("rc.util.vec")
 
 local plugins = vec {}
@@ -50,76 +53,51 @@ plugins:push {
             "coc-snippets",
             "coc-sumneko-lua",
             "coc-toml",
-            -- "coc-tsserver",
+            "coc-tsserver",
             "coc-yaml",
+            "coc-tsdetect",
+            "coc-css",
+            "@yaegassy/coc-tailwindcss3",
+            "coc-eslint",
         }
 
         vim.keymap.set("n", "gd", "<C-]>")
 
-        vim.keymap.set("n", "t", "<Nop>")
-        vim.keymap.set("n", "td", util.cmdcr("Telescope coc definitions"))
-        vim.keymap.set("n", "ti", util.cmdcr("Telescope coc implementations"))
-        vim.keymap.set("n", "tr", util.cmdcr("Telescope coc references"))
-        vim.keymap.set("n", "ty", util.cmdcr("Telescope coc type_definitions"))
-        vim.keymap.set("n", "tA", util.cmdcr("Telescope coc code_actions"))
-        vim.keymap.set("n", "tn", "<Plug>(coc-rename)")
-        vim.keymap.set("n", "ta", "<Plug>(coc-codeaction-cursor)")
-        vim.keymap.set("x", "ta", "<Plug>(coc-codeaction-selected)")
-        vim.keymap.set("n", "tw", "<Plug>(coc-float-jump)")
-        vim.keymap.set("n", "K", util.cmdcr("call CocActionAsync('doHover')"))
-        vim.keymap.set("n", "tf", util.cmdcr("call CocActionAsync('format')"))
-        vim.keymap.set("n", "th", util.cmdcr("CocCommand document.toggleInlayHint"))
+        mapset.n("t") { "<Nop>" }
+        mapset.n("td") { "<Cmd>Telescope coc definitions<CR>" }
+        mapset.n("ti") { "<Cmd>Telescope coc implementations<CR>" }
+        mapset.n("tr") { "<Cmd>Telescope coc references<CR>" }
+        mapset.n("ty") { "<Cmd>Telescope coc type_definitions<CR>" }
+        mapset.n("tA") { "<Cmd>Telescope coc code_actions<CR>" }
+        mapset.n("tn") { "<Plug>(coc-rename)" }
+        mapset.n("ta") { "<Plug>(coc-codeaction-cursor)" }
+        mapset.n("ta") { "<Plug>(coc-codeaction-selected)" }
+        mapset.n("tw") { "<Plug>(coc-float-jump)" }
+        mapset.n("K") { "<Cmd>call CocActionAsync('doHover')<CR>" }
+        mapset.n("tf") { "<Cmd>call CocActionAsync('format')<CR>" }
+        mapset.n("th") { "<Cmd>CocCommand document.toggleInlayHint<CR>" }
 
         -- coc#_select_confirm などは Lua 上では動かないので、 <Plug> にマッピングして使えるようにする
-        vim.cmd([[
-            inoremap <expr> <Plug>(vimrc-coc-select-confirm) coc#_select_confirm()
-            inoremap <expr> <Plug>(vimrc-lexima-expand-cr) lexima#expand('<LT>CR>', 'i')
-        ]])
 
-        vim.keymap.set("i", "<CR>", function()
-            if util.to_bool(vim.fn["coc#pum#visible"]()) then
-                -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
-                -- （意図せず補完候補がセレクトされてしまうのを抑止）
-                if vim.fn["coc#pum#info"]()["index"] >= 0 then
-                    return "<Plug>(vimrc-coc-select-confirm)"
+        mapset.i("<Plug>(vimrc-coc-select-confirm)") { "coc#_select_confirm()", expr = true }
+        mapset.i("<Plug>(vimrc-lexima-expand-cr)") { "lexima#expand('<LT>CR>', 'i')", expr = true }
+
+        mapset.i("<CR>") {
+            desc = [[lexima と coc 両方を加味したエンター]],
+            expr = true,
+            remap = true,
+            function()
+                if logic.to_bool(vim.fn["coc#pum#visible"]()) then
+                    -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
+                    -- （意図せず補完候補がセレクトされてしまうのを抑止）
+                    if vim.fn["coc#pum#info"]()["index"] >= 0 then
+                        return "<Plug>(vimrc-coc-select-confirm)"
+                    end
+                    return "<C-y><Plug>(vimrc-lexima-expand-cr)"
                 end
-                return "<C-y><Plug>(vimrc-lexima-expand-cr)"
-            end
-            return "<Plug>(vimrc-lexima-expand-cr)"
-        end, { expr = true, remap = true })
-
-        -- coc#pum#next(1) などが Vim script 上でしか動かないっぽい
-
-        -- local function coc_check_backspace()
-        --     local col = vim.fn.col "." - 1
-        --     if not util.to_bool(col) then
-        --         return true
-        --     end
-        --     return vim.regex([[\s]]):match_str(vim.fn.getline(".")[col])
-        -- end
-
-        -- vim.keymap.set("i", "<Tab>", function ()
-        --     -- if util.to_bool(vim.fn.pumvisible()) then
-        --     --     return "<C-n>"
-        --     -- end
-        --     if util.to_bool(vim.fn["coc#pum#visible"]()) then
-        --         return vim.fn["coc#pum#next"](1)
-        --     end
-        --     if coc_check_backspace() then
-        --         return "<Tab>"
-        --     end
-        --     return vim.fn["coc#refresh"]()
-        -- end, {expr = true, silent = true})
-        --
-        -- vim.keymap.set("i", "<S-Tab>", function ()
-        --     -- if util.to_bool(vim.fn.pumvisible()) then
-        --     --     return "<C-p>"
-        --     -- end
-        --     if util.to_bool(vim.fn["coc#pum#visible"]()) then
-        --         return vim.fn["coc#pum#next"](-1)
-        --     end
-        --     return "<C-h>"
-        -- end, {expr = true})
+                return "<Plug>(vimrc-lexima-expand-cr)"
+            end,
+        }
 
         vim.cmd([[
           function! s:check_back_space() abort
@@ -166,7 +144,7 @@ plugins:push {
             desc = [[coc.nvim の診断情報を QuiciFix に表示する]],
             function()
                 coc_diag_to_quickfix()
-                vim.cmd([[cwindow]])
+                vim.cmd.cwindow()
             end,
         }
 
@@ -175,8 +153,8 @@ plugins:push {
         ---エラーがなく警告があれば、警告にジャンプする。みたいな。
         ---@param forward boolean
         local function jump_diag(forward)
-            local action_name = util.ifexpr(forward, "diagnosticNext", "diagnosticPrevious")
-            util.motion_autoselect {
+            local action_name = logic.ifexpr(forward, "diagnosticNext", "diagnosticPrevious")
+            motion_autoselect {
                 function()
                     vim.fn.CocAction(action_name, "error")
                 end,
@@ -192,12 +170,19 @@ plugins:push {
             }
         end
 
-        vim.keymap.set("n", ")", function()
-            jump_diag(true)
-        end)
-        vim.keymap.set("n", "(", function()
-            jump_diag(false)
-        end)
+        mapset.n(")") {
+            desc = [[次の diagnostics の場所にうつる]],
+            function()
+                jump_diag(true)
+            end,
+        }
+
+        mapset.n("(") {
+            desc = [[前の diagnostics の場所にうつる]],
+            function()
+                jump_diag(false)
+            end,
+        }
     end,
 }
 

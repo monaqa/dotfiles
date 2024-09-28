@@ -1,5 +1,5 @@
-local util = require("rc.util")
 local vec = require("rc.util.vec")
+local mapset = require("monaqa.shorthand").mapset
 
 local plugins = vec {}
 
@@ -11,16 +11,13 @@ plugins:push {
         {
             "<Space>t",
             function()
-                local aerial = require("aerial")
-                aerial.toggle { focus = false }
+                require("aerial").toggle { focus = false }
             end,
         },
         {
             "<Space>i",
             function()
-                local aerial = require("aerial")
-                -- aerial.open { focus = false }
-                aerial.focus()
+                require("aerial").focus()
             end,
         },
     },
@@ -334,46 +331,10 @@ plugins:push {
     -- `vim <dir>` のときも自動で開いてほしい
     lazy = false,
     keys = {
-        { "gf" },
-        {
-            -- よしなに開く。
-            "sf",
-            function()
-                local bufname = vim.api.nvim_buf_get_name(0)
-                if bufname:find("://") then
-                    -- 特殊なバッファなので cwd にする
-                    require("oil").open(vim.fn.getcwd())
-                else
-                    local dir_rel = vim.fn.fnamemodify(bufname, ":.")
-                    if vim.startswith(dir_rel, "/") then
-                        require("oil").open(vim.fn.getcwd())
-                    else
-                        require("oil").open()
-                    end
-                end
-            end,
-        },
-        {
-            -- 開いているバッファのあるディレクトリを開く。
-            "sF",
-            function()
-                local bufname = vim.api.nvim_buf_get_name(0)
-                if bufname:find("://") then
-                    -- 特殊なバッファなので cwd にする
-                    require("oil").open(vim.fn.getcwd())
-                else
-                    -- デフォルトの挙動に fallback
-                    require("oil").open()
-                end
-            end,
-        },
-        {
-            -- カレントディレクトリを開く。
-            "sc",
-            function()
-                require("oil").open(vim.fn.getcwd())
-            end,
-        },
+        "gf",
+        "sf",
+        "sF",
+        "sc",
     },
     cmd = {
         "Oil",
@@ -595,12 +556,49 @@ plugins:push {
         --         end
         --     end),
         -- })
+
+        mapset.n("sf") {
+            desc = [[cwd 上ファイルではそのファイルが有る場所を、それ以外は cwd を開く。]],
+            function()
+                local bufname = vim.api.nvim_buf_get_name(0)
+                if bufname:find("://") then
+                    -- 特殊なバッファなので cwd にする
+                    require("oil").open(vim.fn.getcwd())
+                else
+                    local dir_rel = vim.fn.fnamemodify(bufname, ":.")
+                    if vim.startswith(dir_rel, "/") then
+                        require("oil").open(vim.fn.getcwd())
+                    else
+                        require("oil").open()
+                    end
+                end
+            end,
+        }
+        mapset.n("sF") {
+            desc = [[そのファイルが有る場所を強制的に開く。]],
+            function()
+                local bufname = vim.api.nvim_buf_get_name(0)
+                if bufname:find("://") then
+                    -- 特殊なバッファなので cwd にする
+                    require("oil").open(vim.fn.getcwd())
+                else
+                    -- デフォルトの挙動に fallback
+                    require("oil").open()
+                end
+            end,
+        }
+        mapset.n("sc") {
+            desc = [[カレントディレクトリを開く。]],
+            function()
+                require("oil").open(vim.fn.getcwd())
+            end,
+        }
     end,
 }
 
 plugins:push {
     "https://github.com/refractalize/oil-git-status.nvim",
-
+    lazy = true,
     dependencies = {
         "stevearc/oil.nvim",
     },

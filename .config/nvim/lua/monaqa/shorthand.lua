@@ -130,7 +130,9 @@ function M.load_cwd_as_plugin(source_file_name)
     end
 end
 
----@alias mapset_inner fun(t: vim.keymap.set.Opts):nil
+---@class mapset_opts: vim.keymap.set.Opts
+---@field [1] fun() | string
+---@alias mapset_inner fun(t: mapset_opts):nil
 
 --- キーマップ定義のショートハンド。
 ---@param mode string | string[]
@@ -138,8 +140,9 @@ end
 ---@return fun(string): mapset_inner
 local function mapset_with_mode(mode, buffer_local)
     ---@param lhs string
+    ---@return mapset_inner
     return function(lhs)
-        ---@param t vim.keymap.set.Opts
+        ---@param t mapset_opts
         return function(t)
             local body = t[1]
             t[1] = nil

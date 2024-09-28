@@ -1,5 +1,6 @@
 local util = require("rc.util")
 local vec = require("rc.util.vec")
+local mapset = require("monaqa.shorthand").mapset
 
 local plugins = vec {}
 
@@ -11,64 +12,14 @@ local function cond_dev(plug_path)
     return true
 end
 
-plugins:push { "https://github.com/monaqa/colordinate.vim", enabled = false }
-
 plugins:push {
     "https://github.com/monaqa/dial.nvim",
     cond = cond_dev("monaqa/dial.nvim"),
     keys = {
-        {
-            "<C-a>",
-            function()
-                require("dial.map").manipulate("increment", "normal")
-            end,
-        },
-        {
-            "<C-x>",
-            function()
-                require("dial.map").manipulate("decrement", "normal")
-            end,
-        },
-        {
-            "g<C-a>",
-            function()
-                require("dial.map").manipulate("increment", "gnormal")
-            end,
-        },
-        {
-            "g<C-x>",
-            function()
-                require("dial.map").manipulate("decrement", "gnormal")
-            end,
-        },
-        {
-            "<C-a>",
-            function()
-                require("dial.map").manipulate("increment", "visual")
-            end,
-            mode = "v",
-        },
-        {
-            "<C-x>",
-            function()
-                require("dial.map").manipulate("decrement", "visual")
-            end,
-            mode = "v",
-        },
-        {
-            "g<C-a>",
-            function()
-                require("dial.map").manipulate("increment", "gvisual")
-            end,
-            mode = "v",
-        },
-        {
-            "g<C-x>",
-            function()
-                require("dial.map").manipulate("decrement", "gvisual")
-            end,
-            mode = "v",
-        },
+        { "<C-a>", mode = { "n", "x" } },
+        { "<C-x>", mode = { "n", "x" } },
+        { "g<C-a>", mode = { "n", "x" } },
+        { "g<C-x>", mode = { "n", "x" } },
     },
     config = function()
         local augend = require("dial.augend")
@@ -333,6 +284,55 @@ plugins:push {
             --     { lilypond_note },
             -- },
         }
+
+        mapset.n("<C-a>") {
+            desc = [[dial.nvim によるインクリメント]],
+            function()
+                require("dial.map").manipulate("increment", "normal")
+            end,
+        }
+        mapset.n("<C-x>") {
+            desc = [[dial.nvim によるデクリメント]],
+            function()
+                require("dial.map").manipulate("decrement", "normal")
+            end,
+        }
+        mapset.xs("<C-a>") {
+            desc = [[dial.nvim によるインクリメント]],
+            function()
+                require("dial.map").manipulate("increment", "visual")
+            end,
+        }
+        mapset.xs("<C-x>") {
+            desc = [[dial.nvim によるデクリメント]],
+            function()
+                require("dial.map").manipulate("decrement", "visual")
+            end,
+        }
+        mapset.n("g<C-a>") {
+            desc = [[dial.nvim によるインクリメント]],
+            function()
+                require("dial.map").manipulate("increment", "gnormal")
+            end,
+        }
+        mapset.n("g<C-x>") {
+            desc = [[dial.nvim によるデクリメント]],
+            function()
+                require("dial.map").manipulate("decrement", "gnormal")
+            end,
+        }
+        mapset.xs("g<C-a>") {
+            desc = [[dial.nvim によるインクリメント]],
+            function()
+                require("dial.map").manipulate("increment", "gvisual")
+            end,
+        }
+        mapset.xs("g<C-x>") {
+            desc = [[dial.nvim によるデクリメント]],
+            function()
+                require("dial.map").manipulate("decrement", "gvisual")
+            end,
+        }
     end,
 }
 
@@ -343,162 +343,112 @@ plugins:push {
         "https://github.com/lambdalisue/kensaku.vim",
     },
     keys = {
-        {
-            "/",
-            function()
-                return require("modesearch").keymap.prompt.show("rawstr")
-            end,
-            mode = { "n", "x", "o" },
+        "/",
+    },
+    config = function()
+        require("modesearch").setup {
+            modes = {
+                rawstr = {
+                    prompt = "[rawstr]/",
+                    converter = function(query)
+                        local case_handler = (function()
+                            if query:find("%u") ~= nil then
+                                return [[\C]]
+                            else
+                                return [[\c]]
+                            end
+                        end)()
+                        return case_handler .. [[\V]] .. vim.fn.escape(query, [[/\]])
+                    end,
+                },
+                regexp = {
+                    prompt = "[regexp]/",
+                    converter = function(query)
+                        return [[\c\v]] .. vim.fn.escape(query, [[/]])
+                    end,
+                },
+                migemo = {
+                    prompt = "[migemo]/",
+                    converter = function(query)
+                        return [[\c\v]] .. vim.fn["kensaku#query"](query)
+                    end,
+                },
+            },
+        }
+
+        mapset.nxo("/") {
+            desc = [[modesearch を利用した検索]],
             expr = true,
             silent = true,
             replace_keycodes = false,
-        },
-        {
-            "<C-x>",
+            function()
+                return require("modesearch").keymap.prompt.show("rawstr")
+            end,
+        }
+        mapset.c("<C-x>") {
+            desc = [[modesearch のモード切り替え]],
+            expr = true,
             function()
                 return require("modesearch").keymap.mode.cycle { "rawstr", "migemo", "regexp" }
             end,
-            mode = "c",
-            expr = true,
-        },
-        { "_", "/" },
-    },
-    opts = {
-        modes = {
-            rawstr = {
-                prompt = "[rawstr]/",
-                converter = function(query)
-                    local case_handler = (function()
-                        if query:find("%u") ~= nil then
-                            return [[\C]]
-                        else
-                            return [[\c]]
-                        end
-                    end)()
-                    return case_handler .. [[\V]] .. vim.fn.escape(query, [[/\]])
-                end,
-            },
-            regexp = {
-                prompt = "[regexp]/",
-                converter = function(query)
-                    return [[\c\v]] .. vim.fn.escape(query, [[/]])
-                end,
-            },
-            migemo = {
-                prompt = "[migemo]/",
-                converter = function(query)
-                    return [[\c\v]] .. vim.fn["kensaku#query"](query)
-                end,
-            },
-        },
-    },
+        }
+    end,
 }
 
 plugins:push { "https://github.com/monaqa/peridot.vim", lazy = true }
-
--- plugins:push {
---     "https://github.com/monaqa/pretty-fold.nvim",
---     branch = "for_stable_neovim",
---     opts = {
---         fill_char = "┄",
---         sections = {
---             left = {
---                 "content",
---             },
---             right = {
---                 " ",
---                 "number_of_folded_lines",
---                 ": ",
---                 "percentage",
---                 " ",
---                 function(config)
---                     return config.fill_char:rep(3)
---                 end,
---             },
---         },
---
---         remove_fold_markers = true,
---
---         -- Keep the indentation of the content of the fold string.
---         keep_indentation = true,
---
---         -- Possible values:
---         -- "delete" : Delete all comment signs from the fold string.
---         -- "spaces" : Replace all comment signs with equal number of spaces.
---         -- false    : Do nothing with comment signs.
---         comment_signs = "spaces",
---
---         -- List of patterns that will be removed from content foldtext section.
---         stop_words = {
---             "@brief%s*", -- (for cpp) Remove '@brief' and all spaces after.
---         },
---
---         add_close_pattern = true,
---         matchup_patterns = {
---             { "{", "}" },
---             { "%(", ")" }, -- % to escape lua pattern char
---             { "%[", "]" }, -- % to escape lua pattern char
---             { "if%s", "end" },
---             { "do%s", "end" },
---             { "for%s", "end" },
---         },
---     },
--- }
 
 vim.g["smooth_scroll_no_default_key_mappings"] = 1
 
 plugins:push {
     "https://github.com/monaqa/smooth-scroll.vim",
     keys = {
+        { mode = { "n", "x" }, "<C-f>" },
+        { mode = { "n", "x" }, "<C-b>" },
+        { mode = { "n", "x" }, "<C-d>" },
+        { mode = { "n", "x" }, "<C-u>" },
+        { mode = { "n", "x" }, "H" },
+        { mode = { "n", "x" }, "L" },
         { mode = { "n", "x" }, "zz" },
         { mode = { "n", "x" }, "zb" },
         { mode = { "n", "x" }, "z<CR>" },
-        {
-            "<C-d>",
-            function()
-                vim.fn["smooth_scroll#flick"](vim.v.count1 * vim.o.scroll, 15, "gj", "gk")
-            end,
-            mode = { "n", "x" },
-        },
-        {
-            "<C-u>",
-            function()
-                vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.o.scroll, 15, "gj", "gk")
-            end,
-            mode = { "n", "x" },
-        },
-        {
-            "<C-f>",
-            function()
-                vim.fn["smooth_scroll#flick"](vim.v.count1 * vim.fn.winheight(0), 25, "gj", "gk")
-            end,
-            mode = { "n", "x" },
-        },
-        {
-            "<C-b>",
-            function()
-                vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winheight(0), 25, "gj", "gk")
-            end,
-            mode = { "n", "x" },
-        },
-        {
-            "L",
-            util.cmdcr([[call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)]]),
-            mode = { "n", "x" },
-        },
-        {
-            "H",
-            util.cmdcr([[call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)]]),
-            mode = { "n", "x" },
-        },
     },
     config = function()
         vim.g["smooth_scroll_interval"] = 1000.0 / 40.0
         vim.g["smooth_scroll_scrollkind"] = "quintic"
         vim.g["smooth_scroll_add_jumplist"] = true
 
-        -- vim.keymap.set({"n", "v"}, "L", function () vim.fn["smooth_scroll#flick"]( vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
-        -- vim.keymap.set({"n", "v"}, "H", function () vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winwidth(0) / 3, 10, 'zl', 'zh', true) end)
+        mapset.nx("<C-f>") {
+            desc = [[スムーズな1画面下方向スクロール]],
+            function()
+                vim.fn["smooth_scroll#flick"](vim.v.count1 * vim.fn.winheight(0), 25, "gj", "gk")
+            end,
+        }
+        mapset.nx("<C-b>") {
+            desc = [[スムーズな1画面上方向スクロール]],
+            function()
+                vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.fn.winheight(0), 25, "gj", "gk")
+            end,
+        }
+        mapset.nx("<C-d>") {
+            desc = [[スムーズな半画面下方向スクロール]],
+            function()
+                vim.fn["smooth_scroll#flick"](vim.v.count1 * vim.opt.scroll:get(), 15, "gj", "gk")
+            end,
+        }
+        mapset.nx("<C-u>") {
+            desc = [[スムーズな半画面上方向スクロール]],
+            function()
+                vim.fn["smooth_scroll#flick"](-vim.v.count1 * vim.opt.scroll:get(), 15, "gj", "gk")
+            end,
+        }
+        mapset.nx("L") {
+            desc = [[スムーズな半画面右方向スクロール]],
+            [[<Cmd>call smooth_scroll#flick( v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>]],
+        }
+        mapset.nx("H") {
+            desc = [[スムーズな半画面左方向スクロール]],
+            [[<Cmd>call smooth_scroll#flick(-v:count1 * winwidth(0) / 3, 10, "zl", "zh", v:true)<CR>]],
+        }
 
         ---@param percent float
         local function set_line_specific_pos(percent)
@@ -517,9 +467,18 @@ plugins:push {
             end
         end
 
-        vim.keymap.set({ "n", "x" }, "z<CR>", set_line_specific_pos(0.1))
-        vim.keymap.set({ "n", "x" }, "zz", set_line_specific_pos(0.4))
-        vim.keymap.set({ "n", "x" }, "zb", set_line_specific_pos(0.9))
+        mapset.nx("z<CR>") {
+            desc = [[カーソルが高さ 10% の位置にウィンドウを動かす]],
+            set_line_specific_pos(0.1),
+        }
+        mapset.nx("zz") {
+            desc = [[カーソルが高さ 40% の位置にウィンドウを動かす]],
+            set_line_specific_pos(0.4),
+        }
+        mapset.nx("zb") {
+            desc = [[カーソルが高さ 90% の位置にウィンドウを動かす]],
+            set_line_specific_pos(0.9),
+        }
     end,
 }
 
@@ -549,7 +508,6 @@ plugins:push {
     cond = cond_dev("monaqa/general-converter.nvim"),
     keys = {
         "gc",
-        "gy",
     },
     config = function()
         local gc_util = require("general_converter.util")
@@ -685,7 +643,11 @@ plugins:push {
                 },
             },
         }
-        vim.keymap.set({ "n", "x" }, "gc", require("general_converter").operator_convert(), { expr = true })
+        mapset.n("gc") {
+            desc = [[General Converter]],
+            expr = true,
+            require("general_converter").operator_convert(),
+        }
     end,
 }
 

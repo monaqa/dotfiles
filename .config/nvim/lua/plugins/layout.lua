@@ -1,4 +1,5 @@
-local util = require("rc.util")
+local shorthand = require("monaqa.shorthand")
+local autocmd_vimrc = shorthand.autocmd_vimrc
 local vec = require("rc.util.vec")
 
 local plugins = vec {}
@@ -23,7 +24,7 @@ plugins:push {
         -- hot reload config
         require("lreload").enable("colorimetry")
 
-        util.autocmd_vimrc("BufWritePost") {
+        autocmd_vimrc("BufWritePost") {
             pattern = vim.env.HOME .. "/ghq/github.com/monaqa/colorimetry.nvim/*.lua",
             callback = function()
                 vim.cmd.colorscheme("colorimetry")
@@ -122,9 +123,9 @@ plugins:push {
                         return "𝐓", "@string"
                     end
                     -- fallback to default
-                    local icon, hl =
+                    local icon, hl_default =
                         require("nvim-web-devicons").get_icon_by_filetype(element.filetype, { default = false })
-                    return icon, hl
+                    return icon, hl_default
                 end,
                 custom_filter = function(buf_number, buf_numbers)
                     local filetype = vim.bo[buf_number].filetype
@@ -328,62 +329,6 @@ plugins:push {
     end,
 }
 
--- plugins:push {
---     "https://github.com/uga-rosa/ccc.nvim",
---     cmd = { "CccHighlighterEnable" },
--- }
-
--- plugins:push {
---     "https://github.com/kevinhwang91/nvim-ufo",
---     -- commit = "a15944ff8e3d570f504f743d55209275ed1169c4",
---     dependencies = {
---         "https://github.com/kevinhwang91/promise-async",
---     },
---     config = function()
---         vim.keymap.set("n", "zR", require("ufo").openAllFolds)
---         vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
---
---         local handler = function(virtText, lnum, endLnum, width, truncate)
---             local newVirtText = {}
---             local suffix = (" … 󰁂 %d "):format(endLnum - lnum)
---             local sufWidth = vim.fn.strdisplaywidth(suffix)
---             local targetWidth = width - sufWidth
---             local curWidth = 0
---             for _, chunk in ipairs(virtText) do
---                 local chunkText = chunk[1]
---                 local chunkWidth = vim.fn.strdisplaywidth(chunkText)
---                 if targetWidth > curWidth + chunkWidth then
---                     table.insert(newVirtText, chunk)
---                 else
---                     chunkText = truncate(chunkText, targetWidth - curWidth)
---                     local hlGroup = chunk[2]
---                     table.insert(newVirtText, { chunkText, hlGroup })
---                     chunkWidth = vim.fn.strdisplaywidth(chunkText)
---                     -- str width returned from truncate() may less than 2nd argument, need padding
---                     if curWidth + chunkWidth < targetWidth then
---                         suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
---                     end
---                     break
---                 end
---                 curWidth = curWidth + chunkWidth
---             end
---             table.insert(newVirtText, { suffix, "NonText" })
---             return newVirtText
---         end
---
---         require("ufo").setup {
---             fold_virt_text_handler = handler,
---
---             provider_selector = function(bufnr, filetype, buftype)
---                 if filetype == "python" then
---                     return { "treesitter" }
---                 end
---                 return { "treesitter", "indent" }
---             end,
---         }
---     end,
--- }
-
 plugins:push {
     "https://github.com/rcarriga/nvim-notify",
     event = "VeryLazy",
@@ -392,59 +337,5 @@ plugins:push {
         vim.notify = require("notify")
     end,
 }
-
--- plugins:push {
---     "https://github.com/shellRaining/hlchunk.nvim",
---     event = { "UIEnter" },
---     config = function()
---         local ft = require("hlchunk.utils.filetype")
---         require("hlchunk").setup {
---             chunk = {
---                 enable = true,
---                 notify = true,
---                 use_treesitter = true,
---                 -- details about support_filetypes and exclude_filetypes in https://github.com/shellRaining/hlchunk.nvim/blob/main/lua/hlchunk/utils/filetype.lua
---                 support_filetypes = ft.support_filetypes,
---                 exclude_filetypes = ft.exclude_filetypes,
---                 chars = {
---                     horizontal_line = "─",
---                     vertical_line = "│",
---                     left_top = "╭",
---                     left_bottom = "╰",
---                     right_arrow = ">",
---                 },
---                 style = {
---                     { fg = "#806d9c" },
---                     { fg = "#c21f30" }, -- this fg is used to highlight wrong chunk
---                 },
---                 textobject = "",
---                 max_file_size = 1024 * 1024,
---                 error_sign = true,
---             },
---             indent = {
---                 enable = false,
---             },
---             line_num = {
---                 enable = false,
---             },
---             blank = {
---                 enable = false,
---             },
---         }
---     end,
--- }
-
--- plugins:push {
---     "https://github.com/lewis6991/satellite.nvim",
---     config = function()
---         require("satellite").setup {
---             handlers = {
---                 gitsigns = { enable = false },
---                 diagnostic = { enable = false },
---                 marks = { enable = false },
---             },
---         }
---     end,
--- }
 
 return plugins:collect()

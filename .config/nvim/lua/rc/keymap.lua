@@ -11,13 +11,13 @@ local window = monaqa.window
 
 local submode = require("rc.submode")
 
-mapset.c("<C-c>") { "<C-f>" }
+mapset.c("<C-c>") { "<C-f>", desc = [[<C-c> でコマンドラインモードに入る]] }
 
 -- Section1 changing display
 
 -- Z を表示の toggle に使う
-mapset.n("ZZ") { "<Nop>" }
-mapset.n("ZQ") { "<Nop>" }
+mapset.n("ZZ") { "<Nop>", desc = [[Z を表示の toggle に使うため無効化]] }
+mapset.n("ZQ") { "<Nop>", desc = [[Z を表示の toggle に使うため無効化]] }
 mapset.n("Z") {
     desc = [[wrap の toggle]],
     function()
@@ -88,6 +88,8 @@ mapset.x("R") {
     },
 }
 
+mapset.n("_") { "/", desc = "`/` は modesearch 用に潰すため" }
+
 -- Section2 QuickFix search
 mapset.n("<C-n>") { "<Cmd>cnext<CR>zz", desc = [[QuickFix next + focus center]] }
 mapset.n("<C-p>") { "<Cmd>cprevious<CR>zz", desc = [[QuickFix prev + focus center]] }
@@ -107,8 +109,8 @@ mapset.n("q") {
 }
 
 -- Section1 terminal
-mapset.t("<C-]>") { [[<C-\><C-n>]] }
-mapset.t([[<C-\><C-n>]]) { "<C-]>" }
+mapset.t("<C-]>") { [[<C-\><C-n>]], desc = [[<C-]> で terminal mode を抜けられるように]] }
+mapset.t([[<C-\><C-n>]]) { "<C-]>", desc = [[もしターミナル内で <C-]> を打ちたくなったら ]] }
 
 autocmd_vimrc("TermOpen") {
     callback = function()

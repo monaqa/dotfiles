@@ -159,37 +159,10 @@ plugins:push {
         { "<Space>-", "<Plug>(altr-forward)" },
     },
 }
--- plugins:push {
---     "kana/vim-smartword",
---     keys = {
---         { "w", "<Plug>(smartword-w)", mode = { "n", "x" } },
---         { "e", "<Plug>(smartword-e)", mode = { "n", "x" } },
---         { "b", "<Plug>(smartword-b)", mode = { "n", "x" } },
---         { "ge", "<Plug>(smartword-ge)", mode = { "n", "x" } },
---     },
--- }
 
 plugins:push { "https://github.com/kkiyama117/zenn-vim", lazy = true }
 
 plugins:push { "https://github.com/lambdalisue/vim-protocol" }
-
-plugins:push {
-    "https://github.com/lifepillar/vim-colortemplate",
-    cmd = { "Colortemplate" },
-    ft = { "colortemplate" },
-    config = function()
-        vim.g.colortemplate_toolbar = 0
-    end,
-}
-
--- plugins:push {
---     "mattn/emmet-vim",
---     config = function()
---         vim.g["user_emmet_mode"] = "n"
---         vim.g["emmet_html5"] = 0
---         vim.g["user_emmet_install_global"] = 0
---     end,
--- }
 
 plugins:push { "https://github.com/mattn/vim-maketable", cmd = { "MakeTable", "UnmakeTable" } }
 
@@ -209,46 +182,8 @@ plugins:push {
         "https://github.com/monaqa/general-converter.nvim",
     },
     keys = {
-        {
-            "@j",
-            function()
-                return require("general_converter").operator_convert(function(s)
-                    local translate_result = vim.fn["deepl#translate"](s, "ja")
-                    return s .. "\n" .. translate_result
-                end)()
-            end,
-            expr = true,
-            mode = "n",
-            desc = "DeepL translate to ja",
-        },
-        {
-            "@j",
-            function()
-                vim.fn["deepl#v"]("JA")
-            end,
-            mode = "x",
-            desc = "DeepL translate to ja",
-        },
-        {
-            "@e",
-            function()
-                return require("general_converter").operator_convert(function(s)
-                    local translate_result = vim.fn["deepl#translate"](s, "en")
-                    return s .. "\n" .. translate_result
-                end)()
-            end,
-            expr = true,
-            mode = "n",
-            desc = "DeepL translate to en",
-        },
-        {
-            "@e",
-            function()
-                vim.fn["deepl#v"]("EN")
-            end,
-            mode = "x",
-            desc = "DeepL translate to en",
-        },
+        { "@j", mode = { "n", "x" } },
+        { "@e", mode = { "n", "x" } },
     },
     enabled = function()
         return not (vim.fn.getenv("DEEPL_API_KEY") == vim.NIL)
@@ -256,6 +191,41 @@ plugins:push {
     config = function()
         vim.g["deepl#endpoint"] = "https://api-free.deepl.com/v2/translate"
         vim.g["deepl#auth_key"] = vim.fn.getenv("DEEPL_API_KEY")
+
+        mapset.n("@j") {
+            desc = [[DeepL を用いて日本語に翻訳する]],
+            expr = true,
+            function()
+                return require("general_converter").operator_convert(function(s)
+                    local translate_result = vim.fn["deepl#translate"](s, "ja")
+                    return s .. "\n" .. translate_result
+                end)()
+            end,
+        }
+        mapset.x("@j") {
+            desc = [[DeepL を用いて日本語に翻訳する]],
+            expr = true,
+            function()
+                vim.fn["deepl#v"]("JA")
+            end,
+        }
+        mapset.n("@e") {
+            desc = [[DeepL を用いて英語に翻訳する]],
+            expr = true,
+            function()
+                return require("general_converter").operator_convert(function(s)
+                    local translate_result = vim.fn["deepl#translate"](s, "en")
+                    return s .. "\n" .. translate_result
+                end)()
+            end,
+        }
+        mapset.x("@e") {
+            desc = [[DeepL を用いて英語に翻訳する]],
+            expr = true,
+            function()
+                vim.fn["deepl#v"]("EN")
+            end,
+        }
     end,
 }
 
@@ -292,7 +262,6 @@ plugins:push {
 }
 
 plugins:push { "https://github.com/thinca/vim-qfreplace", ft = { "qf" } }
--- plugins:push { "https://github.com/thinca/vim-quickrun" }
 
 plugins:push { "https://github.com/tyru/capture.vim", cmd = { "Capture" } }
 
