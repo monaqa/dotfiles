@@ -4,7 +4,8 @@ local mapset = monaqa.shorthand.mapset_local
 local create_cmd = monaqa.shorthand.create_cmd_local
 
 vim.opt_local.shiftwidth = 2
-vim.opt_local.foldmethod = "manual"
+vim.opt_local.foldmethod = "expr"
+vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt_local.commentstring = "// %s"
 vim.opt_local.formatoptions:append("r")
 
@@ -13,6 +14,9 @@ vim.opt_local.comments = {
     "b:+",
     "b:1.",
 }
+
+mapset.n("zM") { "zMzr", desc = [[foldlevel を 0 ではなく 1 にする]] }
+mapset.n("<Space>z") { "zMzrzv", desc = [[foldlevel を 0 ではなく 1 にしたバージョン]] }
 
 local function resolve_target()
     local line = vim.fn.getline(1)

@@ -249,7 +249,7 @@ local function visual_match()
             :totable()
         for _, winid in ipairs(visible_winids) do
             local visual_match_id = vim.fn.matchadd(
-                "VisualBlue",
+                "VisualMatch",
                 ([[\C\V%s]]):format(vim.fn.escape(vim.fn.getline("."):sub(first + 1, last + 1), [[\]])),
                 10, --default
                 -1, --default
@@ -266,7 +266,7 @@ autocmd_vimrc("WinLeave") {
 }
 
 autocmd_vimrc { "CursorMoved", "CursorHold" } {
-    desc = "Free instant visual highlight",
+    desc = "Instant visual highlight",
     callback = visual_match,
 }
 
@@ -274,6 +274,15 @@ vim.keymap.set({ "x", "s" }, "<Esc>", function()
     free_visual_match()
     return "<Esc>"
 end, { expr = true })
+
+autocmd_vimrc { "BufRead" } {
+    desc = "foldlevel が 0（全てたたむ）のときは、カーソル周辺だけ fold 解除",
+    callback = function()
+        if vim.opt_local.foldlevel:get() == 0 then
+            vim.cmd.normal("zv")
+        end
+    end,
+}
 
 -- §§1 保存時のコマンド実行
 

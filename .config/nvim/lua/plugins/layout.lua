@@ -24,6 +24,19 @@ plugins:push {
         -- hot reload config
         require("lreload").enable("colorimetry")
 
+        ---@param name string
+        local function sethl(name)
+            ---@param val vim.api.keyset.highlight
+            return function(val)
+                vim.api.nvim_set_hl(0, name, val)
+            end
+        end
+
+        local fg = require("colorimetry.palette").fg
+        local bg = require("colorimetry.palette").bg
+
+        sethl("VisualMatch") { bg = bg.g4 }
+
         autocmd_vimrc("BufWritePost") {
             pattern = vim.env.HOME .. "/ghq/github.com/monaqa/colorimetry.nvim/*.lua",
             callback = function()

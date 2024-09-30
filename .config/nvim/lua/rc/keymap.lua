@@ -778,7 +778,7 @@ local function vertical_f(ctx, forward)
                 chars[char] = chars[char] + 1
             end
             if chars[char] == ctx.count1 then
-                vim.api.nvim_buf_add_highlight(0, ns_id, "VisualBlue", line - 1, e, e + 1)
+                vim.api.nvim_buf_add_highlight(0, ns_id, "VisualMatch", line - 1, e, e + 1)
             end
         end
     end
@@ -939,7 +939,21 @@ mapset.i("<C-g>") { "<C-x>" }
 -- 直前の単語を full uppercase にする。
 -- vimrc 読書会より。
 -- thanks to thinca
-mapset.i("<C-l>") { "<Esc>gUvbgi" }
+-- mapset.i("<C-l>") { "<Esc>gUvbgi" }
+-- mapset.i("<C-l>") {
+--     [[<C-r>="<C-v><C-w>" .. toupper("<C-r><C-w>")<CR>]],
+-- }
+mapset.i("<C-l>") {
+    expr = true,
+    function()
+        local line = vim.fn.getline(".")
+        local col = vim.fn.getpos(".")[3]
+        local substring = line:sub(1, col - 1)
+        local result = vim.fn.matchstr(substring, [[\k*$]])
+        return "<C-w>" .. result:upper()
+    end,
+}
+
 mapset.n("gf") { "gF" }
 mapset.ic("<C-v>u") { "<C-r>=nr2char(0x)<Left>" }
 

@@ -507,7 +507,7 @@ plugins:push {
     "https://github.com/monaqa/general-converter.nvim",
     cond = cond_dev("monaqa/general-converter.nvim"),
     keys = {
-        "gc",
+        { "gc", mode = { "n", "x" } },
     },
     config = function()
         local gc_util = require("general_converter.util")
@@ -643,7 +643,7 @@ plugins:push {
                 },
             },
         }
-        mapset.n("gc") {
+        mapset.nx("gc") {
             desc = [[General Converter]],
             expr = true,
             require("general_converter").operator_convert(),

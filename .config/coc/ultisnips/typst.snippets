@@ -39,6 +39,28 @@ snippet et "use easytable" b
 })
 endsnippet
 
+snippet import-showybox "import showybox" b
+#import "@preview/showybox:2.0.1": showybox
+endsnippet
+
+snippet showybox "use showybox" b
+#showybox(
+	title: [${1:Title}],
+	footer: [${2:Optional footer.}],
+	frame: (
+		border-color: luma(25%),
+		title-color: luma(80%),
+		footer-color: luma(90%),
+		body-color: luma(95%),
+	),
+	title-style: (color: luma(25%), weight: 600, align: center),
+	footer-style: (color: luma(25%), weight: 300),
+	shadow: (offset: 2pt, color: luma(90%)),
+)[
+	$0
+]
+endsnippet
+
 snippet termlog "termlog command" b
 #code.termlog[
 \`\`\`sh
@@ -90,3 +112,4 @@ endsnippet
 snippet today "Today" w
 `date '+%Y/%m/%d'`
 endsnippet
+
