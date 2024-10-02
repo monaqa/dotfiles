@@ -949,7 +949,9 @@ mapset.i("<C-l>") {
         local line = vim.fn.getline(".")
         local col = vim.fn.getpos(".")[3]
         local substring = line:sub(1, col - 1)
-        local result = vim.fn.matchstr(substring, [[\k*$]])
+        -- TODO: 正規表現が仰々しい。実際には /[a-zA-Z0-9_]*$/ 程度で十分と思われる
+        -- CJK などの keyword 文字とアルファベットが連続して並んだときを考慮し、ややこしい表現になっている
+        local result = vim.fn.matchstr(substring, [[\v<(\k(<)@!)*$]])
         return "<C-w>" .. result:upper()
     end,
 }
