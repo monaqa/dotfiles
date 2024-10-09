@@ -23,6 +23,7 @@ plugins:push {
             position = "SE",
             win_config = {
                 border = "rounded",
+                width = 60,
             },
         }
 
@@ -36,11 +37,18 @@ plugins:push {
                 else
                     keycastr.enable()
                     active = true
+                    vim.print(" ") -- cmdline を clear する
                 end
             end,
         }
 
-        mapset.n("<F5>") {
+        mapset.nxo("<C-s>") {
+            function()
+                keycastr.disable()
+                keycastr.enable()
+            end,
+        }
+        mapset.ic("<C-s>") {
             function()
                 keycastr.disable()
                 keycastr.enable()

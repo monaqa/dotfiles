@@ -1,4 +1,5 @@
-local util = require("rc.util")
+local shorthand = require("monaqa").shorthand
+local mapset = shorthand.mapset
 local vec = require("rc.util.vec")
 
 -- local t = vim.treesitter
