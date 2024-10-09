@@ -71,7 +71,7 @@ plugins:push {
         mapset.n("tA") { "<Cmd>Telescope coc code_actions<CR>" }
         mapset.n("tn") { "<Plug>(coc-rename)" }
         mapset.n("ta") { "<Plug>(coc-codeaction-cursor)" }
-        mapset.n("ta") { "<Plug>(coc-codeaction-selected)" }
+        mapset.x("ta") { "<Plug>(coc-codeaction-selected)" }
         mapset.n("tw") { "<Plug>(coc-float-jump)" }
         mapset.n("K") { "<Cmd>call CocActionAsync('doHover')<CR>" }
         mapset.n("tf") { "<Cmd>call CocActionAsync('format')<CR>" }

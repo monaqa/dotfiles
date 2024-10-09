@@ -414,6 +414,8 @@ plugins:push {
             -- You can set the delay to false to disable cleanup entirely
             -- Note that the cleanup process only starts when none of the oil buffers are currently displayed
             cleanup_delay_ms = false,
+            -- Set to true to watch the filesystem for changes and reload oil
+            watch_for_changes = true,
             -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
             -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
             -- Additionally, if it is a string that matches "actions.<name>",

@@ -430,9 +430,9 @@ query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
 --     end,
 -- }
 
-autocmd_vimrc("TermClose") {
-    pattern = "*",
-    callback = function()
-        pcall(vim.cmd.bdelete, { bang = true, args = { vim.fn.expand("<abuf>") } })
-    end,
-}
+-- autocmd_vimrc("TermClose") {
+--     pattern = "*",
+--     callback = function()
+--         pcall(vim.cmd.bdelete, { bang = true, args = { vim.fn.expand("<abuf>") } })
+--     end,
+-- }

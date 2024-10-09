@@ -38,9 +38,7 @@ snippet et "use easytable" b
 		th[][]
 		tr[][]
 	},
-	table.hline(y: 0, stroke: 0.8pt),
-	table.hline(y: 1, stroke: 0.5pt),
-	table.hline(y: auto, stroke: 0.8pt),
+	table.hline(y: 0), table.hline(y: 1, stroke: 0.5pt), table.hline(),
 )
 endsnippet
 
@@ -49,6 +47,16 @@ snippet import-showybox "import showybox" b
 endsnippet
 
 snippet showybox "use showybox" b
+#showybox(
+	title: [${1:Title}],
+	frame: (border-color: luma(25%), title-color: luma(80%), body-color: luma(95%)),
+	title-style: (color: luma(25%), weight: 600, align: center),
+)[
+	$0
+]
+endsnippet
+
+snippet showybox-detail "complex showybox" b
 #showybox(
 	title: [${1:Title}],
 	footer: [${2:Optional footer.}],
