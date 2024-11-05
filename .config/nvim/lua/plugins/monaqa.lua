@@ -512,13 +512,28 @@ plugins:push {
     config = function()
         local gc_util = require("general_converter.util")
 
-        local function yank_pandoc_result(lang_from, lang_to)
+        local function yank_pandoc_result(lang_from, lang_to, post_process)
             return function(s)
-                local cmd = ("pandoc -f %s -t %s"):format(lang_from, lang_to)
-                local result = vim.fn.system(cmd, s)
-                vim.fn.setreg([["]], result)
-                vim.fn.setreg([[0]], result)
-                vim.fn.setreg([[+]], result)
+                vim.system(
+                    { "pandoc", "-f", lang_from, "-t", lang_to },
+                    {
+                        cwd = vim.fn.expand("%:p:h"),
+                        stdin = s,
+                    },
+                    vim.schedule_wrap(function(obj)
+                        local result = obj.stdout
+                        if post_process ~= nil then
+                            result = post_process(result)
+                        end
+                        if obj.stderr == "" then
+                            vim.fn.setreg([["]], result)
+                            vim.fn.setreg([[0]], result)
+                            vim.fn.setreg([[+]], result)
+                        else
+                            vim.notify(obj.stderr)
+                        end
+                    end)
+                )
                 return s
             end
         end
@@ -638,7 +653,15 @@ plugins:push {
                 },
                 {
                     desc = "pandoc で変換し、クリップボードにいれる (typst -> markdown)",
-                    converter = yank_pandoc_result("typst", "markdown+hard_line_breaks-simple_tables"),
+                    converter = yank_pandoc_result(
+                        "typst",
+                        "markdown+hard_line_breaks-simple_tables",
+                        ---@param s string
+                        ---@return string
+                        function(s)
+                            return s
+                        end
+                    ),
                     labels = { "typst-pandoc" },
                 },
             },

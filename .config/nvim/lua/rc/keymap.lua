@@ -541,6 +541,7 @@ mapset.i("<C-Space>") { "<Space>", desc = "誤爆を防ぐため" }
 
 mapset.i("<C-b>") { "<C-g>U<Left>" }
 mapset.i("<C-f>") { "<C-g>U<Right>" }
+mapset.i("<C-a>") { "<C-g>U<Home>" }
 
 -- inner-word motion
 mapset.o("u") { "t_" }

@@ -3,6 +3,7 @@ local cabbr = require("monaqa").cabbr
 -- ミス防止
 cabbr:add { prepose = "'<,'>", require_space = false, from = "w", to = "<C-u>w" }
 cabbr:add { from = "w2", to = "w" }
+cabbr:add { from = "w3", to = "w" }
 cabbr:add { from = "w]", to = "w" }
 cabbr:add { from = "w:", to = "w" }
 

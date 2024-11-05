@@ -1,3 +1,6 @@
+local monaqa = require("monaqa")
+local mapset = monaqa.shorthand.mapset_local
+
 vim.cmd([[
     let g:vim_markdown_frontmatter = 1
 
@@ -61,3 +64,5 @@ vim.opt_local.comments = {
 vim.opt_local.formatoptions:remove("c")
 vim.opt_local.formatoptions:append("j")
 vim.opt_local.formatoptions:append("r")
+
+mapset.n("@o") { "<Cmd>MarkdownPreview<CR>" }

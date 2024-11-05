@@ -1,5 +1,6 @@
 local uv = vim.uv
 local monaqa = require("monaqa")
+local tree = monaqa.tree
 local mapset = monaqa.shorthand.mapset_local
 local create_cmd = monaqa.shorthand.create_cmd_local
 
@@ -18,14 +19,40 @@ vim.opt_local.comments = {
 mapset.n("zM") { "zMzr", desc = [[foldlevel を 0 ではなく 1 にする]] }
 mapset.n("<Space>z") { "zMzrzv", desc = [[foldlevel を 0 ではなく 1 にしたバージョン]] }
 
-local function resolve_target()
+local function get_modeline()
+    ---@type string
     local line = vim.fn.getline(1)
-    local _, _, file = line:find([[^//! target:%s*(%S+)$]])
-    if file ~= nil then
-        return vim.fn.resolve(vim.fn.expand("%:h") .. "/" .. file)
-    else
+    if vim.startswith(line, "//!{") then
+        return vim.json.decode(line:sub(4))
+    end
+    if vim.startswith(line, "//! target:") then
+        local _, _, file = line:find([[^//! target:%s*(%S+)$]])
+        return { target = file }
+    end
+    return {}
+end
+
+local function resolve_target()
+    local modeline = get_modeline()
+    if modeline.target == nil then
         return vim.fn.resolve(vim.fn.expand("%"))
     end
+    return vim.fn.resolve(vim.fn.expand("%:h") .. "/" .. modeline.target)
+end
+
+local function compile_args()
+    local modeline = get_modeline()
+    local v = {
+        "compile",
+        "--input",
+        "typscrap_root=/Users/monaqa/ghq/github.com/monaqa/typscrap-contents/content/",
+        resolve_target(),
+    }
+    if modeline.root ~= nil then
+        v[#v + 1] = "--root"
+        v[#v + 1] = vim.fn.resolve(vim.fn.expand("%:h") .. "/" .. modeline.root)
+    end
+    return v
 end
 
 mapset.n("@o") {
@@ -41,10 +68,7 @@ mapset.n("@q") {
     desc = [[typst compile を実行]],
     function()
         local objective = resolve_target()
-        vim.cmd(
-            [[!typst compile --input typscrap_root=/Users/monaqa/ghq/github.com/monaqa/typscrap-contents/content/ ]]
-                .. objective
-        )
+        vim.cmd([[!typst ]] .. table.concat(compile_args(), " "))
     end,
 }
 
@@ -56,14 +80,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     callback = function()
         local objective = resolve_target()
         -- vim.fn.system { "typst", "compile", objective }
-        uv.spawn("typst", {
-            args = {
-                "compile",
-                "--input",
-                "typscrap_root=/Users/monaqa/ghq/github.com/monaqa/typscrap-contents/content/",
-                objective,
-            },
-        }, function() end)
+        uv.spawn("typst", { args = compile_args() }, function() end)
     end,
 })
 
@@ -147,4 +164,17 @@ mapset.nx("gy") {
     desc = [[Typst から他の形式に変換してヤンクする]],
     expr = true,
     require("general_converter").operator_convert("typst-pandoc"),
+}
+
+create_cmd("IncrementHeading") {
+    range = "%",
+    desc = "範囲内の見出しレベルを1上げる",
+    function(meta)
+        tree.replace_buf([[ (heading) @- ]], function(text)
+            return "=" .. text
+        end, {
+            start = meta.line1 - 1,
+            stop = meta.line2,
+        })
+    end,
 }
