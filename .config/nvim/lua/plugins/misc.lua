@@ -212,7 +212,6 @@ plugins:push {
         }
         mapset.x("@j") {
             desc = [[DeepL を用いて日本語に翻訳する]],
-            expr = true,
             function()
                 vim.fn["deepl#v"]("JA")
             end,
@@ -229,7 +228,6 @@ plugins:push {
         }
         mapset.x("@e") {
             desc = [[DeepL を用いて英語に翻訳する]],
-            expr = true,
             function()
                 vim.fn["deepl#v"]("EN")
             end,

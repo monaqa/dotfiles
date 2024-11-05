@@ -115,9 +115,9 @@ create_cmd("CorrectLinks") {
     end,
 }
 
-local function apply_typstfmt()
+local function apply_typstyle()
     return require("general_converter").operator_convert(function(s)
-        return vim.fn.system("typstfmt", s)
+        return vim.fn.system("typstyle", s)
     end)()
 end
 
@@ -131,17 +131,17 @@ mapset.n("g=") {
     expr = true,
     function()
         -- 強制的に行指向 motion / text object にするための "V"
-        return apply_typstfmt() .. "V"
+        return apply_typstyle() .. "V"
     end,
 }
 mapset.n("g==") {
     desc = [[選択行に typstfmt を適用する]],
     expr = true,
     function()
-        return apply_typstfmt() .. "_"
+        return apply_typstyle() .. "_"
     end,
 }
-mapset.x("g=") { expr = true, apply_typstfmt, desc = [[選択範囲に typstfmt を適用する]] }
+mapset.x("g=") { expr = true, apply_typstyle, desc = [[選択範囲に typstfmt を適用する]] }
 
 mapset.nx("gy") {
     desc = [[Typst から他の形式に変換してヤンクする]],

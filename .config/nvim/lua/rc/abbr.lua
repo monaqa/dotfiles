@@ -4,6 +4,7 @@ local cabbr = require("monaqa").cabbr
 cabbr:add { prepose = "'<,'>", require_space = false, from = "w", to = "<C-u>w" }
 cabbr:add { from = "w2", to = "w" }
 cabbr:add { from = "w]", to = "w" }
+cabbr:add { from = "w:", to = "w" }
 
 -- 標準コマンドのエイリアス
 cabbr:add { from = "open", to = "!open" }

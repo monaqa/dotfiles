@@ -62,7 +62,7 @@ function M.find_buf_matches(query_str, opts)
 end
 
 ---@param query_str string
----@param replacef fun(string, TSNode): string
+---@param replacef fun(s: string, n: TSNode): string
 ---@param opts? {bufnr?: integer, start?: integer, stop?: integer, capture_name?: string}
 function M.replace_buf(query_str, replacef, opts)
     local matches = M.find_buf_matches(query_str, opts)

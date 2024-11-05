@@ -1,5 +1,9 @@
 local uv = vim.uv
-local util = require("rc.util")
+local monaqa = require("monaqa")
+local create_cmd = monaqa.shorthand.create_cmd_local
+local tree = monaqa.tree
+local to_bool = monaqa.logic.to_bool
+local lilypond = require("rc.lilypond")
 
 require("lazy").load { plugins = { "dial.nvim", "general-converter.nvim" } }
 -- vim.b.did_ftplugin = 1
@@ -140,40 +144,6 @@ vim.keymap.set(
     { expr = true, buffer = true, desc = "コード生成用" }
 )
 
---- query とキャプチャ名を与えて、マッチする node 、value の列を返す。
----@param query vim.treesitter.Query
-local function find_matches(query, root, start, stop)
-    return vim.iter(query:iter_matches(root, 0, start, stop))
-        :map(
-            ---@param match table<integer, TSNode>
-            function(_, match, _)
-                local m = vim.iter(match)
-                    :enumerate()
-                    :map(function(id, node)
-                        local capture_name = query.captures[id]
-                        if vim.startswith(capture_name, "_") then
-                            return capture_name
-                        end
-                        local sr, sc, er, ec = node:range()
-                        local text =
-                            table.concat(vim.fn.getregion({ 0, sr + 1, sc + 1, 0 }, { 0, er + 1, ec, 0 }), "\n")
-                        return capture_name,
-                            {
-                                node = node,
-                                text = text,
-                                region = { s = { sr + 1, sc + 1 }, e = { er + 1, ec } },
-                            }
-                    end)
-                    :fold({}, function(acc, k, v)
-                        acc[k] = v
-                        return acc
-                    end)
-                return m
-            end
-        )
-        :totable()
-end
-
 local all_notes = {
     "c",
     "cis",
@@ -218,7 +188,7 @@ local key_to_scale_notes = {
     ["d\\minor"] = { "f", "g", "a", "bes", "c", "d", "e" },
 
     ["ges\\major"] = { "ges", "aes", "bes", "b", "des", "ees", "f" },
-    ["ees\\minor"] = { "ges", "aes", "bes", "b", "des", "ees", "f" },
+    ["ees\\minor"] = { "ges", "aes", "bes", "ces", "des", "ees", "f" },
 
     ["g\\major"] = { "g", "a", "b", "c", "d", "e", "fis" },
     ["e\\minor"] = { "g", "a", "b", "c", "d", "e", "fis" },
@@ -235,7 +205,7 @@ local key_to_scale_notes = {
     ["b\\major"] = { "b", "cis", "dis", "e", "fis", "gis", "ais" },
     ["gis\\minor"] = { "b", "cis", "dis", "e", "fis", "gis", "ais" },
 
-    ["fis\\major"] = { "fis", "gis", "ais", "b", "cis", "dis", "f" },
+    ["fis\\major"] = { "fis", "gis", "ais", "b", "cis", "dis", "eis" },
 }
 
 local function create_query_str(scale_notes)
@@ -250,21 +220,14 @@ local function create_query_str(scale_notes)
             return ("(pitch_%s)"):format(note)
         end)
         :join(" ")
-    return vim.treesitter.query.parse("lilypond", ("(pitch [%s]) @pitch"):format(s))
+    return ("(pitch [%s]) @pitch"):format(s)
 end
 
 local ns = vim.api.nvim_create_namespace("lilypond_no_scale_note")
 
-local function highlight_non_scale_note()
-    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
-
-    local parser = vim.treesitter.get_parser(0, "lilypond")
-    local root = parser:parse()[1]:root()
-
-    local key_specifiers = find_matches(
-        vim.treesitter.query.parse(
-            "lilypond",
-            [[
+---@return {key: [string, string], line: [integer, integer]}[]
+local function key_regions()
+    local key_specifiers = tree.find_buf_matches([[
         (
          (command) @_cmd_key
          .
@@ -273,46 +236,41 @@ local function highlight_non_scale_note()
          (command) @major_minor
          (#eq? @_cmd_key "\\key")
          )
-        ]]
-        ),
-        root
-    )
+    ]])
 
-    local key_regions = {}
+    local regions = {}
     local prev_key = nil
     for _, match in ipairs(key_specifiers) do
         local note_name = match.note.text
         local major_minor = match.major_minor.text
         local start_pos = match.note.region.e[1]
         if prev_key ~= nil then
-            key_regions[#key_regions + 1] =
+            regions[#regions + 1] =
                 { key = { prev_key.note_name, prev_key.major_minor }, line = { prev_key.start_pos + 1, start_pos } }
         end
         prev_key = { note_name = note_name, major_minor = major_minor, start_pos = start_pos }
     end
     if prev_key ~= nil then
-        key_regions[#key_regions + 1] =
+        regions[#regions + 1] =
             { key = { prev_key.note_name, prev_key.major_minor }, line = { prev_key.start_pos + 1, -1 } }
     end
+    return regions
+end
 
-    vim.iter(key_regions)
+local function highlight_non_scale_note()
+    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+
+    vim.iter(key_regions())
         :map(function(t)
             local notes = key_to_scale_notes[t.key[1] .. t.key[2]]
-            local matches = find_matches(create_query_str(notes), root, t.line[1], t.line[2])
-            return matches
+            return tree.find_buf_matches(create_query_str(notes))
         end)
         :flatten(1)
         :each(function(matches)
             local pitch = matches.pitch
-            ---@type {s : [integer, integer], e : [integer, integer]}
             local region = pitch.region
 
             vim.api.nvim_buf_add_highlight(0, ns, "LilypondAccidental", region.s[1] - 1, region.s[2] - 1, region.e[2])
-            -- vim.api.nvim_buf_set_extmark(0, ns, region.s[1] - 1, region.s[2] - 1, {
-            --     end_row = region.e[1] - 1,
-            --     end_col = region.e[2],
-            --     hl_group = "Special",
-            -- })
         end)
 end
 
@@ -341,8 +299,9 @@ local cmds = {
     "longRest",
 }
 
-local function omnifunc(findstart, base)
-    if util.to_bool(findstart) then
+vim.opt_local.omnifunc = "v:lua.vimrc.omnifunc.lilypond"
+function _G.vimrc.omnifunc.lilypond(findstart, base)
+    if to_bool(findstart) then
         ---@type string
         local line = vim.fn.getline(".")
         local start = vim.fn.col(".")
@@ -364,28 +323,70 @@ local function omnifunc(findstart, base)
         :totable()
 end
 
-_G.vimrc.omnifunc.lilypond = omnifunc
-
-vim.opt_local.omnifunc = "v:lua.vimrc.omnifunc.lilypond"
-
--- vim.api.nvim_create_autocmd()
-
+-- local key_to_scale_map = {
+--     ["c\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
+--     ["a\\minor"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
 --
--- local query_pitch = vim.treesitter.query.parse(
---     "lilypond",
---     [[
---         (pitch) @pitch
---     ]]
--- )
+--     ["des\\major"] = { ees = "es", cis = "des", eis = "f", fis = "ges", gis = "aes", ais = "bes", bis = "c" },
+--     ["bes\\minor"] = { ees = "es", cis = "des", eis = "f", fis = "ges", gis = "aes", ais = "bes", bis = "c" },
 --
--- local matches = vim.iter(query_key:iter_captures(node, 0))
---     :map(function(id, node, metadata, match)
---         local sr, sc, er, ec = node:range()
---         local value = vim.fn.getregion({ 0, sr + 1, sc + 1, 0 }, { 0, er + 1, ec, 0 })[1]
---         return { id = query_key.captures[id], value = value }
---     end)
---     :totable()
+--     ["d\\major"] = { ces = "b", fes = "e", ges = "fis", des = "cis" },
+--     ["b\\minor"] = { ces = "b", fes = "e", ges = "fis", des = "cis" },
 --
--- local
--- local pitches = find_matches([[(pitch) @pitch]], node, "pitch")
--- -- vim.print(matches)
+--     ["ees\\major"] = { ees = "es", eis = "f", bis = "c", gis = "aes", ais = "bes" },
+--     ["c\\minor"] = { ees = "es", eis = "f", bis = "c", gis = "aes", ais = "bes" },
+--
+--     ["e\\major"] = { ees = "dis", fes = "e", ces = "b", ges = "fis", aes = "gis", des = "cis", es = "dis" },
+--     ["cis\\minor"] = { ees = "dis", fes = "e", ces = "b", ges = "fis", aes = "gis", des = "cis", es = "dis" },
+--
+--     ["f\\major"] = { eis = "f", bis = "c", fes = "e", ais = "bes" },
+--     ["d\\minor"] = { "f", "g", "a", "bes", "c", "d", "e" },
+--
+--     ["ges\\major"] = {},
+--     ["es\\minor"] = { "ges", "aes", "bes", "ces", "des", "ees", "f" },
+--
+--     ["g\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
+--     ["e\\minor"] = { "g", "a", "b", "c", "d", "e", "fis" },
+--
+--     ["aes\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
+--     ["f\\minor"] = { "aes", "bes", "c", "des", "ees", "f", "g" },
+--
+--     ["a\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
+--     ["fis\\minor"] = { "a", "b", "cis", "d", "e", "fis", "gis" },
+--
+--     ["bes\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
+--     ["g\\minor"] = { "bes", "c", "d", "ees", "f", "g", "a" },
+--
+--     ["b\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
+--     ["gis\\minor"] = { "b", "cis", "dis", "e", "fis", "gis", "ais" },
+--
+--     ["fis\\major"] = { "fis", "gis", "ais", "b", "cis", "dis", "eis" },
+-- }
+
+create_cmd("LilypondNoteNormalize") {
+    range = "%",
+    nargs = 1,
+    function(meta)
+        local key = meta.args
+        tree.replace_buf("(pitch) @-", function(text)
+            return lilypond.normalize_note(text, key)
+        end, {
+            start = meta.line1 - 1,
+            stop = meta.line2,
+        })
+    end,
+}
+
+create_cmd("LilypondNoteIncrement") {
+    range = "%",
+    nargs = 1,
+    function(meta)
+        local key = meta.args
+        tree.replace_buf("(pitch) @-", function(text)
+            return lilypond.increment_note(text, key, 1)
+        end, {
+            start = meta.line1 - 1,
+            stop = meta.line2,
+        })
+    end,
+}
