@@ -44,6 +44,11 @@
 
   "svelte.enable-ts-plugin": true,
 
+  "toml.schema.associations": {
+    "^(.*(/|\\\\)pyproject\\.toml|pyproject\\.toml)$": "https://json.schemastore.org/pyproject.json"
+  },
+  "toml.schema.repositoryUrl": "https://taplo.tamasfe.dev/schema_index.json",
+
   "tsserver.enable": true,
   "tsdetect.mode": "auto",
   "prettier.trailingComma": "all",

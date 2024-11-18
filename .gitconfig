@@ -1,7 +1,7 @@
 [user]
     email = cmonaqa@gmail.com
     name = monaqa
-	signingkey = /Users/monaqa/.ssh/id_rsa.pub
+    signingkey = /Users/monaqa/.ssh/id_rsa.pub
 [github]
     user = monaqa
 
@@ -46,6 +46,14 @@
     blamepr = "!f() { gh pr view -w `git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1 | cut -f5 -d' ' | sed -e 's%#%%'`; }; f"
     prev = reset HEAD^
 
+    fixup ="!f() { git commit --fixup $1 && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --autostash $1^;};f"
+
+    # choose commit
+    # https://qiita.com/_yu_yu_yu/items/1617c08e685834ee3f85
+    chit = "!f() { git log --graph --color=always --remotes --branches --format=\"%C(auto)%h%d %s %C(white)%C(bold)%cr\" | sk --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort | grep -o '[a-f0-9]\\{7\\}';}; f"
+
+    fix ="!git chit | xargs git fixup"
+
 [push]
     default = current
 [pull]
@@ -59,4 +67,4 @@
     algorithm = histogram
 [gpg]
     program = /opt/homebrew/bin/gpg
-	format = ssh
+    format = ssh
