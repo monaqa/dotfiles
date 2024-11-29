@@ -652,13 +652,29 @@ plugins:push {
                     end),
                 },
                 {
+                    desc = "URI エンコードする",
+                    converter = function(s)
+                        return vim.uri_encode(s)
+                    end,
+                    labels = { "uri" },
+                },
+                {
+                    desc = "URI デコードする",
+                    converter = function(s)
+                        return vim.uri_decode(s)
+                    end,
+                    labels = { "uri" },
+                },
+                {
                     desc = "pandoc で変換し、クリップボードにいれる (typst -> markdown)",
                     converter = yank_pandoc_result(
                         "typst",
-                        "markdown+hard_line_breaks-simple_tables",
+                        "gfm+hard_line_breaks",
                         ---@param s string
                         ---@return string
                         function(s)
+                            s = s:gsub("``` ", "```")
+                            s = vim.re.gsub(s, [["<http" {[^>]*} ">"]], "http%1")
                             return s
                         end
                     ),

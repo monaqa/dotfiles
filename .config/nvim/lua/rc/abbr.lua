@@ -13,7 +13,8 @@ cabbr:add { from = "s", to = "%s///g<Left><Left>", remove_trigger = true }
 cabbr:add { from = "ssf", to = "syntax sync fromstart" }
 cabbr:add { from = "gd", to = "g//d" }
 cabbr:add { from = "vd", to = "v//d" }
-cabbr:add { prepose = "'<,'>", require_space = false, from = "s", to = "%s///g<Left><Left>", remove_trigger = true }
+cabbr:add { from = "vg", to = "vimgrep // %<Left><Left><Left>", remove_trigger = true }
+cabbr:add { prepose = "'<,'>", require_space = false, from = "s", to = "s///g<Left><Left>", remove_trigger = true }
 cabbr:add { prepose = "'<,'>", require_space = false, from = "gd", to = "g//d" }
 cabbr:add { prepose = "'<,'>", require_space = false, from = "vd", to = "v//d" }
 

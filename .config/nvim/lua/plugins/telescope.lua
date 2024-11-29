@@ -41,6 +41,7 @@ plugins:push {
                 -- local builtin = require "telescope.builtin"
                 -- builtin.live_grep { prompt_prefix = "𝜸" }
                 require("telescope").extensions.egrepify.egrepify {
+                    prompt_title = "Grep (#ext1, ext2 >dirname1,dirname2 &fname1,fname2)",
                     prompt_prefix = "𝜸",
                 }
             end,
@@ -75,6 +76,7 @@ plugins:push {
                 require("lazy").load { plugins = { "typscrap.nvim" } }
                 local root = require("typscrap.config").root_dir
                 require("telescope").extensions.egrepify.egrepify {
+                    prompt_title = "Grep (#ext1, ext2 >dirname1,dirname2 &fname1,fname2)",
                     prompt_prefix = "𝜸",
                     cwd = root,
                 }

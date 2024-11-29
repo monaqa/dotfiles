@@ -161,11 +161,13 @@ autocmd_vimrc("TextYankPost") {
             vim.fn.setreg("c", vim.fn.getreg('"', nil, nil))
         end
         if event.operator == "y" then
+            local old_clipboard_content = vim.fn.getreg("+", nil, nil)
             local content = vim.fn.getreg('"', nil, nil)
             if ignore_indent then
                 content = remove_common_indent(content)
                 ignore_indent = false
             end
+            vim.fn.setreg("p", old_clipboard_content)
             vim.fn.setreg("y", content)
             vim.fn.setreg("+", content)
         end
