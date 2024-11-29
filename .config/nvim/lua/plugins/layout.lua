@@ -222,6 +222,8 @@ plugins:push {
 
 plugins:push {
     "https://github.com/nvim-lualine/lualine.nvim",
+    -- statusline が正常に更新されない不具合（デグレ）があったため
+    commit = "640260d7c2d98779cab89b1e7088ab14ea354a02",
     lazy = false,
     config = function()
         local palette = require("colorimetry.palette")
