@@ -6,7 +6,7 @@ local plugins = vec {}
 plugins:push {
     "https://github.com/nvim-telescope/telescope.nvim",
     dependencies = {
-        "https://github.com/fannheyward/telescope-coc.nvim",
+        -- "https://github.com/fannheyward/telescope-coc.nvim",
         "https://github.com/nvim-telescope/telescope-smart-history.nvim",
         "https://github.com/kkharji/sqlite.lua",
         "https://github.com/nvim-telescope/telescope-frecency.nvim",
@@ -102,7 +102,7 @@ plugins:push {
     config = function()
         local actions = require("telescope.actions")
 
-        require("telescope").load_extension("coc")
+        -- require("telescope").load_extension("coc")
         require("telescope").load_extension("smart_history")
         require("telescope").load_extension("egrepify")
         require("telescope").load_extension("typscrap")
@@ -228,11 +228,11 @@ plugins:push {
     end,
 }
 
-plugins:push {
-    "https://github.com/fannheyward/telescope-coc.nvim",
-    cmd = { "Telescope" },
-    dependencies = { "https://github.com/neoclide/coc.nvim" },
-}
+-- plugins:push {
+--     "https://github.com/fannheyward/telescope-coc.nvim",
+--     cmd = { "Telescope" },
+--     dependencies = { "https://github.com/neoclide/coc.nvim" },
+-- }
 
 plugins:push {
     "https://github.com/monaqa/telescope-egrepify.nvim",
