@@ -25,7 +25,6 @@ link_filetype { extension = "jsonl", filetype = "jsonl" }
 link_filetype { extension = "d2", filetype = "d2" }
 link_filetype { extension = "mdx", filetype = "markdown" }
 link_filetype { extension = "nu", filetype = "nu" }
-link_filetype { extension = "typ", filetype = "typst" }
 link_filetype { extension = "sus", filetype = "sus" }
 link_filetype { extension = "mbt", filetype = "moonbit" }
 

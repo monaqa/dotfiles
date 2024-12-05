@@ -25,6 +25,7 @@ local plugins = vec {}
 -- coc
 plugins:push {
     "https://github.com/neoclide/coc.nvim",
+    enabled = false,
     branch = "release",
     config = function()
         local function coc_service_names(arglead, cmdline, cursorpos)

@@ -82,7 +82,8 @@ plugins:push {
 
         require("bufferline").setup {
             options = {
-                diagnostics = "coc",
+                diagnostics = "nvim_lsp",
+                -- diagnostics = "coc",
                 -- separator_style = "thin",
                 separator_style = "slant",
                 indicator = {
@@ -313,7 +314,7 @@ plugins:push {
                     function()
                         -- table.insert(_G.debug_lualine, vim.fn["coc#status"]())
                         -- return vim.pesc(vim.fn["coc#status"]())
-                        return (vim.fn["coc#status"]()):gsub("%%", "%%%%")
+                        -- return (vim.fn["coc#status"]()):gsub("%%", "%%%%")
                     end,
                 },
                 lualine_y = {
