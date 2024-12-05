@@ -1,5 +1,6 @@
 local shorthand = require("monaqa.shorthand")
 local autocmd_vimrc = shorthand.autocmd_vimrc
+local mapset = shorthand.mapset
 local vec = require("rc.util.vec")
 
 local plugins = vec {}
@@ -217,6 +218,24 @@ plugins:push {
                 -- numbers_selected = { bg = "None", fg = fg.o0 },
             },
         }
+    end,
+}
+
+plugins:push {
+    "https://github.com/Bekaboo/dropbar.nvim",
+    config = function()
+        require("dropbar").setup {
+            -- bar = {
+            --     enable = true,
+            -- },
+        }
+
+        -- mapset.n("<Right>") {
+        --     desc = [[]],
+        --     function()
+        --         require("dropbar.api").pick()
+        --     end,
+        -- }
     end,
 }
 

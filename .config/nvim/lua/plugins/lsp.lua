@@ -187,7 +187,7 @@ plugins:push {
 }
 
 plugins:push {
-    "chomosuke/typst-preview.nvim",
+    "https://github.com/chomosuke/typst-preview.nvim",
     ft = "typst",
     version = "1.*",
     build = function()
