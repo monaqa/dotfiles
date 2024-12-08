@@ -8,24 +8,10 @@ local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
--- nvim_lsp
-
--- plugins:push { "https://github.com/neovim/nvim-lspconfig", opt = 1, config = config.nvim_lsp }
--- plugins:push { "https://github.com/williamboman/mason.nvim", opt = 1 }
--- plugins:push { "https://github.com/williamboman/mason-lspconfig.nvim", opt = 1 }
--- plugins:push { "https://github.com/hrsh7th/nvim-cmp", opt = 1 }
--- plugins:push { "https://github.com/hrsh7th/cmp-nvim-lsp", opt = 1 }
--- plugins:push { "https://github.com/hrsh7th/cmp-vsnip", opt = 1 }
--- plugins:push { "https://github.com/hrsh7th/cmp-buffer", opt = 1 }
--- plugins:push { "https://github.com/hrsh7th/cmp-path", opt = 1 }
--- plugins:push { "https://github.com/hrsh7th/cmp-cmdline", opt = 1 }
--- plugins:push { "https://github.com/hrsh7th/vim-vsnip", opt = 1 }
--- plugins:push { "https://github.com/folke/neodev.nvim", opt = 1 }
-
 -- coc
 plugins:push {
     "https://github.com/neoclide/coc.nvim",
-    enabled = false,
+    enabled = true,
     branch = "release",
     config = function()
         local function coc_service_names(arglead, cmdline, cursorpos)
@@ -83,22 +69,22 @@ plugins:push {
         mapset.i("<Plug>(vimrc-coc-select-confirm)") { "coc#_select_confirm()", expr = true }
         mapset.i("<Plug>(vimrc-lexima-expand-cr)") { "lexima#expand('<LT>CR>', 'i')", expr = true }
 
-        mapset.i("<CR>") {
-            desc = [[lexima と coc 両方を加味したエンター]],
-            expr = true,
-            remap = true,
-            function()
-                if logic.to_bool(vim.fn["coc#pum#visible"]()) then
-                    -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
-                    -- （意図せず補完候補がセレクトされてしまうのを抑止）
-                    if vim.fn["coc#pum#info"]()["index"] >= 0 then
-                        return "<Plug>(vimrc-coc-select-confirm)"
-                    end
-                    return "<C-y><Plug>(vimrc-lexima-expand-cr)"
-                end
-                return "<Plug>(vimrc-lexima-expand-cr)"
-            end,
-        }
+        -- mapset.i("<CR>") {
+        --     desc = [[lexima と coc 両方を加味したエンター]],
+        --     expr = true,
+        --     remap = true,
+        --     function()
+        --         if logic.to_bool(vim.fn["coc#pum#visible"]()) then
+        --             -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
+        --             -- （意図せず補完候補がセレクトされてしまうのを抑止）
+        --             if vim.fn["coc#pum#info"]()["index"] >= 0 then
+        --                 return "<Plug>(vimrc-coc-select-confirm)"
+        --             end
+        --             return "<C-y><Plug>(vimrc-lexima-expand-cr)"
+        --         end
+        --         return "<Plug>(vimrc-lexima-expand-cr)"
+        --     end,
+        -- }
 
         vim.cmd([[
           function! s:check_back_space() abort

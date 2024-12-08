@@ -1,8 +1,8 @@
+-- vim:fdm=marker:fmr=§§,■■
 local monaqa = require("monaqa")
 local logic = monaqa.logic
 local create_cmd = monaqa.shorthand.create_cmd
 local mapset = monaqa.shorthand.mapset
--- vim:fdm=marker:fmr=§§,■■
 
 -- §§1 highlight
 create_cmd("HighlightGroup") {
@@ -170,4 +170,10 @@ create_cmd("PutClipboardImage") {
             return "![](" .. path .. ")"
         end,
     },
+}
+-- §§1 misc
+create_cmd("CocEditSnippet") {
+    function()
+        vim.cmd.edit("~/.config/coc/ultisnips/" .. vim.bo.filetype .. ".snippets")
+    end,
 }

@@ -1,16 +1,17 @@
 local shorthand = require("monaqa").shorthand
+local logic = require("monaqa").logic
 local autocmd_vimrc = shorthand.autocmd_vimrc
 local mapset = shorthand.mapset
 
-autocmd_vimrc("FileType") {
-    pattern = "typst",
-    callback = function()
-        vim.lsp.start {
-            name = "tinymist",
-            cmd = { "tinymist", "lsp" },
-        }
-    end,
-}
+-- autocmd_vimrc("FileType") {
+--     pattern = "typst",
+--     callback = function()
+--         vim.lsp.start {
+--             name = "tinymist",
+--             cmd = { "tinymist", "lsp" },
+--         }
+--     end,
+-- }
 
 vim.fn.sign_define(
     "DiagnosticSignError",
@@ -26,8 +27,32 @@ vim.diagnostic.config {
     },
 }
 
+mapset.i("<Tab>") {
+    desc = [[Neovim 本体の補完があったらそれを使う]],
+    expr = true,
+    function()
+        if logic.to_bool(vim.fn.pumvisible()) then
+            return "<C-n>"
+        else
+            return "<Tab>"
+        end
+    end,
+}
+
+mapset.i("<S-Tab>") {
+    desc = [[Neovim 本体の補完があったらそれを使う]],
+    expr = true,
+    function()
+        if logic.to_bool(vim.fn.pumvisible()) then
+            return "<C-p>"
+        else
+            return "<S-Tab>"
+        end
+    end,
+}
+
 autocmd_vimrc("LspAttach") {
-    callback = function()
+    callback = function(args)
         mapset.n("gd") {
             desc = [[LSP による定義ジャンプ]],
             function()
@@ -76,5 +101,19 @@ autocmd_vimrc("LspAttach") {
 
         mapset.n("g)") { vim.diagnostic.goto_next, desc = [[次の diagnostic に飛ぶ]] }
         mapset.n("g(") { vim.diagnostic.goto_prev, desc = [[前の diagnostic に飛ぶ]] }
+
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        client.server_capabilities.semanticTokensProvider = nil
+    end,
+}
+
+autocmd_vimrc("BufWritePre") {
+    callback = function()
+        local ftypes = { "rust", "lua" }
+        if vim.list_contains(ftypes, vim.bo.filetype) then
+            -- vim.cmd.mkview()
+            vim.lsp.buf.format { async = false }
+            -- vim.cmd.loadview()
+        end
     end,
 }

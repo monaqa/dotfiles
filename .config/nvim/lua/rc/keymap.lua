@@ -8,10 +8,7 @@ local create_cmd = monaqa.shorthand.create_cmd
 local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
 local logic = monaqa.logic
 local window = monaqa.window
-
 local submode = require("rc.submode")
-
-mapset.c("<C-c>") { "<C-f>", desc = [[<C-c> でコマンドラインモードに入る]] }
 
 -- Section1 changing display
 
@@ -366,6 +363,7 @@ local function increment_char(direction)
         vim.cmd([[normal! gv"mp]])
     end)
 end
+
 mapset.n("<Space>a") {
     desc = [[カーソル下の文字の Unicode codepoint を 1 増やす]],
     expr = true,
@@ -919,14 +917,17 @@ mapset.n("<C-q>") {
 mapset.n("@") { "Nop" }
 mapset.n("@:") { "@:" }
 
+-- Section1 command-line mappings
+mapset.c("<C-c>") { "<C-f>", desc = [[<C-c> でコマンドラインモードに入る]] }
+
 -- Section1 特殊キー
 for i = 1, 12, 1 do
     mapset.nxo(("<F%s>"):format(i)) { "<Nop>" }
 end
-mapset.with_mode { "n", "x", "o", "i", "c", "s" }("<M-F1>") { "<Nop>" }
-mapset.with_mode { "i", "c", "s" }("<F1>") { "<Nop>" }
-mapset.with_mode { "n", "x", "o" }("<Space>") { "<Nop>" }
-mapset.with_mode { "n", "x", "o" }("<CR>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o", "i", "c", "s" } ("<M-F1>") { "<Nop>" }
+mapset.with_mode { "i", "c", "s" } ("<F1>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" } ("<Space>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" } ("<CR>") { "<Nop>" }
 
 -- Section1 その他
 

@@ -2,6 +2,7 @@ local monaqa = require("monaqa")
 local mapset = monaqa.shorthand.mapset
 local vec = require("rc.util.vec")
 
+
 local plugins = vec {}
 
 plugins:push {
@@ -19,31 +20,56 @@ plugins:push {
 plugins:push {
     "https://github.com/williamboman/mason-lspconfig.nvim",
     config = function()
-        require("mason-lspconfig").setup {}
+        require("mason-lspconfig").setup {
+            ensure_installed = {
+                "lua_ls",
+                "pyright",
+                "rust_analyzer",
+                "svelte",
+                "tinymist",
+                "ts_ls",
+                "yamlls",
+            }
+        }
+        vim.notify("mason-lspconfig setup")
     end,
+}
+
+plugins:push {
+    "https://github.com/j-hui/fidget.nvim",
 }
 
 -- nvim_lsp
 plugins:push {
     "https://github.com/neovim/nvim-lspconfig",
     config = function()
+        local function get_config(name)
+            return require("lspconfig.configs." .. name)
+        end
+
+        require("lspconfig").jsonls.setup {}
         require("lspconfig").lua_ls.setup {}
+        vim.notify("lspconfig setup")
         require("lspconfig").svelte.setup {}
         require("lspconfig").pyright.setup {}
         require("lspconfig").rust_analyzer.setup {}
+        require("lspconfig").tinymist.setup {}
     end,
 }
 
 plugins:push {
     "https://github.com/folke/lazydev.nvim",
-    ft = "lua", -- only load on lua files
-    opts = {
-        library = {
-            -- See the configuration section for more details
-            -- Load luvit types when the `vim.uv` word is found
-            -- { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        },
-    },
+    config = function()
+        require("lazydev").setup {
+            library = {
+                -- See the configuration section for more details
+                -- Load luvit types when the `vim.uv` word is found
+                -- { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                "monaqa",
+            },
+        }
+        vim.notify("lazydev setup")
+    end
 }
 
 -- plugins:push {
@@ -191,6 +217,7 @@ plugins:push {
                     --     end
                     -- end,
                     "select_next",
+                    "show",
                     "fallback",
                 },
                 ["<S-Tab>"] = { "select_prev", "fallback" },
@@ -210,10 +237,23 @@ plugins:push {
 
             snippets = {
                 -- Function to use when expanding LSP provided snippets
+                ---@param snippet string
                 expand = function(snippet)
+                    -- めちゃくちゃ ad hoc solution
+                    local pattern = [["${DATE:" {[^}]+} "}"]]
+                    while vim.re.find(snippet, pattern) ~= nil do
+                        local format = vim.re.match(snippet, pattern)
+                        snippet = vim.re.gsub(snippet, vim.lpeg.P("${DATE:") * vim.lpeg.P(format) * vim.lpeg.P("}"),
+                            vim.fn.strftime("%Y-%m-%d"), 1)
+                    end
+
+                    -- snippet = snippet:gsub("${DATE}", vim.fn.strftime("%Y/%m/%d"))
+                    vim.notify(snippet)
                     vim.snippet.expand(snippet)
                 end,
+
                 -- Function to use when checking if a snippet is active
+                ---@param filter vim.snippet.ActiveFilter
                 active = function(filter)
                     return vim.snippet.active(filter)
                 end,
@@ -628,4 +668,5 @@ plugins:push {
     end,
 }
 
-return plugins:collect()
+-- return plugins:collect()
+return {}

@@ -21,7 +21,7 @@ cabbr:add { prepose = "'<,'>", require_space = false, from = "vd", to = "v//d" }
 -- coc.nvim 周り
 cabbr:add { from = "c", to = "CocCommand" }
 cabbr:add { prepose = "CocCommand", from = "s", to = "snippets.editSnippets" }
-cabbr:add { from = "cc", to = "CocConfig" }
+cabbr:add { from = "cc", to = "e ~/.config/nvim/coc-settings.json" }
 cabbr:add { from = "cl", to = "CocList" }
 cabbr:add { prepose = "CocList", from = "e", to = "extensions" }
 cabbr:add { from = "clc", to = "CocLocalConfig" }

@@ -214,17 +214,23 @@ plugins:push {
             set_pair("i", open, close)
         end
 
-        vim.keymap.set("i", "<CR>", function()
-            -- if util.to_bool(vim.fn["coc#pum#visible"]()) then
-            --     -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
-            --     -- （意図せず補完候補がセレクトされてしまうのを抑止）
-            --     if vim.fn["coc#pum#info"]()["index"] >= 0 then
-            --         return vim.api.nvim_replace_termcodes(vim.fn["coc#pum#confirm"](), true, true, true)
-            --     end
-            --     return vim.fn.keytrans(vim.fn["insx#expand"]("<CR>"))
-            -- end
-            return vim.fn.keytrans(vim.fn["insx#expand"]("<CR>"))
-        end, { expr = true, remap = true })
+        mapset.i("<CR>") {
+            desc = [[insx と coc 両方を加味したエンター]],
+            expr = true,
+            remap = true,
+            function()
+                if util.to_bool(vim.fn["coc#pum#visible"]()) then
+                    -- 補完候補をセレクトしていたときのみ、補完候補の内容で確定する
+                    -- （意図せず補完候補がセレクトされてしまうのを抑止）
+                    if vim.fn["coc#pum#info"]()["index"] >= 0 then
+                        return vim.api.nvim_replace_termcodes(vim.fn["coc#pum#confirm"](), true, true, true)
+                    end
+                    return vim.fn.keytrans(vim.fn["insx#expand"]("<CR>"))
+                end
+                return vim.fn.keytrans(vim.fn["insx#expand"]("<CR>"))
+            end
+        }
+
     end,
 }
 
