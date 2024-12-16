@@ -47,6 +47,55 @@ plugins:push {
     end,
 }
 
+-- plugins:push {
+--     "https://github.com/folke/styler.nvim",
+--     config = function()
+--         local INACTIVE_COLORSCHEME = "colorimetry-1"
+--
+--         -- 非アクティブウィンドウ向けの関数
+--         local function inactivate(win)
+--             -- skip for certain situations
+--             if not vim.api.nvim_win_is_valid(win) then
+--                 return
+--             end
+--             if vim.api.nvim_win_get_config(win).relative ~= "" then
+--                 return
+--             end
+--
+--             -- apply colorscheme if not yet
+--             if (vim.w[win].theme or {}).colorscheme ~= INACTIVE_COLORSCHEME then
+--                 require("styler").set_theme(win, { colorscheme = INACTIVE_COLORSCHEME })
+--             end
+--         end
+--
+--         -- autocmdの発行
+--         autocmd_vimrc { "WinLeave", "WinNew" } {
+--             callback = function(_)
+--                 local win_event = vim.api.nvim_get_current_win()
+--                 vim.schedule(function()
+--                     local win_pre = vim.fn.win_getid(vim.fn.winnr("#"))
+--                     local win_cursor = vim.api.nvim_get_current_win()
+--
+--                     -- カーソル位置のウィンドウでstyler.nvimを無効化する
+--                     if (vim.w[win_cursor].theme or {}).colorscheme then
+--                         require("styler").clear(win_cursor)
+--                     end
+--
+--                     -- 直前のウィンドウにカーソルがなければinactivate
+--                     if win_pre ~= 0 and win_pre ~= win_cursor then
+--                         inactivate(win_pre)
+--                     end
+--
+--                     -- イベントを発行したウィンドウにカーソルがなければinactivate
+--                     if win_event ~= win_cursor then
+--                         inactivate(win_event)
+--                     end
+--                 end)
+--             end,
+--         }
+--     end,
+-- }
+
 plugins:push {
     "https://github.com/akinsho/bufferline.nvim",
     dependencies = { "colorimetry.nvim" },
@@ -222,23 +271,23 @@ plugins:push {
     end,
 }
 
-plugins:push {
-    "https://github.com/Bekaboo/dropbar.nvim",
-    config = function()
-        require("dropbar").setup {
-            -- bar = {
-            --     enable = true,
-            -- },
-        }
-
-        -- mapset.n("<Right>") {
-        --     desc = [[]],
-        --     function()
-        --         require("dropbar.api").pick()
-        --     end,
-        -- }
-    end,
-}
+-- plugins:push {
+--     "https://github.com/Bekaboo/dropbar.nvim",
+--     config = function()
+--         require("dropbar").setup {
+--             -- bar = {
+--             --     enable = true,
+--             -- },
+--         }
+--
+--         -- mapset.n("<Right>") {
+--         --     desc = [[]],
+--         --     function()
+--         --         require("dropbar.api").pick()
+--         --     end,
+--         -- }
+--     end,
+-- }
 
 plugins:push {
     "https://github.com/nvim-lualine/lualine.nvim",

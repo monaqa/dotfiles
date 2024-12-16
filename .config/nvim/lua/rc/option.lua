@@ -55,6 +55,18 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.diffopt:append { "vertical", "algorithm:histogram" }
 
+-- function _G.vimrc.fn.winbar()
+--     local name = vim.fn.bufname()
+--     local icon, color = require("nvim-web-devicons").get_icon_by_filetype(vim.bo.filetype)
+--     if icon == nil then
+--         icon = ""
+--     end
+--     return icon .. " " .. name
+-- end
+--
+-- -- winbar
+-- vim.opt.winbar = [[%{%v:lua.vimrc.fn.winbar()%}%#@winbar.reset#]]
+
 -- §§1 編集関係
 vim.opt.termguicolors = true
 vim.opt.background = "dark"

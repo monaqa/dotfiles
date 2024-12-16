@@ -43,8 +43,6 @@
 
   "sql.database": "postgresql",
 
-  "svelte.enable-ts-plugin": true,
-
   "toml.schema.associations": {
     "^(.*(/|\\\\)pyproject\\.toml|pyproject\\.toml)$": "https://json.schemastore.org/pyproject.json"
   },
@@ -109,6 +107,11 @@
         "compile_commands.json",
         ".git/",
       ]
+    },
+    "svelte": {
+      "command": "/Users/monaqa/.local/share/nvim/mason/bin/svelteserver",
+      "args": ["--stdio"],
+      "filetypes": ["svelte"]
     },
     "nu": {
       "command": "nu",

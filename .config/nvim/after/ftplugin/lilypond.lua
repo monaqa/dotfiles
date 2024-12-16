@@ -226,7 +226,7 @@ end
 local ns = vim.api.nvim_create_namespace("lilypond_no_scale_note")
 
 ---@return {key: [string, string], line: [integer, integer]}[]
-local function key_regions()
+function key_regions()
     local key_specifiers = tree.find_buf_matches([[
         (
          (command) @_cmd_key
@@ -257,13 +257,21 @@ local function key_regions()
     return regions
 end
 
+function get_matches()
+    return vim.iter(key_regions())
+        :map(function(t)
+            local notes = key_to_scale_notes[t.key[1] .. t.key[2]]
+            return {t = t, matches = tree.find_buf_matches(create_query_str(notes))}
+        end):totable()
+end
+
 local function highlight_non_scale_note()
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 
     vim.iter(key_regions())
         :map(function(t)
             local notes = key_to_scale_notes[t.key[1] .. t.key[2]]
-            return tree.find_buf_matches(create_query_str(notes))
+            return tree.find_buf_matches(create_query_str(notes), {start= t.line[1], stop= t.line[2]})
         end)
         :flatten(1)
         :each(function(matches)
