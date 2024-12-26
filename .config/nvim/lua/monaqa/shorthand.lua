@@ -5,12 +5,15 @@ local logic = require("monaqa.logic")
 
 --- group が vimrc の autocmd を作成する。
 ---@param event string | string[]
----@return fun(opts: vim.api.keyset.create_autocmd):nil
+---@return fun(opts: vim.api.keyset.create_autocmd):(fun():nil)
 function M.autocmd_vimrc(event)
     ---@param opts vim.api.keyset.create_autocmd
     return function(opts)
         opts["group"] = "vimrc"
-        vim.api.nvim_create_autocmd(event, opts)
+        local id = vim.api.nvim_create_autocmd(event, opts)
+        return function()
+            vim.api.nvim_del_autocmd(id)
+        end
     end
 end
 

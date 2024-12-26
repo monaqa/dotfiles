@@ -56,7 +56,7 @@
   (blob) @text.literal
   )
 
-(raw_span "`" @punctuation.delimiter) @text.literal
+(raw_span "`" @punctuation.delimiter "`" @punctuation.delimiter) @text.literal
 (raw_blck lang: (ident) @tag)
 
 (label) @tag
@@ -107,7 +107,7 @@
     item: (ident) @_cmd_name
     (group (string) @text.uri)
     )
-  (content (_) @text.reference)
+  (content (_) @text.reference (#set! priority 99))
   (#eq? @_cmd_name "link")
   )
 

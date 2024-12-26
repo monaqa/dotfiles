@@ -424,6 +424,7 @@ local function temporal_cmap()
         -- <C-v> は特殊文字を入力する最後の砦なので残しておこうかな
         ["<C-v>"] = "<C-v>",
 
+        -- <C-n> <C-p> だけは履歴の行き来に必要
         ["<C-a>"] = "<C-v><C-a>",
         ["<C-b>"] = "<C-v><C-b>",
         ["<C-d>"] = "<C-v><C-d>",
@@ -435,9 +436,9 @@ local function temporal_cmap()
         ["<C-j>"] = "<C-v><C-j>",
         ["<C-k>"] = "<C-v><C-k>",
         ["<C-l>"] = "<C-v><C-l>",
-        ["<C-n>"] = "<C-v><C-n>",
+        -- ["<C-n>"] = "<C-v><C-n>",
         ["<C-o>"] = "<C-v><C-o>",
-        ["<C-p>"] = "<C-v><C-p>",
+        -- ["<C-p>"] = "<C-v><C-p>",
         ["<C-q>"] = "<C-v><C-q>",
         ["<C-r>"] = "<C-v><C-r>",
         ["<C-s>"] = "<C-v><C-s>",
@@ -457,7 +458,7 @@ local function temporal_cmap()
         :totable()
 
     for k, v in pairs(maps) do
-        mapset.c(k) { v }
+        mapset.c(k) { v, nowait = true }
     end
     mapset.c("<Esc>") {
         desc = [[明らかなキャンセル以外は <Esc> 文字をそのまま出力]],
@@ -924,10 +925,10 @@ mapset.c("<C-c>") { "<C-f>", desc = [[<C-c> でコマンドラインモードに
 for i = 1, 12, 1 do
     mapset.nxo(("<F%s>"):format(i)) { "<Nop>" }
 end
-mapset.with_mode { "n", "x", "o", "i", "c", "s" } ("<M-F1>") { "<Nop>" }
-mapset.with_mode { "i", "c", "s" } ("<F1>") { "<Nop>" }
-mapset.with_mode { "n", "x", "o" } ("<Space>") { "<Nop>" }
-mapset.with_mode { "n", "x", "o" } ("<CR>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o", "i", "c", "s" }("<M-F1>") { "<Nop>" }
+mapset.with_mode { "i", "c", "s" }("<F1>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" }("<Space>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" }("<CR>") { "<Nop>" }
 
 -- Section1 その他
 

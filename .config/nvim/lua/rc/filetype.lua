@@ -29,5 +29,5 @@ link_filetype { extension = "sus", filetype = "sus" }
 link_filetype { extension = "mbt", filetype = "moonbit" }
 
 link_filetype { pattern = "LICENSE", filetype = "license" }
-link_filetype { pattern = ".init.lua.local", filetype = "lua" }
 link_filetype { pattern = "*/queries/*/*.scm", filetype = "query" }
+link_filetype { pattern = "uv.lock", filetype = "toml" }
