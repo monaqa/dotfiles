@@ -19,26 +19,9 @@ plugins:push {
     "https://github.com/nvim-treesitter/nvim-treesitter",
     lazy = false,
     keys = {
-        {
-            "v",
-            function()
-                if vim.fn.mode() == "v" then
-                    return ":lua require'nvim-treesitter.incremental_selection'.node_incremental()<CR>"
-                else
-                    return "v"
-                end
-            end,
-            mode = "x",
-            expr = true,
-        },
-        {
-            "<C-o>",
-            function()
-                return ":lua require'nvim-treesitter.incremental_selection'.node_decremental()<CR>"
-            end,
-            mode = "x",
-            expr = true,
-        },
+        { "v", mode = "x" },
+        { "<C-o>", mode = "x" },
+        { "<C-i>", mode = "x" },
     },
     config = function()
         -- require("nvim-treesitter.install").compilers = { "gcc-12" }
@@ -46,13 +29,13 @@ plugins:push {
 
         local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 
-        parser_config["todome"] = {
-            install_info = {
-                url = "~/ghq/github.com/monaqa/tree-sitter-todome", -- local path or git repo
-                files = { "src/parser.c", "src/scanner.cc" },
-            },
-            filetype = "todome", -- if filetype does not agrees with parser name
-        }
+        -- parser_config["todome"] = {
+        --     install_info = {
+        --         url = "~/ghq/github.com/monaqa/tree-sitter-todome", -- local path or git repo
+        --         files = { "src/parser.c", "src/scanner.cc" },
+        --     },
+        --     filetype = "todome", -- if filetype does not agrees with parser name
+        -- }
 
         parser_config["lilypond"] = {
             install_info = {
@@ -104,14 +87,6 @@ plugins:push {
             filetype = "nu", -- if filetype does not agrees with parser name
         }
 
-        parser_config["denops_gitter"] = {
-            install_info = {
-                url = "~/ghq/github.com/monaqa/tree-sitter-denops-gitter", -- local path or git repo
-                files = { "src/parser.c" },
-            },
-            filetype = "gitter", -- if filetype does not agrees with parser name
-        }
-
         parser_config["unifieddiff"] = {
             install_info = {
                 url = "https://github.com/monaqa/tree-sitter-unifieddiff",
@@ -123,20 +98,11 @@ plugins:push {
 
         parser_config["d2"] = {
             install_info = {
-                url = "https://github.com/pleshevskiy/tree-sitter-d2", -- local path or git repo
+                url = "https://github.com/ravsii/tree-sitter-d2", -- local path or git repo
                 revision = "main",
-                files = { "src/parser.c", "src/scanner.cc" },
+                files = { "src/parser.c" },
             },
             filetype = "d2", -- if filetype does not agrees with parser name
-        }
-
-        parser_config["moonbit"] = {
-            install_info = {
-                url = "https://github.com/moonbitlang/tree-sitter-moonbit",
-                revision = "main",
-                files = { "src/parser.c", "src/scanner.c" },
-            },
-            filetype = "moonbit",
         }
 
         parser_config["pkl"] = {
@@ -150,7 +116,7 @@ plugins:push {
 
         vim.treesitter.language.register("markdown", { "mdx", "obsidian" })
         vim.treesitter.language.register("gitcommit", { "gina-commit", "gin-commit" })
-        vim.treesitter.language.register("unifieddiff", { "diff", "gin-diff" })
+        vim.treesitter.language.register("unifieddiff", { "diff", "gin-diff", "git" })
 
         local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter"
         vim.opt.runtimepath:prepend(parser_install_dir)
@@ -258,6 +224,32 @@ plugins:push {
                 use_virtual_text = true,
                 lint_events = { "BufWrite", "CursorHold", "InsertLeave" },
             },
+        }
+
+        mapset.x("v") {
+            desc = [[treesitter の構文をもとに範囲を拡張する]],
+            expr = true,
+            function()
+                if vim.fn.mode() == "v" then
+                    return "<Plug>(vimrc-treesitter-increment-select)"
+                else
+                    return "v"
+                end
+            end,
+        }
+        mapset.x("<C-i>") { "<Plug>(vimrc-treesitter-increment-select)" }
+        mapset.x("<C-o>") { "<Plug>(vimrc-treesitter-decrement-select)" }
+        mapset.x("<Plug>(vimrc-treesitter-increment-select)") {
+            desc = [[構文に従って選択範囲を拡張する]],
+            function()
+                require("nvim-treesitter.incremental_selection").node_incremental()
+            end,
+        }
+        mapset.x("<Plug>(vimrc-treesitter-decrement-select)") {
+            desc = [[構文に従って選択範囲を拡張する]],
+            function()
+                require("nvim-treesitter.incremental_selection").node_decremental()
+            end,
         }
     end,
 }

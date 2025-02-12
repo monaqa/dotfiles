@@ -96,6 +96,11 @@ mapset.n("q") {
     desc = [[toggle QuickFix window]],
     silent = true,
     function()
+        if #vim.fn.getqflist() == 0 then
+            require("aerial").toggle { focus = false }
+            return
+        end
+
         local nr1 = vim.fn.winnr("$")
         vim.cmd.cwindow()
         local nr2 = vim.fn.winnr("$")
@@ -291,6 +296,8 @@ end
 -- タブページ
 mapset.n("sT") { "<Cmd>tabnew %<CR>" }
 mapset.n("sQ") { "<Cmd>tabclose<CR>" }
+mapset.n("sN") { "<Cmd>tabnext<CR>" }
+mapset.n("sP") { "<Cmd>tabprevious<CR>" }
 
 -- 特殊な window
 mapset.n("s:") { "q:G" }

@@ -102,8 +102,6 @@ plugins:push {
     tag = "v4.6.1",
     lazy = false,
     keys = {
-        { "sN", "<Cmd>BufferLineMoveNext<CR>" },
-        { "sP", "<Cmd>BufferLineMovePrev<CR>" },
         { "sw", "<Cmd>bp | bd #<CR>" },
     },
     config = function()

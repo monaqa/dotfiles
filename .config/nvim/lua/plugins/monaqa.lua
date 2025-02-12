@@ -507,7 +507,7 @@ plugins:push {
     "https://github.com/monaqa/general-converter.nvim",
     cond = cond_dev("monaqa/general-converter.nvim"),
     keys = {
-        { "gc", mode = { "n", "x" } },
+        { "<Space>g", mode = { "n", "x" } },
     },
     config = function()
         local gc_util = require("general_converter.util")
