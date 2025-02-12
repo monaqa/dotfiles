@@ -261,8 +261,9 @@ function get_matches()
     return vim.iter(key_regions())
         :map(function(t)
             local notes = key_to_scale_notes[t.key[1] .. t.key[2]]
-            return {t = t, matches = tree.find_buf_matches(create_query_str(notes))}
-        end):totable()
+            return { t = t, matches = tree.find_buf_matches(create_query_str(notes)) }
+        end)
+        :totable()
 end
 
 local function highlight_non_scale_note()
@@ -271,7 +272,7 @@ local function highlight_non_scale_note()
     vim.iter(key_regions())
         :map(function(t)
             local notes = key_to_scale_notes[t.key[1] .. t.key[2]]
-            return tree.find_buf_matches(create_query_str(notes), {start= t.line[1], stop= t.line[2]})
+            return tree.find_buf_matches(create_query_str(notes), { start = t.line[1], stop = t.line[2] })
         end)
         :flatten(1)
         :each(function(matches)
@@ -284,11 +285,76 @@ end
 
 highlight_non_scale_note()
 
+local len_dict = {
+    ["16"] = 1,
+    ["8"] = 2,
+    ["8."] = 3,
+    ["4"] = 4,
+    ["4."] = 6,
+    ["4.."] = 7,
+    ["2"] = 8,
+    ["2."] = 12,
+    ["2.."] = 14,
+    ["1"] = 16,
+}
+
+local ns = vim.api.nvim_create_namespace("lilypond_cursor_line_note")
+local function show_cursor_line_note_length()
+    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+
+    local cur = vim.fn.getcurpos()
+    local matches = tree.find_buf_matches(
+        [[
+        ((note_item (len)? @len) @note)
+        ((rest_item (len)? @len) @rest)
+        ]],
+        { start = cur[2] - 1, stop = cur[2] }
+    )
+    local sum = 0
+    local current_len = nil
+    for _, match in ipairs(matches) do
+        if match.len ~= nil then
+            local len = len_dict[match.len.text]
+            sum = sum + len
+            current_len = len
+        elseif current_len ~= nil then
+            sum = sum + current_len
+        end
+    end
+
+    if sum > 0 then
+        local hl = "Comment"
+        if sum ~= 16 then
+            hl = "WarningMsg"
+        end
+        vim.api.nvim_buf_set_extmark(0, ns, cur[2] - 1, cur[3] - 1, {
+            virt_text = { { "SUM: " .. tostring(sum), hl } },
+            virt_text_pos = "right_align",
+        })
+    end
+end
+
 if not vim.b.loaded then
     vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
         buffer = 0,
         callback = function()
             highlight_non_scale_note()
+
+            -- local cursor = vim.fn.getcurpos()
+            -- local matches = tree.find_buf_matches(
+            --     [[
+            --         (note_item) @item
+            --     ]],
+            --     { start = cursor[2], stop = cursor[2] + 1 }
+            -- )
+            -- vim.print { matches = matches }
+        end,
+    })
+
+    vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+        buffer = 0,
+        callback = function()
+            show_cursor_line_note_length()
         end,
     })
 end

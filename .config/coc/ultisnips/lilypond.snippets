@@ -26,49 +26,73 @@
 
 snippet score "Description" b
 \version "2.21.82"
-\include "../../../template/bass-tab-score/0.1.0.ly"
+\include "../../../template/bass-tab-score/0.2.0.ly"
 % \include "swing.ly"
 
 \pointAndClickOff
 
 \header {
-	title = "$1"
-	composer = "$2"
+	title = ""
+	composer = ""
 }
 
-\score {
-	\staffs {
-		\tempo 4 = ${3:120}
+silents = {
+	% Intro
+	% \longRest 4
+	% \line
+}
 
-		% \tempo \markup {
-		%   \rhythm { c4 } = 108
-		%   \hspace #0.4
-		%   (\rhythm { 16[ 16] } = \rhythm { \tuplet 3/2 { 8[ 16] } })
+body = {
+	\tempo 4 = 85
+
+	% \tempo \markup {
+	%   \rhythm { c4 } = 108
+	%   \hspace #0.4
+	%   (\rhythm { 16[ 16] } = \rhythm { \tuplet 3/2 { 8[ 16] } })
+	% }
+
+	\fixed c, {
+		% \tripletFeel 16 {
+		\key c \major
+
+		\remark"Intro"
+		% \longRest 4
+
+		\bar "|."
 		% }
-
-		\fixed c, {
-			% \tripletFeel 16 {
-			\key c \major
-
-			\remark"Intro"
-			% \longRest 4
-
-			$0
-
-			\bar "|."
-			% }
-		}
-	}{
-		% Intro
-		% \longRest 4
-		% \line
-		% \partialLine 5 \break
-	}{ \chordmode {
-		% \longRest 4
-		% a1:m
 	}
 }
 
+chrds = { \chordmode {
+	% \longRest 4
+	% a1:m
+	}
+}
+
+<<
+\chords {
+	\set chordChanges = ##t
+	\set majorSevenSymbol = \markup { M7 }
+	\chrds
+}
+\new Staff \with {
+	\omit StringNumber
+	midiInstrument = "electric bass (finger)"
+}{
+	\clef "bass_8"
+	\override MultiMeasureRest.expand-limit = #2
+	<< { \keepWithTag #'upper \body } { \silents } >>
+}
+\new TabStaff \with {
+	stringTunings = #bass-five-string-tuning
+} {
+	\huge
+	\set TabStaff.minimumFret = #3
+	\set TabStaff.restrainOpenStrings = ##t
+	\override MultiMeasureRest.expand-limit = #2
+	\keepWithTag #'lower \body
+}
+>>
 
 \layout {
 	indent = #0
@@ -80,7 +104,5 @@ snippet score "Description" b
 
 \midi {
 	% \tempo 4 = 108
-}
-
 }
 endsnippet

@@ -99,11 +99,13 @@ if not set -q EDITOR
 end
 set -x LSCOLORS gxfxcxdxbxegedabagacad
 
+set -x PNPM_HOME "$HOME/Library/pnpm"
+
 # PATH
 set -x PATH "/opt/homebrew/bin" $PATH
 set -x PATH "$HOME/.local/bin" $PATH
 set -x PATH "$HOME/go/bin" $PATH
-set -x PATH "$HOME/Library/pnpm" $PATH
+set -x PATH $PNPM_HOME $PATH
 set -x PATH "$HOME/.yarn/bin" $PATH
 set -x PATH "$HOME/.deno/bin" $PATH
 set -x PATH "$HOME/.cargo/bin" $PATH
@@ -114,7 +116,7 @@ set -x PATH "$HOME/.bun/bin" $PATH
 set -x XDG_CONFIG_HOME "$HOME/.config"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-set --export --prepend PATH "/Users/monaqa/.rd/bin"
+set --export --prepend PATH "$HOME/.rd/bin"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # SATySFi

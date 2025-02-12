@@ -6,8 +6,6 @@ plugins:push { "https://github.com/bfontaine/Brewfile.vim", ft = { "brewfile" } 
 
 plugins:push { "https://github.com/cespare/vim-toml", ft = { "toml" } }
 
-plugins:push { "https://github.com/ekalinin/Dockerfile.vim", ft = { "dockerfile" } }
-
 plugins:push { "https://github.com/evanleck/vim-svelte", ft = { "svelte" } }
 
 plugins:push { "https://github.com/justinmk/vim-syntax-extra", ft = { "vim" } }
@@ -28,8 +26,6 @@ plugins:push {
 plugins:push { "https://github.com/vito-c/jq.vim", ft = { "jq" } }
 
 plugins:push { "https://github.com/wlangstroth/vim-racket", ft = { "racket" } }
-
-plugins:push { "https://github.com/terrastruct/d2-vim", ft = { "d2" } }
 
 plugins:push { "https://github.com/mityu/vim-applescript", ft = { "applescript" } }
 

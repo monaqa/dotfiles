@@ -3,18 +3,15 @@ local monaqa = require("monaqa")
 local tree = monaqa.tree
 local mapset = monaqa.shorthand.mapset_local
 local create_cmd = monaqa.shorthand.create_cmd_local
+local opt = vim.opt_local
 
-vim.opt_local.shiftwidth = 2
-vim.opt_local.foldmethod = "expr"
-vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt_local.commentstring = "// %s"
-vim.opt_local.formatoptions:append("r")
+opt.shiftwidth = 2
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.commentstring = "// %s"
+opt.formatoptions:append("r")
 
-vim.opt_local.comments = {
-    "b:-",
-    "b:+",
-    "b:1.",
-}
+opt.comments = { "b:-", "b:+", "b:1." }
 
 mapset.n("zM") { "zMzr", desc = [[foldlevel を 0 ではなく 1 にする]] }
 mapset.n("<Space>z") { "zMzrzv", desc = [[foldlevel を 0 ではなく 1 にしたバージョン]] }
@@ -63,6 +60,7 @@ mapset.n("@o") {
         vim.cmd([[!open ]] .. target)
     end,
 }
+mapset.n("@b") { "<Cmd>TypstPreview<CR>" }
 
 mapset.n("@q") {
     desc = [[typst compile を実行]],
@@ -84,14 +82,10 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end,
 })
 
-vim.keymap.set(
-    "x",
-    "L",
+mapset.x("L") {
+    desc = [[クリップボードの URL で選択範囲をリンク化]],
     [["lc#link("<C-r>=substitute(getreg("+"), '\n', '', 'g')<CR>")[<C-r>=substitute(getreg("l"), '\n', '', 'g')<CR>]<Esc>]],
-    {
-        buffer = true,
-    }
-)
+}
 
 create_cmd("PutClipboardImage") {
     desc = [[クリップボードに保存されている画像を貼り付ける]],

@@ -5,12 +5,30 @@ local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
-plugins:push {
-    "https://github.com/lambdalisue/vim-guise",
-    config = function()
-        vim.g.guise_edit_opener = "split"
-    end,
-}
+-- plugins:push {
+--     "https://github.com/lambdalisue/vim-guise",
+--     config = function()
+--         vim.g.guise_edit_opener = "split"
+--     end,
+-- }
+
+-- plugins:push {
+--     "https://github.com/nvim-neotest/neotest",
+--     dependencies = {
+--         "https://github.com/nvim-neotest/nvim-nio",
+--         "https://github.com/nvim-lua/plenary.nvim",
+--         "https://github.com/antoinemadec/FixCursorHold.nvim",
+--         "https://github.com/nvim-treesitter/nvim-treesitter",
+--         "https://github.com/rouge8/neotest-rust",
+--     },
+--     config = function()
+--         require("neotest").setup {
+--             adapters = {
+--                 require("neotest-rust"),
+--             },
+--         }
+--     end,
+-- }
 
 plugins:push {
     "https://github.com/4513ECHO/nvim-keycastr",

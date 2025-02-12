@@ -8,6 +8,7 @@
     "~/.local/share/nvim-nvim_lsp/lazy/blink.cmp/lua",
     "~/.local/share/nvim/lazy/telescope.nvim/lua",
     "~/.local/share/nvim/lazy/plenary.nvim/lua",
+    "~/.local/share/nvim/lazy/neotest/lua/",
     "~/.config/nvim/lua",
   ],
   "Lua.format.enable": false,

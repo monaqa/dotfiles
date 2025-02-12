@@ -9,6 +9,10 @@ _G.vimrc = {
     fn = {},
 }
 
+-- Workaround for bug in Neovim: https://github.com/neovim/neovim/issues/31675
+-- TODO: 0.10.4 に update されたら削除
+vim.hl = vim.highlight
+
 -- vimrc 用の augroup を作成しておく（どこからでも参照しうるので最初に）
 vim.api.nvim_create_augroup("vimrc", { clear = true })
 
