@@ -51,7 +51,7 @@ autocmd_vimrc("BufRead") {
         if vim.wo.diff then
             return
         end
-        vim.cmd.normal([[g`"]])
+        pcall(vim.cmd.normal, [[g`"]])
     end,
 }
 

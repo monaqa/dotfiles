@@ -69,40 +69,42 @@ chrds = { \chordmode {
 	}
 }
 
-<<
-\chords {
-	\set chordChanges = ##t
-	\set majorSevenSymbol = \markup { M7 }
-	\chrds
-}
-\new Staff \with {
-	\omit StringNumber
-	midiInstrument = "electric bass (finger)"
-}{
-	\clef "bass_8"
-	\override MultiMeasureRest.expand-limit = #2
-	<< { \keepWithTag #'upper \body } { \silents } >>
-}
-\new TabStaff \with {
-	stringTunings = #bass-five-string-tuning
-} {
-	\huge
-	\set TabStaff.minimumFret = #3
-	\set TabStaff.restrainOpenStrings = ##t
-	\override MultiMeasureRest.expand-limit = #2
-	\keepWithTag #'lower \body
-}
->>
-
-\layout {
-	indent = #0
-	\context {
-		\Score
-		proportionalNotationDuration = #(ly:make-moment 1/8)
+\score {
+	<<
+	\chords {
+		\set chordChanges = ##t
+		\set majorSevenSymbol = \markup { M7 }
+		\chrds
 	}
-}
+	\new Staff \with {
+		\omit StringNumber
+		midiInstrument = "electric bass (finger)"
+	}{
+		\clef "bass_8"
+		\override MultiMeasureRest.expand-limit = #2
+		<< { \keepWithTag #'upper \body } { \silents } >>
+	}
+	\new TabStaff \with {
+		stringTunings = #bass-five-string-tuning
+	} {
+		\huge
+		\set TabStaff.minimumFret = #3
+		\set TabStaff.restrainOpenStrings = ##t
+		\override MultiMeasureRest.expand-limit = #2
+		\keepWithTag #'lower \body
+	}
+	>>
 
-\midi {
-	% \tempo 4 = 108
+	\layout {
+		indent = #0
+		\context {
+			\Score
+			proportionalNotationDuration = #(ly:make-moment 1/8)
+		}
+	}
+
+	\midi {
+		% \tempo 4 = 108
+	}
 }
 endsnippet

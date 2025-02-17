@@ -3,16 +3,6 @@ local logic = require("monaqa").logic
 local autocmd_vimrc = shorthand.autocmd_vimrc
 local mapset = shorthand.mapset
 
--- autocmd_vimrc("FileType") {
---     pattern = "typst",
---     callback = function()
---         vim.lsp.start {
---             name = "tinymist",
---             cmd = { "tinymist", "lsp" },
---         }
---     end,
--- }
-
 vim.fn.sign_define(
     "DiagnosticSignError",
     { text = "🚨", numhl = "DiagnosticSignError", texthl = "DiagnosticSignError" }
@@ -104,6 +94,7 @@ autocmd_vimrc("LspAttach") {
 
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         client.server_capabilities.semanticTokensProvider = nil
+        vim.lsp.handlers["textDocument/semanticTokens/full"] = function() end
     end,
 }
 

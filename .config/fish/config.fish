@@ -293,11 +293,13 @@ end
 # }}}
 
 # local configs {{{
-
 if test -e ~/.config/fish/local.fish
   source ~/.config/fish/local.fish
 end
-
 # }}}
+
+if type -q mise
+  eval (mise activate fish)
+end
 
 eval (starship init fish)

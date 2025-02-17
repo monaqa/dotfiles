@@ -43,7 +43,7 @@ vim.keymap.set("n", "<Down>", function()
     require("dial.map").manipulate("decrement", "normal", "lilypond_note")
 end)
 
-vim.keymap.set("n", "gc", function()
+vim.keymap.set("n", "<Space>s", function()
     require("dial.map").manipulate("increment", "normal", "lilypond_ises")
 end, { buffer = true })
 

@@ -376,20 +376,17 @@ plugins:push {
             },
         }
 
-        mapset.nxo("/") {
+        mapset.nx("/") {
             desc = [[modesearch を利用した検索]],
-            expr = true,
             silent = true,
-            replace_keycodes = false,
             function()
-                return require("modesearch").keymap.prompt.show("rawstr")
+                require("modesearch").keymap.prompt.show("rawstr")
             end,
         }
         mapset.c("<C-x>") {
             desc = [[modesearch のモード切り替え]],
-            expr = true,
             function()
-                return require("modesearch").keymap.mode.cycle { "rawstr", "migemo", "regexp" }
+                require("modesearch").keymap.mode.cycle { "rawstr", "migemo", "regexp" }
             end,
         }
     end,
@@ -682,7 +679,7 @@ plugins:push {
                 },
             },
         }
-        mapset.nx("gc") {
+        mapset.nx("<Space>g") {
             desc = [[General Converter]],
             expr = true,
             require("general_converter").operator_convert(),

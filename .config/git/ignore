@@ -9,6 +9,9 @@ Icon
 .init.lua.local
 .nvim.lua
 
+.use_nvim_lsp
+.use_coc
+
 .mypy_cache/
 
 .todo6

@@ -5,6 +5,20 @@ local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
+plugins:push {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    config = function()
+        require("snacks").setup {
+            picker = { enabled = true },
+            notifier = { enabled = true },
+            input = { enabled = true },
+            lazygit = { enabled = true },
+        }
+    end,
+}
+
 -- plugins:push {
 --     "https://github.com/lambdalisue/vim-guise",
 --     config = function()

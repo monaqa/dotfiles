@@ -27,3 +27,27 @@ mapset.n("g==") {
 mapset.x("g=") { expr = true, apply_stylua, desc = [[選択範囲に stylua を適用する]] }
 
 mapset.ia("!=") { "~=" }
+
+-- snippet file ならばその言語名を返す。
+local function get_snippet_ft()
+    return nil
+end
+
+local function highlight_snippet_file(snippet_ft)
+    vim.treesitter.query.set(
+        "lua",
+        "injections",
+        [[
+    ;;extends
+
+    (
+    (string_content) @injection.content
+    (#set! injection.language "python"))
+    ]]
+    )
+end
+
+local snippet_ft = get_snippet_ft()
+if snippet_ft ~= nil then
+    highlight_snippet_file(snippet_ft)
+end

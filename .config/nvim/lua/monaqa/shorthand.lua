@@ -133,8 +133,10 @@ function M.load_cwd_as_plugin(source_file_name)
     end
 end
 
+---@alias map_body string | fun():nil|string
+
 ---@class mapset_opts: vim.keymap.set.Opts
----@field [1] fun() | string
+---@field [1] map_body
 ---@alias mapset_inner fun(t: mapset_opts):nil
 
 --- キーマップ定義のショートハンド。

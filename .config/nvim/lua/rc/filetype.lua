@@ -27,6 +27,7 @@ link_filetype { extension = "mdx", filetype = "markdown" }
 link_filetype { extension = "nu", filetype = "nu" }
 link_filetype { extension = "sus", filetype = "sus" }
 link_filetype { extension = "mbt", filetype = "moonbit" }
+link_filetype { extension = "plist", filetype = "xml" }
 
 link_filetype { pattern = "LICENSE", filetype = "license" }
 link_filetype { pattern = "*/queries/*/*.scm", filetype = "query" }

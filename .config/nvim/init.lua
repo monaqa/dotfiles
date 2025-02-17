@@ -25,7 +25,10 @@ require("rc.lazy")
 require("rc.autocmd")
 require("rc.option")
 require("rc.abbr")
--- require("rc.lsp")
 require("rc.keymap")
 require("rc.command")
 require("rc.filetype")
+
+if require("monaqa.lsp").choose_lsp() == "nvim-lsp" then
+    require("rc.nvim_lsp")
+end

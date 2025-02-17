@@ -11,8 +11,14 @@ local plugins = vec {}
 -- coc
 plugins:push {
     "https://github.com/neoclide/coc.nvim",
-    enabled = true,
     branch = "release",
+    cond = function()
+        if monaqa.logic.to_bool(vim.fn.filereadable(vim.fn.getcwd() .. "/.use_nvim_lsp")) then
+            -- vim.notify("coc.nvim is disabled.")
+            return false
+        end
+        return true
+    end,
     config = function()
         local function coc_service_names(arglead, cmdline, cursorpos)
             return vim.tbl_map(function(service)

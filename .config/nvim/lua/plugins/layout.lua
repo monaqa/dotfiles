@@ -411,13 +411,13 @@ plugins:push {
     end,
 }
 
-plugins:push {
-    "https://github.com/rcarriga/nvim-notify",
-    event = "VeryLazy",
-    config = function()
-        require("notify").setup { background_colour = "#000000" }
-        vim.notify = require("notify")
-    end,
-}
+-- plugins:push {
+--     "https://github.com/rcarriga/nvim-notify",
+--     event = "VeryLazy",
+--     config = function()
+--         require("notify").setup { background_colour = "#000000" }
+--         vim.notify = require("notify")
+--     end,
+-- }
 
 return plugins:collect()
