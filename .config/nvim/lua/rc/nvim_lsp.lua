@@ -17,30 +17,6 @@ vim.diagnostic.config {
     },
 }
 
-mapset.i("<Tab>") {
-    desc = [[Neovim 本体の補完があったらそれを使う]],
-    expr = true,
-    function()
-        if logic.to_bool(vim.fn.pumvisible()) then
-            return "<C-n>"
-        else
-            return "<Tab>"
-        end
-    end,
-}
-
-mapset.i("<S-Tab>") {
-    desc = [[Neovim 本体の補完があったらそれを使う]],
-    expr = true,
-    function()
-        if logic.to_bool(vim.fn.pumvisible()) then
-            return "<C-p>"
-        else
-            return "<S-Tab>"
-        end
-    end,
-}
-
 autocmd_vimrc("LspAttach") {
     callback = function(args)
         mapset.n("gd") {

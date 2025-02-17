@@ -1,6 +1,8 @@
-vim.opt_local.foldmethod = "expr"
-vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt_local.formatoptions:remove { "r", "o" }
+local mapset = require("monaqa.shorthand").mapset_local
+local opt = vim.opt_local
 
-vim.keymap.set("n", "tk", "<Cmd>CocCommand rust-analyzer.openDocs<CR>", { buffer = true })
-vim.keymap.set("n", ";", "m`A;<Esc>``", { buffer = true })
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.formatoptions:remove { "r", "o" }
+
+mapset.n(";") { "m`A;<Esc>``" }

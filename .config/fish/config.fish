@@ -62,30 +62,6 @@ end
 # show_filtered_pr_list is:open is:pr review-requested:@me
 # show_filtered_pr_list is:open is:pr author:@me
 
-function ghqfind
-  set org $argv[1]
-
-  if test -z "$org"
-    echo "Usage: ghqfind <organizations>"
-    return 1
-  end
-
-  set repos (gh repo list $org --limit 1000 --json nameWithOwner -q ".[].nameWithOwner")
-
-  if test -z "$repos"
-    echo "No repositories found: $org"
-    return 1
-  end
-
-  set selected_repo  (echo $repos | string split " " |fzf --ansi)
-
-  if test -z "$selected_repo"
-    return 1
-  end
-
-  ghq get "git@github.com:$selected_repo.git"
-end
-
 # }}}
 
 fish_default_key_bindings
