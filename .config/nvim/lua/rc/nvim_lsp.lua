@@ -26,10 +26,19 @@ autocmd_vimrc("LspAttach") {
             end,
         }
 
+        mapset.n("t") { "<Nop>" }
+
         mapset.n("tr") {
             desc = [[LSP による参照ジャンプ]],
             function()
                 vim.lsp.buf.references()
+            end,
+        }
+
+        mapset.n("ta") {
+            desc = [[LSP によるコードアクション]],
+            function()
+                vim.lsp.buf.code_action()
             end,
         }
 
@@ -69,18 +78,22 @@ autocmd_vimrc("LspAttach") {
         mapset.n("g(") { vim.diagnostic.goto_prev, desc = [[前の diagnostic に飛ぶ]] }
 
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        client.server_capabilities.semanticTokensProvider = nil
-        vim.lsp.handlers["textDocument/semanticTokens/full"] = function() end
-    end,
-}
+        if client == nil then
+            return
+        end
 
-autocmd_vimrc("BufWritePre") {
-    callback = function()
-        local ftypes = { "rust", "lua" }
-        if vim.list_contains(ftypes, vim.bo.filetype) then
-            -- vim.cmd.mkview()
-            vim.lsp.buf.format { async = false }
-            -- vim.cmd.loadview()
+        client.server_capabilities.semanticTokensProvider = nil
+
+        if client.supports_method("textDocument/formatting") then
+            autocmd_vimrc("BufWritePre") {
+                buffer = args.bufnr,
+                callback = function()
+                    vim.lsp.buf.format {
+                        async = false,
+                        timeout_ms = 2000,
+                    }
+                end,
+            }
         end
     end,
 }

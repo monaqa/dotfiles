@@ -16,21 +16,24 @@ plugins:push {
         }
     end,
 }
+
+local ensure_installed = {
+    "jsonls",
+    "lua_ls",
+    "pyright",
+    "rust_analyzer",
+    "svelte",
+    "tinymist",
+    "ts_ls",
+    "yamlls",
+}
+
 plugins:push {
     "https://github.com/williamboman/mason-lspconfig.nvim",
     config = function()
         require("mason-lspconfig").setup {
-            ensure_installed = {
-                "lua_ls",
-                "pyright",
-                "rust_analyzer",
-                "svelte",
-                "tinymist",
-                "ts_ls",
-                "yamlls",
-            },
+            ensure_installed = ensure_installed,
         }
-        -- vim.notify("mason-lspconfig setup")
     end,
 }
 
@@ -42,17 +45,9 @@ plugins:push {
 plugins:push {
     "https://github.com/neovim/nvim-lspconfig",
     config = function()
-        local function get_config(name)
-            return require("lspconfig.configs." .. name)
+        for _, ls in ipairs(ensure_installed) do
+            require("lspconfig")[ls].setup {}
         end
-
-        require("lspconfig").jsonls.setup {}
-        require("lspconfig").lua_ls.setup {}
-        -- vim.notify("lspconfig setup")
-        require("lspconfig").svelte.setup {}
-        require("lspconfig").pyright.setup {}
-        require("lspconfig").rust_analyzer.setup {}
-        require("lspconfig").tinymist.setup {}
     end,
 }
 
@@ -140,7 +135,13 @@ plugins:push {
                     --     end
                     -- end,
                     "select_next",
-                    "show",
+                    function(cmp)
+                        if #vim.trim(vim.fn.getline(".")) == 0 then
+                            return false
+                        end
+                        cmp.show()
+                        return true
+                    end,
                     "fallback",
                 },
                 ["<S-Tab>"] = { "select_prev", "fallback" },
@@ -195,6 +196,8 @@ plugins:push {
                 },
             },
         }
+
+        mapset.i("<S-Tab>") { "<C-h>" }
     end,
 }
 
