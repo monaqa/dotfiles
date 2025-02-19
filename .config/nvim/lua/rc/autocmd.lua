@@ -94,15 +94,14 @@ local function auto_mkdir()
 
     vim.fn.inputsave()
     vim.cmd([[echohl Question]])
-    local result = vim.ui.input({
+    local result = vim.fn.input {
         prompt = ([=["%s" does not exist. Create? [y/N]]=]):format(dir),
         -- highlight = "Question",
         default = "",
-    }, function(result)
-        if result == "y" then
-            vim.fn.mkdir(dir, "p")
-        end
-    end)
+    }
+    if result == "y" then
+        vim.fn.mkdir(dir, "p")
+    end
     vim.fn.inputrestore()
 end
 

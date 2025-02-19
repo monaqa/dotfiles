@@ -193,22 +193,19 @@ local function reformat_cmdstring(body)
 end
 
 function _G.vimrc.op.send_terminal(type)
-    local sel_save = vim.o.selection
-    vim.opt.selection = "inclusive"
-    local m_reg = vim.fn.getreg("m", nil, nil)
-
-    local visual_range
-    if type == "line" then
-        visual_range = "'[V']"
-    else
-        visual_range = "`[V`]"
-    end
-    vim.cmd("normal! " .. visual_range .. '"my')
-    local content = vim.fn.getreg("m", nil, nil)
-    vim.fn.chansend(vim.g.current_terminal_job_id, reformat_cmdstring(content))
-
-    vim.opt.selection = sel_save
-    vim.fn.setreg("m", m_reg, nil)
+    monaqa.edit.with_opt { selection = "inclusive" }(function()
+        monaqa.edit.borrow_register { "m" }(function()
+            local visual_range
+            if type == "line" then
+                visual_range = "'[V']"
+            else
+                visual_range = "`[V`]"
+            end
+            vim.cmd("normal! " .. visual_range .. '"my')
+            local content = vim.fn.getreg("m", false)
+            vim.fn.chansend(vim.g.current_terminal_job_id, reformat_cmdstring(content))
+        end)
+    end)
 end
 
 mapset.nx("S") {
@@ -514,19 +511,18 @@ mapset.x("C") {
 
         local unmap = temporal_cmap()
         while not finished do
-            vim.ui.input({ prompt = ":'<,'>normal " }, function(cmd)
-                if cmd == nil or cmd == "" then
-                    finished = true
-                else
-                    -- 1回の編集ごとに undo が戻るようにする
-                    vim.cmd.normal { args = { monaqa.str.term("i<C-g>u") }, bang = true }
-                    vim.cmd.normal {
-                        args = { cmd },
-                        range = { start_line, end_line },
-                    }
-                    vim.cmd.redraw { bang = true }
-                end
-            end)
+            local cmd = vim.fn.input { prompt = ":'<,'>normal " }
+            if cmd == nil or cmd == "" then
+                finished = true
+            else
+                -- 1回の編集ごとに undo が戻るようにする
+                vim.cmd.normal { args = { monaqa.str.term("i<C-g>u") }, bang = true }
+                vim.cmd.normal {
+                    args = { cmd },
+                    range = { start_line, end_line },
+                }
+                vim.cmd.redraw { bang = true }
+            end
         end
         unmap()
 

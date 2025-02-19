@@ -1,5 +1,6 @@
 local monaqa = require("monaqa")
 local mapset = monaqa.shorthand.mapset
+local logic = monaqa.logic
 local vec = require("rc.util.vec")
 
 local plugins = vec {}
@@ -17,22 +18,28 @@ plugins:push {
     end,
 }
 
-local ensure_installed = {
-    "jsonls",
-    "lua_ls",
-    "pyright",
-    "rust_analyzer",
-    "svelte",
-    "tinymist",
-    "ts_ls",
-    "yamlls",
-}
-
 plugins:push {
     "https://github.com/williamboman/mason-lspconfig.nvim",
+    dependencies = {
+        "https://github.com/neovim/nvim-lspconfig",
+    },
     config = function()
         require("mason-lspconfig").setup {
-            ensure_installed = ensure_installed,
+            ensure_installed = {
+                "jsonls",
+                "lua_ls",
+                "pyright",
+                "rust_analyzer",
+                "svelte",
+                "tinymist",
+                "ts_ls",
+                "yamlls",
+            },
+        }
+        require("mason-lspconfig").setup_handlers {
+            function(server_name) -- default handler (optional)
+                require("lspconfig")[server_name].setup {}
+            end,
         }
     end,
 }
@@ -44,11 +51,11 @@ plugins:push {
 -- nvim_lsp
 plugins:push {
     "https://github.com/neovim/nvim-lspconfig",
-    config = function()
-        for _, ls in ipairs(ensure_installed) do
-            require("lspconfig")[ls].setup {}
-        end
-    end,
+    -- config = function()
+    --     for _, ls in ipairs(ensure_installed) do
+    --         require("lspconfig")[ls].setup {}
+    --     end
+    -- end,
 }
 
 plugins:push {
@@ -126,14 +133,12 @@ plugins:push {
         require("blink.cmp").setup {
             keymap = {
                 ["<Tab>"] = {
-                    -- ---@param cmp blink.cmp.CompletionWindow
-                    -- function(cmp)
-                    --     -- _G.memo = { cmp = cmp, items = cmp.windows.autocomplete.items }
-                    --     local n_items = #cmp.windows.autocomplete.items
-                    --     if n_items == 1 then
-                    --         cmp.accept()
-                    --     end
-                    -- end,
+                    function(cmp)
+                        if logic.to_bool(vim.fn.pumvisible()) then
+                            return true
+                        end
+                        return false
+                    end,
                     "select_next",
                     function(cmp)
                         if #vim.trim(vim.fn.getline(".")) == 0 then
@@ -181,6 +186,38 @@ plugins:push {
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
                 default = { "lsp", "path", "snippets", "buffer" },
+                providers = {
+                    cmdline = {
+                        -- ignores cmdline completions when executing shell commands
+                        enabled = function()
+                            if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("^:=") then
+                                return false
+                            end
+                            if vim.fn.getcmdtype() == "@" then
+                                return false
+                            end
+                            if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("^:[%%0-9,'<>%-]*!") then
+                                return false
+                            end
+                            return true
+                        end,
+                        -- sources = function()
+                        --     local type = vim.fn.getcmdtype()
+                        --     if vim.startswith(type .. vim.fn.getcmdline(), ":=") then
+                        --         return {}
+                        --     end
+                        --     -- Search forward and backward
+                        --     if type == "/" or type == "?" then
+                        --         return { "buffer" }
+                        --     end
+                        --     -- Commands
+                        --     if type == ":" then
+                        --         return { "cmdline" }
+                        --     end
+                        --     return {}
+                        -- end,
+                    },
+                },
             },
 
             completion = {
@@ -194,7 +231,28 @@ plugins:push {
                         auto_insert = true,
                     },
                 },
+                trigger = {
+                    show_on_keyword = true,
+                },
             },
+
+            -- cmdline = {
+            --     sources = function()
+            --         local type = vim.fn.getcmdtype()
+            --         if vim.startswith(type .. vim.fn.getcmdline(), ":=") then
+            --             return {}
+            --         end
+            --         -- Search forward and backward
+            --         if type == "/" or type == "?" then
+            --             return { "buffer" }
+            --         end
+            --         -- Commands
+            --         if type == ":" then
+            --             return { "cmdline" }
+            --         end
+            --         return {}
+            --     end,
+            -- },
         }
 
         mapset.i("<S-Tab>") { "<C-h>" }
@@ -236,4 +294,5 @@ return plugins
     end)
     :collect()
 
+-- return {}
 -- return {}

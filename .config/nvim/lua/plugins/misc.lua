@@ -14,7 +14,7 @@ plugins:push {
             picker = {
                 enabled = true,
                 -- TODO: general-converter が非同期 vim.ui.select に対応したら true に変える
-                ui_select = false,
+                ui_select = true,
             },
             notifier = { enabled = true },
             input = { enabled = true },

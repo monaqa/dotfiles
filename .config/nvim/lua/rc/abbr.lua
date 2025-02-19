@@ -7,6 +7,11 @@ cabbr:add { from = "w3", to = "w" }
 cabbr:add { from = "w]", to = "w" }
 cabbr:add { from = "w:", to = "w" }
 
+-- workaround: blink.cmp の不具合？により、
+-- `:=` 以降だと補完がバグって cmdline すべてを置き換えてしまうが、
+-- `:lua = ` だと回避できる
+cabbr:add { from = "=", to = "lua =" }
+
 -- 標準コマンドのエイリアス
 cabbr:add { from = "open", to = "!open" }
 cabbr:add { from = "s", to = "%s///g<Left><Left>", remove_trigger = true }
@@ -59,6 +64,7 @@ cabbr:add { prepose = "'<,'>", require_space = false, from = "pc", to = "Partedi
 
 -- monaqa-specific commands
 cabbr:add { from = "ef", to = "EditFtplugin" }
+cabbr:add { from = "es", to = "EditSnippet" }
 cabbr:add { from = "ty", to = "Typscrap" }
 
 cabbr:register_all()

@@ -151,6 +151,8 @@ plugins:push {
                     "--with-filename",
                     "--column",
                     "--smart-case",
+                    "-g",
+                    "!lazy-lock.json",
                 },
                 prompt_prefix = "𝜻",
                 find_command = {

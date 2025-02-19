@@ -11,4 +11,10 @@ mapset.n("$1") {
 }
 ]=])
 
+register("snippet_new")([==[
+register("$1")([=[
+$0
+]=])
+]==])
+
 return snips

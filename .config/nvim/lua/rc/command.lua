@@ -171,9 +171,15 @@ create_cmd("PutClipboardImage") {
         end,
     },
 }
+
 -- §§1 misc
 create_cmd("CocEditSnippet") {
     function()
         vim.cmd.edit("~/.config/coc/ultisnips/" .. vim.bo.filetype .. ".snippets")
+    end,
+}
+create_cmd("EditSnippet") {
+    function()
+        monaqa.snippet.edit_snippet_file(vim.bo.filetype)
     end,
 }
