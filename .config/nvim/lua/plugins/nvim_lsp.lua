@@ -24,6 +24,7 @@ plugins:push {
         "https://github.com/neovim/nvim-lspconfig",
     },
     config = function()
+        local lspconfig = require("lspconfig")
         require("mason-lspconfig").setup {
             ensure_installed = {
                 "jsonls",
@@ -38,7 +39,26 @@ plugins:push {
         }
         require("mason-lspconfig").setup_handlers {
             function(server_name) -- default handler (optional)
-                require("lspconfig")[server_name].setup {}
+                lspconfig[server_name].setup {}
+            end,
+            rust_analyzer = function()
+                lspconfig.rust_analyzer.setup {
+                    settings = {
+                        ["rust-analyzer"] = {
+                            check = {
+                                command = "clippy",
+                            },
+                            completion = {
+                                privateEditable = {
+                                    enable = true,
+                                },
+                                callable = {
+                                    snippets = "fill_arguments",
+                                },
+                            },
+                        },
+                    },
+                }
             end,
         }
     end,
@@ -185,7 +205,7 @@ plugins:push {
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { "lsp", "path", "snippets", "buffer" },
+                default = { "path", "snippets", "lsp", "buffer" },
                 providers = {
                     cmdline = {
                         -- ignores cmdline completions when executing shell commands
@@ -221,6 +241,13 @@ plugins:push {
             },
 
             completion = {
+                accept = {
+                    auto_brackets = {
+                        enabled = true,
+                        override_brackets_for_filetypes = { "rust" },
+                        force_allow_filetypes = { "rust" },
+                    },
+                },
                 documentation = {
                     auto_show = true,
                     auto_show_delay_ms = 0,

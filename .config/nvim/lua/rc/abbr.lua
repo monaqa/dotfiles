@@ -53,6 +53,9 @@ cabbr:add { prepose = "Telescope coc", from = "d", to = "diagnostics" }
 cabbr:add { prepose = "Telescope", from = "f", to = "find_files" }
 cabbr:add { prepose = "Telescope", from = "g", to = "live_grep" }
 
+-- Snacks.nvim
+cabbr:add { from = "sn", to = "lua Snacks.", remove_trigger = true }
+
 -- tree-sitter 関連
 cabbr:add { from = "it", to = "InspectTree" }
 

@@ -20,6 +20,8 @@ plugins:push {
             input = { enabled = true },
             lazygit = { enabled = true },
         }
+
+        mapset.n("gl") { "<Cmd>lua Snacks.lazygit.open()<CR>" }
     end,
 }
 
