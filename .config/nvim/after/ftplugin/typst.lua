@@ -60,7 +60,7 @@ mapset.n("@o") {
         vim.cmd([[!open ]] .. target)
     end,
 }
-mapset.n("@b") { "<Cmd>TypstPreview<CR>" }
+mapset.n("@t") { "<Cmd>TypstPreview<CR>" }
 
 mapset.n("@q") {
     desc = [[typst compile を実行]],

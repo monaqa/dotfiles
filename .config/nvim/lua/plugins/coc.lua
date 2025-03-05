@@ -178,7 +178,7 @@ plugins:push {
 plugins:push {
     "https://github.com/chomosuke/typst-preview.nvim",
     ft = "typst",
-    version = "1.*",
+    -- version = "1.*",
     build = function()
         require("typst-preview").update()
     end,
@@ -206,7 +206,7 @@ plugins:push {
 
         require("typst-preview").setup {
             -- Setting this true will enable printing debug information with print()
-            debug = false,
+            debug = true,
 
             -- Custom format string to open the output link provided with %s
             -- Example: open_cmd = 'firefox %s -P typst-preview --class typst-preview'

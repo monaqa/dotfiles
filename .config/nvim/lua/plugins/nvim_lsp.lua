@@ -148,20 +148,19 @@ plugins:push {
         -- "https://github.com/rafamadriz/friendly-snippets",
         "https://github.com/echasnovski/mini.snippets",
     },
-    version = "v0.11.0",
+    version = "*",
     config = function()
         require("blink.cmp").setup {
             keymap = {
                 ["<Tab>"] = {
-                    function(cmp)
-                        if logic.to_bool(vim.fn.pumvisible()) then
-                            return true
-                        end
-                        return false
-                    end,
                     "select_next",
                     function(cmp)
                         if #vim.trim(vim.fn.getline(".")) == 0 then
+                            -- インデント以外なにもない場合はインデントの調整がしたい事が多い
+                            return false
+                        end
+                        if logic.to_bool(vim.fn.pumvisible()) then
+                            -- Neovim 本体の補完も選べるようにしたい
                             return false
                         end
                         cmp.show()
@@ -180,14 +179,15 @@ plugins:push {
                 ["<C-b>"] = { "scroll_documentation_up", "fallback" },
                 ["<C-f>"] = { "scroll_documentation_down", "fallback" },
 
-                cmdline = {
-                    ["<Tab>"] = {
-                        "select_next",
-                        "show",
-                        "fallback",
-                    },
-                    ["<S-Tab>"] = { "select_prev", "fallback" },
-                },
+                -- cmdline = {},
+                -- cmdline = {
+                --     ["<Tab>"] = {
+                --         "select_next",
+                --         "show",
+                --         "fallback",
+                --     },
+                --     ["<S-Tab>"] = { "select_prev", "fallback" },
+                -- },
             },
 
             appearance = {
@@ -205,38 +205,50 @@ plugins:push {
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { "path", "snippets", "lsp", "buffer" },
+                default = { "snippets", "path", "lsp", "buffer" },
+                -- default = { "snippets", "path", "lsp" },
                 providers = {
                     cmdline = {
                         -- ignores cmdline completions when executing shell commands
-                        enabled = function()
-                            if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("^:=") then
-                                return false
-                            end
-                            if vim.fn.getcmdtype() == "@" then
-                                return false
-                            end
-                            if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("^:[%%0-9,'<>%-]*!") then
-                                return false
-                            end
-                            return true
-                        end,
-                        -- sources = function()
-                        --     local type = vim.fn.getcmdtype()
-                        --     if vim.startswith(type .. vim.fn.getcmdline(), ":=") then
-                        --         return {}
+                        enabled = true,
+                        -- enabled = function()
+                        --     if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("^:=") then
+                        --         return false
                         --     end
-                        --     -- Search forward and backward
-                        --     if type == "/" or type == "?" then
-                        --         return { "buffer" }
+                        --     if vim.fn.getcmdtype() == "@" then
+                        --         return false
                         --     end
-                        --     -- Commands
-                        --     if type == ":" then
-                        --         return { "cmdline" }
+                        --     -- range 指定が消えてしまう不具合あり
+                        --     if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("'") then
+                        --         return false
                         --     end
-                        --     return {}
+                        --     if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("^:[%%0-9,'<>%-]*!") then
+                        --         return false
+                        --     end
+                        --     return true
                         -- end,
                     },
+                },
+            },
+
+            fuzzy = {
+                sorts = {
+                    function(a, b)
+                        local source_priority = {
+                            snippets = 4,
+                            lsp = 3,
+                            path = 2,
+                            buffer = 1,
+                        }
+                        local a_priority = source_priority[a.source_id]
+                        local b_priority = source_priority[b.source_id]
+                        if a_priority ~= b_priority then
+                            return a_priority > b_priority
+                        end
+                    end,
+                    -- defaults
+                    "score",
+                    "sort_text",
                 },
             },
 
@@ -263,26 +275,48 @@ plugins:push {
                 },
             },
 
-            -- cmdline = {
-            --     sources = function()
-            --         local type = vim.fn.getcmdtype()
-            --         if vim.startswith(type .. vim.fn.getcmdline(), ":=") then
-            --             return {}
-            --         end
-            --         -- Search forward and backward
-            --         if type == "/" or type == "?" then
-            --             return { "buffer" }
-            --         end
-            --         -- Commands
-            --         if type == ":" then
-            --             return { "cmdline" }
-            --         end
-            --         return {}
-            --     end,
-            -- },
+            cmdline = {
+                -- keymap = {},
+                sources = function()
+                    local type = vim.fn.getcmdtype()
+                    -- if vim.startswith(type .. vim.fn.getcmdline(), ":=") then
+                    --     return {}
+                    -- end
+                    -- Search forward and backward
+                    if type == "/" or type == "?" or type == "@" then
+                        return { "buffer" }
+                    end
+                    -- Commands
+                    if type == ":" then
+                        return { "cmdline" }
+                    end
+                    return {}
+                end,
+            },
         }
 
-        mapset.i("<S-Tab>") { "<C-h>" }
+        mapset.i("<S-Tab>") {
+            desc = [[pumvisible() なときは次の候補に移動。それ以外は <C-h>]],
+            expr = true,
+            function()
+                if logic.to_bool(vim.fn.pumvisible()) then
+                    return "<C-p>"
+                else
+                    return "<C-h>"
+                end
+            end,
+        }
+        mapset.i("<Tab>") {
+            desc = [[pumvisible() なときは次の候補に移動。それ以外は <Tab>]],
+            expr = true,
+            function()
+                if logic.to_bool(vim.fn.pumvisible()) then
+                    return "<C-n>"
+                else
+                    return "<Tab>"
+                end
+            end,
+        }
     end,
 }
 

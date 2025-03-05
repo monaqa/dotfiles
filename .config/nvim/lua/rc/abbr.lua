@@ -43,7 +43,6 @@ cabbr:add { prepose = "Gina commit", from = "e", to = "--allow-empty" }
 cabbr:add { from = "gl", to = "Gina log --all --graph" }
 cabbr:add { from = "gpc", to = "GinaPrChanges" }
 cabbr:add { from = "gs", to = "Gina status -s --opener=split" }
-cabbr:add { from = "git", to = "Gina" }
 
 -- telescope.nvim
 cabbr:add { from = "t", to = "Telescope" }
