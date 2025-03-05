@@ -42,6 +42,29 @@ function M.with_opt(t)
     end
 end
 
+--- 一時的に環境変数の値を差し替えて callback を実行する。
+--- もとの値は callback 実行後にリストアされる。
+function M.with_env(t)
+    return function(callback)
+        local backup = {}
+        for key, value in pairs(t) do
+            -- もし backup[key] = vim.env[key] のように直接値を入れると
+            -- vim.env[key] が nil のとき backup に何も入らなくなってしまう。
+            backup[key] = { origin = vim.env[key] }
+            vim.env[key] = value
+        end
+        local succeeded, result = pcall(callback)
+        for key, tbl in pairs(backup) do
+            vim.env[key] = tbl.origin
+        end
+        if succeeded then
+            return result
+        else
+            error(result)
+        end
+    end
+end
+
 --- レジスタを一時的に借りる。もとの値は callback 実行後にリストアされる。
 function M.borrow_register(t)
     return function(callback)

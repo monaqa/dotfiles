@@ -69,7 +69,7 @@ register("map")([=[
 mapset.nxo("$1") { "$0" }
 ]=])
 
-register("snippet_new")([==[
+register("new_snippet")([==[
 register("$1")([=[
 $0
 ]=])

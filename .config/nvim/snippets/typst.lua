@@ -2,6 +2,8 @@ local snips = {}
 
 local register = require("monaqa.snippet").new_registerer(snips)
 
+register("today")([=[${TODAY:yyyy/mm/dd}]=])
+
 register("et")([=[
 #table(stroke: none,
   ..{
@@ -19,6 +21,16 @@ register("et")([=[
     hl()
   },
 )
+]=])
+
+register("showybox")([=[
+#showybox(
+	title: [${1:Title}],
+	frame: (border-color: luma(25%), title-color: luma(80%), body-color: luma(95%)),
+	title-style: (color: luma(25%), weight: 600, align: center),
+)[
+	$0
+]
 ]=])
 
 register("cetz")([=[

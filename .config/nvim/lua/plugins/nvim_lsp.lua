@@ -25,21 +25,45 @@ plugins:push {
     },
     config = function()
         local lspconfig = require("lspconfig")
+        local function is_node_dir()
+            return lspconfig.util.root_pattern("package.json")(vim.fn.getcwd())
+        end
         require("mason-lspconfig").setup {
             ensure_installed = {
+                "denols",
                 "jsonls",
                 "lua_ls",
                 "pyright",
+                "ruff",
                 "rust_analyzer",
                 "svelte",
                 "tinymist",
                 "ts_ls",
                 "yamlls",
             },
+            automatic_installation = true,
         }
         require("mason-lspconfig").setup_handlers {
             function(server_name) -- default handler (optional)
                 lspconfig[server_name].setup {}
+            end,
+            ts_ls = function()
+                lspconfig.ts_ls.setup {
+                    on_attach = function(client)
+                        if not is_node_dir() then
+                            client.stop()
+                        end
+                    end,
+                }
+            end,
+            denols = function()
+                lspconfig.denols.setup {
+                    on_attach = function(client)
+                        if is_node_dir() then
+                            client.stop()
+                        end
+                    end,
+                }
             end,
             rust_analyzer = function()
                 lspconfig.rust_analyzer.setup {
@@ -205,7 +229,9 @@ plugins:push {
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { "snippets", "path", "lsp", "buffer" },
+                default = function()
+                    return { "snippets", "path", "lsp", "buffer" }
+                end,
                 -- default = { "snippets", "path", "lsp" },
                 providers = {
                     cmdline = {
@@ -235,8 +261,8 @@ plugins:push {
                 sorts = {
                     function(a, b)
                         local source_priority = {
-                            snippets = 4,
-                            lsp = 3,
+                            lsp = 4,
+                            snippets = 3,
                             path = 2,
                             buffer = 1,
                         }
@@ -254,6 +280,7 @@ plugins:push {
 
             completion = {
                 accept = {
+                    dot_repeat = true,
                     auto_brackets = {
                         enabled = true,
                         override_brackets_for_filetypes = { "rust" },
@@ -276,7 +303,6 @@ plugins:push {
             },
 
             cmdline = {
-                -- keymap = {},
                 sources = function()
                     local type = vim.fn.getcmdtype()
                     -- if vim.startswith(type .. vim.fn.getcmdline(), ":=") then
@@ -324,7 +350,8 @@ plugins:push {
     "https://github.com/echasnovski/mini.snippets",
     version = "*",
     config = function()
-        local gen_loader = require("mini.snippets").gen_loader
+        local mini_snippets = require("mini.snippets")
+        local gen_loader = mini_snippets.gen_loader
         require("mini.snippets").setup {
             snippets = {
                 -- Load custom file with global snippets first (adjust for Windows)
@@ -342,6 +369,15 @@ plugins:push {
                 jump_prev = "<C-g><C-k>",
                 stop = "<C-c>",
             },
+            expand = {
+                insert = function(snippet, opts)
+                    monaqa.edit.with_env {
+                        TODAY = vim.fn.strftime("%Y/%m/%d"),
+                    }(function()
+                        mini_snippets.default_insert(snippet, opts)
+                    end)
+                end,
+            },
         }
     end,
 }
@@ -354,6 +390,3 @@ return plugins
         return spec
     end)
     :collect()
-
--- return {}
--- return {}
