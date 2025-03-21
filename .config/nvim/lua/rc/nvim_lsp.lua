@@ -89,6 +89,10 @@ autocmd_vimrc("LspAttach") {
 autocmd_vimrc("BufWritePre") {
     desc = [[フォーマットの実施]],
     callback = function()
+        if vim.tbl_contains({ "json" }, vim.b.filetype) then
+            return
+        end
+
         local client = vim.iter(vim.lsp.get_clients { bufnr = 0 }):find(
             ---@param client vim.lsp.Client
             function(client)

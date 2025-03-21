@@ -68,7 +68,6 @@ plugins:push {
         -- --   unsupported   - close aerial when attaching to a buffer that has no symbol source
         -- close_automatic_events = {},
         close_automatic_events = {
-            "unfocus",
             "switch_buffer",
             "unsupported",
         },

@@ -5,21 +5,10 @@ local register = require("monaqa.snippet").new_registerer(snips)
 register("today")([=[${TODAY:yyyy/mm/dd}]=])
 
 register("et")([=[
-#table(stroke: none,
-  ..{
-    let hl(..args) = arguments(table.hline(..args),)
-    let th(..args) = {
-      arguments(table.header(..args.pos()))
-      arguments(columns: args.pos().len())
-      hl(stroke: 0.5pt)
-    }
-    let tr(..args) = arguments(..args.pos(),)
-
-    hl()
+#table(..{
     th[][]
     tr[][]
-    hl()
-  },
+  }
 )
 ]=])
 

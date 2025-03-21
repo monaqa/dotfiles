@@ -34,6 +34,7 @@ plugins:push {
                 "jsonls",
                 "lua_ls",
                 "pyright",
+                "tailwindcss",
                 "ruff",
                 "rust_analyzer",
                 "svelte",
@@ -177,22 +178,38 @@ plugins:push {
         require("blink.cmp").setup {
             keymap = {
                 ["<Tab>"] = {
-                    "select_next",
                     function(cmp)
                         if #vim.trim(vim.fn.getline(".")) == 0 then
                             -- インデント以外なにもない場合はインデントの調整がしたい事が多い
                             return false
                         end
                         if logic.to_bool(vim.fn.pumvisible()) then
-                            -- Neovim 本体の補完も選べるようにしたい
+                            cmp.hide()
+                            -- Neovim 本体の補完が出ていたらそちらを優先
                             return false
+                        end
+                        if cmp.is_visible() then
+                            cmp.select_next()
+                            return true
                         end
                         cmp.show()
                         return true
                     end,
+                    -- "select_next",
                     "fallback",
                 },
-                ["<S-Tab>"] = { "select_prev", "fallback" },
+                ["<S-Tab>"] = {
+                    function(cmp)
+                        if logic.to_bool(vim.fn.pumvisible()) then
+                            cmp.hide()
+                            -- Neovim 本体の補完が出ていたらそちらを優先
+                            return false
+                        end
+                        cmp.select_prev()
+                        return true
+                    end,
+                    "fallback",
+                },
                 ["<CR>"] = { "accept", "fallback" },
 
                 ["<Up>"] = { "select_prev", "fallback" },
@@ -202,6 +219,7 @@ plugins:push {
 
                 ["<C-b>"] = { "scroll_documentation_up", "fallback" },
                 ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+                ["<C-y>"] = { "fallback" },
 
                 -- cmdline = {},
                 -- cmdline = {
