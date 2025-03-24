@@ -42,7 +42,7 @@ local function compile_args()
     local v = {
         "compile",
         "--input",
-        "typscrap_root=/Users/monaqa/ghq/github.com/monaqa/typscrap-contents/content/",
+        "typscrap_root=/Users/monaqa/Documents/typscrap-contents/content/",
         resolve_target(),
     }
     if modeline.root ~= nil then
