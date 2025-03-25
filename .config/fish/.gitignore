@@ -1,6 +1,4 @@
 local.fish
 fish_variables
 
-functions/
-completions/
 conf.d/
