@@ -14,8 +14,18 @@
     template = /Users/monaqa/.commit_template
     verbose = true
     gpgsign = true
+
 [core]
+    pager = delta
     editor = nvim
+
+[delta]
+    dark = true
+    line-numbers = true
+
+[interactive]
+    diffFilter = delta --color-only
+
 [alias]
     cancel = !git commit -a -m 'Temporary commit for cancel' && git reset --hard HEAD~
     commend = commit --amend --no-edit

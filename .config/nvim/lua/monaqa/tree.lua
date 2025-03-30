@@ -16,26 +16,29 @@ local M = {}
 function M.find_matches(query, root, start, stop)
     return vim.iter(query:iter_matches(root, 0, start, stop))
         :map(
-            ---@param match table<integer, TSNode>
+            ---@param match table<integer, TSNode[]>
             function(_, match, _)
-                local m = vim
-                    .iter(pairs(match))
-                    -- :enumerate()
-                    :map(function(id, node)
-                        local capture_name = query.captures[id]
-                        if vim.startswith(capture_name, "_") then
-                            return capture_name
+                local m = vim.iter(pairs(match))
+                    :map(
+                        ---@param id integer
+                        ---@param nodes TSNode[]
+                        function(id, nodes)
+                            local capture_name = query.captures[id]
+                            if vim.startswith(capture_name, "_") then
+                                return capture_name
+                            end
+                            -- TODO: 一旦マッチした最初のノードのみ取る。本当は node ごとに iterate すべき
+                            local sr, sc, er, ec = nodes[1]:range()
+                            local text =
+                                table.concat(vim.fn.getregion({ 0, sr + 1, sc + 1, 0 }, { 0, er + 1, ec, 0 }), "\n")
+                            return capture_name,
+                                {
+                                    node = nodes[1],
+                                    text = text,
+                                    region = { s = { sr + 1, sc + 1 }, e = { er + 1, ec } },
+                                }
                         end
-                        local sr, sc, er, ec = node:range()
-                        local text =
-                            table.concat(vim.fn.getregion({ 0, sr + 1, sc + 1, 0 }, { 0, er + 1, ec, 0 }), "\n")
-                        return capture_name,
-                            {
-                                node = node,
-                                text = text,
-                                region = { s = { sr + 1, sc + 1 }, e = { er + 1, ec } },
-                            }
-                    end)
+                    )
                     :fold({}, function(acc, k, v)
                         acc[k] = v
                         return acc

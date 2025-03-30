@@ -254,11 +254,11 @@ plugins:push {
     end,
 }
 
-plugins:push {
-    "https://github.com/nvim-treesitter/playground",
-    cond = cond_dev("nvim-treesitter/playground"),
-    ft = { "query" },
-}
+-- plugins:push {
+--     "https://github.com/nvim-treesitter/playground",
+--     cond = cond_dev("nvim-treesitter/playground"),
+--     ft = { "query" },
+-- }
 
 plugins:push {
     "https://github.com/mfussenegger/nvim-treehopper",

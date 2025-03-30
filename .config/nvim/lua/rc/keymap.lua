@@ -96,8 +96,9 @@ mapset.n("q") {
     desc = [[toggle QuickFix window]],
     silent = true,
     function()
-        if #vim.fn.getqflist() == 0 then
-            require("aerial").toggle { focus = false }
+        local aerial = require("aerial")
+        if #vim.fn.getqflist() == 0 and aerial.num_symbols(0) > 0 then
+            aerial.toggle { focus = false }
             return
         end
 

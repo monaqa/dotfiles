@@ -1,6 +1,7 @@
 -- Clipboard の image をいい感じに貼り付けるためのスクリプト。
 
-local util = require("rc.util")
+local monaqa = require("monaqa")
+local logic = monaqa.logic
 
 local M = {}
 
@@ -20,7 +21,7 @@ end
 ---@param markup_string string | string[]
 function M.put_clipboard_image(image_path, markup_string)
     local parent_dir = vim.fn.fnamemodify(image_path, ":p:h")
-    if not util.to_bool(vim.fn.isdirectory(parent_dir)) then
+    if not logic.to_bool(vim.fn.isdirectory(parent_dir)) then
         vim.fn.mkdir(parent_dir, "p")
         vim.notify("Created new directory: " .. parent_dir)
     end

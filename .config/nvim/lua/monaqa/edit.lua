@@ -84,4 +84,32 @@ function M.borrow_register(t)
     end
 end
 
+--- vim.ui.input と vim.ui.select を一時的に同期的な UI にして callback を実行する。
+function M.with_sync_ui(callback)
+    local original_input = vim.ui.input
+    local original_select = vim.ui.select
+    vim.ui.input = function(opts, on_confirm)
+        local result = vim.fn.input(opts)
+        on_confirm(result)
+    end
+    vim.ui.select = function(items, opts, on_choice)
+        local prompt = opts.prompt or "Select one of:"
+        local format_item = opts.format_item or tostring
+        local t = { prompt }
+        for idx, item in ipairs(items) do
+            t[#t + 1] = tostring(idx) .. ". " .. format_item(item)
+        end
+        local result = vim.fn.inputlist(t)
+        on_choice(items[result])
+    end
+    local succeeded, result = pcall(callback)
+    vim.ui.input = original_input
+    vim.ui.select = original_select
+    if succeeded then
+        return result
+    else
+        error(result)
+    end
+end
+
 return M

@@ -168,6 +168,33 @@ plugins:push {
 -- }
 
 plugins:push {
+    "https://github.com/rachartier/tiny-code-action.nvim",
+    dependencies = {
+        { "nvim-lua/plenary.nvim" },
+        { "nvim-telescope/telescope.nvim" },
+    },
+    event = "LspAttach",
+    config = function()
+        require("tiny-code-action").setup {
+            backend = "delta",
+            backend_opts = {
+                delta = {
+                    args = {
+                        "--line-numbers",
+                    },
+                },
+            },
+        }
+
+        mapset.n("ta") {
+            function()
+                require("tiny-code-action").code_action()
+            end,
+        }
+    end,
+}
+
+plugins:push {
     "https://github.com/Saghen/blink.cmp",
     dependencies = {
         -- "https://github.com/rafamadriz/friendly-snippets",
