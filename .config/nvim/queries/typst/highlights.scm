@@ -50,14 +50,18 @@
 
 ; VALUE
 (raw_blck
-  "```"
-  @punctuation.delimiter
+  "```" @punctuation.delimiter
   .
   (blob) @text.literal
+  "```" @punctuation.delimiter
   )
 
 (raw_span "`" @punctuation.delimiter "`" @punctuation.delimiter) @text.literal
-(raw_blck lang: (ident) @tag)
+(raw_blck
+  "```" @punctuation.delimiter
+  lang: (ident) @tag
+  "```" @punctuation.delimiter
+  )
 
 (label) @tag
 (ref) @tag

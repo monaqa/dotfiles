@@ -279,6 +279,16 @@ plugins:push {
                 basic,
                 { augend.misc.alias.markdown_header },
             },
+            typst = concat {
+                basic,
+                {
+                    augend.constant.new {
+                        elements = { "#TODO", "#DONE" },
+                        word = false,
+                        cyclic = false,
+                    },
+                },
+            },
             -- lilypond = concat {
             --     basic,
             --     { lilypond_note },

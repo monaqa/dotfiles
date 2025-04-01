@@ -10,11 +10,21 @@ opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.commentstring = "// %s"
 opt.formatoptions:append("r")
+opt.formatoptions:remove("o")
 
-opt.comments = { "b:-", "b:+", "b:1." }
+opt.comments = {
+    "b:- #TODO",
+    "b:-",
+    "b:+",
+    "b:1.",
+}
 
 mapset.n("zM") { "zMzr", desc = [[foldlevel を 0 ではなく 1 にする]] }
 mapset.n("<Space>z") { "zMzrzv", desc = [[foldlevel を 0 ではなく 1 にしたバージョン]] }
+mapset.ia("]") {
+    expr = true,
+    [[(getline('.') =~# '\s*- ]') ? '#TODO' : ']']],
+}
 
 local function get_modeline()
     ---@type string

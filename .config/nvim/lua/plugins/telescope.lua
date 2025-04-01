@@ -29,10 +29,14 @@ plugins:push {
             end,
         },
         {
-            "sb",
+            "ss",
             function()
                 local builtin = require("telescope.builtin")
-                builtin.buffers { prompt_prefix = "𝜷" }
+                builtin.buffers {
+                    prompt_prefix = "𝜷",
+                    sort_mru = true,
+                    ignore_current_buffer = true,
+                }
             end,
         },
         {
@@ -83,7 +87,7 @@ plugins:push {
             end,
         },
         {
-            "ss",
+            "s<C-f>",
             function()
                 local frecency = require("telescope").extensions.frecency.frecency
                 if vim.startswith(vim.fn.getcwd(), vim.env.HOME .. "/ghq") then
