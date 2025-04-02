@@ -276,23 +276,23 @@ plugins:push {
     },
 }
 
-plugins:push {
-    "https://github.com/Wansmer/treesj",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    keys = {
-        {
-            "<space>s",
-            function()
-                require("treesj").toggle()
-            end,
-        },
-    },
-    config = function()
-        require("treesj").setup {
-            use_default_keymaps = false,
-            max_join_length = 99999,
-        }
-    end,
-}
+-- plugins:push {
+--     "https://github.com/Wansmer/treesj",
+--     dependencies = { "nvim-treesitter/nvim-treesitter" },
+--     keys = {
+--         {
+--             "<space>s",
+--             function()
+--                 require("treesj").toggle()
+--             end,
+--         },
+--     },
+--     config = function()
+--         require("treesj").setup {
+--             use_default_keymaps = false,
+--             max_join_length = 99999,
+--         }
+--     end,
+-- }
 
 return plugins:collect()

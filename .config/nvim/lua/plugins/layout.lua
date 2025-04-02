@@ -46,18 +46,84 @@ plugins:push {
         }
     end,
 }
+plugins:push {
+    "https://github.com/echasnovski/mini.statusline",
+    dependencies = {
+        "https://github.com/echasnovski/mini.icons",
+        "colorimetry.nvim",
+    },
+    version = "*",
+    config = function()
+        local palette = require("colorimetry.palette")
+        local fg = palette.fg
+        local bg = palette.bg
+
+        ---@param name string
+        local function sethl(name)
+            ---@param val vim.api.keyset.highlight
+            return function(val)
+                vim.api.nvim_set_hl(0, name, val)
+            end
+        end
+
+        sethl("MiniStatuslineModeNormal") { bg = fg.b5, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeInsert") { bg = fg.e5, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeVisual") { bg = fg.p5, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeReplace") { bg = fg.o5, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeCommand") { bg = fg.v5, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeOther") { bg = fg.w5, fg = fg.w0, bold = true }
+
+        sethl("MiniStatuslineDevinfo") { bg = fg.g1, fg = bg.g3, bold = true }
+
+        sethl("MiniStatuslineFilename") { bg = fg.e0, fg = bg.b2, bold = true }
+        sethl("MiniStatuslineFileinfo") { bg = fg.e1, fg = bg.b2, bold = true }
+
+        require("mini.statusline").setup {
+            content = {
+                active = function()
+                    local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 90 }
+                    local filename = MiniStatusline.section_filename { trunc_width = 140 }
+                    local fileinfo = MiniStatusline.section_fileinfo { trunc_width = 120 }
+
+                    -- Usage of `MiniStatusline.combine_groups()` ensures highlighting and
+                    -- correct padding with spaces between groups (accounts for 'missing'
+                    -- sections, etc.)
+                    return MiniStatusline.combine_groups {
+                        { hl = mode_hl, strings = { mode } },
+                        -- { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
+                        "%<", -- Mark general truncate point
+                        { hl = "MiniStatuslineFilename", strings = { filename } },
+                        "%=", -- End left alignment
+                        { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+                        -- { hl = mode_hl, strings = { search, location } },
+                    }
+                end,
+            },
+        }
+    end,
+}
 
 plugins:push {
-    "b0o/incline.nvim",
+    "https://github.com/b0o/incline.nvim",
     event = "VeryLazy",
     config = function()
+        local palette = require("colorimetry.palette")
+        local fg = require("colorimetry.palette").fg
+        local bg = require("colorimetry.palette").bg
+
         local devicons = require("nvim-web-devicons")
         require("incline").setup {
             window = {
                 padding = 0,
+                overlap = {
+                    borders = true,
+                    statusline = false,
+                    tabline = false,
+                    winbar = false,
+                },
                 margin = {
                     horizontal = 0,
-                    vertical = 0,
+                    vertical = 1,
                 },
                 placement = {
                     vertical = "bottom",
@@ -129,11 +195,21 @@ plugins:push {
 
                 return {
                     {
-                        " " .. (ft_icon or "") .. " ",
-                        guifg = ft_color,
+                        " ",
+                        guifg = fg.p0,
                         guibg = "none",
                     },
-                    { filename .. " ", gui = vim.bo[props.buf].modified and "bold,italic" or "bold" },
+                    {
+                        (ft_icon or "") .. " ",
+                        guifg = ft_color,
+                        guibg = fg.p0,
+                    },
+                    {
+                        filename .. " ",
+                        gui = vim.bo[props.buf].modified and "bold,italic" or "bold",
+                        guibg = fg.p0,
+                        guifg = bg.w0,
+                    },
                     { get_diagnostic_label() },
                     { get_git_diff() },
                 }
@@ -141,55 +217,6 @@ plugins:push {
         }
     end,
 }
-
--- plugins:push {
---     "https://github.com/folke/styler.nvim",
---     config = function()
---         local INACTIVE_COLORSCHEME = "colorimetry-1"
---
---         -- 非アクティブウィンドウ向けの関数
---         local function inactivate(win)
---             -- skip for certain situations
---             if not vim.api.nvim_win_is_valid(win) then
---                 return
---             end
---             if vim.api.nvim_win_get_config(win).relative ~= "" then
---                 return
---             end
---
---             -- apply colorscheme if not yet
---             if (vim.w[win].theme or {}).colorscheme ~= INACTIVE_COLORSCHEME then
---                 require("styler").set_theme(win, { colorscheme = INACTIVE_COLORSCHEME })
---             end
---         end
---
---         -- autocmdの発行
---         autocmd_vimrc { "WinLeave", "WinNew" } {
---             callback = function(_)
---                 local win_event = vim.api.nvim_get_current_win()
---                 vim.schedule(function()
---                     local win_pre = vim.fn.win_getid(vim.fn.winnr("#"))
---                     local win_cursor = vim.api.nvim_get_current_win()
---
---                     -- カーソル位置のウィンドウでstyler.nvimを無効化する
---                     if (vim.w[win_cursor].theme or {}).colorscheme then
---                         require("styler").clear(win_cursor)
---                     end
---
---                     -- 直前のウィンドウにカーソルがなければinactivate
---                     if win_pre ~= 0 and win_pre ~= win_cursor then
---                         inactivate(win_pre)
---                     end
---
---                     -- イベントを発行したウィンドウにカーソルがなければinactivate
---                     if win_event ~= win_cursor then
---                         inactivate(win_event)
---                     end
---                 end)
---             end,
---         }
---     end,
--- }
 
 -- plugins:push {
 --     "https://github.com/akinsho/bufferline.nvim",
@@ -361,157 +388,6 @@ plugins:push {
 --                 -- numbers_selected = { bg = "None", fg = fg.o0 },
 --             },
 --         }
---     end,
--- }
-
--- plugins:push {
---     "https://github.com/Bekaboo/dropbar.nvim",
---     config = function()
---         require("dropbar").setup {
---             -- bar = {
---             --     enable = true,
---             -- },
---         }
---
---         -- mapset.n("<Right>") {
---         --     desc = [[]],
---         --     function()
---         --         require("dropbar.api").pick()
---         --     end,
---         -- }
---     end,
--- }
-
--- plugins:push {
---     "https://github.com/nvim-lualine/lualine.nvim",
---     -- statusline が正常に更新されない不具合（デグレ）があったため
---     commit = "640260d7c2d98779cab89b1e7088ab14ea354a02",
---     lazy = false,
---     config = function()
---         local palette = require("colorimetry.palette")
---         local fg = palette.fg
---         local bg = palette.bg
---
---         local theme_colorimetry = {
---             command = {
---                 a = { bg = fg.v5, fg = fg.w0, gui = "bold" },
---                 b = { bg = fg.v1, fg = bg.w0 },
---                 c = { bg = fg.v0, fg = bg.w0 },
---             },
---             inactive = {
---                 a = { bg = fg.w5, fg = fg.w0, gui = "bold" },
---                 b = { bg = fg.w2, fg = bg.w4 },
---                 c = { bg = fg.w1, fg = bg.w4 },
---             },
---             insert = {
---                 a = { bg = fg.e5, fg = fg.w0, gui = "bold" },
---                 b = { bg = fg.e1, fg = bg.w0 },
---                 c = { bg = fg.e0, fg = bg.w0 },
---             },
---             normal = {
---                 a = { bg = fg.b5, fg = fg.w0, gui = "bold" },
---                 b = { bg = fg.b1, fg = bg.w0 },
---                 c = { bg = fg.b0, fg = bg.w1 },
---             },
---             replace = {
---                 a = { bg = fg.o5, fg = fg.w0, gui = "bold" },
---                 b = { bg = fg.o1, fg = bg.w0 },
---                 c = { bg = fg.o0, fg = bg.w0 },
---             },
---             visual = {
---                 a = { bg = fg.p5, fg = fg.w0, gui = "bold" },
---                 b = { bg = fg.p1, fg = bg.w0 },
---                 c = { bg = fg.p0, fg = bg.w0 },
---             },
---             terminal = {
---                 a = { bg = fg.r5, fg = fg.w0, gui = "bold" },
---                 b = { bg = fg.r1, fg = bg.w0 },
---                 c = { bg = fg.r0, fg = bg.w0 },
---             },
---         }
---
---         require("lualine").setup {
---             sections = {
---                 lualine_b = {
---                     function()
---                         local bufname = vim.fn.bufname()
---                         if bufname:find("oil://", 1, true) ~= nil then
---                             local cwd = require("oil").get_current_dir()
---                             local dir_rel = vim.fn.fnamemodify(cwd, ":.")
---                             if vim.startswith(dir_rel, "/") then
---                                 return "[oil] " .. dir_rel
---                             else
---                                 return "[oil] ./" .. dir_rel
---                             end
---                         end
---                         local index = bufname:find("://", 1, true)
---                         if index ~= nil then
---                             return "[" .. bufname:sub(1, index - 1) .. "]"
---                         end
---                         local fname = vim.fn.fnamemodify(bufname, ":.")
---                         return fname .. [[ %m]]
---                     end,
---                 },
---                 lualine_c = {
---                     function()
---                         -- table.insert(_G.debug_lualine, vim.fn["coc#status"]())
---                         -- return vim.pesc(vim.fn["coc#status"]())
---                         -- return (vim.fn["coc#status"]()):gsub("%%", "%%%%")
---                     end,
---                 },
---                 lualine_y = {
---                     function()
---                         local branch = vim.fn["gina#component#repo#branch"]()
---                         -- table.insert(_G.debug_lualine, branch)
---                         local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
---                         if branch == "" then
---                             return cwd
---                         else
---                             return cwd .. " │ " .. vim.fn["gina#component#repo#branch"]()
---                         end
---                     end,
---                 },
---                 lualine_z = {
---                     function()
---                         local n = #tostring(vim.fn.line("$"))
---                         n = math.max(n, 3)
---                         return "%" .. n .. [[l/%-3L:%-2c]]
---                     end,
---                 },
---             },
---             -- winbar = {
---             --     lualine_c = {'filename'},
---             -- },
---             -- inactive_winbar = {
---             --     lualine_a = {},
---             --     lualine_b = {},
---             --     lualine_c = {'filename'},
---             --     lualine_x = {},
---             --     lualine_y = {},
---             --     lualine_z = {}
---             -- },
---             options = {
---                 theme = theme_colorimetry,
---                 section_separators = { "", "" },
---                 component_separators = { "", "" },
---                 globalstatus = true,
---                 refresh = {
---                     statusline = 10000,
---                     -- statusline = 1000,
---                     tabline = 10000,
---                     winbar = 10000,
---                 },
---             },
---         }
---     end,
--- }
-
--- plugins:push {
---     "https://github.com/rcarriga/nvim-notify",
---     event = "VeryLazy",
---     config = function()
---         require("notify").setup { background_colour = "#000000" }
---         vim.notify = require("notify")
 --     end,
 -- }
 

@@ -21,8 +21,8 @@ vim.opt.listchars = {
 }
 vim.opt.fillchars = {
     eob = " ",
-    stl = "─",
-    stlnc = "─",
+    -- stl = "─",
+    -- stlnc = "─",
 }
 vim.opt.formatoptions:append("M")
 
@@ -44,8 +44,8 @@ vim.opt.matchpairs:append {
 
 -- 下
 vim.opt.showcmd = true
-vim.opt.laststatus = 0
-vim.opt.statusline = "─"
+vim.opt.laststatus = 3
+-- vim.opt.statusline = "─"
 
 -- 左
 vim.opt.number = true
