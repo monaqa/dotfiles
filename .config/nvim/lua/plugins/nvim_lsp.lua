@@ -304,6 +304,7 @@ plugins:push {
 
             fuzzy = {
                 sorts = {
+                    "exact",
                     function(a, b)
                         local source_priority = {
                             lsp = 4,

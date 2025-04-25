@@ -501,7 +501,6 @@ plugins:push {
 
 plugins:push {
     "https://github.com/monaqa/nvim-treesitter-clipping",
-    branch = "fix-rust_doc_comment",
     dependencies = { "https://github.com/thinca/vim-partedit" },
     cond = cond_dev("monaqa/nvim-treesitter-clipping"),
     keys = {

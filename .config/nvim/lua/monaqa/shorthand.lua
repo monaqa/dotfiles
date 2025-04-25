@@ -125,6 +125,7 @@ function M.sethl(name)
     end
 end
 
+---CWD をプラグインとして読み込む。
 function M.load_cwd_as_plugin(source_file_name)
     local cwd = vim.fn.getcwd()
     vim.opt.runtimepath:append(cwd)

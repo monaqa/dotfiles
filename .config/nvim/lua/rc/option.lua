@@ -42,6 +42,13 @@ vim.opt.matchpairs:append {
     "【:】",
 }
 
+vim.opt.guicursor = {
+    "n-v-c-sm:block",
+    "i-ci-ve:ver25",
+    "r-cr-o:hor20",
+    "t:ver25-blinkon1000-blinkoff500-TermCursor",
+}
+
 -- 下
 vim.opt.showcmd = true
 vim.opt.laststatus = 3

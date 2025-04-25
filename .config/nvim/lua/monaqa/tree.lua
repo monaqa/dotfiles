@@ -154,22 +154,6 @@ function M.move(query_str, opts)
     end
 
     vim.fn.setpos(".", { 0, next_node.region.s[1], next_node.region.s[2], 0 })
-
-    -- local m = vim.iter(matches):find(
-    --     ---@param match table<string, MatchNode>
-    --     function(match)
-    --         if match[capture_name] == nil then
-    --             return false
-    --         end
-    --         local capture = match[capture_name]
-    --         return capture.region.s[1] > cursor[2]
-    --             or (capture.region.s[1] == cursor[2] and capture.region.s[2] > cursor[3])
-    --     end
-    -- )
-    -- if m == nil then
-    --     return
-    -- end
-    -- vim.fn.setpos(".", { 0, m[capture_name].region.s[1], m[capture_name].region.s[2], 0 })
 end
 
 return M

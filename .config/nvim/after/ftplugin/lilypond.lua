@@ -464,3 +464,17 @@ create_cmd("LilypondNoteIncrement") {
         })
     end,
 }
+
+create_cmd("LilypondNoteDecrement") {
+    range = "%",
+    nargs = 1,
+    function(meta)
+        local key = meta.args
+        tree.replace_buf("(pitch) @-", function(text)
+            return lilypond.increment_note(text, key, -1)
+        end, {
+            start = meta.line1 - 1,
+            stop = meta.line2,
+        })
+    end,
+}

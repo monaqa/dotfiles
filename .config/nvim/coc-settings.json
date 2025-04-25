@@ -176,5 +176,8 @@
   "list.insertMappings": {
     "<C-j>": "normal:j",
     "<C-k>": "normal:k"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
   }
 }
