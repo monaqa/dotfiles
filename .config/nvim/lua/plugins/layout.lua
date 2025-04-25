@@ -145,7 +145,7 @@ plugins:push {
                     if not vim.endswith(filename, "/") then
                         filename = filename .. "/"
                     end
-                    ft_icon = " "
+                    ft_icon = ""
                 end
 
                 if filename == "" then
@@ -195,7 +195,7 @@ plugins:push {
 
                 return {
                     {
-                        " ",
+                        "",
                         guifg = fg.p0,
                         guibg = "none",
                     },

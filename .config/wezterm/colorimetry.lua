@@ -244,7 +244,7 @@ M.config_colors = {
 }
 
 M.opacity = {
-    fg = 0.80,
+    fg = 1.00,
     bg = 0.90,
 }
 

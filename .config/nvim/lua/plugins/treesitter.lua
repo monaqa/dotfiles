@@ -47,7 +47,7 @@ plugins:push {
 
         parser_config["mermaid"] = {
             install_info = {
-                url = "~/ghq/github.com/monaqa/tree-sitter-mermaid", -- local path or git repo
+                url = "https://github.com/monaqa/tree-sitter-mermaid", -- local path or git repo
                 files = { "src/parser.c" },
             },
             filetype = "mermaid", -- if filetype does not agrees with parser name

@@ -273,6 +273,7 @@ mapset.n("s_") { "<Cmd>split<CR>" }
 mapset.n("s<Bar>") { "<Cmd>vsplit<CR>" }
 mapset.n("sv") { "<Cmd>vsplit<CR>" }
 mapset.n("sq") { "<Cmd>close<CR>" }
+mapset.n("sw") { "<Cmd>bp | bd #<CR>" }
 
 -- <C-w> による window 操作のショートカット
 -- 面倒がらずにちゃんと <C-w> 使おうよ…と思ったがやっぱり面倒くさい
