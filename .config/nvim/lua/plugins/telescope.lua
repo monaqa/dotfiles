@@ -14,13 +14,13 @@ plugins:push {
     },
     cmd = { "Telescope" },
     keys = {
-        {
-            "so",
-            function()
-                local builtin = require("telescope.builtin")
-                builtin.git_files { prompt_prefix = "𝝋" }
-            end,
-        },
+        -- {
+        --     "so",
+        --     function()
+        --         local builtin = require("telescope.builtin")
+        --         builtin.git_files { prompt_prefix = "𝝋" }
+        --     end,
+        -- },
         {
             "sO",
             function()
@@ -28,17 +28,17 @@ plugins:push {
                 builtin.find_files { prompt_prefix = "𝝋" }
             end,
         },
-        {
-            "ss",
-            function()
-                local builtin = require("telescope.builtin")
-                builtin.buffers {
-                    prompt_prefix = "𝜷",
-                    sort_mru = true,
-                    ignore_current_buffer = true,
-                }
-            end,
-        },
+        -- {
+        --     "ss",
+        --     function()
+        --         local builtin = require("telescope.builtin")
+        --         builtin.buffers {
+        --             prompt_prefix = "𝜷",
+        --             sort_mru = true,
+        --             ignore_current_buffer = true,
+        --         }
+        --     end,
+        -- },
         {
             "sg",
             function()
@@ -146,6 +146,13 @@ plugins:push {
         -- Global remapping
         require("telescope").setup {
             defaults = {
+                layout_strategy = "horizontal",
+                layout_config = {
+                    horizontal = {
+                        prompt_position = "top",
+                    },
+                },
+                sorting_strategy = "ascending",
                 vimgrep_arguments = {
                     "rg",
                     "--line-number",

@@ -43,7 +43,7 @@ silents = {
 }
 
 body = {
-	\tempo 4 = 85
+	\tempo 4 = 120
 
 	% \tempo \markup {
 	%   \rhythm { c4 } = 108
@@ -84,15 +84,15 @@ chrds = { \chordmode {
 		\override MultiMeasureRest.expand-limit = #2
 		<< { \keepWithTag #'upper \body } { \silents } >>
 	}
-	\new TabStaff \with {
-		stringTunings = #bass-five-string-tuning
-	} {
-		\huge
-		\set TabStaff.minimumFret = #3
-		\set TabStaff.restrainOpenStrings = ##t
-		\override MultiMeasureRest.expand-limit = #2
-		\keepWithTag #'lower \body
-	}
+	% \new TabStaff \with {
+	% 	stringTunings = #bass-five-string-tuning
+	% } {
+	% 	\huge
+	% 	\set TabStaff.minimumFret = #3
+	% 	\set TabStaff.restrainOpenStrings = ##t
+	% 	\override MultiMeasureRest.expand-limit = #2
+	% 	\keepWithTag #'lower \body
+	% }
 	>>
 
 	\layout {
