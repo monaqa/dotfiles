@@ -1,0 +1,63 @@
+{
+  "title": "Improve Shortcuts in Lunatask",
+  "rules": [
+    {
+      "description": "Improve Katakana Shortcut in Lunatask",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "k",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "f7"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.mikekreeki\\.tasks$"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Improve forward_char Shortcut in Lunatask",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "right_arrow"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.mikekreeki\\.tasks$"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -38,15 +38,11 @@ create_cmd("Split") {
 create_cmd("DiffThese") {
     desc = [[2ウィンドウを開いているとき、両者の差分を取る]],
     function()
-        if vim.fn.winnr("$") == 2 then
-            vim.cmd.diffoff { bang = true }
-            vim.cmd.diffthis()
-            vim.cmd.wincmd("w")
-            vim.cmd.diffthis()
-            vim.cmd.wincmd("w")
-        else
-            vim.notify([[Too many windows.]], vim.log.levels.ERROR)
-        end
+        vim.cmd.diffoff { bang = true }
+        vim.cmd.diffthis()
+        vim.cmd.wincmd("w")
+        vim.cmd.diffthis()
+        vim.cmd.wincmd("w")
     end,
 }
 
