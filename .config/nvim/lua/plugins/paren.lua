@@ -197,7 +197,7 @@ plugins:push {
 
         insx.add("'", {
             enabled = function(ctx)
-                return ctx.filetype == "rust"
+                return ctx.filetype == "rust" or ctx.filetype == "lilypond"
             end,
             action = function(ctx)
                 ctx.send(ctx.char)

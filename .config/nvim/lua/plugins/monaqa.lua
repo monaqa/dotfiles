@@ -14,13 +14,14 @@ end
 
 plugins:push {
     "https://github.com/monaqa/dial.nvim",
-    cond = cond_dev("monaqa/dial.nvim"),
-    keys = {
-        { "<C-a>", mode = { "n", "x" } },
-        { "<C-x>", mode = { "n", "x" } },
-        { "g<C-a>", mode = { "n", "x" } },
-        { "g<C-x>", mode = { "n", "x" } },
-    },
+    -- cond = cond_dev("monaqa/dial.nvim"),
+    -- dir = "~/ghq/github.com/monaqa/dial.nvim",
+    -- keys = {
+    --     { "<C-a>", mode = { "n", "x" } },
+    --     { "<C-x>", mode = { "n", "x" } },
+    --     { "g<C-a>", mode = { "n", "x" } },
+    --     { "g<C-x>", mode = { "n", "x" } },
+    -- },
     config = function()
         local augend = require("dial.augend")
 
@@ -142,7 +143,7 @@ plugins:push {
                 local new_octave_num = math.floor(total_tone / 12)
                 local new_tone = number_to_tone(new_tone_num)
                 local new_octave = number_to_octave(new_octave_num)
-                vim.print(text, tone, octave, new_tone, new_octave)
+                -- vim.print(text, tone, octave, new_tone, new_octave)
                 text = new_tone .. new_octave
                 return { text = text, cursor = #text }
             end,
@@ -235,6 +236,8 @@ plugins:push {
             augend.constant.alias.ja_weekday_full,
             augend.hexcolor.new { case = "lower" },
             augend.semver.alias.semver,
+
+            -- augend.lsp_enum.new {},
         }
 
         require("dial.config").augends:register_group {

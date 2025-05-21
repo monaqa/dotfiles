@@ -347,7 +347,6 @@ if not vim.b.loaded then
             --     ]],
             --     { start = cursor[2], stop = cursor[2] + 1 }
             -- )
-            -- vim.print { matches = matches }
         end,
     })
 
@@ -379,7 +378,6 @@ function _G.vimrc.omnifunc.lilypond(findstart, base)
         ---@type string
         local line = vim.fn.getline(".")
         local start = vim.fn.col(".")
-        vim.print { line = line, start = start, sub = line:sub(start, start) }
         while start > 0 do
             start = start - 1
             if line:sub(start, start) == "\\" then

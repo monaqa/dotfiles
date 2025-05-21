@@ -7,6 +7,7 @@
   "coc.nvim": { "branch": "release", "commit": "6014802cd24c4e761a3d97375e9234e63661c964" },
   "deepl.vim": { "branch": "main", "commit": "59df8cc17bb28989ce562bf4712c724d23baadcd" },
   "denops.vim": { "branch": "main", "commit": "4ff8f353ee54ee67288c1099242444ccb0ab5b69" },
+  "dial.nvim": { "branch": "master", "commit": "2c7e2750372918f072a20f3cf754d845e143d7c9" },
   "dps-ghosttext.vim": { "branch": "master", "commit": "6d92d184de685b16ef8a334c2a892183c3846232" },
   "general-converter.nvim": { "branch": "master", "commit": "79187f115b80120ec556a96a5db0a93b5b3426fd" },
   "gina.vim": { "branch": "master", "commit": "ff6c2ddeca98f886b57fb42283c12e167d6ab575" },
