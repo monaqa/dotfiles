@@ -8,12 +8,12 @@ plugins:push {
     dependencies = { "https://github.com/kyazdani42/nvim-web-devicons" },
     -- lazy = false,
     keys = {
-        {
-            "<Space>t",
-            function()
-                require("aerial").toggle { focus = false }
-            end,
-        },
+        -- {
+        --     "<Space>t",
+        --     function()
+        --         require("aerial").toggle { focus = false }
+        --     end,
+        -- },
         {
             "<Space>i",
             function()

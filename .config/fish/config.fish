@@ -204,7 +204,7 @@ abbr -a rafnew "cd (raf new)"
 
 if type -q lsd
   abbr -a j "lsd -l"
-  # abbr -a jj 'lsd --tree --ignore-glob .git --depth 3'
+  abbr -a tree 'lsd --tree --ignore-glob .git --depth 3'
 else
   abbr -a j "ls -Fhla"
 end

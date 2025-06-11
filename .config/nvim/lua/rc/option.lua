@@ -102,7 +102,7 @@ vim.opt.modelines = 3
 
 vim.opt.hidden = true
 vim.opt.spelllang = { "en", "cjk" }
-vim.opt.backspace = { "indent", "eol", "start" }
+vim.opt.backspace = { "indent", "eol", "start", "nostop" }
 vim.opt.history = 10000
 
 vim.opt.mouse = "a"

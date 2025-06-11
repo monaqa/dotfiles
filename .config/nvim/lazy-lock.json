@@ -8,6 +8,7 @@
   "deepl.vim": { "branch": "main", "commit": "59df8cc17bb28989ce562bf4712c724d23baadcd" },
   "denops.vim": { "branch": "main", "commit": "387fe5771a51b613e21212719414570b96ea8c8e" },
   "dial.nvim": { "branch": "master", "commit": "2c7e2750372918f072a20f3cf754d845e143d7c9" },
+  "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "dps-ghosttext.vim": { "branch": "master", "commit": "6d92d184de685b16ef8a334c2a892183c3846232" },
   "general-converter.nvim": { "branch": "master", "commit": "79187f115b80120ec556a96a5db0a93b5b3426fd" },
   "gina.vim": { "branch": "master", "commit": "ff6c2ddeca98f886b57fb42283c12e167d6ab575" },

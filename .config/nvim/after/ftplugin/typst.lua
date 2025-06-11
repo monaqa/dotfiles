@@ -51,6 +51,8 @@ local function compile_args()
     local modeline = get_modeline()
     local v = {
         "compile",
+        "--features",
+        "html",
         "--input",
         "typscrap_root=/Users/monaqa/Documents/typscrap-contents/content/",
         resolve_target(),
@@ -71,6 +73,7 @@ mapset.n("@o") {
     end,
 }
 mapset.n("@t") { "<Cmd>TypstPreview<CR>" }
+mapset.n("@h") { "<Cmd>vert typst watch --features html -f html %<CR>" }
 
 mapset.n("@q") {
     desc = [[typst compile を実行]],
