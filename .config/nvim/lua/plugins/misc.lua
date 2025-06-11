@@ -25,16 +25,17 @@ plugins:push {
 
         mapset.n("gl") { "<Cmd>lua Snacks.lazygit.open()<CR>" }
 
-        mapset.n("ss") {
-            desc = [[Snacks picker - buffers w/o current]],
-            function()
-                Snacks.picker.buffers {
-                    current = false,
-                    sort_lastused = true,
-                }
-            end,
-        }
-        mapset.n("so") {
+        -- mapset.n("ss") {
+        --     desc = [[Snacks picker - buffers w/o current]],
+        --     function()
+        --         Snacks.picker.buffers {
+        --             current = false,
+        --             sort_lastused = true,
+        --         }
+        --     end,
+        -- }
+
+        mapset.n("sO") {
             desc = [[Snacks picker - files]],
             function()
                 Snacks.picker.files {

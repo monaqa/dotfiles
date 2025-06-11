@@ -30,5 +30,6 @@ require("rc.command")
 require("rc.filetype")
 
 if require("monaqa.lsp").choose_lsp() == "nvim-lsp" then
+    vim.notify("Using nvim-lsp")
     require("rc.nvim_lsp")
 end

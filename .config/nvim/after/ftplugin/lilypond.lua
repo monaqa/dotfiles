@@ -315,7 +315,9 @@ local function show_cursor_line_note_length()
     for _, match in ipairs(matches) do
         if match.len ~= nil then
             local len = len_dict[match.len.text]
-            sum = sum + len
+            if len ~= nil then
+                sum = sum + len
+            end
             current_len = len
         elseif current_len ~= nil then
             sum = sum + current_len

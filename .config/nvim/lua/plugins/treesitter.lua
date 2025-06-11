@@ -17,6 +17,7 @@ end
 -- tree-sitter
 plugins:push {
     "https://github.com/nvim-treesitter/nvim-treesitter",
+    branch = "master",
     lazy = false,
     keys = {
         { "v", mode = "x" },

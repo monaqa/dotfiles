@@ -5,103 +5,103 @@ local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
-plugins:push {
-    "https://github.com/williamboman/mason.nvim",
-    config = function()
-        require("mason").setup {
-            ui = {
-                keymaps = {
-                    apply_language_filter = "g/",
-                },
-            },
-        }
-    end,
-}
+-- plugins:push {
+--     "https://github.com/williamboman/mason.nvim",
+--     config = function()
+--         require("mason").setup {
+--             ui = {
+--                 keymaps = {
+--                     apply_language_filter = "g/",
+--                 },
+--             },
+--         }
+--     end,
+-- }
 
-plugins:push {
-    "https://github.com/williamboman/mason-lspconfig.nvim",
-    dependencies = {
-        "https://github.com/neovim/nvim-lspconfig",
-    },
-    config = function()
-        local lspconfig = require("lspconfig")
-        local function is_node_dir()
-            return lspconfig.util.root_pattern("package.json")(vim.fn.getcwd())
-        end
-        require("mason-lspconfig").setup {
-            ensure_installed = {
-                "denols",
-                "jsonls",
-                "lua_ls",
-                "pyright",
-                "tailwindcss",
-                "ruff",
-                "rust_analyzer",
-                "svelte",
-                "tinymist",
-                "ts_ls",
-                "yamlls",
-            },
-            automatic_installation = true,
-        }
-        require("mason-lspconfig").setup_handlers {
-            function(server_name) -- default handler (optional)
-                lspconfig[server_name].setup {}
-            end,
-            ts_ls = function()
-                lspconfig.ts_ls.setup {
-                    on_attach = function(client)
-                        if not is_node_dir() then
-                            client.stop()
-                        end
-                    end,
-                }
-            end,
-            denols = function()
-                lspconfig.denols.setup {
-                    on_attach = function(client)
-                        if is_node_dir() then
-                            client.stop()
-                        end
-                    end,
-                }
-            end,
-            rust_analyzer = function()
-                lspconfig.rust_analyzer.setup {
-                    settings = {
-                        ["rust-analyzer"] = {
-                            check = {
-                                command = "clippy",
-                            },
-                            completion = {
-                                privateEditable = {
-                                    enable = true,
-                                },
-                                callable = {
-                                    snippets = "fill_arguments",
-                                },
-                            },
-                        },
-                    },
-                }
-            end,
-        }
-    end,
-}
+-- plugins:push {
+--     "https://github.com/williamboman/mason-lspconfig.nvim",
+--     dependencies = {
+--         "https://github.com/neovim/nvim-lspconfig",
+--     },
+--     config = function()
+--         local lspconfig = require("lspconfig")
+--         local function is_node_dir()
+--             return lspconfig.util.root_pattern("package.json")(vim.fn.getcwd())
+--         end
+--         require("mason-lspconfig").setup {
+--             ensure_installed = {
+--                 "denols",
+--                 "jsonls",
+--                 "lua_ls",
+--                 "pyright",
+--                 "tailwindcss",
+--                 "ruff",
+--                 "rust_analyzer",
+--                 "svelte",
+--                 "tinymist",
+--                 "ts_ls",
+--                 "yamlls",
+--             },
+--             automatic_installation = true,
+--         }
+--         require("mason-lspconfig").setup_handlers {
+--             function(server_name) -- default handler (optional)
+--                 lspconfig[server_name].setup {}
+--             end,
+--             ts_ls = function()
+--                 lspconfig.ts_ls.setup {
+--                     on_attach = function(client)
+--                         if not is_node_dir() then
+--                             client.stop()
+--                         end
+--                     end,
+--                 }
+--             end,
+--             denols = function()
+--                 lspconfig.denols.setup {
+--                     on_attach = function(client)
+--                         if is_node_dir() then
+--                             client.stop()
+--                         end
+--                     end,
+--                 }
+--             end,
+--             rust_analyzer = function()
+--                 lspconfig.rust_analyzer.setup {
+--                     settings = {
+--                         ["rust-analyzer"] = {
+--                             check = {
+--                                 command = "clippy",
+--                             },
+--                             completion = {
+--                                 privateEditable = {
+--                                     enable = true,
+--                                 },
+--                                 callable = {
+--                                     snippets = "fill_arguments",
+--                                 },
+--                             },
+--                         },
+--                     },
+--                 }
+--             end,
+--         }
+--     end,
+-- }
 
 -- plugins:push {
 --     "https://github.com/j-hui/fidget.nvim",
 -- }
 
 -- nvim_lsp
-plugins:push {
-    "https://github.com/neovim/nvim-lspconfig",
-    -- config = function()
-    --     for _, ls in ipairs(ensure_installed) do
-    --         require("lspconfig")[ls].setup {}
-    --     end
-    -- end,
-}
+-- plugins:push {
+--     "https://github.com/neovim/nvim-lspconfig",
+--     -- config = function()
+--     --     for _, ls in ipairs(ensure_installed) do
+--     --         require("lspconfig")[ls].setup {}
+--     --     end
+--     -- end,
+-- }
 
 plugins:push {
     "https://github.com/folke/lazydev.nvim",

@@ -14,31 +14,34 @@ plugins:push {
     },
     cmd = { "Telescope" },
     keys = {
-        -- {
-        --     "so",
-        --     function()
-        --         local builtin = require("telescope.builtin")
-        --         builtin.git_files { prompt_prefix = "𝝋" }
-        --     end,
-        -- },
         {
-            "sO",
+            "so",
             function()
                 local builtin = require("telescope.builtin")
-                builtin.find_files { prompt_prefix = "𝝋" }
+                builtin.git_files {
+                    prompt_prefix = "𝝋",
+                    show_untracked = true,
+                }
             end,
         },
         -- {
-        --     "ss",
+        --     "sO",
         --     function()
         --         local builtin = require("telescope.builtin")
-        --         builtin.buffers {
-        --             prompt_prefix = "𝜷",
-        --             sort_mru = true,
-        --             ignore_current_buffer = true,
-        --         }
+        --         builtin.find_files { prompt_prefix = "𝝋" }
         --     end,
         -- },
+        {
+            "ss",
+            function()
+                local builtin = require("telescope.builtin")
+                builtin.buffers {
+                    prompt_prefix = "𝜷",
+                    sort_mru = true,
+                    ignore_current_buffer = true,
+                }
+            end,
+        },
         {
             "sg",
             function()
