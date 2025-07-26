@@ -1,4 +1,6 @@
 local shorthand = require("monaqa").shorthand
+local autocmd_vimrc = shorthand.autocmd_vimrc
+local create_cmd = shorthand.create_cmd
 local mapset = shorthand.mapset
 local vec = require("rc.util.vec")
 
@@ -17,7 +19,7 @@ end
 -- tree-sitter
 plugins:push {
     "https://github.com/nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main",
     lazy = false,
     keys = {
         { "v", mode = "x" },
@@ -25,233 +27,197 @@ plugins:push {
         { "<C-i>", mode = "x" },
     },
     config = function()
-        -- require("nvim-treesitter.install").compilers = { "gcc-12" }
-        -- require("nvim-treesitter.install").compilers = { "gcc-11" }
+        ---@param value boolean | fun(buf): boolean
+        ---@param defaults boolean
+        ---@returns value fun(buf): boolean
+        local function unwrap_bool_func(value, defaults)
+            if value == nil then
+                return function()
+                    return defaults
+                end
+            end
+            if type(value) == "boolean" then
+                return function()
+                    return value
+                end
+            end
+            return value
+        end
 
-        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+        ---@class monaqa.TSConfig
+        ---@field custom_installer? ParserInfo
+        ---@field filetype? string[]
+        ---@field highlight? boolean | fun(buf): boolean
+        ---@field indent? boolean | fun(buf): boolean
+        ---@field folds? boolean | fun(buf): boolean
 
-        -- parser_config["todome"] = {
-        --     install_info = {
-        --         url = "~/ghq/github.com/monaqa/tree-sitter-todome", -- local path or git repo
-        --         files = { "src/parser.c", "src/scanner.cc" },
-        --     },
-        --     filetype = "todome", -- if filetype does not agrees with parser name
-        -- }
+        -- setup で install_dir などの値が確定する。
+        -- nvim-treesitter の他の関数に触るより前に呼ぶべき。
+        require("nvim-treesitter").setup {}
 
-        parser_config["lilypond"] = {
-            install_info = {
-                url = "~/ghq/github.com/monaqa/tree-sitter-lilypond", -- local path or git repo
-                files = { "src/parser.c" },
-            },
-            filetype = "lilypond", -- if filetype does not agrees with parser name
-        }
+        ---@type table<string, monaqa.TSConfig>
+        local parser_configs = {
+            -- standard parsers
+            bash = {},
+            css = {},
+            d2 = {},
+            dot = {},
+            html = {},
+            json = { indent = true },
+            lua = {},
+            markdown = { indent = true, filetype = { "mdx", "obsidian" } },
+            markdown_inline = {},
+            mermaid = {},
+            python = { indent = true },
+            query = {},
+            rust = { indent = true },
+            svelte = { indent = true },
+            toml = {},
+            typescript = {},
+            typst = {},
+            yaml = {},
 
-        parser_config["mermaid"] = {
-            install_info = {
-                url = "https://github.com/monaqa/tree-sitter-mermaid", -- local path or git repo
-                files = { "src/parser.c" },
-            },
-            filetype = "mermaid", -- if filetype does not agrees with parser name
-        }
-
-        parser_config["satysfi"] = {
-            install_info = {
-                url = "https://github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
-                files = { "src/parser.c", "src/scanner.c" },
-                branch = "master",
-            },
-            filetype = "satysfi", -- if filetype does not agrees with parser name
-        }
-
-        parser_config["satysfi_v0_1_0"] = {
-            install_info = {
-                url = "~/ghq/github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
-                files = { "src/parser.c", "src/scanner.c" },
-            },
-            filetype = "satysfi_v0_1_0", -- if filetype does not agrees with parser name
-        }
-
-        parser_config["jsonl"] = {
-            install_info = {
-                url = "https://github.com/monaqa/tree-sitter-jsonl", -- local path or git repo
-                files = { "src/parser.c" },
-            },
-            filetype = "jsonl", -- if filetype does not agrees with parser name
-        }
-
-        parser_config["nu"] = {
-            install_info = {
-                url = "https://github.com/nushell/tree-sitter-nu", -- local path or git repo
-                revision = "main",
-                files = { "src/parser.c" },
-            },
-            filetype = "nu", -- if filetype does not agrees with parser name
-        }
-
-        parser_config["unifieddiff"] = {
-            install_info = {
-                url = "https://github.com/monaqa/tree-sitter-unifieddiff",
-                -- url = "~/ghq/github.com/monaqa/tree-sitter-unifieddiff",
-                files = { "src/parser.c", "src/scanner.c" },
-            },
-            filetype = "diff", -- if filetype does not agrees with parser name
-        }
-
-        parser_config["d2"] = {
-            install_info = {
-                url = "https://github.com/ravsii/tree-sitter-d2", -- local path or git repo
-                revision = "main",
-                files = { "src/parser.c" },
-            },
-            filetype = "d2", -- if filetype does not agrees with parser name
-        }
-
-        parser_config["pkl"] = {
-            install_info = {
-                url = "https://github.com/apple/tree-sitter-pkl",
-                revision = "main",
-                files = { "src/parser.c", "src/scanner.c" },
-            },
-            filetype = "pkl",
-        }
-
-        vim.treesitter.language.register("markdown", { "mdx", "obsidian" })
-        vim.treesitter.language.register("gitcommit", { "gina-commit", "gin-commit" })
-        vim.treesitter.language.register("unifieddiff", { "diff", "gin-diff", "git" })
-
-        local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter"
-        vim.opt.runtimepath:prepend(parser_install_dir)
-
-        require("nvim-treesitter.configs").setup {
-            parser_install_dir = parser_install_dir,
-            ensure_installed = {
-                "bash",
-                "css",
-                "dot",
-                "html",
-                "json",
-                "lua",
-                "markdown",
-                "markdown_inline",
-                "python",
-                "query",
-                "rust",
-                "svelte",
-                "toml",
-                "typescript",
-                "yaml",
-
-                -- custom grammar
-                -- "satysfi",
-                -- "satysfi_v0_1_0",
-                "mermaid",
-                "todome",
-            },
-            highlight = {
-                enable = true,
-                -- disable = { "help" },
-                disable = function(lang, buf)
-                    if lang == "vimdoc" then
-                        return true
-                    end
-                    local max_filesize = 1024 * 1024 -- 1 MB
-                    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-                    if ok and stats and stats.size > max_filesize then
-                        vim.notify("File too large: tree-sitter disabled.", vim.log.levels.WARN)
-                        return true
-                    end
-                    if vim.fn.line("$") > 20000 then
-                        vim.notify("Buffer has too many lines: tree-sitter disabled.", vim.log.levels.WARN)
-                        return true
-                    end
-                end,
-                additional_vim_regex_highlighting = false,
-            },
-            indent = {
-                enable = true,
-                disable = {
-                    "bash",
-                    "css",
-                    "html",
-                    -- "json",
-                    "lua",
-                    -- 'markdown',
-                    -- "python",
-                    "query",
-                    -- 'rust',
-                    -- 'svelte',
-                    "toml",
-                    "typescript",
-                    "yaml",
-
-                    -- custom grammar
-                    "mermaid",
-                    -- 'satysfi',
-                    -- 'satysfi_v0_1_0',
-                    "todome",
-                },
-            },
-            incremental_selection = {
-                enable = true,
-            },
-            textobjects = {
-                select = {
-                    enable = true,
-                    keymaps = {
-                        -- You can use the capture groups defined in textobjects.scm
-                        ["af"] = "@function.outer",
-                        ["if"] = "@function.inner",
-                        ["ac"] = "@class.outer",
-                        ["ic"] = "@class.inner",
-
-                        -- Or you can define your own textobjects like this
-
-                        -- ["iF"] = {
-                        --   python = "(function_definition) @function",
-                        --   cpp = "(function_definition) @function",
-                        --   c = "(function_definition) @function",
-                        --   java = "(method_declaration) @function",
-                        -- },
+            -- custom parsers
+            lilypond = {
+                custom_installer = {
+                    tier = 2,
+                    install_info = {
+                        path = "~/ghq/github.com/monaqa/tree-sitter-lilypond",
                     },
                 },
+                filetype = { "lilypond" },
             },
-            -- matchup との連携はなんかうまくいかんかった（理由は忘れた）
-            matchup = {
-                enable = false, -- mandatory, false will disable the whole extension
-                -- disable = { "c", "ruby" },  -- optional, list of language that will be disabled
+            jsonl = {
+                custom_installer = {
+                    tier = 2,
+                    install_info = {
+                        url = "https://github.com/monaqa/tree-sitter-jsonl",
+                        revision = "master",
+                    },
+                },
+                filetype = { "jsonl" },
             },
-            query_linter = {
-                enable = true,
-                use_virtual_text = true,
-                lint_events = { "BufWrite", "CursorHold", "InsertLeave" },
+            unifieddiff = {
+                custom_installer = {
+                    tier = 2,
+                    install_info = {
+                        url = "https://github.com/monaqa/tree-sitter-unifieddiff",
+                        revision = "master",
+                    },
+                },
+                filetype = { "diff", "gin-diff", "git" },
             },
         }
 
-        mapset.x("v") {
-            desc = [[treesitter の構文をもとに範囲を拡張する]],
-            expr = true,
-            function()
-                if vim.fn.mode() == "v" then
-                    return "<Plug>(vimrc-treesitter-increment-select)"
+        -- parser の install （custom parser は事前に情報を詰めておく）
+        autocmd_vimrc("User") {
+            pattern = "TSUpdate",
+            callback = function()
+                vim.iter(parser_configs):each(function(key, value)
+                    if value.custom_installer ~= nil then
+                        require("nvim-treesitter.parsers")[key] = value.custom_installer
+                    end
+                end)
+            end,
+        }
+        require("nvim-treesitter").install(vim.tbl_keys(parser_configs))
+
+        -- ハイライト、インデント、fold の設定
+        for lang, config in pairs(parser_configs) do
+            local enables_highlight = unwrap_bool_func(config.highlight, true)
+            local enables_indent = unwrap_bool_func(config.indent, false)
+            local enables_folds = unwrap_bool_func(config.folds, false)
+            if config.filetype ~= nil then
+                vim.treesitter.language.register(lang, config.filetype)
+            end
+            autocmd_vimrc("FileType") {
+                pattern = vim.treesitter.language.get_filetypes(lang),
+                callback = function(buf)
+                    if enables_highlight(buf) then
+                        vim.treesitter.start()
+                    end
+                    if enables_indent(buf) then
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end
+                    if enables_folds(buf) then
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end
+                end,
+            }
+        end
+
+        create_cmd("TSEditQuery") {
+            nargs = "*",
+            function(args)
+                local query_name = args.fargs[1]
+                if query_name == nil then
+                    query_name = "highlights"
+                end
+
+                local lang = args.fargs[2]
+                if lang == nil then
+                    local filetype = vim.bo.filetype
+                    lang = vim.treesitter.language.get_lang(filetype)
+                    if lang == nil then
+                        error("failed to get treesitter language from current buffer.")
+                    end
+                end
+                local files = vim.treesitter.query.get_files(lang, query_name)
+                if #files == 0 then
+                    vim.cmd.edit(vim.fs.joinpath(vim.fn.stdpath("config"), "queries", lang, query_name .. ".scm"))
+                elseif #files == 1 then
+                    vim.cmd.edit(files[1])
                 else
-                    return "v"
+                    vim.ui.select(files, {
+                        prompt = "Choose one file to open",
+                    }, function(choice)
+                        vim.cmd.edit(choice)
+                    end)
+                end
+            end,
+            complete = function(arglead, cmdline, cursorpos)
+                local success, result = pcall(vim.api.nvim_parse_cmd, cmdline, {})
+                if success then
+                    vim.notify(vim.inspect(result.args))
+                    if #result.args == 0 then
+                        return {
+                            "highlights",
+                            "folds",
+                            "indents",
+                            "injections",
+                            "aerial",
+                            "clipping",
+                        }
+                    end
                 end
             end,
         }
-        mapset.x("<C-i>") { "<Plug>(vimrc-treesitter-increment-select)" }
-        mapset.x("<C-o>") { "<Plug>(vimrc-treesitter-decrement-select)" }
-        mapset.x("<Plug>(vimrc-treesitter-increment-select)") {
-            desc = [[構文に従って選択範囲を拡張する]],
-            function()
-                require("nvim-treesitter.incremental_selection").node_incremental()
-            end,
-        }
-        mapset.x("<Plug>(vimrc-treesitter-decrement-select)") {
-            desc = [[構文に従って選択範囲を拡張する]],
-            function()
-                require("nvim-treesitter.incremental_selection").node_decremental()
-            end,
-        }
+
+        -- mapset.x("v") {
+        --     desc = [[treesitter の構文をもとに範囲を拡張する]],
+        --     expr = true,
+        --     function()
+        --         if vim.fn.mode() == "v" then
+        --             return "<Plug>(vimrc-treesitter-increment-select)"
+        --         else
+        --             return "v"
+        --         end
+        --     end,
+        -- }
+        -- mapset.x("<C-i>") { "<Plug>(vimrc-treesitter-increment-select)" }
+        -- mapset.x("<C-o>") { "<Plug>(vimrc-treesitter-decrement-select)" }
+        -- mapset.x("<Plug>(vimrc-treesitter-increment-select)") {
+        --     desc = [[構文に従って選択範囲を拡張する]],
+        --     function()
+        --         require("nvim-treesitter.incremental_selection").node_incremental()
+        --     end,
+        -- }
+        -- mapset.x("<Plug>(vimrc-treesitter-decrement-select)") {
+        --     desc = [[構文に従って選択範囲を拡張する]],
+        --     function()
+        --         require("nvim-treesitter.incremental_selection").node_decremental()
+        --     end,
+        -- }
     end,
 }
 
