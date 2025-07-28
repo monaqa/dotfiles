@@ -184,10 +184,22 @@ create_cmd("ToggleBracketedPasteMode") {
     end,
 }
 
+local shell_prompts = {
+    "❯",
+    "✗",
+    "$",
+}
+
 local function reformat_cmdstring(body)
+    body = body:gsub("(.-)(\r?\n)", function(line, eol)
+        for _, char in ipairs(shell_prompts) do
+            line = line:gsub("^%s*" .. char .. " ", "")
+        end
+        return line .. eol
+    end)
     body = vim.trim(body)
     if bracketed_paste_mode then
-        return monaqa.str.esc("[200~") .. body .. "\n" .. monaqa.str.esc("[201~\n")
+        return monaqa.str.esc("[200~") .. body .. monaqa.str.esc("[201~\n")
     else
         return body .. "\n"
     end

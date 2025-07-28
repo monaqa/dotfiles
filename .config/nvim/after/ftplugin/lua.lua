@@ -27,6 +27,7 @@ mapset.n("g==") {
 mapset.x("g=") { expr = true, apply_stylua, desc = [[選択範囲に stylua を適用する]] }
 
 mapset.ia("!=") { "~=" }
+mapset.ia("let") { "local" }
 
 -- snippet file ならばその言語名を返す。
 local function get_snippet_ft()

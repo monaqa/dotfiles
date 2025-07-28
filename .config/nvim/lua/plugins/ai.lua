@@ -21,6 +21,27 @@ plugins:push {
             ["nvim-lsp"] = "blink",
         })[monaqa.lsp.choose_lsp()]
 
+        local adapters = {}
+
+        if _G.vimrc.plugin.codecompanion ~= nil then
+            adapters = _G.vimrc.plugin.codecompanion.adapters
+        end
+
+        if vim.env["GEMINI_API_KEY"] ~= nil then
+            adapters.gemini = function()
+                return require("codecompanion.adapters").extend("gemini", {
+                    schema = {
+                        model = {
+                            default = "gemini-2.5-flash-preview-05-20",
+                        },
+                    },
+                    env = {
+                        api_key = "GEMINI_API_KEY",
+                    },
+                })
+            end
+        end
+
         require("codecompanion").setup {
             strategies = {
                 chat = {
@@ -33,18 +54,7 @@ plugins:push {
                     adapter = "gemini",
                 },
             },
-            gemini = function()
-                return require("codecompanion.adapters").extend("gemini", {
-                    schema = {
-                        model = {
-                            default = "gemini-2.5-flash-preview-05-20",
-                        },
-                    },
-                    env = {
-                        api_key = "GEMINI_API_KEY",
-                    },
-                })
-            end,
+            adapters = adapters,
             -- display = {
             --     diff = {
             --         provider = "mini_diff",

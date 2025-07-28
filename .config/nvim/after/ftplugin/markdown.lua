@@ -1,4 +1,5 @@
 local monaqa = require("monaqa")
+local create_cmd = monaqa.shorthand.create_cmd
 local mapset = monaqa.shorthand.mapset_local
 
 vim.cmd([[
@@ -66,3 +67,15 @@ vim.opt_local.formatoptions:append("j")
 vim.opt_local.formatoptions:append("r")
 
 mapset.n("@o") { "<Cmd>MarkdownPreview<CR>" }
+
+create_cmd("CorrectLinks") {
+    desc = [[Typst 形式のリンクを Markdown 形式に直す]],
+    range = "%",
+    function(meta)
+        vim.cmd.substitute {
+            [[/\c\v#link\("(.*)"\)\[(.*)\]/[\2](\1)/g]],
+            range = { meta.line1, meta.line2 },
+            mods = { keeppatterns = true },
+        }
+    end,
+}

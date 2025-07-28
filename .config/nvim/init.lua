@@ -7,6 +7,7 @@ _G.vimrc = {
     state = {},
     debug = {},
     fn = {},
+    plugin = {},
 }
 
 -- Workaround for bug in Neovim: https://github.com/neovim/neovim/issues/31675

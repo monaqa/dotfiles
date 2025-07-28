@@ -101,15 +101,6 @@
       "args": [],
       "filetypes": ["typst"]
     },
-    "ccls": {
-      "command": "ccls",
-      "filetypes": ["c", "cpp", "objc", "objcpp"],
-      "rootPatterns": [
-        ".ccls-root",
-        "compile_commands.json",
-        ".git/",
-      ]
-    },
     "svelte": {
       "command": "/Users/monaqa/.local/share/nvim/mason/bin/svelteserver",
       "args": ["--stdio"],
