@@ -125,7 +125,7 @@ plugins:push {
 
         insx.add("`", {
             enabled = function(ctx)
-                return ctx.match([[`\%#`]]) and vim.tbl_contains({ "markdown", "typst" }, ctx.filetype)
+                return ctx.match([[`\%#`]]) and vim.tbl_contains({ "markdown", "codecompanion", "typst" }, ctx.filetype)
             end,
             action = function(ctx)
                 if ctx.match([[```\%#```]]) then
@@ -158,7 +158,7 @@ plugins:push {
                     indent = 0,
                 },
                 {
-                    insx.with.filetype { "markdown", "typst" },
+                    insx.with.filetype { "markdown", "codecompanion", "typst" },
                 }
             )
         )
@@ -465,7 +465,7 @@ plugins:push {
 
         local recipe_codeblock = {
             {
-                filetype = { "markdown", "obsidian", "typst" },
+                filetype = { "markdown", "codecompanion", "obsidian", "typst" },
                 input = { "c" },
                 buns = { "```", "```" },
                 kind = { "add" },
@@ -473,7 +473,7 @@ plugins:push {
                 command = { [[']s/^\s*//]] },
             },
             {
-                filetype = { "markdown", "obsidian", "typst" },
+                filetype = { "markdown", "codecompanion", "obsidian", "typst" },
                 input = { "C" },
                 buns = { "SandwichMarkdownCodeSnippet()", [["```"]] },
                 expr = 1,

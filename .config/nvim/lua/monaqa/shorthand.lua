@@ -17,7 +17,22 @@ function M.autocmd_vimrc(event)
     end
 end
 
+--- @class monaqa.cmd_fn_args
+--- @field name string
+--- @field args string
+--- @field fargs string[]
+--- @field nargs string
+--- @field bang boolean
+--- @field line1 integer
+--- @field line2 integer
+--- @field range 0 | 1 | 2
+--- @field count integer
+--- @field reg string
+--- @field mods string
+--- @field smods table
+
 --- @class monaqa.cmd_args
+--- @field [1] fun(args: monaqa.cmd_fn_args): nil
 --- @field buffer? boolean | number
 --- @field addr? any
 --- @field bang? boolean

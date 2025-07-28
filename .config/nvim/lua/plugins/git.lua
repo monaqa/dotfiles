@@ -260,8 +260,8 @@ plugins:push {
                     folder_statuses = "only_folded", -- One of 'never', 'only_folded' or 'always'.
                 },
                 win_config = { -- See |diffview-config-win_config|
-                    position = "left",
-                    width = 15,
+                    position = "bottom",
+                    width = 10,
                     win_opts = {},
                 },
             },
@@ -592,7 +592,7 @@ plugins:push {
                     end
                 end
                 package.loaded.gitsigns.change_base(branch, true)
-                vim.cmd(([[DiffViewOpen %s...HEAD]]):format(branch))
+                vim.cmd(([[DiffviewOpen %s...HEAD]]):format(branch))
             end,
         }
     end,

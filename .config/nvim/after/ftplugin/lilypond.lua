@@ -187,7 +187,7 @@ local key_to_scale_notes = {
     ["f\\major"] = { "f", "g", "a", "bes", "c", "d", "e" },
     ["d\\minor"] = { "f", "g", "a", "bes", "c", "d", "e" },
 
-    ["ges\\major"] = { "ges", "aes", "bes", "b", "des", "ees", "f" },
+    ["ges\\major"] = { "ges", "aes", "bes", "ces", "des", "ees", "f" },
     ["ees\\minor"] = { "ges", "aes", "bes", "ces", "des", "ees", "f" },
 
     ["g\\major"] = { "g", "a", "b", "c", "d", "e", "fis" },

@@ -58,11 +58,13 @@ plugins:push {
         ---@type table<string, monaqa.TSConfig>
         local parser_configs = {
             -- standard parsers
+            astro = {},
             bash = {},
             css = {},
             d2 = {},
             dot = {},
             html = {},
+            javascript = {},
             json = { indent = true },
             lua = {},
             markdown = { indent = true, filetype = { "mdx", "obsidian" } },

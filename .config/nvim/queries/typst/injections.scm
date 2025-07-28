@@ -1,7 +1,6 @@
-(raw_blck
-  (blob) @injection.shebang @injection.content)
+((comment) @injection.content
+  (#set! injection.language "comment"))
 
 (raw_blck
-  lang: (ident) @_lang
-  (blob) @injection.content
-  (#set-lang-from-info-string! @_lang))
+  (ident) @injection.language
+  (blob) @injection.content)

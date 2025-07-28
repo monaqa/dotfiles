@@ -156,4 +156,27 @@ function M.move(query_str, opts)
     vim.fn.setpos(".", { 0, next_node.region.s[1], next_node.region.s[2], 0 })
 end
 
+---@param query_str string
+---@param replacef fun(s: string, n: TSNode): string
+---@param opts? {bufnr?: integer, range?: Range4}
+function M.replace(query_str, replacer, opts)
+    if opts == nil then
+        opts = {}
+    end
+    local bufnr = opts.bufnr
+    local range = opts.range
+    local parser = vim.treesitter.get_parser(bufnr)
+    if parser == nil then
+        return
+    end
+    local tree = parser:parse()[1]
+    local query = vim.treesitter.query.parse(parser:lang(), query_str)
+    local smallest_node = tree:root()
+    if range ~= nil then
+        smallest_node = parser:node_for_range(range, {})
+    end
+
+    vim.iter(query:iter_captures(smallest_node, bufnr))
+end
+
 return M
