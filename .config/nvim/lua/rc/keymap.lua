@@ -1000,3 +1000,11 @@ mapset.n("gF") {
     desc = "外部の open コマンドを用いてパスを開く",
     "<Cmd>!open <cfile><CR>",
 }
+
+-- mapset.n("<LeftMouse>") {
+--     function() end,
+-- }
+--
+-- mapset.n("<LeftRelease>") {
+--     function() end,
+-- }

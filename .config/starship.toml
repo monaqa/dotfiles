@@ -1,54 +1,3 @@
-# format = """
-# $time\
-# $cmd_duration\
-# $line_break\
-# $username\
-# $hostname\
-# $shlvl\
-# $kubernetes\
-# $directory\
-# $git_branch\
-# $git_commit\
-# $git_state\
-# $git_status\
-# $hg_branch\
-# $docker_context\
-# $package\
-# $cmake\
-# $dart\
-# $dotnet\
-# $elixir\
-# $elm\
-# $erlang\
-# $golang\
-# $helm\
-# $java\
-# $julia\
-# $nim\
-# $nodejs\
-# $ocaml\
-# $perl\
-# $php\
-# $purescript\
-# $python\
-# $ruby\
-# $rust\
-# $swift\
-# $terraform\
-# $zig\
-# $nix_shell\
-# $conda\
-# $memory_usage\
-# $aws\
-# $gcloud\
-# $env_var\
-# $crystal\
-# $custom\
-# $line_break\
-# $jobs\
-# $battery\
-# $status\
-# $character"""
 format = """
 $time\
 $cmd_duration\
@@ -57,10 +6,10 @@ $username\
 $hostname\
 $shlvl\
 $directory\
-$git_branch\
-$git_commit\
-$git_state\
-$git_status\
+${custom.git_branch}\
+${custom.git_commit}\
+${custom.git_status}\
+${custom.jj}\
 $golang\
 $julia\
 $nim\
@@ -94,3 +43,44 @@ style = "fg:249"
 
 [python]
 format = '[${symbol}(${version}) (\($virtualenv\))]($style)'
+
+# optionally disable git modules when JJ is found.
+# note that you'll need to add ${custom.git_branch}, ${custom.git_commit} etc
+# into format: https://starship.rs/config/#default-prompt-format
+[git_status]
+disabled = true
+
+[custom.git_status]
+when = "not starship-jj"
+command = "starship module git_status"
+style = "" # This disables the default "(bold green)" style
+description = "Only show git_status if we're not in a jj repo"
+
+[git_commit]
+disabled = true
+
+[custom.git_commit]
+when = "not starship-jj"
+command = "starship module git_commit"
+style = ""
+description = "Only show git_commit if we're not in a jj repo"
+
+[git_metrics]
+disabled = true
+
+[git_branch]
+disabled = true
+
+[custom.git_branch]
+when = "not starship-jj"
+command = "starship module git_branch"
+description = "Only show git_branch if we're not in a jj repo"
+style = ""
+
+[custom.jj]
+command = "prompt"
+format = "$output"
+ignore_timeout = true
+shell = ["starship-jj", "--ignore-working-copy", "starship"]
+use_stdin = false
+when = true

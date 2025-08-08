@@ -75,20 +75,13 @@ plugins:push {
             rust = { indent = true },
             svelte = { indent = true },
             toml = {},
+            tsx = {},
             typescript = {},
             typst = {},
+            vim = {},
             yaml = {},
 
             -- custom parsers
-            lilypond = {
-                custom_installer = {
-                    tier = 2,
-                    install_info = {
-                        path = "~/ghq/github.com/monaqa/tree-sitter-lilypond",
-                    },
-                },
-                filetype = { "lilypond" },
-            },
             jsonl = {
                 custom_installer = {
                     tier = 2,
@@ -110,6 +103,18 @@ plugins:push {
                 filetype = { "diff", "gin-diff", "git" },
             },
         }
+
+        if vim.uv.fs_stat("/Users/monaqa/ghq/github.com/monaqa/tree-sitter-lilypond") then
+            parser_configs.lilypond = {
+                custom_installer = {
+                    tier = 2,
+                    install_info = {
+                        path = "~/ghq/github.com/monaqa/tree-sitter-lilypond",
+                    },
+                },
+                filetype = { "lilypond" },
+            }
+        end
 
         -- parser の install （custom parser は事前に情報を詰めておく）
         autocmd_vimrc("User") {
@@ -142,7 +147,7 @@ plugins:push {
                         vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                     end
                     if enables_folds(buf) then
-                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
                     end
                 end,
             }

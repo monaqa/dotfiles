@@ -1,5 +1,6 @@
+local lsp = require("monaqa.lsp")
 return {
-    cmd = { "pyright-langserver", "--stdio" },
+    cmd = { lsp.mason_bin("pyright-langserver"), "--stdio" },
     filetypes = { "python" },
     root_markers = {
         "pyproject.toml",

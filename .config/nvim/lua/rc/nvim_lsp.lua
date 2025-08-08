@@ -8,7 +8,7 @@ local mapset = shorthand.mapset
 -- Section1 common config
 vim.lsp.config("*", {})
 
-vim.lsp.enable { "pyright", "ruff" }
+vim.lsp.enable { "pyright", "ruff", "lua_ls" }
 
 vim.fn.sign_define(
     "DiagnosticSignError",

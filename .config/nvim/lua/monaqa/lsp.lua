@@ -12,4 +12,8 @@ function M.choose_lsp()
     return "coc"
 end
 
+function M.mason_bin(server_name)
+    return vim.fs.joinpath(vim.fn.stdpath("data"), "mason/bin", server_name)
+end
+
 return M

@@ -5,18 +5,18 @@ local vec = require("rc.util.vec")
 
 local plugins = vec {}
 
--- plugins:push {
---     "https://github.com/williamboman/mason.nvim",
---     config = function()
---         require("mason").setup {
---             ui = {
---                 keymaps = {
---                     apply_language_filter = "g/",
---                 },
---             },
---         }
---     end,
--- }
+plugins:push {
+    "https://github.com/williamboman/mason.nvim",
+    config = function()
+        require("mason").setup {
+            ui = {
+                keymaps = {
+                    apply_language_filter = "g/",
+                },
+            },
+        }
+    end,
+}
 
 -- plugins:push {
 --     "https://github.com/williamboman/mason-lspconfig.nvim",
