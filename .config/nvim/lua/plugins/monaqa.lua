@@ -689,12 +689,26 @@ plugins:push {
                     ),
                     labels = { "typst-pandoc" },
                 },
+                {
+                    desc = "rich text 形式でヤンクする",
+                    converter = function(s)
+                        require("rc.clipboard").copy_html_to_clipboard(s, vim.bo.filetype)
+                        return s
+                    end,
+                    labels = { "richtext" },
+                },
             },
         }
         mapset.nx("<Space>g") {
             desc = [[General Converter]],
             expr = true,
             require("general_converter").operator_convert(),
+        }
+
+        mapset.nx("@y") {
+            desc = [[yank as rich text]],
+            expr = true,
+            require("general_converter").operator_convert("richtext"),
         }
     end,
 }
