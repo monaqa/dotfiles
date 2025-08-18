@@ -107,6 +107,18 @@ create_cmd("RemoveUnwantedSpaces") {
 
 create_cmd("YankCurrentFileName") { [[let @+ = expand("%:p")]] }
 
+create_cmd("Compress") {
+    desc = [[空行を消す]],
+    range = "%",
+    function(meta)
+        vim.cmd.substitute {
+            [[/^$\n//]],
+            range = { meta.line1, meta.line2 },
+            mods = { keeppatterns = true },
+        }
+    end,
+}
+
 create_cmd("SubstituteCommaPeriod") {
     desc = [[コンマ・ピリオドを句読点に直す]],
     bang = true,

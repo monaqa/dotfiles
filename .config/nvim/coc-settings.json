@@ -9,6 +9,7 @@
     "~/.local/share/nvim/lazy/telescope.nvim/lua",
     "~/.local/share/nvim/lazy/plenary.nvim/lua",
     "~/.local/share/nvim/lazy/neotest/lua/",
+    "~/.local/share/nvim/lazy/snacks.nvim/lua/",
     "~/.config/nvim/lua",
   ],
   "Lua.format.enable": false,
@@ -37,6 +38,7 @@
   "rust-analyzer.completion.privateEditable.enable": true,
   "rust-analyzer.lens.enable": false,
   "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.procMacro.attributes.enable": true,
   "rust-analyzer.updates.channel": "stable",
 
   "snippets.ultisnips.pythonPrompt": false,
@@ -110,8 +112,11 @@
       "command": "nu",
       "args": ["--lsp"],
       "filetypes": ["nu"],
+    },
+    "swift": {
+      "command": "sourcekit-lsp",
+      "filetypes": ["swift", "objc", "objcpp", "c", "cpp"]
     }
-
   },
 
   "[python]": {"coc.preferences.formatOnSave": true },

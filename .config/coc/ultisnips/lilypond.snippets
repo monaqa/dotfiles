@@ -81,14 +81,92 @@ chrds = { \chordmode {
 		<< { \keepWithTag #'upper \body } { \silents } >>
 	}
 	% \new TabStaff \with {
-	% 	stringTunings = #bass-five-string-tuning
+	%   stringTunings = #bass-five-string-tuning
 	% } {
-	% 	\huge
-	% 	\set TabStaff.minimumFret = #3
-	% 	\set TabStaff.restrainOpenStrings = ##t
-	% 	\override MultiMeasureRest.expand-limit = #2
-	% 	\keepWithTag #'lower \body
+	%   \huge
+	%   \set TabStaff.minimumFret = #3
+	%   \set TabStaff.restrainOpenStrings = ##t
+	%   \override MultiMeasureRest.expand-limit = #2
+	%   \keepWithTag #'lower \body
 	% }
+	>>
+
+	\layout {
+		indent = #0
+		\context {
+			\Score
+			proportionalNotationDuration = #(ly:make-moment 1/8)
+		}
+	}
+
+	\midi {
+		% \tempo 4 = 108
+	}
+}
+endsnippet
+
+snippet sheet "Description" b
+\version "2.21.82"
+\include "../../../template/lead-sheet/0.1.0.ly"
+% \include "swing.ly"
+
+\pointAndClickOff
+
+\header {
+	title = ""
+	composer = ""
+}
+
+marks = {
+	\tempo 4 = 120
+
+	% \tempo \markup {
+	%   \rhythm { c4 } = 108
+	%   \hspace #0.4
+	%   (\rhythm { 16[ 16] } = \rhythm { \tuplet 3/2 { 8[ 16] } })
+	% }
+
+	\remark"Intro"
+	\line
+
+	\bar "|."
+}
+
+body = {
+
+	% \tripletFeel 16 {
+	\key c \major
+
+	\remark"Intro"
+	\slashes 4
+
+	% }
+}
+
+chrds = { \chordmode {
+	% a1:m
+	}
+}
+
+\score {
+	<<
+	\chords {
+		\set chordChanges = ##t
+		\set majorSevenSymbol = \markup { M7 }
+		\chrds
+	}
+	\new Staff {
+		<<
+		{
+			\new Voice \with {\consists Pitch_squash_engraver} {
+				\fixed c' { \body }
+			}
+		}
+		{
+			\marks
+		}
+		>>
+	}
 	>>
 
 	\layout {

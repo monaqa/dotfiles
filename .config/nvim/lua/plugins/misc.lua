@@ -23,7 +23,22 @@ plugins:push {
             },
         }
 
-        mapset.n("gl") { "<Cmd>lua Snacks.lazygit.open()<CR>" }
+        mapset.n("gl") {
+            desc = [[jj repo なら lazyjj を、git repo なら lazygit を開く]],
+            function()
+                local out = vim.system({ "jj" }):wait()
+                if out.code == 0 then
+                    Snacks.terminal.open("lazyjj")
+                else
+                    out = vim.system({ "git", "status" }):wait()
+                    if out.code == 0 then
+                        Snacks.lazygit.open()
+                    else
+                        vim.notify(vim.inspect(out.stderr))
+                    end
+                end
+            end,
+        }
 
         -- mapset.n("ss") {
         --     desc = [[Snacks picker - buffers w/o current]],

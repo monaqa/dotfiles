@@ -74,6 +74,7 @@ plugins:push {
             query = {},
             rust = { indent = true },
             svelte = { indent = true },
+            swift = { indent = true },
             toml = {},
             tsx = {},
             typescript = {},
@@ -82,6 +83,19 @@ plugins:push {
             yaml = {},
 
             -- custom parsers
+            koka = {
+                custom_installer = {
+                    tier = 2,
+                    install_info = {
+                        url = "https://github.com/koka-community/tree-sitter-koka",
+                        revision = "main",
+                    },
+                },
+                filetype = { "koka" },
+                indent = true,
+            },
+
+            -- monaqa parsers
             jsonl = {
                 custom_installer = {
                     tier = 2,
@@ -185,7 +199,6 @@ plugins:push {
             complete = function(arglead, cmdline, cursorpos)
                 local success, result = pcall(vim.api.nvim_parse_cmd, cmdline, {})
                 if success then
-                    vim.notify(vim.inspect(result.args))
                     if #result.args == 0 then
                         return {
                             "highlights",

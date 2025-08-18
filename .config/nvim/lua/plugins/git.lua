@@ -261,7 +261,7 @@ plugins:push {
                 },
                 win_config = { -- See |diffview-config-win_config|
                     position = "bottom",
-                    width = 10,
+                    height = 10,
                     win_opts = {},
                 },
             },
@@ -334,6 +334,12 @@ plugins:push {
                         "]x",
                         actions.next_conflict,
                         { desc = "In the merge-tool: jump to the next conflict" },
+                    },
+                    {
+                        "n",
+                        "q",
+                        actions.toggle_files,
+                        { desc = "Toggle the file panel" },
                     },
                 },
                 diff1 = {
