@@ -37,26 +37,25 @@ snippet score "Description" b
 }
 
 silents = {
+	\tempo 4 = 120
 	\remark"Intro"
 	\longRest 4
+
+	\bar "|."
 }
 
 body = {
-	\tempo 4 = 120
 
 	% \tempo \markup {
 	%   \rhythm { c4 } = 108
 	%   \hspace #0.4
 	%   (\rhythm { 16[ 16] } = \rhythm { \tuplet 3/2 { 8[ 16] } })
 	% }
+	% \tripletFeel 16 {
 
-	\fixed c, {
-		% \tripletFeel 16 {
-		\key c \major
+	\key c \major
 
-		\bar "|."
-		% }
-	}
+	% }
 }
 
 chrds = { \chordmode {
@@ -78,7 +77,7 @@ chrds = { \chordmode {
 	}{
 		\clef "bass_8"
 		\override MultiMeasureRest.expand-limit = #2
-		<< { \keepWithTag #'upper \body } { \silents } >>
+		<< { \fixed c, {\body} } { \silents } >>
 	}
 	% \new TabStaff \with {
 	%   stringTunings = #bass-five-string-tuning

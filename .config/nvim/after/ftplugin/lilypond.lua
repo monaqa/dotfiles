@@ -1,6 +1,8 @@
 local uv = vim.uv
 local monaqa = require("monaqa")
 local create_cmd = monaqa.shorthand.create_cmd_local
+local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
+local mapset = monaqa.shorthand.mapset_local
 local tree = monaqa.tree
 local to_bool = monaqa.logic.to_bool
 local lilypond = require("rc.lilypond")
@@ -13,20 +15,44 @@ require("lazy").load { plugins = { "dial.nvim", "general-converter.nvim" } }
 
 vim.opt_local.shiftwidth = 2
 
-vim.keymap.set("n", "@q", "<Cmd>!cd %:h; lilypond %:t<CR>", { buffer = true })
-vim.keymap.set("n", "@o", ":!open %:r.pdf<CR>", { buffer = true })
+local function detect_target()
+    local line = vim.fn.getline(1)
+    if vim.startswith(line, "%! target:") then
+        local _, _, file = line:find([[^%%! target:%s*(%S+)$]])
+        return file
+    else
+        return vim.fn.expand("%:t")
+    end
+end
 
-vim.api.nvim_create_augroup("vimrc_lilypond", { clear = true })
-vim.api.nvim_clear_autocmds { group = "vimrc_lilypond" }
-vim.api.nvim_create_autocmd("BufWritePost", {
-    group = "vimrc_lilypond",
+mapset.n("@q") {
+    desc = [[Lilypond を実行する]],
+    function()
+        local result = vim.system({
+            "lilypond",
+            detect_target(),
+        }, { cwd = vim.fn.expand("%:h") }):wait()
+        vim.notify(result.stderr)
+    end,
+}
+
+mapset.n("@o") {
+    desc = [[紐づいた PDF を表示する]],
+    function()
+        local result = vim.system({
+            "open",
+            vim.fn.fnamemodify(detect_target(), ":r") .. ".pdf",
+        }, { cwd = vim.fn.expand("%:h") }):wait()
+    end,
+}
+
+autocmd_vimrc("BufWritePost") {
     pattern = "*.ly",
     callback = function()
-        local target = vim.fn.expand("%:t")
         local cwd = vim.fn.expand("%:h")
-        uv.spawn("lilypond", { args = { target }, cwd = cwd }, function() end)
+        uv.spawn("lilypond", { args = { detect_target() }, cwd = cwd }, function() end)
     end,
-})
+}
 
 local fg = require("colorimetry.palette").fg
 local bg = require("colorimetry.palette").bg
@@ -35,13 +61,13 @@ vim.api.nvim_set_hl(0, "LilypondAccidental", { fg = fg.r2 })
 
 vim.opt_local.commentstring = "% %s"
 
-vim.keymap.set("n", "<Up>", function()
-    require("dial.map").manipulate("increment", "normal", "lilypond_note")
-end)
-
-vim.keymap.set("n", "<Down>", function()
-    require("dial.map").manipulate("decrement", "normal", "lilypond_note")
-end)
+-- vim.keymap.set("n", "<Up>", function()
+--     require("dial.map").manipulate("increment", "normal", "lilypond_note")
+-- end)
+--
+-- vim.keymap.set("n", "<Down>", function()
+--     require("dial.map").manipulate("decrement", "normal", "lilypond_note")
+-- end)
 
 vim.keymap.set("n", "<Space>s", function()
     require("dial.map").manipulate("increment", "normal", "lilypond_ises")
