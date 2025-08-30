@@ -119,4 +119,6 @@
   item: (ident) @_cmd_name
   (content) @text.quote
   (#eq? @_cmd_name "quote")
+
+  (#set! "priority" 90)
   )
