@@ -718,6 +718,7 @@ plugins:push {
     config = function()
         require("typscrap").setup {
             root_dir = "~/Documents/typscrap-contents/content",
+            jj_auto_new = true,
             -- root_dir = "~/raf/typ/2024/12/24/typscrap-example",
         }
     end,

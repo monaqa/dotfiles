@@ -23,3 +23,7 @@
   (code (ident) @todo @keyword) @text.strong
   (#eq? @todo "TODO")
  )
+
+(term
+  term: (text) @text.strong
+ )
