@@ -282,27 +282,12 @@ plugins:push {
                     cmdline = {
                         -- ignores cmdline completions when executing shell commands
                         enabled = true,
-                        -- enabled = function()
-                        --     if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("^:=") then
-                        --         return false
-                        --     end
-                        --     if vim.fn.getcmdtype() == "@" then
-                        --         return false
-                        --     end
-                        --     -- range 指定が消えてしまう不具合あり
-                        --     if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("'") then
-                        --         return false
-                        --     end
-                        --     if (vim.fn.getcmdtype() .. vim.fn.getcmdline()):match("^:[%%0-9,'<>%-]*!") then
-                        --         return false
-                        --     end
-                        --     return true
-                        -- end,
                     },
                 },
             },
 
             fuzzy = {
+                -- implementation = "disabled",
                 sorts = {
                     "exact",
                     function(a, b)
@@ -346,15 +331,33 @@ plugins:push {
                 trigger = {
                     show_on_keyword = true,
                 },
+                menu = {
+                    draw = {
+                        columns = {
+                            { "kind_icon" },
+                            { "label", "label_description", gap = 1 },
+                            { "kind" },
+                        },
+                        components = {
+                            kind = {
+                                ellipsis = false,
+                                width = { fill = true },
+                                text = function(ctx)
+                                    return ctx.kind
+                                    -- return ctx.kind:sub(1, 4)
+                                end,
+                                highlight = function(ctx)
+                                    return "@comment"
+                                end,
+                            },
+                        },
+                    },
+                },
             },
 
             cmdline = {
                 sources = function()
                     local type = vim.fn.getcmdtype()
-                    -- if vim.startswith(type .. vim.fn.getcmdline(), ":=") then
-                    --     return {}
-                    -- end
-                    -- Search forward and backward
                     if type == "/" or type == "?" or type == "@" then
                         return { "buffer" }
                     end
@@ -424,6 +427,96 @@ plugins:push {
                     end)
                 end,
             },
+        }
+    end,
+}
+
+plugins:push {
+    "https://github.com/b0o/SchemaStore.nvim",
+}
+
+plugins:push {
+    "https://github.com/lewis6991/hover.nvim",
+    config = function()
+        require("hover").config {
+            --- List of modules names to load as providers.
+            --- @type (string|Hover.Config.Provider)[]
+            providers = {
+                "hover.providers.lsp",
+                "hover.providers.diagnostic",
+                -- "hover.providers.dap",
+                "hover.providers.man",
+                -- "hover.providers.dictionary",
+                -- Optional, disabled by default:
+                "hover.providers.gh",
+                "hover.providers.gh_user",
+                -- 'hover.providers.jira',
+                "hover.providers.fold_preview",
+                "hover.providers.highlight",
+            },
+            preview_opts = {
+                border = "single",
+            },
+            -- Whether the contents of a currently open hover window should be moved
+            -- to a :h preview-window when pressing the hover keymap.
+            preview_window = false,
+            title = true,
+            mouse_providers = {
+                "hover.providers.lsp",
+            },
+            mouse_delay = 100,
+        }
+
+        mapset.n("K") {
+            desc = [[hover.nvim (open)]],
+            function()
+                require("hover").open {
+                    providers = {
+                        "hover.providers.lsp",
+                        "hover.providers.diagnostic",
+                        "hover.providers.man",
+                        "hover.providers.gh",
+                        "hover.providers.gh_user",
+                        "hover.providers.fold_preview",
+                    },
+                }
+            end,
+        }
+        mapset.n("gK") {
+            desc = [[hover.nvim (enter)]],
+            function()
+                require("hover").enter()
+            end,
+        }
+        mapset.n("ts") {
+            desc = [[hover.nvim (open highlight)]],
+            function()
+                require("hover").open {
+                    providers = { "hover.providers.highlight" },
+                    title = false,
+                }
+            end,
+        }
+    end,
+}
+
+plugins:push {
+    "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+    dependencies = {
+        "nvim-treesitter/nvim-treesitter",
+        "nvim-mini/mini.icons",
+    },
+    config = function()
+        require("render-markdown").setup {
+            enabled = true,
+            render_modes = { "n" },
+            ignore = function(buf)
+                local buftype = vim.bo[buf].buftype
+                if buftype == "nofile" then
+                    return false
+                end
+                return true
+            end,
         }
     end,
 }

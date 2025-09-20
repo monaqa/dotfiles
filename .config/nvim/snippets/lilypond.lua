@@ -15,36 +15,28 @@ register("score")([=[
 }
 
 silents = {
-  % Intro
-  % \longRest 4
-  % \line
+  \tempo 4 = 120
+  \remark"Intro"
+  \longRest 4
+
+  \bar "|."
 }
 
 body = {
-  \tempo 4 = 120
-
   % \tempo \markup {
   %   \rhythm { c4 } = 108
   %   \hspace #0.4
   %   (\rhythm { 16[ 16] } = \rhythm { \tuplet 3/2 { 8[ 16] } })
+  % \tripletFeel 16 {
+
+  \key c \major
+
   % }
-
-  \fixed c, {
-    % \tripletFeel 16 {
-    \key c \major
-
-    \remark"Intro"
-    % \longRest 4
-
-    \bar "|."
-    % }
-  }
 }
 
-chrds = { \chordmode {
+chrds = \chordmode {
   % \longRest 4
   % a1:m
-  }
 }
 
 \score {
@@ -60,7 +52,7 @@ chrds = { \chordmode {
   }{
     \clef "bass_8"
     \override MultiMeasureRest.expand-limit = #2
-    << { \keepWithTag #'upper \body } { \silents } >>
+    << { \fixed c, {\body} } { \silents } >>
   }
   % \new TabStaff \with {
   %   stringTunings = #bass-five-string-tuning

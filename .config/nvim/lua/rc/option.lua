@@ -25,6 +25,7 @@ vim.opt.fillchars = {
     -- stlnc = "─",
 }
 vim.opt.formatoptions:append("M")
+vim.opt.updatetime = 250
 
 vim.opt.scrolloff = 0
 -- default は marker にしておく

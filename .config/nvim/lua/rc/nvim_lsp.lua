@@ -2,6 +2,7 @@
 
 local shorthand = require("monaqa").shorthand
 local logic = require("monaqa").logic
+local create_cmd = shorthand.create_cmd
 local autocmd_vimrc = shorthand.autocmd_vimrc
 local mapset = shorthand.mapset
 
@@ -9,17 +10,19 @@ local mapset = shorthand.mapset
 vim.lsp.config("*", {})
 
 vim.lsp.enable {
+    "astro",
+    "biome",
     "deno",
-    "json-lsp",
+    "jsonls",
     "lua_ls",
     "pyright",
     "ruff",
-    "rust-analyzer",
-    "svelte-language-server",
+    "rust_analyzer",
+    "svelte",
     "tinymist",
     "tombi",
-    "typescript-language-server",
-    "yaml-language-server",
+    "ts_ls",
+    "yamlls",
 }
 
 vim.fn.sign_define(
@@ -91,13 +94,33 @@ mapset.n("tn") {
     end,
 }
 
+---@param focusable boolean
+local function float_opts(focusable)
+    if focusable == nil then
+        focusable = false
+    end
+    return {
+        focusable = focusable,
+        focus = true,
+        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+        border = "rounded",
+    }
+end
+
+-- mapset.n("K") {
+--     desc = [[nvim-lsp による hover]],
+--     function()
+--         vim.lsp.buf.hover(float_opts(true))
+--     end,
+-- }
+
 mapset.n(")") {
     desc = [[最も深刻な次の diagnostic に飛ぶ]],
     function()
         for _, severity in ipairs { "ERROR", "WARN", "INFO", "HINT" } do
             local diag = vim.diagnostic.get_next { severity = severity }
             if diag ~= nil then
-                vim.diagnostic.jump { count = 1, float = true, severity = severity }
+                vim.diagnostic.jump { count = 1, float = float_opts(false), severity = severity }
                 return
             end
         end
@@ -109,7 +132,7 @@ mapset.n("(") {
         for _, severity in ipairs { "ERROR", "WARN", "INFO", "HINT" } do
             local diag = vim.diagnostic.get_prev { severity = severity }
             if diag ~= nil then
-                vim.diagnostic.jump { count = -1, float = true, severity = severity }
+                vim.diagnostic.jump { count = -1, float = float_opts(false), severity = severity }
                 return
             end
         end
@@ -118,13 +141,13 @@ mapset.n("(") {
 
 mapset.n("g)") {
     function()
-        vim.diagnostic.jump { count = 1, float = true }
+        vim.diagnostic.jump { count = 1, float = float_opts(false) }
     end,
     desc = [[次の diagnostic に飛ぶ]],
 }
 mapset.n("g(") {
     function()
-        vim.diagnostic.jump { count = -1, float = true }
+        vim.diagnostic.jump { count = -1, float = float_opts(false) }
     end,
     desc = [[前の diagnostic に飛ぶ]],
 }
@@ -173,5 +196,70 @@ autocmd_vimrc("BufWritePre") {
             async = false,
             timeout_ms = 2000,
         }
+    end,
+}
+
+-- autocmd_vimrc("CursorHold") {
+--     desc = [[カーソル下に diagnostics があれば表示する]],
+--     callback = function()
+--         vim.diagnostic.open_float(float_opts(false))
+--     end,
+-- }
+
+create_cmd("LspInfo") {
+    desc = [[Alias to `:checkhealth vim.lsp`.]],
+    "checkhealth vim.lsp",
+}
+
+create_cmd("LspLog") {
+    desc = [[Opens the Nvim LSP client log.]],
+    function()
+        vim.cmd(string.format("tabnew %s", vim.lsp.log.get_filename()))
+    end,
+}
+
+local complete_client = function(arg)
+    return vim.iter(vim.lsp.get_clients())
+        :map(function(client)
+            return client.name
+        end)
+        :filter(function(name)
+            return name:sub(1, #arg) == arg
+        end)
+        :totable()
+end
+
+create_cmd("LspRestart") {
+    desc = "Restart the given client",
+    nargs = "?",
+    complete = complete_client,
+    function(info)
+        local clients = info.fargs
+
+        -- Default to restarting all active servers
+        if #clients == 0 then
+            clients = vim.iter(vim.lsp.get_clients())
+                :map(function(client)
+                    return client.name
+                end)
+                :totable()
+        end
+
+        for _, name in ipairs(clients) do
+            if vim.lsp.config[name] == nil then
+                vim.notify(("Invalid server name '%s'"):format(name))
+            else
+                vim.lsp.enable(name, false)
+            end
+        end
+
+        local timer = assert(vim.uv.new_timer())
+        timer:start(500, 0, function()
+            for _, name in ipairs(clients) do
+                vim.schedule_wrap(function(x)
+                    vim.lsp.enable(x)
+                end)(name)
+            end
+        end)
     end,
 }

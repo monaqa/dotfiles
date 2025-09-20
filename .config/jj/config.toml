@@ -1,0 +1,7 @@
+[user]
+name = "monaqa"
+email = "cmonaqa@gmail.com"
+
+[ui]
+default-command = "log"
+diff-editor = "nvim"

@@ -1,6 +1,6 @@
 ---@type vim.lsp.Config
 return {
-    cmd = { require("monaqa.lua").mason_bin("yaml-language-server"), "--stdio" },
+    cmd = { require("monaqa.lsp").mason_bin("yaml-language-server"), "--stdio" },
     filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab", "yaml.helm-values" },
     root_markers = { ".git" },
     settings = {

@@ -995,7 +995,7 @@ mapset.x("A") {
     end,
 }
 
-mapset.n("ts") { "<Cmd>Inspect<CR>" }
+-- mapset.n("ts") { "<Cmd>Inspect<CR>" }
 mapset.n("gF") {
     desc = "外部の open コマンドを用いてパスを開く",
     "<Cmd>!open <cfile><CR>",

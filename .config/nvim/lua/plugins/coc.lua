@@ -16,6 +16,7 @@ plugins:push {
         return monaqa.lsp.choose_lsp() == "coc"
     end,
     config = function()
+        vim.notify("using coc.nvim")
         local function coc_service_names(arglead, cmdline, cursorpos)
             return vim.tbl_map(function(service)
                 return service["id"]
