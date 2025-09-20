@@ -9,7 +9,7 @@ function M.choose_lsp()
     if to_bool(vim.fn.filereadable(vim.fn.getcwd() .. "/.use_coc")) then
         return "coc"
     end
-    return "coc"
+    return "nvim-lsp"
 end
 
 function M.mason_bin(server_name)
