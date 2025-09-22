@@ -75,8 +75,9 @@ plugins:push {
 
         sethl("MiniStatuslineDevinfo") { bg = fg.g1, fg = bg.g3, bold = true }
 
-        sethl("MiniStatuslineFilename") { bg = fg.e0, fg = bg.b2, bold = true }
-        sethl("MiniStatuslineFileinfo") { bg = fg.e1, fg = bg.b2, bold = true }
+        sethl("MiniStatuslineFilename") { bg = fg.e1, fg = bg.b2, bold = true }
+        sethl("MiniStatuslineContents") { bg = fg.e0, fg = bg.w0, bold = true }
+        sethl("MiniStatuslineFileinfo") { bg = fg.e2, fg = bg.b2, bold = true }
 
         require("mini.statusline").setup {
             content = {
@@ -84,6 +85,21 @@ plugins:push {
                     local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 90 }
                     local filename = MiniStatusline.section_filename { trunc_width = 140 }
                     local fileinfo = MiniStatusline.section_fileinfo { trunc_width = 120 }
+
+                    local desc = vim.system({
+                        "jj",
+                        "log",
+                        "-r",
+                        "@",
+                        "-T",
+                        "description.first_line()",
+                        "--no-graph",
+                    }):wait()
+
+                    local jj_info = ""
+                    if desc.code == 0 then
+                        jj_info = "🤞" .. desc.stdout
+                    end
 
                     -- Usage of `MiniStatusline.combine_groups()` ensures highlighting and
                     -- correct padding with spaces between groups (accounts for 'missing'
@@ -93,6 +109,7 @@ plugins:push {
                         -- { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
                         "%<", -- Mark general truncate point
                         { hl = "MiniStatuslineFilename", strings = { filename } },
+                        { hl = "MiniStatuslineContents", strings = { jj_info } },
                         "%=", -- End left alignment
                         { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
                         -- { hl = mode_hl, strings = { search, location } },
