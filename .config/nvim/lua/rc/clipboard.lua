@@ -92,12 +92,23 @@ function M.copy_html_to_clipboard(text, filetype)
         filetype = "markdown"
     end
 
-    local html = vim.system({ "pandoc", "-f", filetype, "-t", "html", "--wrap=none" }, { stdin = text }):wait().stdout
-    html = html:gsub('"', '\\"'):gsub("\n", "")
+    local result = vim.system({ "pandoc", "-f", filetype, "-t", "html", "--wrap=none" }, { stdin = text }):wait()
+    if result.code ~= 0 then
+        vim.notify(result.stderr, vim.log.levels.ERROR)
+        return
+    end
+    local html = result.stdout:gsub('"', '\\"')
     local hex = html_to_apple_hex(html)
+    local escaped_text = text:gsub('"', [[\"]]):gsub("\n", [[\n]])
 
-    local script = "set the clipboard to { «class HTML»:«data HTML" .. hex .. '», string:"' .. text .. '"}'
-    vim.system { "osascript", "-e", script }
+    local script = "set the clipboard to { «class HTML»:«data HTML" .. hex .. '», string:"' .. escaped_text .. '"}'
+    result = vim.system({ "osascript", "-e", script }):wait()
+
+    if result.code ~= 0 then
+        vim.notify(result.stderr, vim.log.levels.ERROR)
+        vim.notify(script)
+        return
+    end
 
     vim.notify("Both HTML and plain text have been set to the clipboard.", vim.log.levels.INFO)
 end
