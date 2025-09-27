@@ -26,6 +26,12 @@ mapset.ia("]") {
     [[(getline('.') =~# '\s*- ]') ? '#TODO' : ']']],
 }
 
+---@class modeline
+---@field target? string
+---@field root? string
+---@field nightly? boolean
+
+---@return modeline
 local function get_modeline()
     ---@type string
     local line = vim.fn.getline(1)
@@ -39,23 +45,35 @@ local function get_modeline()
     return {}
 end
 
-local function resolve_target()
-    local modeline = get_modeline()
+---@param modeline modeline
+---@return string
+local function resolve_target(modeline)
     if modeline.target == nil then
         return vim.fn.resolve(vim.fn.expand("%"))
     end
     return vim.fn.resolve(vim.fn.expand("%:h") .. "/" .. modeline.target)
 end
 
-local function compile_args()
-    local modeline = get_modeline()
+---@param modeline modeline
+---@return string
+local function compile_cmdname(modeline)
+    if modeline.nightly then
+        return "typst-nightly"
+    end
+    return "typst"
+end
+
+---@param modeline modeline
+---@return string[]
+local function compile_cmdargs(modeline)
     local v = {
+        compile_cmdname(modeline),
         "compile",
         "--features",
         "html",
         "--input",
         "typscrap_root=/Users/monaqa/Documents/typscrap-contents/content/",
-        resolve_target(),
+        resolve_target(modeline),
     }
     if modeline.root ~= nil then
         v[#v + 1] = "--root"
@@ -67,19 +85,31 @@ end
 mapset.n("@o") {
     desc = [[PDF を開く]],
     function()
-        local objective = resolve_target()
+        local modeline = get_modeline()
+        local objective = resolve_target(modeline)
         local target = vim.fn.fnamemodify(objective, ":r") .. ".pdf"
         vim.cmd([[!open ]] .. target)
     end,
 }
 mapset.n("@t") { "<Cmd>TypstPreview<CR>" }
-mapset.n("@h") { "<Cmd>vert term typst watch --features html -f html %<CR>" }
+mapset.n("@h") {
+    expr = true,
+    function()
+        local modeline = get_modeline()
+        return "<Cmd>vert term " .. compile_cmdname(modeline) .. " watch --features html -f html %<CR>"
+    end,
+}
 
 mapset.n("@q") {
     desc = [[typst compile を実行]],
     function()
-        local objective = resolve_target()
-        vim.cmd([[!typst ]] .. table.concat(compile_args(), " "))
+        local modeline = get_modeline()
+        local result = vim.system(compile_cmdargs(modeline), {}):wait()
+        if result.code ~= 0 then
+            vim.notify(result.stderr, vim.log.levels.ERROR)
+        else
+            vim.notify("Compile success!")
+        end
     end,
 }
 
@@ -89,9 +119,11 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     group = "vimrc_typst",
     pattern = "*.typ",
     callback = function()
-        local objective = resolve_target()
-        -- vim.fn.system { "typst", "compile", objective }
-        uv.spawn("typst", { args = compile_args() }, function() end)
+        local modeline = get_modeline()
+        local result = vim.system(compile_cmdargs(modeline), {}):wait()
+        if result.code ~= 0 then
+            vim.notify(result.stderr, vim.log.levels.ERROR)
+        end
     end,
 })
 
