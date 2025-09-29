@@ -18,91 +18,6 @@ plugins:push {
     end,
 }
 
--- plugins:push {
---     "https://github.com/williamboman/mason-lspconfig.nvim",
---     dependencies = {
---         "https://github.com/neovim/nvim-lspconfig",
---     },
---     config = function()
---         local lspconfig = require("lspconfig")
---         local function is_node_dir()
---             return lspconfig.util.root_pattern("package.json")(vim.fn.getcwd())
---         end
---         require("mason-lspconfig").setup {
---             ensure_installed = {
---                 "denols",
---                 "jsonls",
---                 "lua_ls",
---                 "pyright",
---                 "tailwindcss",
---                 "ruff",
---                 "rust_analyzer",
---                 "svelte",
---                 "tinymist",
---                 "ts_ls",
---                 "yamlls",
---             },
---             automatic_installation = true,
---         }
---         require("mason-lspconfig").setup_handlers {
---             function(server_name) -- default handler (optional)
---                 lspconfig[server_name].setup {}
---             end,
---             ts_ls = function()
---                 lspconfig.ts_ls.setup {
---                     on_attach = function(client)
---                         if not is_node_dir() then
---                             client.stop()
---                         end
---                     end,
---                 }
---             end,
---             denols = function()
---                 lspconfig.denols.setup {
---                     on_attach = function(client)
---                         if is_node_dir() then
---                             client.stop()
---                         end
---                     end,
---                 }
---             end,
---             rust_analyzer = function()
---                 lspconfig.rust_analyzer.setup {
---                     settings = {
---                         ["rust-analyzer"] = {
---                             check = {
---                                 command = "clippy",
---                             },
---                             completion = {
---                                 privateEditable = {
---                                     enable = true,
---                                 },
---                                 callable = {
---                                     snippets = "fill_arguments",
---                                 },
---                             },
---                         },
---                     },
---                 }
---             end,
---         }
---     end,
--- }
-
--- plugins:push {
---     "https://github.com/j-hui/fidget.nvim",
--- }
-
--- nvim_lsp
--- plugins:push {
---     "https://github.com/neovim/nvim-lspconfig",
---     -- config = function()
---     --     for _, ls in ipairs(ensure_installed) do
---     --         require("lspconfig")[ls].setup {}
---     --     end
---     -- end,
--- }
-
 plugins:push {
     "https://github.com/folke/lazydev.nvim",
     config = function()
@@ -118,54 +33,12 @@ plugins:push {
     end,
 }
 
--- plugins:push {
---     "https://github.com/Bekaboo/dropbar.nvim",
---     config = function()
---         require("dropbar").setup {
---             icons = {
---                 enable = true,
---             },
---             ui = {
---                 bar = {
---                     separator = " ",
---                     extends = "…",
---                 },
---                 menu = {
---                     separator = " ",
---                     indicator = " ",
---                 },
---             },
---         }
---     end,
--- }
-
 plugins:push {
     "https://github.com/ray-x/lsp_signature.nvim",
     config = function()
         require("lsp_signature").setup {}
     end,
 }
-
--- plugins:push {
---     "https://github.com/nvimdev/lspsaga.nvim",
---     config = function()
---         require("lspsaga").setup {
---             breadcrumb = { enable = false },
---             code_action = {
---                 keys = { quit = "<Esc>" },
---             },
---             lightbulb = {
---                 sign = false,
---                 enable_in_insert = false,
---             },
---         }
---
---         mapset.n("ta") {
---             desc = [[Code action using lspsaga]],
---             "<Cmd>Lspsaga code_action<CR>",
---         }
---     end,
--- }
 
 plugins:push {
     "https://github.com/rachartier/tiny-code-action.nvim",
@@ -188,7 +61,7 @@ plugins:push {
 
         mapset.n("ta") {
             function()
-                require("tiny-code-action").code_action()
+                require("tiny-code-action").code_action {}
             end,
         }
     end,
@@ -356,17 +229,18 @@ plugins:push {
             },
 
             cmdline = {
-                sources = function()
-                    local type = vim.fn.getcmdtype()
-                    if type == "/" or type == "?" or type == "@" then
-                        return { "buffer" }
-                    end
-                    -- Commands
-                    if type == ":" then
-                        return { "cmdline" }
-                    end
-                    return {}
-                end,
+                enabled = false,
+                -- sources = function()
+                --     local type = vim.fn.getcmdtype()
+                --     if type == "/" or type == "?" or type == "@" then
+                --         return { "buffer" }
+                --     end
+                --     -- Commands
+                --     if type == ":" then
+                --         return { "cmdline" }
+                --     end
+                --     return {}
+                -- end,
             },
         }
 
@@ -443,7 +317,7 @@ plugins:push {
             --- @type (string|Hover.Config.Provider)[]
             providers = {
                 "hover.providers.lsp",
-                "hover.providers.diagnostic",
+                { module = "hover.providers.diagnostic", priority = 950 },
                 -- "hover.providers.dap",
                 "hover.providers.man",
                 -- "hover.providers.dictionary",

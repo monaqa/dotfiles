@@ -22,6 +22,7 @@ cabbr:add { from = "vg", to = "vimgrep // %<Left><Left><Left>", remove_trigger =
 cabbr:add { prepose = "'<,'>", require_space = false, from = "s", to = "s///g<Left><Left>", remove_trigger = true }
 cabbr:add { prepose = "'<,'>", require_space = false, from = "gd", to = "g//d" }
 cabbr:add { prepose = "'<,'>", require_space = false, from = "vd", to = "v//d" }
+cabbr:add { from = "nw", to = "noautocmd w" }
 
 -- coc.nvim 周り
 cabbr:add { from = "c", to = "CocCommand" }
