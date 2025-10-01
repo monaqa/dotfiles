@@ -44,12 +44,13 @@ plugins:push {
     "https://github.com/rachartier/tiny-code-action.nvim",
     dependencies = {
         { "nvim-lua/plenary.nvim" },
-        { "nvim-telescope/telescope.nvim" },
+        { "folke/snacks.nvim" },
     },
     event = "LspAttach",
     config = function()
         require("tiny-code-action").setup {
             backend = "delta",
+            picker = "snacks",
             backend_opts = {
                 delta = {
                     args = {

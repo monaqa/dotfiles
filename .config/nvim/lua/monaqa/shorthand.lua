@@ -4,13 +4,32 @@ local M = {}
 local logic = require("monaqa.logic")
 
 --- group が vimrc の autocmd を作成する。
+--- key を指定すると、同一 key の autocmd は2度発火しないことが保証できる。
+--- autocmd を作成した場合は戻り値として deleter function が返却される。
+--- その function を引数なしで評価すると autocmd が削除される。
 ---@param event string | string[]
----@return fun(opts: vim.api.keyset.create_autocmd):(fun():nil)
+---@return fun(opts: vim.api.keyset.create_autocmd):(nil | fun():nil)
 function M.autocmd_vimrc(event)
     ---@param opts vim.api.keyset.create_autocmd
     return function(opts)
         opts["group"] = "vimrc"
+        local key = nil
+        if opts["key"] ~= nil then
+            key = opts["key"]
+            opts["key"] = nil
+
+            if opts["buffer"] ~= nil then
+                key = key .. ":" .. tostring(vim.fn.bufnr(opts["buffer"]))
+            end
+
+            if _G.vimrc.autocmd_ids[key] ~= nil then
+                return nil
+            end
+        end
         local id = vim.api.nvim_create_autocmd(event, opts)
+        if key ~= nil then
+            _G.vimrc.autocmd_ids[key] = id
+        end
         return function()
             vim.api.nvim_del_autocmd(id)
         end

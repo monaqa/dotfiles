@@ -3,7 +3,15 @@ local monaqa = require("monaqa")
 local tree = monaqa.tree
 local mapset = monaqa.shorthand.mapset_local
 local create_cmd = monaqa.shorthand.create_cmd_local
+local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
 local opt = vim.opt_local
+
+require("lazy").load { plugins = { "snacks.nvim" } }
+
+-- これを読み込むと snacks 内部で使われる namespace が create される
+-- ここで読み込んでおかないと
+-- 非同期で vim.notify を実行するとき E5560 エラーが起きてしまう
+require("snacks.notifier")
 
 opt.shiftwidth = 2
 opt.foldmethod = "expr"
@@ -113,19 +121,19 @@ mapset.n("@q") {
     end,
 }
 
-vim.api.nvim_create_augroup("vimrc_typst", { clear = true })
-vim.api.nvim_clear_autocmds { group = "vimrc_typst" }
-vim.api.nvim_create_autocmd("BufWritePost", {
-    group = "vimrc_typst",
-    pattern = "*.typ",
+autocmd_vimrc("BufWritePost") {
+    key = "typst-compile-on-save",
+    desc = [[保存時に自動で typst compile を実行する]],
+    buffer = 0,
     callback = function()
         local modeline = get_modeline()
-        local result = vim.system(compile_cmdargs(modeline), {}):wait()
-        if result.code ~= 0 then
-            vim.notify(result.stderr, vim.log.levels.ERROR)
-        end
+        vim.system(compile_cmdargs(modeline), {}, function(result)
+            if result.code ~= 0 then
+                vim.notify(result.stderr, vim.log.levels.ERROR)
+            end
+        end)
     end,
-})
+}
 
 mapset.x("L") {
     desc = [[クリップボードの URL で選択範囲をリンク化]],

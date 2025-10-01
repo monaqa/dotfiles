@@ -12,7 +12,7 @@ vim.lsp.config("*", {})
 vim.lsp.enable {
     "astro",
     "biome",
-    "deno",
+    -- "deno",  -- 複雑なので autocmd で制御
     "jsonls",
     "lua_ls",
     "pyright",
@@ -21,8 +21,30 @@ vim.lsp.enable {
     "svelte",
     "tinymist",
     "tombi",
-    "ts_ls",
+    -- "ts_ls",  -- 複雑なので autocmd で制御
     "yamlls",
+}
+
+-- Thanks to Atusy
+-- https://blog.atusy.net/2025/09/03/node-deno-decision-with-monorepo-support/
+autocmd_vimrc("FileType") {
+    pattern = {
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx",
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx",
+    },
+    callback = function()
+        local server_name
+        if vim.fn.findfile("package.json", ".;") == "" then
+            server_name = "deno"
+        else
+            server_name = "ts_ls"
+        end
+        vim.lsp.start(vim.lsp.config[server_name])
+    end,
 }
 
 vim.fn.sign_define(

@@ -4,6 +4,7 @@ _G.vimrc = {
     op = {},
     motion = {},
     omnifunc = {},
+    autocmd_ids = {},
     state = {},
     debug = {},
     fn = {},

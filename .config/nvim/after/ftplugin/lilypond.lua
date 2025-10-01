@@ -47,7 +47,9 @@ mapset.n("@o") {
 }
 
 autocmd_vimrc("BufWritePost") {
-    pattern = "*.ly",
+    key = "lilypond-compile-on-save",
+    desc = [[保存時に自動で lilypond を実行する]],
+    buffer = 0,
     callback = function()
         local cwd = vim.fn.expand("%:h")
         uv.spawn("lilypond", { args = { detect_target() }, cwd = cwd }, function() end)
