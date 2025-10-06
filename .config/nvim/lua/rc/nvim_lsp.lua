@@ -200,7 +200,7 @@ autocmd_vimrc("LspAttach") {
 autocmd_vimrc("BufWritePre") {
     desc = [[フォーマットの実施]],
     callback = function()
-        if vim.tbl_contains({ "json" }, vim.b.filetype) then
+        if vim.tbl_contains({ "json", "oil" }, vim.b.filetype) then
             return
         end
 

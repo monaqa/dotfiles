@@ -19,6 +19,8 @@ opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.commentstring = "// %s"
 opt.formatoptions:append("r")
 opt.formatoptions:remove("o")
+opt.conceallevel = 2
+opt.concealcursor = "nc"
 
 opt.comments = {
     "b:- #TODO",
@@ -124,7 +126,7 @@ mapset.n("@q") {
 autocmd_vimrc("BufWritePost") {
     key = "typst-compile-on-save",
     desc = [[保存時に自動で typst compile を実行する]],
-    buffer = 0,
+    pattern = "*.typ",
     callback = function()
         local modeline = get_modeline()
         vim.system(compile_cmdargs(modeline), {}, function(result)
@@ -134,6 +136,65 @@ autocmd_vimrc("BufWritePost") {
         end)
     end,
 }
+
+local ns = vim.api.nvim_create_namespace("typst_conceal")
+
+local function create_conceals()
+    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+
+    local hides = tree.find_buf_matches([[
+        (call
+          item: (ident) @fname
+          (content) @conceal
+
+          (#eq? @fname "hide")
+          (#offset! @conceal 0 1 0 -1)
+          )
+
+        (call
+          item: (ident) @fname
+          (group (raw_span) @conceal)
+
+          (#eq? @fname "hide")
+          )
+
+        (call
+          item: (ident) @fname
+          (group (string) @conceal)
+
+          (#eq? @fname "hide")
+          (#offset! @conceal 0 1 0 -1)
+          )
+    ]])
+
+    local regions = vim.iter(hides)
+        :map(function(capture)
+            return capture.conceal.region
+        end)
+        :totable()
+
+    vim.iter(regions):each(function(region)
+        local s_line = region.s[1] - 1
+        local s_col = region.s[2]
+        local e_line = region.e[1] - 1
+        local e_col = region.e[2] - 1
+        vim.api.nvim_buf_set_extmark(0, ns, s_line, s_col, {
+            end_line = e_line,
+            end_col = e_col,
+            conceal = "…",
+        })
+    end)
+end
+create_conceals()
+
+if not vim.b.loaded then
+    autocmd_vimrc { "TextChanged", "TextChangedI" } {
+        buffer = 0,
+        callback = function()
+            create_conceals()
+        end,
+    }
+end
 
 mapset.x("L") {
     desc = [[クリップボードの URL で選択範囲をリンク化]],

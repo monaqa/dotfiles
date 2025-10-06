@@ -1,5 +1,6 @@
 local monaqa = require("monaqa")
 local mapset = monaqa.shorthand.mapset
+local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
 local logic = monaqa.logic
 local vec = require("rc.util.vec")
 
@@ -166,8 +167,8 @@ plugins:push {
                     "exact",
                     function(a, b)
                         local source_priority = {
-                            lsp = 4,
-                            snippets = 3,
+                            snippets = 4,
+                            lsp = 3,
                             path = 2,
                             buffer = 1,
                         }
@@ -302,6 +303,13 @@ plugins:push {
                     end)
                 end,
             },
+        }
+
+        autocmd_vimrc("InsertLeave") {
+            desc = [[MiniSnippets の session を強制終了]],
+            callback = function()
+                MiniSnippets.session.stop()
+            end,
         }
     end,
 }
