@@ -7,7 +7,13 @@ local autocmd_vimrc = shorthand.autocmd_vimrc
 local mapset = shorthand.mapset
 
 -- Section1 common config
-vim.lsp.config("*", {})
+vim.lsp.config("*", {
+    -- on_attach = function(client, bufnr)
+    --     vim.lsp.completion.enable(true, client.id, bufnr, {
+    --         autotrigger = true,
+    --     })
+    -- end,
+})
 
 vim.lsp.enable {
     "astro",
@@ -62,6 +68,14 @@ vim.diagnostic.config {
 }
 
 -- Section1 options
+
+-- vim.opt.completeopt = {
+--     "longest",
+--     "menuone",
+--     "noselect",
+--     "popup",
+--     "preview",
+-- }
 
 -- Section1 keymaps
 -- mapset.i("<Tab>") {

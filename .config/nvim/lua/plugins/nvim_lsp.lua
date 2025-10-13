@@ -150,13 +150,18 @@ plugins:push {
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
                 default = function()
-                    return { "snippets", "path", "lsp", "buffer" }
+                    return {
+                        -- "snippets",
+                        "path",
+                        "lsp",
+                        "buffer",
+                    }
                 end,
                 -- default = { "snippets", "path", "lsp" },
                 providers = {
                     cmdline = {
                         -- ignores cmdline completions when executing shell commands
-                        enabled = true,
+                        enabled = false,
                     },
                 },
             },
@@ -167,8 +172,8 @@ plugins:push {
                     "exact",
                     function(a, b)
                         local source_priority = {
-                            snippets = 4,
-                            lsp = 3,
+                            lsp = 4,
+                            snippets = 3,
                             path = 2,
                             buffer = 1,
                         }
@@ -266,6 +271,13 @@ plugins:push {
                 else
                     return "<Tab>"
                 end
+            end,
+        }
+
+        autocmd_vimrc("WinLeave") {
+            desc = [[blink.cmp の補完ウィンドウを消す]],
+            callback = function()
+                require("blink.cmp").cancel()
             end,
         }
     end,

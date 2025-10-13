@@ -38,6 +38,7 @@ mapset.ia("]") {
 
 ---@class modeline
 ---@field target? string
+---@field cmd? string
 ---@field root? string
 ---@field nightly? boolean
 
@@ -69,6 +70,9 @@ end
 local function compile_cmdname(modeline)
     if modeline.nightly then
         return "typst-nightly"
+    end
+    if modeline.cmd ~= nil then
+        return modeline.cmd
     end
     return "typst"
 end

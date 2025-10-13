@@ -21,14 +21,14 @@ plugins:push {
             ["nvim-lsp"] = "blink",
         })[monaqa.lsp.choose_lsp()]
 
-        local adapters = {}
+        local http_adapters = {}
 
         if _G.vimrc.plugin.codecompanion ~= nil then
-            adapters = _G.vimrc.plugin.codecompanion.adapters
+            http_adapters = _G.vimrc.plugin.codecompanion.adapters
         end
 
         if vim.env["GEMINI_API_KEY"] ~= nil then
-            adapters.gemini = function()
+            http_adapters.gemini = function()
                 return require("codecompanion.adapters").extend("gemini", {
                     schema = {
                         model = {
@@ -42,19 +42,31 @@ plugins:push {
             end
         end
 
+        http_adapters.gemma = function()
+            return require("codecompanion.adapters").extend("ollama", {
+                name = "gemma",
+                schema = {
+                    model = {
+                        default = "gemma3n:e2b",
+                    },
+                },
+            })
+        end
+
         require("codecompanion").setup {
+            opts = {
+                language = "Japanese",
+            },
             strategies = {
                 chat = {
-                    adapter = "gemini",
+                    adapter = "gemma",
                     opts = {
                         completion_provider = "blink",
                     },
                 },
-                inline = {
-                    adapter = "gemini",
-                },
+                inline = { adapter = "gemma" },
             },
-            adapters = adapters,
+            adapters = { http = http_adapters },
             -- display = {
             --     diff = {
             --         provider = "mini_diff",

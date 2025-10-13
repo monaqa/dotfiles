@@ -240,8 +240,8 @@ if test -n "$FUZZY_FINDER"
 
   # scores
   function __score_list_fuzzy
-    if set -l d (fd --base-directory ~/ghq/local/monaqa/bass-scores/scores --type d --exact-depth 2 | $FUZZY_FINDER ) && test -n "$d"
-      echo "pushd ~/ghq/local/monaqa/bass-scores/scores/$d"
+    if set -l d (fd --base-directory ~/ghq/local/monaqa/scores --type d --exact-depth 3 | $FUZZY_FINDER ) && test -n "$d"
+      echo "pushd ~/ghq/local/monaqa/scores/$d"
     end
   end
   abbr -a scores --function __score_list_fuzzy
