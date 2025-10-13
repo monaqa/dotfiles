@@ -15,7 +15,7 @@ plugins:push {
         {
             "@z",
             function()
-                vim.cmd.edit("~/ghq/github.com/monaqa/colorimetry.nvim/lua/colorimetry/init.lua")
+                vim.cmd.edit("~/ghq/github.com/monaqa/colorimetry.nvim/lua/colorimetry/subscheme/dark/init.lua")
             end,
         },
     },
@@ -33,10 +33,9 @@ plugins:push {
             end
         end
 
-        local fg = require("colorimetry.palette").fg
-        local bg = require("colorimetry.palette").bg
+        local bg = require("colorimetry.subscheme.dark").bg
 
-        sethl("VisualMatch") { bg = bg.g4 }
+        sethl("VisualMatch") { bg = bg.g }
 
         autocmd_vimrc("BufWritePost") {
             pattern = vim.env.HOME .. "/ghq/github.com/monaqa/colorimetry.nvim/*.lua",
@@ -54,7 +53,7 @@ plugins:push {
     },
     version = "*",
     config = function()
-        local palette = require("colorimetry.palette")
+        local palette = require("colorimetry.subscheme.dark")
         local fg = palette.fg
         local bg = palette.bg
 
@@ -66,18 +65,18 @@ plugins:push {
             end
         end
 
-        sethl("MiniStatuslineModeNormal") { bg = fg.b5, fg = fg.w0, bold = true }
-        sethl("MiniStatuslineModeInsert") { bg = fg.e5, fg = fg.w0, bold = true }
-        sethl("MiniStatuslineModeVisual") { bg = fg.p5, fg = fg.w0, bold = true }
-        sethl("MiniStatuslineModeReplace") { bg = fg.o5, fg = fg.w0, bold = true }
-        sethl("MiniStatuslineModeCommand") { bg = fg.v5, fg = fg.w0, bold = true }
-        sethl("MiniStatuslineModeOther") { bg = fg.w5, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeNormal") { bg = fg.b, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeInsert") { bg = fg.e, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeVisual") { bg = fg.p, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeReplace") { bg = fg.o, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeCommand") { bg = fg.v, fg = fg.w0, bold = true }
+        sethl("MiniStatuslineModeOther") { bg = fg.w, fg = fg.w0, bold = true }
 
-        sethl("MiniStatuslineDevinfo") { bg = fg.g1, fg = bg.g3, bold = true }
+        sethl("MiniStatuslineDevinfo") { bg = fg.g2, fg = bg.g7, bold = true }
 
-        sethl("MiniStatuslineFilename") { bg = fg.e1, fg = bg.b2, bold = true }
+        sethl("MiniStatuslineFilename") { bg = fg.e2, fg = bg.b5, bold = true }
         sethl("MiniStatuslineContents") { bg = fg.e0, fg = bg.w0, bold = true }
-        sethl("MiniStatuslineFileinfo") { bg = fg.e2, fg = bg.b2, bold = true }
+        sethl("MiniStatuslineFileinfo") { bg = fg.e4, fg = bg.b5, bold = true }
 
         require("mini.statusline").setup {
             content = {
@@ -124,9 +123,9 @@ plugins:push {
     "https://github.com/b0o/incline.nvim",
     event = "VeryLazy",
     config = function()
-        local palette = require("colorimetry.palette")
-        local fg = require("colorimetry.palette").fg
-        local bg = require("colorimetry.palette").bg
+        local palette = require("colorimetry.subscheme.dark")
+        local fg = palette.fg
+        local bg = palette.bg
 
         local devicons = require("nvim-web-devicons")
         require("incline").setup {

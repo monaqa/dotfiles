@@ -49,17 +49,16 @@ mapset.n("@o") {
 autocmd_vimrc("BufWritePost") {
     key = "lilypond-compile-on-save",
     desc = [[保存時に自動で lilypond を実行する]],
-    buffer = 0,
+    pattern = "*.ly",
     callback = function()
         local cwd = vim.fn.expand("%:h")
         uv.spawn("lilypond", { args = { detect_target() }, cwd = cwd }, function() end)
     end,
 }
 
-local fg = require("colorimetry.palette").fg
-local bg = require("colorimetry.palette").bg
+local fg = require("colorimetry.subscheme.dark").fg
 
-vim.api.nvim_set_hl(0, "LilypondAccidental", { fg = fg.r2 })
+vim.api.nvim_set_hl(0, "LilypondAccidental", { fg = fg.r4 })
 
 vim.opt_local.commentstring = "% %s"
 
@@ -307,6 +306,7 @@ local function highlight_non_scale_note()
             local pitch = matches.pitch
             local region = pitch.region
 
+            -- FIXME: vim.hl.range() を使って書き直す
             vim.api.nvim_buf_add_highlight(0, ns, "LilypondAccidental", region.s[1] - 1, region.s[2] - 1, region.e[2])
         end)
 end

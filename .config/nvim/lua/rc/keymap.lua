@@ -795,6 +795,7 @@ local function vertical_f(ctx, forward)
                 chars[char] = chars[char] + 1
             end
             if chars[char] == ctx.count1 then
+                -- FIXME: vim.hl.range() で書き直す
                 vim.api.nvim_buf_add_highlight(0, ns_id, "VisualMatch", line - 1, e, e + 1)
             end
         end
