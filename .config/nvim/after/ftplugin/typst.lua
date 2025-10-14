@@ -189,16 +189,16 @@ local function create_conceals()
         })
     end)
 end
+
 create_conceals()
 
-if not vim.b.loaded then
-    autocmd_vimrc { "TextChanged", "TextChangedI" } {
-        buffer = 0,
-        callback = function()
-            create_conceals()
-        end,
-    }
-end
+autocmd_vimrc { "TextChanged", "TextChangedI" } {
+    key = "typst-create-conceals",
+    pattern = "*.typ",
+    callback = function()
+        create_conceals()
+    end,
+}
 
 mapset.x("L") {
     desc = [[クリップボードの URL で選択範囲をリンク化]],

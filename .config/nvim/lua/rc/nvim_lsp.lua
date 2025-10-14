@@ -25,8 +25,9 @@ vim.lsp.enable {
     "ruff",
     "rust_analyzer",
     "svelte",
+    "taplo",
     "tinymist",
-    "tombi",
+    -- "tombi",
     -- "ts_ls",  -- 複雑なので autocmd で制御
     "yamlls",
 }
@@ -214,7 +215,13 @@ autocmd_vimrc("LspAttach") {
 autocmd_vimrc("BufWritePre") {
     desc = [[フォーマットの実施]],
     callback = function()
-        if vim.tbl_contains({ "json", "oil" }, vim.b.filetype) then
+        if
+            vim.tbl_contains({
+                "json",
+                "oil",
+                "toml",
+            }, vim.bo.filetype)
+        then
             return
         end
 

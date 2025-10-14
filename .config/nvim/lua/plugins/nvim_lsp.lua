@@ -151,6 +151,7 @@ plugins:push {
             sources = {
                 default = function()
                     return {
+                        -- snippets は `<C-j>` で出す癖を付ける
                         -- "snippets",
                         "path",
                         "lsp",
@@ -170,19 +171,19 @@ plugins:push {
                 -- implementation = "disabled",
                 sorts = {
                     "exact",
-                    function(a, b)
-                        local source_priority = {
-                            lsp = 4,
-                            snippets = 3,
-                            path = 2,
-                            buffer = 1,
-                        }
-                        local a_priority = source_priority[a.source_id]
-                        local b_priority = source_priority[b.source_id]
-                        if a_priority ~= b_priority then
-                            return a_priority > b_priority
-                        end
-                    end,
+                    -- function(a, b)
+                    --     local source_priority = {
+                    --         lsp = 4,
+                    --         path = 3,
+                    --         buffer = 2,
+                    --         snippets = 1,
+                    --     }
+                    --     local a_priority = source_priority[a.source_id]
+                    --     local b_priority = source_priority[b.source_id]
+                    --     if a_priority ~= b_priority then
+                    --         return a_priority > b_priority
+                    --     end
+                    -- end,
                     -- defaults
                     "score",
                     "sort_text",
