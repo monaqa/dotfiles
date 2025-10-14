@@ -113,4 +113,46 @@ function M.copy_html_to_clipboard(text, filetype)
     vim.notify("Both HTML and plain text have been set to the clipboard.", vim.log.levels.INFO)
 end
 
+---@return string[] | nil
+function M.detect_clipboard_type()
+    local result = vim.system({ "osascript", "-e", "clipboard info" }):wait()
+    if result.code ~= 0 then
+        vim.notify(result.stderr, vim.log.levels.ERROR)
+        return nil
+    end
+    local output = result.stdout or ""
+    local types = {}
+    for class in output:gmatch("«class%s+([A-Za-z0-9%s]+)»") do
+        class = class:gsub("%s+", "") -- "RTF " のような末尾スペースを削除
+        table.insert(types, class)
+    end
+    return types
+end
+
+---@param to_format? string
+---@return string|nil
+function M.put_html_from_clipboard(to_format)
+    to_format = to_format or "gfm"
+
+    local result = vim.system({ "osascript", "-e", "get the clipboard as «class HTML»" }):wait()
+    if result.code ~= 0 then
+        vim.notify(result.stderr, vim.log.levels.ERROR)
+        return nil
+    end
+    local hex = result.stdout:match("«data HTML([0-9A-F]+)»")
+    local bytes = {}
+    for byte in hex:gmatch("%x%x") do
+        table.insert(bytes, string.char(tonumber(byte, 16)))
+    end
+    local html = table.concat(bytes)
+
+    local conv = vim.system({ "pandoc", "-f", "html", "-t", to_format }, { stdin = html }):wait()
+    if conv.code ~= 0 then
+        vim.notify(conv.stderr, vim.log.levels.ERROR)
+        return nil
+    end
+
+    return conv.stdout
+end
+
 return M

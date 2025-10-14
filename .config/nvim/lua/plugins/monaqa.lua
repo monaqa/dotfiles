@@ -517,6 +517,7 @@ plugins:push {
     cond = cond_dev("monaqa/general-converter.nvim"),
     keys = {
         { "<Space>g", mode = { "n", "x" } },
+        { "<Space>y", mode = { "n", "x" } },
     },
     config = function()
         local gc_util = require("general_converter.util")
@@ -699,13 +700,14 @@ plugins:push {
                 },
             },
         }
+
         mapset.nx("<Space>g") {
             desc = [[General Converter]],
             expr = true,
             require("general_converter").operator_convert(),
         }
 
-        mapset.nx("@y") {
+        mapset.nx("<Space>y") {
             desc = [[yank as rich text]],
             expr = true,
             require("general_converter").operator_convert("richtext"),

@@ -112,10 +112,14 @@ autocmd_vimrc("BufWritePre") {
 
 local ignore_indent = false
 
-vim.keymap.set({ "n", "x" }, "<Space>y", function()
-    ignore_indent = true
-    return "y"
-end, { expr = true })
+monaqa.shorthand.mapset.nx("]y") {
+    desc = [[全体にかかっているインデントを無視してヤンク]],
+    expr = true,
+    function()
+        ignore_indent = true
+        return "y"
+    end,
+}
 
 local function remove_common_indent(s)
     local lines = vim.split(s, "\n")

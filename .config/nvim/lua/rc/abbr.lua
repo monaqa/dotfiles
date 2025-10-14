@@ -24,16 +24,20 @@ cabbr:add { prepose = "'<,'>", require_space = false, from = "gd", to = "g//d" }
 cabbr:add { prepose = "'<,'>", require_space = false, from = "vd", to = "v//d" }
 cabbr:add { from = "nw", to = "noautocmd w" }
 
--- coc.nvim 周り
-cabbr:add { from = "c", to = "CocCommand" }
-cabbr:add { prepose = "CocCommand", from = "s", to = "snippets.editSnippets" }
-cabbr:add { from = "cc", to = "e ~/.config/nvim/coc-settings.json" }
-cabbr:add { from = "cl", to = "CocList" }
-cabbr:add { prepose = "CocList", from = "e", to = "extensions" }
-cabbr:add { from = "clc", to = "CocLocalConfig" }
-cabbr:add { from = "cr", to = "CocRestart" }
-cabbr:add { from = "fmt", to = [[call CocActionAsync("format")]] }
-cabbr:add { from = "wd", to = "Telescope coc workspace_diagnostics" }
+-- coc.nvim 周りはもう消そう
+-- cabbr:add { from = "c", to = "CocCommand" }
+-- cabbr:add { prepose = "CocCommand", from = "s", to = "snippets.editSnippets" }
+-- cabbr:add { from = "cc", to = "e ~/.config/nvim/coc-settings.json" }
+-- cabbr:add { from = "cl", to = "CocList" }
+-- cabbr:add { prepose = "CocList", from = "e", to = "extensions" }
+-- cabbr:add { from = "clc", to = "CocLocalConfig" }
+-- cabbr:add { from = "cr", to = "CocRestart" }
+-- cabbr:add { from = "fmt", to = [[call CocActionAsync("format")]] }
+-- cabbr:add { from = "wd", to = "Telescope coc workspace_diagnostics" }
+
+-- codecompanion.nvim
+cabbr:add { from = "ca", to = "CodeCompanionActions" }
+cabbr:add { from = "cc", to = "CodeCompanionChat" }
 
 -- git 操作
 cabbr:add { from = "gby", to = "GinaBrowseYank" }

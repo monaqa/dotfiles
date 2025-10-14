@@ -1,5 +1,6 @@
 local vec = require("rc.util.vec")
 local monaqa = require("monaqa")
+local mapset = monaqa.shorthand.mapset
 
 local plugins = vec {}
 
@@ -10,6 +11,9 @@ plugins:push {
         "CodeCompanionActions",
         "CodeCompanionChat",
         "CodeCompanionCmd",
+    },
+    keys = {
+        "@a",
     },
     dependencies = {
         "nvim-lua/plenary.nvim",
@@ -59,12 +63,12 @@ plugins:push {
             },
             strategies = {
                 chat = {
-                    adapter = "gemma",
+                    adapter = "gemini",
                     opts = {
                         completion_provider = "blink",
                     },
                 },
-                inline = { adapter = "gemma" },
+                inline = { adapter = "gemini" },
             },
             adapters = { http = http_adapters },
             -- display = {
@@ -73,6 +77,8 @@ plugins:push {
             --     },
             -- },
         }
+
+        mapset.n("@a") { "<Cmd>CodeCompanionChat Toggle<CR>" }
     end,
 }
 

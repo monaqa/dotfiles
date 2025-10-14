@@ -412,8 +412,73 @@ mapset.i("<C-r><Space>") { "<C-g>u<C-r>+" }
 mapset.c("<C-r><C-r>") { [[<C-r>"]] }
 mapset.c("<C-r><CR>") { "<C-r>0" }
 mapset.c("<C-r><Space>") { "<C-r>+" }
-mapset.n("<Space>p") { "<Cmd>put +<CR>" }
-mapset.n("<Space>P") { "<Cmd>put! +<CR>" }
+mapset.n("@p") { "<Cmd>put +<CR>" }
+mapset.n("@P") { "<Cmd>put! +<CR>" }
+
+mapset.n("<Space>p") {
+    desc = [[クリップボードのリッチテキストや画像を現在の filetype に変換して貼り付ける]],
+    function()
+        local clipboard = require("rc.clipboard")
+        local types = clipboard.detect_clipboard_type()
+        if types == nil then
+            return
+        end
+
+        local ft = vim.bo.filetype
+        if ft == "markdown" then
+            ft = "gfm"
+        end
+
+        if vim.list_contains(types, "PNGf") then
+            local fn_image_path = function(name)
+                local current_file_dir = vim.fn.expand("%:h")
+                local dir = current_file_dir .. "/image/"
+                if name == nil or name == "" then
+                    name = vim.fn.strftime("%Y-%m-%d-%H-%M-%S")
+                end
+                return dir .. name .. ".png"
+            end
+            local fn_markup_string
+            if ft == "typst" then
+                fn_markup_string = function(name, path)
+                    local fname = vim.fn.fnamemodify(path, ":t:r")
+                    return {
+                        "#align(center)[",
+                        ([[  #image("image/%s.png", width: 85%%)]]):format(fname),
+                        "]",
+                    }
+                end
+            else
+                fn_markup_string = function(name, path)
+                    return "![](" .. path .. ")"
+                end
+            end
+            require("rc.clipboard").command_put_clipboard_image {
+                fn_image_path = fn_image_path,
+                fn_markup_string = fn_markup_string,
+            } {}
+
+            return
+        end
+
+        if vim.list_contains(types, "HTML") and vim.list_contains({ "typst", "gfm" }, ft) then
+            local text = require("rc.clipboard").put_html_from_clipboard(ft)
+
+            vim.notify("Converted from Rich Text Format to " .. ft .. ".", vim.log.levels.INFO)
+
+            require("monaqa.edit").borrow_register { "m" }(function()
+                vim.fn.setreg("m", text, "V")
+                vim.cmd([[put m]])
+            end)
+
+            return
+        end
+
+        vim.notify("Fallbacking to plain text. clipboard types: " .. table.concat(types, ", "), vim.log.levels.DEBUG)
+
+        vim.cmd([[put +]])
+    end,
+}
 
 -- TODO: v:register を渡せる visual_replace
 local function visual_replace(register)
