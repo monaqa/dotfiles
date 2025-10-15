@@ -17,17 +17,16 @@ vim.lsp.config("*", {
 
 vim.lsp.enable {
     "astro",
+    "basedpyright",
     "biome",
     -- "deno",  -- 複雑なので autocmd で制御
     "jsonls",
     "lua_ls",
-    "pyright",
     "ruff",
     "rust_analyzer",
     "svelte",
     "taplo",
     "tinymist",
-    -- "tombi",
     -- "ts_ls",  -- 複雑なので autocmd で制御
     "yamlls",
 }
