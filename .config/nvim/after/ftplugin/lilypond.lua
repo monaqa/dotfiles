@@ -284,6 +284,16 @@ function key_regions()
     return regions
 end
 
+function current_key()
+    local regions = key_regions()
+    local cursor = vim.fn.getcurpos()
+    for _, region in ipairs(regions) do
+        if region.line[2] == -1 or region.line[1] <= cursor[2] and cursor[2] < region.line[2] then
+            return region.key
+        end
+    end
+end
+
 function get_matches()
     return vim.iter(key_regions())
         :map(function(t)
@@ -313,7 +323,7 @@ end
 
 highlight_non_scale_note()
 
-local len_dict = {
+local denom_to_len = {
     ["16"] = 1,
     ["8"] = 2,
     ["8."] = 3,
@@ -327,6 +337,7 @@ local len_dict = {
 }
 
 local ns = vim.api.nvim_create_namespace("lilypond_cursor_line_note")
+
 local function show_cursor_line_note_length()
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 
@@ -342,7 +353,7 @@ local function show_cursor_line_note_length()
     local current_len = nil
     for _, match in ipairs(matches) do
         if match.len ~= nil then
-            local len = len_dict[match.len.text]
+            local len = denom_to_len[match.len.text]
             if len ~= nil then
                 sum = sum + len
             end
@@ -425,46 +436,6 @@ function _G.vimrc.omnifunc.lilypond(findstart, base)
         :totable()
 end
 
--- local key_to_scale_map = {
---     ["c\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
---     ["a\\minor"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
---
---     ["des\\major"] = { ees = "es", cis = "des", eis = "f", fis = "ges", gis = "aes", ais = "bes", bis = "c" },
---     ["bes\\minor"] = { ees = "es", cis = "des", eis = "f", fis = "ges", gis = "aes", ais = "bes", bis = "c" },
---
---     ["d\\major"] = { ces = "b", fes = "e", ges = "fis", des = "cis" },
---     ["b\\minor"] = { ces = "b", fes = "e", ges = "fis", des = "cis" },
---
---     ["ees\\major"] = { ees = "es", eis = "f", bis = "c", gis = "aes", ais = "bes" },
---     ["c\\minor"] = { ees = "es", eis = "f", bis = "c", gis = "aes", ais = "bes" },
---
---     ["e\\major"] = { ees = "dis", fes = "e", ces = "b", ges = "fis", aes = "gis", des = "cis", es = "dis" },
---     ["cis\\minor"] = { ees = "dis", fes = "e", ces = "b", ges = "fis", aes = "gis", des = "cis", es = "dis" },
---
---     ["f\\major"] = { eis = "f", bis = "c", fes = "e", ais = "bes" },
---     ["d\\minor"] = { "f", "g", "a", "bes", "c", "d", "e" },
---
---     ["ges\\major"] = {},
---     ["es\\minor"] = { "ges", "aes", "bes", "ces", "des", "ees", "f" },
---
---     ["g\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
---     ["e\\minor"] = { "g", "a", "b", "c", "d", "e", "fis" },
---
---     ["aes\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
---     ["f\\minor"] = { "aes", "bes", "c", "des", "ees", "f", "g" },
---
---     ["a\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
---     ["fis\\minor"] = { "a", "b", "cis", "d", "e", "fis", "gis" },
---
---     ["bes\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
---     ["g\\minor"] = { "bes", "c", "d", "ees", "f", "g", "a" },
---
---     ["b\\major"] = { bis = "c", ces = "b", eis = "f", fes = "e" },
---     ["gis\\minor"] = { "b", "cis", "dis", "e", "fis", "gis", "ais" },
---
---     ["fis\\major"] = { "fis", "gis", "ais", "b", "cis", "dis", "eis" },
--- }
-
 create_cmd("LilypondNoteNormalize") {
     range = "%",
     nargs = 1,
@@ -504,5 +475,126 @@ create_cmd("LilypondNoteDecrement") {
             start = meta.line1 - 1,
             stop = meta.line2,
         })
+    end,
+}
+
+for i = 1, 12, 1 do
+    mapset.i("<F" .. i .. ">") {
+        expr = true,
+        function()
+            local key = current_key()
+            if key == nil then
+                key = { "c", [[\major]] }
+            end
+            local center = lilypond.key_to_center(key[1] .. key[2])
+            local id = lilypond.tuple_to_id { 3, i, 0 }
+            local tuple = lilypond.id_to_tuple(id, center)
+            return lilypond.tuple_to_note(tuple) .. " "
+        end,
+    }
+
+    mapset.i("<F" .. (i + 12) .. ">") {
+        expr = true,
+        function()
+            local key = current_key()
+            if key == nil then
+                key = { "c", [[\major]] }
+            end
+            local center = lilypond.key_to_center(key[1] .. key[2])
+            local id = lilypond.tuple_to_id { 2, i, 0 }
+            local tuple = lilypond.id_to_tuple(id, center)
+            return lilypond.tuple_to_note(tuple) .. " "
+        end,
+    }
+
+    mapset.n("<F" .. i .. ">") {
+        function()
+            local key = current_key()
+            if key == nil then
+                key = { "c", [[\major]] }
+            end
+            local center = lilypond.key_to_center(key[1] .. key[2])
+            local id = lilypond.tuple_to_id { 3, i, 0 }
+            local tuple = lilypond.id_to_tuple(id, center)
+            vim.cmd.normal { "i" .. lilypond.tuple_to_note(tuple), bang = true }
+            vim.fn.search([=[ \zs[1248]]=], "", vim.fn.line(".") + 2)
+        end,
+    }
+
+    mapset.n("<F" .. (i + 12) .. ">") {
+        function()
+            local key = current_key()
+            if key == nil then
+                key = { "c", [[\major]] }
+            end
+            local center = lilypond.key_to_center(key[1] .. key[2])
+            local id = lilypond.tuple_to_id { 2, i, 0 }
+            local tuple = lilypond.id_to_tuple(id, center)
+            vim.cmd.normal { "i" .. lilypond.tuple_to_note(tuple), bang = true }
+            vim.fn.search([=[ \zs[1248]]=], "", vim.fn.line(".") + 2)
+        end,
+    }
+end
+
+-- local function get_before_cursor_note_length()
+--     local line = vim.fn.getline(".")
+--     local col = vim.fn.getpos(".")[3]
+--     local substring = line:sub(1, col - 1)
+--     local parser = vim.treesitter.get_string_parser(substring, "lilypond")
+--     local root = parser:parse()[1]:root()
+--     vim.print { substring, root:sexpr() }
+--     local query = vim.treesitter.query.parse(
+--         parser:lang(),
+--         [[
+--         ((note_item (len)? @len) @note)
+--         ((rest_item (len)? @len) @rest)
+--     ]]
+--     )
+--     return vim.iter(tree.find_matches(query, root, 0, -1, substring))
+--         :map(function(t)
+--             return denom_to_len[t.len.text]
+--         end)
+--         :totable()
+-- end
+
+local len_to_denom = {
+    ["1"] = "16",
+    ["2"] = "8",
+    ["3"] = "8.",
+    ["4"] = "4",
+    ["5"] = "4~16",
+    ["6"] = "4.",
+    ["7"] = "4~8.",
+    ["8"] = "2",
+    ["9"] = "1",
+    ["0"] = "~",
+    ["q"] = "r16",
+    ["w"] = "r8",
+    ["e"] = "r8 r16",
+    ["r"] = "r4",
+    ["i"] = "r2",
+    ["o"] = "r1",
+}
+
+---@param s string
+local function convert_notelen_to_denom(s)
+    local output = {}
+    for _, c in ipairs(vim.split(s, "")) do
+        output[#output + 1] = len_to_denom[c]
+    end
+    return table.concat(output, " ")
+end
+
+mapset.i("<C-s>") {
+    desc = [[長さ情報のまとまった文字列を Lilypond の長さ情報にする]],
+    expr = true,
+    function()
+        local line = vim.fn.getline(".")
+        local col = vim.fn.getpos(".")[3]
+        local substring = line:sub(1, col - 1)
+        -- TODO: 正規表現が仰々しい。実際には /[a-zA-Z0-9_]*$/ 程度で十分と思われる
+        -- CJK などの keyword 文字とアルファベットが連続して並んだときを考慮し、ややこしい表現になっている
+        local result = vim.fn.matchstr(substring, [[\v<[0-9qwertyuio]*$]])
+        return "<C-w>" .. convert_notelen_to_denom(result)
     end,
 }

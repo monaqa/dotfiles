@@ -46,9 +46,9 @@ plugins:push {
     end,
 }
 plugins:push {
-    "https://github.com/echasnovski/mini.statusline",
+    "https://github.com/nvim-mini/mini.statusline",
     dependencies = {
-        "https://github.com/echasnovski/mini.icons",
+        "https://github.com/nvim-mini/mini.icons",
         "colorimetry.nvim",
     },
     version = "*",

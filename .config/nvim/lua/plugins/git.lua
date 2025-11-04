@@ -604,4 +604,16 @@ plugins:push {
     end,
 }
 
+plugins:push {
+    "https://github.com/rickhowe/spotdiff.vim",
+    cmd = {
+        "Diffthis",
+        "Diffoff",
+        "Diffupdate",
+        "VDiffthis",
+        "VDiffoff",
+        "VDiffupdate",
+    },
+}
+
 return plugins:collect()

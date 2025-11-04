@@ -211,6 +211,13 @@ plugins:push {
                 end_sensitive = true,
             },
             augend.date.new {
+                pattern = "%m/%d(%J)",
+                default_kind = "day",
+                only_valid = true,
+                clamp = true,
+                end_sensitive = true,
+            },
+            augend.date.new {
                 pattern = "%a %b %-d %Y",
                 default_kind = "day",
                 clamp = true,

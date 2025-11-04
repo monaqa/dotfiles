@@ -90,7 +90,7 @@ end
 function M.key_to_center(key)
     local acc_dict = { ["eses"] = -2, ["es"] = -1, [""] = 0, ["is"] = 1, ["isis"] = 2 }
     local pitch_dict = { c = 0, d = 2, e = 4, f = 5, g = 7, a = 9, b = 11 }
-    local tonality_dict = { [ [[\major]] ] = 0, [ [[\minor]] ] = 9 }
+    local tonality_dict = { [ [[\major]] ] = 0, [ [[\minor]] ] = 3 }
     local key_pitch, key_acc, tonality = parse_key(key)
     return (pitch_dict[key_pitch] + acc_dict[key_acc] + tonality_dict[tonality] + 12) % 12
 end
@@ -112,11 +112,14 @@ function M.tuple_to_id(t)
 end
 
 ---@param id integer
+---@param tonal_center_pitch integer
 ---@return [integer, integer, integer]
 function M.id_to_tuple(id, tonal_center_pitch)
     local pitch_wo_acc = id % 12
+    local octave = (id - pitch_wo_acc) / 12
     local pitch = pitch_to_use(tonal_center_pitch, pitch_wo_acc, true)
     local acc = pitch_wo_acc - pitch
+    return { octave, pitch, acc }
 end
 
 ---@param note string

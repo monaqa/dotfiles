@@ -12,12 +12,14 @@ local M = {}
 ---@param root TSNode
 ---@param start? integer
 ---@param stop? integer
+---@param source? integer | string
 ---@return table<string, MatchNode>[]
-function M.find_matches(query, root, start, stop)
+function M.find_matches(query, root, start, stop, source)
     return vim.iter(query:iter_matches(root, 0, start, stop))
         :map(
             ---@param match table<integer, TSNode[]>
-            function(_, match, _)
+            ---@param metadata vim.treesitter.query.TSMetadata
+            function(_, match, metadata)
                 local m = vim.iter(pairs(match))
                     :map(
                         ---@param id integer
@@ -29,8 +31,13 @@ function M.find_matches(query, root, start, stop)
                             end
                             -- TODO: 一旦マッチした最初のノードのみ取る。本当は node ごとに iterate すべき
                             local sr, sc, er, ec = nodes[1]:range()
-                            local text =
-                                table.concat(vim.fn.getregion({ 0, sr + 1, sc + 1, 0 }, { 0, er + 1, ec, 0 }), "\n")
+                            local text
+                            if source ~= nil then
+                                text = vim.treesitter.get_node_text(nodes[1], source, metadata)
+                            else
+                                text =
+                                    table.concat(vim.fn.getregion({ 0, sr + 1, sc + 1, 0 }, { 0, er + 1, ec, 0 }), "\n")
+                            end
                             return capture_name,
                                 {
                                     node = nodes[1],

@@ -3,6 +3,7 @@
 local monaqa = require("monaqa")
 local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
 local to_bool = monaqa.logic.to_bool
+local mapset = monaqa.shorthand.mapset
 local mapset_local = monaqa.shorthand.mapset_local
 
 -- §§1 表示設定
@@ -159,14 +160,14 @@ autocmd_vimrc("TextYankPost") {
             return
         end
         if event.operator == "d" then
-            vim.fn.setreg("d", vim.fn.getreg('"', nil, nil))
+            vim.fn.setreg("d", vim.fn.getreg('"'))
         end
         if event.operator == "c" then
-            vim.fn.setreg("c", vim.fn.getreg('"', nil, nil))
+            vim.fn.setreg("c", vim.fn.getreg('"'))
         end
         if event.operator == "y" then
-            local old_clipboard_content = vim.fn.getreg("+", nil, nil)
-            local content = vim.fn.getreg('"', nil, nil)
+            local old_clipboard_content = vim.fn.getreg("+")
+            local content = vim.fn.getreg('"')
             if ignore_indent then
                 content = remove_common_indent(content)
                 ignore_indent = false
@@ -178,8 +179,12 @@ autocmd_vimrc("TextYankPost") {
     end,
 }
 
+mapset.n("dp") { [["dp]] }
+mapset.n("cp") { [["cp]] }
+mapset.n("yp") { [["yp]] }
+
 autocmd_vimrc("VimEnter") {
-    desc = "マクロ用のレジスタを消去",
+    desc = [[宵越しのマクロは持たない主義でね]],
     callback = function()
         vim.fn.setreg("q", "")
     end,

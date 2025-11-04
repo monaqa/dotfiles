@@ -107,6 +107,9 @@ mapset.n("gd") {
     end,
 }
 
+-- 標準の signature help は使わない
+vim.keymap.del("i", "<C-s>")
+
 mapset.n("t") { "<Nop>" }
 
 mapset.n("tr") {

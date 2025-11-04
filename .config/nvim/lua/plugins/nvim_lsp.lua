@@ -72,8 +72,7 @@ plugins:push {
 plugins:push {
     "https://github.com/Saghen/blink.cmp",
     dependencies = {
-        -- "https://github.com/rafamadriz/friendly-snippets",
-        "https://github.com/echasnovski/mini.snippets",
+        "https://github.com/nvim-mini/mini.snippets",
     },
     version = "*",
     config = function()
