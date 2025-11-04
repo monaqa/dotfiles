@@ -43,41 +43,13 @@ function M.command_put_clipboard_image(t)
     end
 end
 
---- Convert raw HTML into Apple HTML pasteboard format
---- @param html string Raw HTML fragment (e.g. <p><b>foo</b></p>)
---- @return string payload  Apple HTML clipboard payload
-function to_apple_html_clipboard(html)
-    -- ラップ用 HTML 全体を組み立てる
-    local fragment = "<!--StartFragment-->" .. html .. "<!--EndFragment-->"
-    local full_html = "<html><body>\n" .. fragment .. "\n</body></html>"
-
-    -- ヘッダ部分は後でサイズを埋め込む
-    local header_template = table.concat({
-        "Version:0.9",
-        "StartHTML:%010d",
-        "EndHTML:%010d",
-        "StartFragment:%010d",
-        "EndFragment:%010d",
-        "", -- 空行で区切る
-    }, "\n")
-
-    -- 仮にゼロ埋めしてヘッダ文字列を作る
-    local header_dummy = string.format(header_template, 0, 0, 0, 0)
-
-    -- 実際にオフセットを計算（バイト数）
-    local start_html = #header_dummy
-    local end_html = start_html + #full_html
-    local start_fragment = start_html + string.find(full_html, "<!--StartFragment-->", 0, true) - 1
-    local end_fragment = start_html + string.find(full_html, "<!--EndFragment-->", 0, true) - 1 + #"<!--EndFragment-->"
-
-    -- 正しい値でヘッダを再構成
-    local header = string.format(header_template, start_html, end_html, start_fragment, end_fragment)
-
-    return header .. full_html
-end
-
+---@param html string
+---@return string
 local function html_to_apple_hex(html)
-    local utf8_bytes = { string.byte(html, 1, -1) }
+    local utf8_bytes = {}
+    for i = 1, string.len(html) do
+        utf8_bytes[i] = html:byte(i)
+    end
     local hex = ""
     for _, b in ipairs(utf8_bytes) do
         hex = hex .. string.format("%02X", b)

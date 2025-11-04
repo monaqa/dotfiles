@@ -119,6 +119,13 @@ mapset.n("tr") {
     end,
 }
 
+mapset.n("ty") {
+    desc = [[LSP による型定義ジャンプ]],
+    function()
+        vim.lsp.buf.type_definition()
+    end,
+}
+
 mapset.n("ta") {
     desc = [[LSP によるコードアクション]],
     function()

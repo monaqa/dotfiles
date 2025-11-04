@@ -17,6 +17,7 @@ return {
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
                 diagnosticMode = "openFilesOnly",
+                typeCheckingMode = "standard", -- 当面の間はね。
             },
         },
     },

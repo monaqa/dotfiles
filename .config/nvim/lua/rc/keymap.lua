@@ -415,6 +415,88 @@ mapset.c("<C-r><Space>") { "<C-r>+" }
 mapset.n("@p") { "<Cmd>put +<CR>" }
 mapset.n("@P") { "<Cmd>put! +<CR>" }
 
+local function current_doctype()
+    local ft = vim.bo.filetype
+    if ft == "markdown" then
+        ft = "gfm"
+    end
+
+    if vim.list_contains { "typst", "gfm" } then
+        return ft
+    end
+
+    return
+end
+
+local function put_clipboard_image(doctype)
+    local fn_image_path = function(name)
+        local current_file_dir = vim.fn.expand("%:h")
+        local dir = current_file_dir .. "/image/"
+        if name == nil or name == "" then
+            name = vim.fn.strftime("%Y-%m-%d-%H-%M-%S")
+        end
+        return dir .. name .. ".png"
+    end
+    local fn_markup_string
+    if ft == "typst" then
+        fn_markup_string = function(name, path)
+            local fname = vim.fn.fnamemodify(path, ":t:r")
+            return {
+                "#align(center)[",
+                ([[  #image("image/%s.png", width: 85%%)]]):format(fname),
+                "]",
+            }
+        end
+    else
+        fn_markup_string = function(name, path)
+            return "![](" .. path .. ")"
+        end
+    end
+    require("rc.clipboard").command_put_clipboard_image {
+        fn_image_path = fn_image_path,
+        fn_markup_string = fn_markup_string,
+    } {}
+end
+
+local function put_richtext_with_convert(doctype)
+    local text = require("rc.clipboard").put_html_from_clipboard(ft)
+
+    vim.notify("Converted from Rich Text Format to " .. ft .. ".", vim.log.levels.INFO)
+
+    require("monaqa.edit").borrow_register { "m" }(function()
+        vim.fn.setreg("m", text, "V")
+        vim.cmd([[put m]])
+    end)
+end
+
+mapset.n("<Plug>(vimrc-put-image)") {
+    desc = [[画像を貼り付ける]],
+    function()
+        put_clipboard_image(vim.bo.filetype)
+    end,
+}
+
+mapset.n("<Plug>(vimrc-put-richtext)") {
+    desc = [[リッチテキストを現在の文書に合わせて貼り付ける]],
+    function()
+        put_richtext_with_convert(current_doctype())
+    end,
+}
+
+mapset.n("p") {
+    desc = [[レジスタ名が i, r のとき、クリップボードを選択して貼り付ける]],
+    expr = true,
+    function()
+        if vim.v.register == "i" then
+            return "<Plug>(vimrc-put-image)"
+        end
+        if vim.v.register == "r" then
+            return "<Plug>(vimrc-put-richtext)"
+        end
+        return "p"
+    end,
+}
+
 mapset.n("<Space>p") {
     desc = [[クリップボードのリッチテキストや画像を現在の filetype に変換して貼り付ける]],
     function()
@@ -424,57 +506,23 @@ mapset.n("<Space>p") {
             return
         end
 
-        local ft = vim.bo.filetype
-        if ft == "markdown" then
-            ft = "gfm"
+        local doctype = current_doctype()
+        if doctype == nil then
+            vim.cmd([[put +]])
+            return
         end
 
         if vim.list_contains(types, "PNGf") then
-            local fn_image_path = function(name)
-                local current_file_dir = vim.fn.expand("%:h")
-                local dir = current_file_dir .. "/image/"
-                if name == nil or name == "" then
-                    name = vim.fn.strftime("%Y-%m-%d-%H-%M-%S")
-                end
-                return dir .. name .. ".png"
-            end
-            local fn_markup_string
-            if ft == "typst" then
-                fn_markup_string = function(name, path)
-                    local fname = vim.fn.fnamemodify(path, ":t:r")
-                    return {
-                        "#align(center)[",
-                        ([[  #image("image/%s.png", width: 85%%)]]):format(fname),
-                        "]",
-                    }
-                end
-            else
-                fn_markup_string = function(name, path)
-                    return "![](" .. path .. ")"
-                end
-            end
-            require("rc.clipboard").command_put_clipboard_image {
-                fn_image_path = fn_image_path,
-                fn_markup_string = fn_markup_string,
-            } {}
-
+            put_clipboard_image(doctype)
             return
         end
 
-        if vim.list_contains(types, "HTML") and vim.list_contains({ "typst", "gfm" }, ft) then
-            local text = require("rc.clipboard").put_html_from_clipboard(ft)
-
-            vim.notify("Converted from Rich Text Format to " .. ft .. ".", vim.log.levels.INFO)
-
-            require("monaqa.edit").borrow_register { "m" }(function()
-                vim.fn.setreg("m", text, "V")
-                vim.cmd([[put m]])
-            end)
-
+        if vim.list_contains(types, "HTML") then
+            put_richtext_with_convert(doctype)
             return
         end
 
-        vim.notify("Fallbacking to plain text. clipboard types: " .. table.concat(types, ", "), vim.log.levels.DEBUG)
+        vim.notify("Rich putting not available. clipboard types: " .. table.concat(types, ", "), vim.log.levels.DEBUG)
 
         vim.cmd([[put +]])
     end,
