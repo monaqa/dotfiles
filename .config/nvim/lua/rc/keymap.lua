@@ -421,11 +421,9 @@ local function current_doctype()
         ft = "gfm"
     end
 
-    if vim.list_contains { "typst", "gfm" } then
+    if vim.list_contains({ "typst", "gfm" }, ft) then
         return ft
     end
-
-    return
 end
 
 local function put_clipboard_image(doctype)
@@ -438,7 +436,7 @@ local function put_clipboard_image(doctype)
         return dir .. name .. ".png"
     end
     local fn_markup_string
-    if ft == "typst" then
+    if doctype == "typst" then
         fn_markup_string = function(name, path)
             local fname = vim.fn.fnamemodify(path, ":t:r")
             return {
@@ -459,9 +457,9 @@ local function put_clipboard_image(doctype)
 end
 
 local function put_richtext_with_convert(doctype)
-    local text = require("rc.clipboard").put_html_from_clipboard(ft)
+    local text = require("rc.clipboard").put_html_from_clipboard(doctype)
 
-    vim.notify("Converted from Rich Text Format to " .. ft .. ".", vim.log.levels.INFO)
+    vim.notify("Converted from Rich Text Format to " .. doctype .. ".", vim.log.levels.INFO)
 
     require("monaqa.edit").borrow_register { "m" }(function()
         vim.fn.setreg("m", text, "V")
