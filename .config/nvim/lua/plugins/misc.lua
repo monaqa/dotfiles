@@ -20,6 +20,11 @@ plugins:push {
             input = { enabled = true },
             lazygit = {
                 enabled = true,
+                win = {
+                    keys = {
+                        term_normal = false,
+                    },
+                },
             },
         }
 
