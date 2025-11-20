@@ -110,7 +110,7 @@ mapset.n("@h") {
     expr = true,
     function()
         local modeline = get_modeline()
-        return "<Cmd>vert term " .. compile_cmdname(modeline) .. " watch --features html -f html %<CR>"
+        return "<Cmd>vert term " .. compile_cmdname(modeline) .. " watch --features html % -f html<CR>"
     end,
 }
 

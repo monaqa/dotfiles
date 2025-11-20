@@ -20,19 +20,15 @@ plugins:push {
         "nvim-treesitter/nvim-treesitter",
     },
     config = function()
-        local provider = ({
+        local completion_provider = ({
             coc = "coc",
             ["nvim-lsp"] = "blink",
         })[monaqa.lsp.choose_lsp()]
 
-        local http_adapters = {}
-
-        if _G.vimrc.plugin.codecompanion ~= nil then
-            http_adapters = _G.vimrc.plugin.codecompanion.adapters
-        end
+        local adapters = { http = {}, acp = {} }
 
         if vim.env["GEMINI_API_KEY"] ~= nil then
-            http_adapters.gemini = function()
+            adapters.http.gemini = function()
                 return require("codecompanion.adapters").extend("gemini", {
                     schema = {
                         model = {
@@ -46,7 +42,20 @@ plugins:push {
             end
         end
 
-        http_adapters.gemma = function()
+        if vim.env["OPENAI_API_KEY"] ~= nil then
+            adapters.acp.codex = function()
+                return require("codecompanion.adapters").extend("codex", {
+                    defaults = {
+                        auth_method = "openai-api-key",
+                    },
+                    env = {
+                        OPENAI_API_KEY = vim.env["OPENAI_API_KEY"],
+                    },
+                })
+            end
+        end
+
+        adapters.http.gemma = function()
             return require("codecompanion.adapters").extend("ollama", {
                 name = "gemma",
                 schema = {
@@ -64,13 +73,11 @@ plugins:push {
             strategies = {
                 chat = {
                     adapter = "gemini",
-                    opts = {
-                        completion_provider = "blink",
-                    },
+                    opts = { completion_provider = completion_provider },
                 },
                 inline = { adapter = "gemini" },
             },
-            adapters = { http = http_adapters },
+            adapters = adapters,
             -- display = {
             --     diff = {
             --         provider = "mini_diff",

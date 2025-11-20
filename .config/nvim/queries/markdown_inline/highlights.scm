@@ -67,3 +67,30 @@
 (code_span) @nospell
 (uri_autolink) @nospell
 (link_destination) @nospell
+
+(entity_reference) @nospell
+
+; Replace common HTML entities.
+((entity_reference) @character.special
+  (#eq? @character.special "&nbsp;")
+  (#set! conceal " "))
+
+((entity_reference) @character.special
+  (#eq? @character.special "&lt;")
+  (#set! conceal "<"))
+
+((entity_reference) @character.special
+  (#eq? @character.special "&gt;")
+  (#set! conceal ">"))
+
+((entity_reference) @character.special
+  (#eq? @character.special "&amp;")
+  (#set! conceal "&"))
+
+((entity_reference) @character.special
+  (#eq? @character.special "&quot;")
+  (#set! conceal "\""))
+
+((entity_reference) @character.special
+  (#any-of? @character.special "&ensp;" "&emsp;")
+  (#set! conceal " "))

@@ -412,6 +412,11 @@ plugins:push {
                 end
                 return true
             end,
+            win_options = {
+                conceallevel = {
+                    rendered = 2,
+                },
+            },
         }
     end,
 }

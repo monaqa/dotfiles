@@ -198,6 +198,26 @@ abbr -a r    "ranger-cd"
 # raf
 abbr -a rafnew "cd (raf new)"
 
+# k8s
+function __kubectl_default_namespace_abbr
+    if set -q KUBECTL_DEFAULT_WORKSPACE
+      printf 'kubectl -n %s' $KUBECTL_DEFAULT_WORKSPACE
+    else
+      printf 'kubectl'
+    end
+end
+function __stern_default_namespace_abbr
+    if set -q KUBECTL_DEFAULT_WORKSPACE
+      printf 'stern -n %s' $KUBECTL_DEFAULT_WORKSPACE
+    else
+      printf 'stern'
+    end
+end
+
+abbr -a kubectl --position command --function __kubectl_default_namespace_abbr
+abbr -a k --position command --function __kubectl_default_namespace_abbr
+abbr -a stern --position command --function __stern_default_namespace_abbr
+
 # }}}
 
 # modern commands {{{
@@ -268,6 +288,20 @@ if test -n "$FUZZY_FINDER"
 end
 # }}}
 
+# preprompt {{{
+
+set -g __fish_prompt_prefix
+
+function by
+    set __fish_prompt_prefix $argv ""
+end
+
+function __preprompt --on-event fish_prompt
+    commandline --replace "$__fish_prompt_prefix"
+end
+
+# }}}
+
 # local configs {{{
 if test -e ~/.config/fish/local.fish
   source ~/.config/fish/local.fish
@@ -278,4 +312,4 @@ if type -q mise
   eval (mise activate fish)
 end
 
-eval (starship init fish)
+# eval (starship init fish)

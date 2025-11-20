@@ -6,6 +6,12 @@ local create_cmd = shorthand.create_cmd
 local autocmd_vimrc = shorthand.autocmd_vimrc
 local mapset = shorthand.mapset
 
+local lsp_logdir = vim.fs.joinpath(vim.fn.stdpath("log"), "lsp")
+if not vim.uv.fs_stat(lsp_logdir) then
+    vim.fn.mkdir(lsp_logdir, "p")
+end
+vim.lsp.log._set_filename(vim.fs.joinpath(lsp_logdir, vim.fn.strftime("%Y-%m-%d") .. ".log"))
+
 -- Section1 common config
 vim.lsp.config("*", {
     -- on_attach = function(client, bufnr)

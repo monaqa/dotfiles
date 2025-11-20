@@ -415,6 +415,19 @@ mapset.c("<C-r><Space>") { "<C-r>+" }
 mapset.n("@p") { "<Cmd>put +<CR>" }
 mapset.n("@P") { "<Cmd>put! +<CR>" }
 
+-- TODO: v:register を渡せる visual_replace
+local function visual_replace(register)
+    return function()
+        local reg_body = vim.fn.getreg(register, nil, nil)
+        vim.cmd([[normal! "]] .. register .. "p")
+        vim.fn.setreg(register, reg_body)
+    end
+end
+
+mapset.x("<Space>p") { visual_replace("+"), desc = [[replace with '+' register]] }
+mapset.x("p") { visual_replace('"'), desc = [[replace with unnamed register]] }
+
+-- Section3 clipboard putting
 local function current_doctype()
     local ft = vim.bo.filetype
     if ft == "markdown" then
@@ -440,9 +453,7 @@ local function put_clipboard_image(doctype)
         fn_markup_string = function(name, path)
             local fname = vim.fn.fnamemodify(path, ":t:r")
             return {
-                "#align(center)[",
-                ([[  #image("image/%s.png", width: 85%%)]]):format(fname),
-                "]",
+                ([[#image("image/%s.png")]]):format(fname),
             }
         end
     else
@@ -525,18 +536,6 @@ mapset.n("<Space>p") {
         vim.cmd([[put +]])
     end,
 }
-
--- TODO: v:register を渡せる visual_replace
-local function visual_replace(register)
-    return function()
-        local reg_body = vim.fn.getreg(register, nil, nil)
-        vim.cmd([[normal! "]] .. register .. "p")
-        vim.fn.setreg(register, reg_body)
-    end
-end
-
-mapset.x("<Space>p") { visual_replace("+"), desc = [[replace with '+' register]] }
-mapset.x("p") { visual_replace('"'), desc = [[replace with unnamed register]] }
 
 -- Section2 :normal command alternative
 local ns_id = vim.api.nvim_create_namespace("vimrc")
