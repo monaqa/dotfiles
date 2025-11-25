@@ -26,6 +26,7 @@ vim.lsp.enable {
     "basedpyright",
     "biome",
     -- "deno",  -- 複雑なので autocmd で制御
+    "fish",
     "jsonls",
     "lua_ls",
     "ruff",

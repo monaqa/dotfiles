@@ -132,7 +132,7 @@ M.scheme = {
         fg.w3,
     },
     brights = {
-        bg.w4,
+        fg.w4,
         fg.r3,
         fg.g1,
         fg.y1,

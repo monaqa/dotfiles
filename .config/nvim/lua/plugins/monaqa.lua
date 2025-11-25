@@ -14,7 +14,7 @@ end
 
 plugins:push {
     "https://github.com/monaqa/dial.nvim",
-    -- cond = cond_dev("monaqa/dial.nvim"),
+    cond = cond_dev("monaqa/dial.nvim"),
     -- dir = "~/ghq/github.com/monaqa/dial.nvim",
     -- keys = {
     --     { "<C-a>", mode = { "n", "x" } },

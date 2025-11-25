@@ -3,7 +3,7 @@ local snips = {}
 local register = require("monaqa.snippet").new_registerer(snips)
 
 register("score")([=[
-\version "2.21.82"
+\version "2.24.1"
 \include "../../../template/bass-tab-score/0.2.0.ly"
 % \include "swing.ly"
 
@@ -27,11 +27,10 @@ body = {
   %   \rhythm { c4 } = 108
   %   \hspace #0.4
   %   (\rhythm { 16[ 16] } = \rhythm { \tuplet 3/2 { 8[ 16] } })
-  % \tripletFeel 16 {
+  % }
+  % \tripletFeel 16 {}
 
   \key c \major
-
-  % }
 }
 
 chrds = \chordmode {
@@ -61,7 +60,7 @@ chrds = \chordmode {
   %   \set TabStaff.minimumFret = #3
   %   \set TabStaff.restrainOpenStrings = ##t
   %   \override MultiMeasureRest.expand-limit = #2
-  %   \keepWithTag #'lower \body
+  %   { \fixed c, {\body} }
   % }
   >>
 

@@ -37,7 +37,7 @@ cabbr:add { from = "nw", to = "noautocmd w" }
 
 -- codecompanion.nvim
 cabbr:add { from = "ca", to = "CodeCompanionActions" }
-cabbr:add { from = "cc", to = "CodeCompanionChat" }
+cabbr:add { from = "cc", to = "CodeCompanionChat Toggle" }
 
 -- git 操作
 cabbr:add { from = "gby", to = "GinaBrowseYank" }

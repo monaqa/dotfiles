@@ -28,15 +28,10 @@ plugins:push {
         local adapters = { http = {}, acp = {} }
 
         if vim.env["GEMINI_API_KEY"] ~= nil then
-            adapters.http.gemini = function()
-                return require("codecompanion.adapters").extend("gemini", {
-                    schema = {
-                        model = {
-                            default = "gemini-2.5-flash-preview-05-20",
-                        },
-                    },
-                    env = {
-                        api_key = "GEMINI_API_KEY",
+            adapters.acp.gemini_cli = function()
+                return require("codecompanion.adapters").extend("gemini_cli", {
+                    defaults = {
+                        auth_method = "oauth-personal", -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
                     },
                 })
             end
@@ -78,11 +73,18 @@ plugins:push {
                 inline = { adapter = "gemini" },
             },
             adapters = adapters,
-            -- display = {
-            --     diff = {
-            --         provider = "mini_diff",
-            --     },
-            -- },
+            display = {
+                chat = {
+                    window = {
+                        opts = {
+                            linebreak = false,
+                        },
+                    },
+                },
+                -- diff = {
+                --     provider = "mini_diff",
+                -- },
+            },
         }
 
         mapset.n("@a") { "<Cmd>CodeCompanionChat Toggle<CR>" }
