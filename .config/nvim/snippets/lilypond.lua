@@ -1,8 +1,7 @@
-local snips = {}
+local register = require("monaqa.snippet").register
 
-local register = require("monaqa.snippet").new_registerer(snips)
-
-register("score")([=[
+register("score") {
+    [=[
 \version "2.24.1"
 \include "../../../template/bass-tab-score/0.2.0.ly"
 % \include "swing.ly"
@@ -76,6 +75,7 @@ chrds = \chordmode {
     % \tempo 4 = 108
   }
 }
-]=])
+]=],
+}
 
-return snips
+return register.snips

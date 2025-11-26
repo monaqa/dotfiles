@@ -1,11 +1,9 @@
-local snips = {}
+local register = require("monaqa.snippet").register
 
-local register = require("monaqa.snippet").new_registerer(snips)
-
-register("function")([=[
+register("function") { [=[
 function $1
     $0
 end
-]=])
+]=] }
 
-return snips
+return register.snips

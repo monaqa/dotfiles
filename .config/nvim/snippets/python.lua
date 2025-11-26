@@ -1,8 +1,6 @@
-local snips = {}
+local register = require("monaqa.snippet").register
 
-local register = require("monaqa.snippet").new_registerer(snips)
-
-register("__main")([[
+register("__main") { [=[
 def main():
     """Main function.
     """
@@ -10,10 +8,10 @@ def main():
 
 if __name__ == "__main__":
     main()
-]])
+]=] }
 
-register("todo")([=[
+register("todo") { [=[
 raise NotImplementedError("not implemented yet.")
-]=])
+]=] }
 
-return snips
+return register.snips

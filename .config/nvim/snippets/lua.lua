@@ -1,78 +1,81 @@
-local snips = {}
+local register = require("monaqa.snippet").register
 
-local register = require("monaqa.snippet").new_registerer(snips)
-
-register("nnoremap")([=[
+register("nnoremap") { [=[
 mapset.n("$1") {
     desc = [[]],
     function ()
         $0
     end,
 }
-]=])
-register("nmap")([=[
+]=] }
+register("nmap") { [=[
 mapset.n("$1") { "$0" }
-]=])
-register("inoremap")([=[
+]=] }
+
+register("inoremap") { [=[
 mapset.i("$1") {
     desc = [[]],
     function ()
         $0
     end,
 }
-]=])
-register("imap")([=[
+]=] }
+register("imap") { [=[
 mapset.i("$1") { "$0" }
-]=])
-register("cnoremap")([=[
+]=] }
+
+register("cnoremap") { [=[
 mapset.c("$1") {
     desc = [[]],
     function ()
         $0
     end,
 }
-]=])
-register("cmap")([=[
+]=] }
+register("cmap") { [=[
 mapset.c("$1") { "$0" }
-]=])
-register("xnoremap")([=[
+]=] }
+
+register("xnoremap") { [=[
 mapset.x("$1") {
     desc = [[]],
     funxtion ()
         $0
     end,
 }
-]=])
-register("xmap")([=[
+]=] }
+register("xmap") { [=[
 mapset.x("$1") { "$0" }
-]=])
-register("onoremap")([=[
+]=] }
+
+register("onoremap") { [=[
 mapset.o("$1") {
     desc = [[]],
     funotion ()
         $0
     end,
 }
-]=])
-register("omap")([=[
+]=] }
+register("omap") { [=[
 mapset.o("$1") { "$0" }
-]=])
-register("noremap")([=[
+]=] }
+
+register("noremap") { [=[
 mapset.nxo("$1") {
     desc = [[]],
     function ()
         $0
     end,
 }
-]=])
-register("map")([=[
+]=] }
+register("map") { [=[
 mapset.nxo("$1") { "$0" }
-]=])
+]=] }
 
-register("new_snippet")([==[
-register("$1")([=[
+register("register") { [==[
+register("$1") { [=[
 $0
-]=])
-]==])
+]=] }
+]==] }
 
-return snips
+return register.snips

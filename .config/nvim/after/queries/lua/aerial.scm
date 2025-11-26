@@ -17,3 +17,18 @@
  (#offset! @name 0 20 0 -1)
  (#set! "kind" "Function")
  )
+
+(
+(function_call
+  name: (function_call
+          name: (identifier) @funcname
+          arguments: (arguments
+                       (string
+                         content: (string_content) @name))) @start
+  arguments: (arguments)
+  ) @type
+
+(#match? @funcname "register")
+ (#bufname-vim-match? "\\vsnippets/.*\\.lua$")
+ (#set! "kind" "Function")
+)
