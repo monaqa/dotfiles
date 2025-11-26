@@ -202,15 +202,15 @@ abbr -a rafnew "cd (raf new)"
 
 # k8s
 function __kubectl_default_namespace_abbr
-    if set -q KUBECTL_DEFAULT_WORKSPACE
-        printf 'kubectl -n %s' $KUBECTL_DEFAULT_WORKSPACE
+    if set -q KUBECTL_DEFAULT_NAMESPACE
+        printf 'kubectl -n %s' $KUBECTL_DEFAULT_NAMESPACE
     else
         printf kubectl
     end
 end
 function __stern_default_namespace_abbr
-    if set -q KUBECTL_DEFAULT_WORKSPACE
-        printf 'stern -n %s' $KUBECTL_DEFAULT_WORKSPACE
+    if set -q KUBECTL_DEFAULT_NAMESPACE
+        printf 'stern -n %s' $KUBECTL_DEFAULT_NAMESPACE
     else
         printf stern
     end
@@ -318,6 +318,7 @@ set -g async_prompt_functions _pure_prompt_git
 
 set pure_show_system_time true
 set pure_show_jobs true
+set pure_color_prompt_on_success green
 
 function fish_prompt
     set --local exit_code $status # save previous exit code

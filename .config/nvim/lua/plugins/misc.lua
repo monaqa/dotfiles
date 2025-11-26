@@ -237,6 +237,13 @@ plugins:push {
     end,
 }
 
+plugins:push {
+    "https://github.com/vinnymeller/swagger-preview.nvim",
+    cmd = { "SwaggerPreview", "SwaggerPreviewStop", "SwaggerPreviewToggle" },
+    build = "npm i",
+    config = true,
+}
+
 plugins:push { "https://github.com/itchyny/vim-qfedit", ft = { "qf" } }
 
 plugins:push {

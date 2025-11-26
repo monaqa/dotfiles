@@ -63,7 +63,6 @@ plugins:push {
             css = {},
             d2 = {},
             dot = {},
-            go = {},
             html = {},
             javascript = {},
             json = { indent = true },

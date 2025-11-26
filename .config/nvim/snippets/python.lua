@@ -12,4 +12,8 @@ if __name__ == "__main__":
     main()
 ]])
 
+register("todo")([=[
+raise NotImplementedError("not implemented yet.")
+]=])
+
 return snips

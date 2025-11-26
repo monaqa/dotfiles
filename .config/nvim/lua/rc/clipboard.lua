@@ -69,7 +69,7 @@ function M.copy_html_to_clipboard(text, filetype)
         vim.notify(result.stderr, vim.log.levels.ERROR)
         return
     end
-    local html = result.stdout:gsub('"', '\\"')
+    local html = result.stdout or ""
     local hex = html_to_apple_hex(html)
     local escaped_text = text:gsub('"', [[\"]]):gsub("\n", [[\n]])
 

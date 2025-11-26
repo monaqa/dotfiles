@@ -38,6 +38,7 @@ mapset.ia("]") {
 
 ---@class modeline
 ---@field target? string
+---@field format? string
 ---@field cmd? string
 ---@field root? string
 ---@field nightly? boolean
@@ -92,6 +93,10 @@ local function compile_cmdargs(modeline)
     if modeline.root ~= nil then
         v[#v + 1] = "--root"
         v[#v + 1] = vim.fn.resolve(vim.fn.expand("%:h") .. "/" .. modeline.root)
+    end
+    if modeline.format ~= nil then
+        v[#v + 1] = "--format"
+        v[#v + 1] = modeline.format
     end
     return v
 end
