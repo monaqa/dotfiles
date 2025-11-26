@@ -320,17 +320,39 @@ set pure_show_system_time true
 set pure_show_jobs true
 set pure_color_prompt_on_success green
 
+function ghq_path
+    set dir (string replace -r "^$HOME" "~" -- $PWD)
+
+    set ghq_pat '^~/ghq/[^/]+/([^/]+)/([^/]+)(/.*)?$'
+    set raf_pat '^~/raf/([^/]+)/[^/]+/[^/]+/[^/]+/([^/]+)(/.*)?$'
+
+    if string match -rq $ghq_pat -- $dir
+        set user (string replace -r $ghq_pat '$1' -- $dir)
+        set repo (string replace -r $ghq_pat '$2' -- $dir)
+        set rest (string replace -r $ghq_pat '$3' -- $dir)
+
+        set bold_repo (printf "\e[1m%s\e[0m" $repo)
+
+        echo (_pure_set_color "cyan")"$user/$bold_repo"(_pure_set_color "normal")"$rest"
+    else if string match -rq $raf_pat -- $dir
+        set lang (string replace -r $raf_pat '$1' -- $dir)
+        set slug (string replace -r $raf_pat '$2' -- $dir)
+        set rest (string replace -r $raf_pat '$3' -- $dir)
+
+        set bold_slug (printf "\e[1m%s\e[0m" $slug)
+
+        echo (_pure_set_color "magenta")"$lang/…/$bold_slug"(_pure_set_color "normal")"$rest"
+    else
+        echo (_pure_set_color "normal")$dir
+    end
+end
+
 function fish_prompt
     set --local exit_code $status # save previous exit code
 
     set --local prompt_git (_pure_prompt_git)
     set --local prompt_command_duration (_pure_prompt_command_duration)
-    set --local prompt (_pure_print_prompt \
-                            $prompt_git \
-                            $prompt_command_duration
-                        )
-    set --local prompt_width (_pure_string_width $prompt)
-    set --local current_folder (_pure_prompt_current_folder $prompt_width)
+    set --local current_folder (ghq_path)
     set --local jobs (_pure_prompt_jobs)
     set --local virtualenv (_pure_prompt_virtualenv) # Python virtualenv name
     set --local pure_symbol (_pure_prompt_symbol $exit_code)
