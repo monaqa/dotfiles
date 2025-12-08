@@ -16,7 +16,7 @@ register("showybox") {
   title: [${1:Title}],
   frame: (border-color: luma(25%), title-color: luma(80%), body-color: luma(95%)),
   title-style: (color: luma(25%), weight: 600, align: center),
-
+)[
   $0
 ]
 ]=],

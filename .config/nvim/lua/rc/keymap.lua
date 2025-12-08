@@ -521,13 +521,13 @@ mapset.n("<Space>p") {
             return
         end
 
-        if vim.list_contains(types, "PNGf") then
-            put_clipboard_image(doctype)
+        if vim.list_contains(types, "HTML") then
+            put_richtext_with_convert(doctype)
             return
         end
 
-        if vim.list_contains(types, "HTML") then
-            put_richtext_with_convert(doctype)
+        if vim.list_contains(types, "PNGf") then
+            put_clipboard_image(doctype)
             return
         end
 
