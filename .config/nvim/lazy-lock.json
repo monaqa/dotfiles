@@ -12,6 +12,7 @@
   "dial.nvim": { "branch": "master", "commit": "f97c0c7fa7d5111bc04a91d0f693900fb2d95861" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "dps-ghosttext.vim": { "branch": "master", "commit": "6d92d184de685b16ef8a334c2a892183c3846232" },
+  "fyler.nvim": { "branch": "stable", "commit": "bb8b9f30c652c948d35211958b0deec3496bcc08" },
   "general-converter.nvim": { "branch": "master", "commit": "79187f115b80120ec556a96a5db0a93b5b3426fd" },
   "gina.vim": { "branch": "master", "commit": "ff6c2ddeca98f886b57fb42283c12e167d6ab575" },
   "gitsigns.nvim": { "branch": "main", "commit": "cdafc320f03f2572c40ab93a4eecb733d4016d07" },

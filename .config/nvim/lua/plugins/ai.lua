@@ -37,29 +37,26 @@ plugins:push {
             end
         end
 
-        if vim.env["OPENAI_API_KEY"] ~= nil then
-            adapters.acp.codex = function()
-                return require("codecompanion.adapters").extend("codex", {
-                    defaults = {
-                        auth_method = "openai-api-key",
-                    },
-                    env = {
-                        OPENAI_API_KEY = vim.env["OPENAI_API_KEY"],
-                    },
-                })
-            end
-        end
-
-        adapters.http.gemma = function()
+        adapters.http.gpt_oss = function()
             return require("codecompanion.adapters").extend("ollama", {
-                name = "gemma",
+                name = "gpt-oss",
                 schema = {
                     model = {
-                        default = "gemma3n:e2b",
+                        default = "gpt-oss:20b",
                     },
                 },
             })
         end
+
+        require("codecompanion").setup {
+            adapters = {
+                acp = {
+                    codex = function()
+                        return require("codecompanion.adapters").extend("codex", {})
+                    end,
+                },
+            },
+        }
 
         require("codecompanion").setup {
             opts = {
@@ -67,10 +64,10 @@ plugins:push {
             },
             strategies = {
                 chat = {
-                    adapter = "gemini",
+                    adapter = "codex",
                     opts = { completion_provider = completion_provider },
                 },
-                inline = { adapter = "gemini" },
+                inline = { adapter = "codex" },
             },
             adapters = adapters,
             display = {

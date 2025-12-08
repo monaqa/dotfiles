@@ -611,4 +611,14 @@ plugins:push {
     end,
 }
 
+plugins:push {
+    "https://github.com/A7Lavinraj/fyler.nvim",
+    dependencies = { "nvim-mini/mini.icons" },
+    branch = "stable", -- Use stable branch for production
+    lazy = false, -- Necessary for `default_explorer` to work properly
+    config = function()
+        require("fyler").setup {}
+    end,
+}
+
 return plugins:collect()
