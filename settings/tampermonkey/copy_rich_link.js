@@ -24,9 +24,6 @@
           "text/plain": new Blob([p], { type: "text/plain" }),
         }),
       ]);
-      console.log("Rich link copied:", t);
-      // 成功時のアラートが邪魔な場合はコメントアウトしてください
-      // alert(`リンクをコピーしました:\n${t}`);
     } catch (e) {
       console.error("Copy failed:", e);
       alert("コピーに失敗しました。");

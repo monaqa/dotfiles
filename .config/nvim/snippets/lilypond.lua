@@ -58,6 +58,7 @@ chrds = \chordmode {
   %   \huge
   %   \set TabStaff.minimumFret = #3
   %   \set TabStaff.restrainOpenStrings = ##t
+  %   \set TabStaff.noteToFretFunction = #adaptive-fret-calculator
   %   \override MultiMeasureRest.expand-limit = #2
   %   { \fixed c, {\body} }
   % }

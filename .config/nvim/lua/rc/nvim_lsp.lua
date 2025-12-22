@@ -133,7 +133,7 @@ mapset.n("ty") {
     end,
 }
 
-mapset.n("ta") {
+mapset.nx("ta") {
     desc = [[LSP によるコードアクション]],
     function()
         vim.lsp.buf.code_action()
