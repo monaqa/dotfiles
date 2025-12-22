@@ -244,8 +244,6 @@ plugins:push {
     config = true,
 }
 
-plugins:push { "https://github.com/itchyny/vim-qfedit", ft = { "qf" } }
-
 plugins:push {
     "https://github.com/kana/vim-altr",
     keys = {
@@ -353,7 +351,15 @@ plugins:push {
     end,
 }
 
-plugins:push { "https://github.com/thinca/vim-qfreplace", ft = { "qf" } }
+-- plugins:push { "https://github.com/thinca/vim-qfreplace", ft = { "qf" } }
+-- plugins:push { "https://github.com/itchyny/vim-qfedit", ft = { "qf" } }
+plugins:push {
+    "https://github.com/stevearc/quicker.nvim",
+    ft = { "qf" },
+    config = function()
+        require("quicker").setup {}
+    end,
+}
 
 plugins:push { "https://github.com/tyru/capture.vim", cmd = { "Capture" } }
 

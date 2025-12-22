@@ -38,6 +38,21 @@ function __auto_source_venv --on-variable PWD --description "Activate/Deactivate
     end
 end
 
+# thanks: https://gist.github.com/tommyip/cf9099fa6053e30247e5d0318de2fb9e
+function __auto_set_kubecfg --on-variable PWD --description "KUBECONFIG を自動で設定"
+    status --is-command-substitution; and return
+
+    set cwd (pwd)
+    # Check if we are inside a git directory
+    if test -e "$cwd/.local_ignore_kubeconfig.yaml"
+        export KUBECONFIG=".local_ignore_kubeconfig.yaml"
+    end
+    # If virtualenv activated but we are not in a git directory, deactivate.
+    if test -n "$VIRTUAL_ENV"
+        deactivate
+    end
+end
+
 # https://blog.kentarom.com/posts/b9e446f0-8297-44e8-8c76-a0a6fe2fb54e
 function show_filtered_pr_list
     set query '

@@ -71,14 +71,13 @@ function M.copy_html_to_clipboard(text, filetype)
     end
     local html = result.stdout or ""
     local hex = html_to_apple_hex(html)
-    local escaped_text = text:gsub('"', [[\"]]):gsub("\n", [[\n]])
+    local escaped_text = text:gsub([[\]], [[\\]]):gsub('"', [[\"]]):gsub("\n", [[\n]])
 
     local script = "set the clipboard to { «class HTML»:«data HTML" .. hex .. '», string:"' .. escaped_text .. '"}'
     result = vim.system({ "osascript", "-e", script }):wait()
 
     if result.code ~= 0 then
         vim.notify(result.stderr, vim.log.levels.ERROR)
-        vim.notify(script)
         return
     end
 
