@@ -8,12 +8,12 @@ plugins:push {
     dependencies = { "https://github.com/kyazdani42/nvim-web-devicons" },
     -- lazy = false,
     keys = {
-        -- {
-        --     "<Space>t",
-        --     function()
-        --         require("aerial").toggle { focus = false }
-        --     end,
-        -- },
+        {
+            "<Space>q",
+            function()
+                require("aerial").toggle { focus = false }
+            end,
+        },
         {
             "<Space>i",
             function()
@@ -26,7 +26,7 @@ plugins:push {
         -- This can be a filetype map (see :help aerial-filetype-map)
         backends = {
             "treesitter",
-            -- "lsp",
+            "lsp",
             "markdown",
             "man",
         },
@@ -126,14 +126,17 @@ plugins:push {
         -- This can be a filetype map (see :help aerial-filetype-map)
         -- To see all available values, see :help SymbolKind
         filter_kind = {
-            "Class",
-            "Constructor",
-            "Enum",
-            "Function",
-            "Interface",
-            "Module",
-            "Method",
-            "Struct",
+            ["_"] = false,
+            html = { "Struct" },
+            svelte = { "Struct" },
+            -- "Class",
+            -- "Constructor",
+            -- "Enum",
+            -- "Function",
+            -- "Interface",
+            -- "Module",
+            -- "Method",
+            -- "Struct",
         },
 
         -- -- Determines line highlighting mode when multiple splits are visible.

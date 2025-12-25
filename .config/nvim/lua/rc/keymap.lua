@@ -697,8 +697,8 @@ mapset.n("cm{") { "vi}``c" }
 mapset.n("cm[") { "vi]``c" }
 
 for _, quote in ipairs { '"', "'", "`" } do
-    vim.keymap.set({ "x", "o" }, "a" .. quote, "2i" .. quote)
-    vim.keymap.set({ "x", "o" }, "m" .. quote, "a" .. quote)
+    mapset.xo("a" .. quote) { "2i" .. quote }
+    mapset.xo("m" .. quote) { "a" .. quote }
 end
 
 -- Command mode mapping

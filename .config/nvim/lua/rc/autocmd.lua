@@ -421,14 +421,38 @@ autocmd_vimrc("BufWritePost") {
 --     command = "redraw!",
 -- }
 
-local query = require("vim.treesitter.query")
+-- §§1 vim.treesitter predicate
+
+local query = vim.treesitter.query
 local function bufname_vim_match(match, _, source, predicate)
     local regex = vim.regex(predicate[2])
     local foo = regex:match_str(vim.fn.bufname(source)) ~= nil
     return foo
 end
 
+local function bufname_vim_match(match, _, source, predicate)
+    local regex = vim.regex(predicate[2])
+    local foo = regex:match_str(vim.fn.bufname(source)) ~= nil
+    return foo
+end
+
+---@param match table<integer, TSNode[]>
+---@param pattern integer
+---@param source integer | string
+---@param predicate any[]
+---@param metadata vim.treesitter.query.TSMetadata
+---@return boolean
+local function range_longer_line(match, pattern, source, predicate, metadata)
+    local capture_id = predicate[2]
+    local threshold = tonumber(predicate[3])
+    local capture_node = match[capture_id][1]
+    local range = { capture_node:range() }
+    local lines = range[3] - range[1]
+    return lines >= threshold
+end
+
 query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
+query.add_predicate("range-longer-line?", range_longer_line)
 
 -- §§1 Terminal
 

@@ -30,3 +30,9 @@
   (blob) @fold
   (#offset! @fold 1 0 0 0)
   )
+
+(
+ (content) @fold
+  (#offset! @fold 1 0 -1 0)
+ (#range-longer-line? @fold 30)
+ )

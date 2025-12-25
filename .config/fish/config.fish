@@ -215,25 +215,7 @@ abbr -a r ranger-cd
 # raf
 abbr -a rafnew "cd (raf new)"
 
-# k8s
-function __kubectl_default_namespace_abbr
-    if set -q KUBECTL_DEFAULT_NAMESPACE
-        printf 'kubectl -n %s' $KUBECTL_DEFAULT_NAMESPACE
-    else
-        printf kubectl
-    end
-end
-function __stern_default_namespace_abbr
-    if set -q KUBECTL_DEFAULT_NAMESPACE
-        printf 'stern -n %s' $KUBECTL_DEFAULT_NAMESPACE
-    else
-        printf stern
-    end
-end
-
-abbr -a kubectl --position command --function __kubectl_default_namespace_abbr
-abbr -a k --position command --function __kubectl_default_namespace_abbr
-abbr -a stern --position command --function __stern_default_namespace_abbr
+abbr -a k kubectl
 
 # }}}
 

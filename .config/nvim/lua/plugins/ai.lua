@@ -26,12 +26,17 @@ plugins:push {
         })[monaqa.lsp.choose_lsp()]
 
         local adapters = { http = {}, acp = {} }
+        local default_adapter = "codex"
 
         if vim.env["GEMINI_API_KEY"] ~= nil then
+            default_adapter = "gemini_cli"
             adapters.acp.gemini_cli = function()
                 return require("codecompanion.adapters").extend("gemini_cli", {
                     defaults = {
                         auth_method = "oauth-personal", -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
+                    },
+                    env = {
+                        GEMINI_API_KEY = "GEMINI_API_KEY",
                     },
                 })
             end
@@ -48,15 +53,9 @@ plugins:push {
             })
         end
 
-        require("codecompanion").setup {
-            adapters = {
-                acp = {
-                    codex = function()
-                        return require("codecompanion.adapters").extend("codex", {})
-                    end,
-                },
-            },
-        }
+        adapters.acp.codex = function()
+            return require("codecompanion.adapters").extend("codex", {})
+        end
 
         require("codecompanion").setup {
             opts = {
@@ -64,10 +63,10 @@ plugins:push {
             },
             strategies = {
                 chat = {
-                    adapter = "codex",
+                    adapter = default_adapter,
                     opts = { completion_provider = completion_provider },
                 },
-                inline = { adapter = "codex" },
+                inline = { adapter = default_adapter },
             },
             adapters = adapters,
             display = {
