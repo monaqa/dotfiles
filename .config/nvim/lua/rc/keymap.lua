@@ -86,6 +86,7 @@ mapset.x("R") {
 }
 
 mapset.n("_") { "/", desc = "`/` は modesearch 用に潰すため" }
+mapset.n("g/") { "<Cmd>vimgrep // %<CR>" }
 
 -- Section2 QuickFix search
 mapset.n("<C-n>") { "<Cmd>cnext<CR>zz", desc = [[QuickFix next + focus center]] }

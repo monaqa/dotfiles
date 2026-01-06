@@ -29,6 +29,7 @@ vim.filetype.add {
         ["Satyristes"] = "lisp",
         ["LICENSE"] = "license",
         ["uv.lock"] = "toml",
+        [".local_ignore_justfile"] = "just",
     },
     pattern = {
         ["*/queries/*/*.scm"] = "query",

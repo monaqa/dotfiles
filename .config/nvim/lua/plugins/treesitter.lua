@@ -63,9 +63,11 @@ plugins:push {
             css = {},
             d2 = {},
             dot = {},
+            fish = {},
             html = {},
             javascript = {},
             json = { indent = true },
+            just = {},
             lua = {},
             markdown = { indent = true, filetype = { "mdx", "obsidian" } },
             markdown_inline = {},
@@ -130,17 +132,17 @@ plugins:push {
             }
         end
 
-        if vim.uv.fs_stat("/Users/monaqa/ghq/github.com/IndianBoy42/tree-sitter-just") then
-            parser_configs.just = {
-                custom_installer = {
-                    tier = 2,
-                    install_info = {
-                        path = "/Users/monaqa/ghq/github.com/IndianBoy42/tree-sitter-just",
-                    },
-                },
-                filetype = { "just" },
-            }
-        end
+        -- if vim.uv.fs_stat("/Users/monaqa/ghq/github.com/IndianBoy42/tree-sitter-just") then
+        --     parser_configs.just = {
+        --         custom_installer = {
+        --             tier = 2,
+        --             install_info = {
+        --                 path = "/Users/monaqa/ghq/github.com/IndianBoy42/tree-sitter-just",
+        --             },
+        --         },
+        --         filetype = { "just" },
+        --     }
+        -- end
 
         -- parser の install （custom parser は事前に情報を詰めておく）
         autocmd_vimrc("User") {

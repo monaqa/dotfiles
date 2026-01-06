@@ -58,7 +58,13 @@ return {
     filetypes = { "rust" },
     settings = {
         ["rust-analyzer"] = {
-            check = { command = "clippy" },
+            check = {
+                command = "clippy",
+                features = { "pyo3" },
+            },
+            cargo = {
+                features = { "pyo3" },
+            },
         },
     },
     root_dir = function(bufnr, on_dir)

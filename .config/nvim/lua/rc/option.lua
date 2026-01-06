@@ -32,9 +32,9 @@ vim.opt.scrolloff = 0
 vim.opt.foldmethod = "marker"
 vim.opt.foldlevelstart = 99
 -- あえて manual にしたときは、自動的に fold が保存されるようにしておく
--- vim.opt.viewoptions = {
---     "folds",
--- }
+vim.opt.viewoptions = {
+    "folds",
+}
 
 vim.opt.matchpairs:append {
     "（:）",
