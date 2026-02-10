@@ -64,6 +64,7 @@ plugins:push {
             d2 = {},
             dot = {},
             fish = {},
+            go = {},
             html = {},
             javascript = {},
             json = { indent = true },

@@ -7,14 +7,24 @@ autocmd_vimrc("BufWritePost") {
     desc = [[保存時に自動で mermaid compiler (mmdc) を実行する]],
     pattern = "*.mmd",
     callback = function(args)
-        if vim.fn.getline(1) == "%% autocompile: svg" then
-            vim.system {
-                "mmdc",
-                "-i",
-                vim.fn.expand("%"),
-                "-o",
-                vim.fn.expand("%:r") .. ".svg",
-            }
+        local line = vim.fn.getline(1)
+        local format = string.match(line, "^%% autocompile: (%w+)")
+
+        if format then
+            local supported_formats = { svg = true, png = true, pdf = true }
+            if supported_formats[format] then
+                local command = {
+                    "mmdc",
+                    "-i",
+                    vim.fn.expand("%"),
+                    "-o",
+                    vim.fn.expand("%:r") .. "." .. format,
+                }
+                if format == "pdf" then
+                    table.insert(command, "--pdfFit")
+                end
+                vim.system(command)
+            end
         end
     end,
 }

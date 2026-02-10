@@ -60,10 +60,6 @@ return {
         ["rust-analyzer"] = {
             check = {
                 command = "clippy",
-                features = { "pyo3" },
-            },
-            cargo = {
-                features = { "pyo3" },
             },
         },
     },

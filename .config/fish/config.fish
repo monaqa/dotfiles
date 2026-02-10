@@ -256,6 +256,7 @@ abbr -a scores --function __score_list_fuzzy
 
 # misc commands {{{
 abbr -a k kubectl
+abbr -a kx kubectx
 abbr -a s just
 
 function __just_list_fuzzy

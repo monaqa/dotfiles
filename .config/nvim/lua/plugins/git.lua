@@ -261,7 +261,7 @@ plugins:push {
                 },
                 win_config = { -- See |diffview-config-win_config|
                     position = "bottom",
-                    height = 10,
+                    height = 15,
                     win_opts = {},
                 },
             },

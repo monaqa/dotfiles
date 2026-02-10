@@ -289,6 +289,12 @@ plugins:push {
     config = function()
         local mini_snippets = require("mini.snippets")
         local gen_loader = mini_snippets.gen_loader
+        local function ft_loader()
+            local file = "~/.config/nvim/snippets/" .. vim.bo.filetype .. ".lua"
+            if logic.to_bool(vim.fn.filereadable(file)) then
+                return gen_loader.from_file(file)
+            end
+        end
         require("mini.snippets").setup {
             snippets = {
                 -- Load custom file with global snippets first (adjust for Windows)
@@ -296,7 +302,12 @@ plugins:push {
 
                 -- Load snippets based on current language by reading files from
                 -- "snippets/" subdirectories from 'runtimepath' directories.
-                gen_loader.from_lang(),
+                gen_loader.from_lang {
+                    lang_patterns = {},
+                },
+
+                -- tree-sitter での lang 判定がうまくいかないものについて filetype で判定
+                ft_loader,
             },
             -- Module mappings. Use `''` (empty string) to disable one.
             mappings = {

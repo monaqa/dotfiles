@@ -236,6 +236,7 @@ autocmd_vimrc("BufWritePre") {
                 "json",
                 "oil",
                 "toml",
+                "yaml",
             }, vim.bo.filetype)
         then
             return
