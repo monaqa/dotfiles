@@ -5,12 +5,12 @@ local mapset = require("monaqa.shorthand").mapset
 
 ---@class rule
 ---@field condition fun(text: string): boolean
----@field to string
+---@field to string | fun(): string
 ---@field remove_trigger boolean
 
 ---@class ruletable
 ---@field from string
----@field to string
+---@field to string | fun(): string
 ---@field type? string
 ---@field prepose? string
 ---@field condition? fun(text: string): boolean
@@ -19,6 +19,16 @@ local mapset = require("monaqa.shorthand").mapset
 
 ---@type {[string]: rule[]}
 M.rules = {}
+
+---@param to string | fun(): string
+---@return string
+local function expand_to_str(to)
+    if type(to) == "string" then
+        return to
+    else
+        return to()
+    end
+end
 
 ---cabbrev を register する。
 ---@param lhs string
@@ -29,11 +39,11 @@ function M:register(lhs)
     end
     local expands = vim.iter(rules)
         :map(function(rule)
-            return rule.to
+            return expand_to_str(rule.to)
         end)
         :join(", ")
     mapset.ca(lhs) {
-        desc = [[Expanding into ]] .. expands,
+        desc = [[Expands into ]] .. expands,
         expr = true,
         replace_keycodes = true,
         function()
@@ -43,7 +53,7 @@ function M:register(lhs)
                     if rule.remove_trigger then
                         vim.fn.getchar()
                     end
-                    return rule.to
+                    return expand_to_str(rule.to)
                 end
             end
             return lhs
@@ -90,7 +100,7 @@ end
 
 ---与えられた設定を元に cabbrev の設定を追加する。
 ---  - from (string): lhs に相当する置換前の文字列
----  - to (string): 置換後の文字列
+---  - to (string | fun(): string): 置換後の文字列
 ---  - prepose (string?): この文字が前置されているときだけ置換する
 ---  - require_space (boolean?): prepose と from 間の空白を必須にする（default: true）
 ---  - remove_trigger (boolean?): trigger 文字（スペースなど）を展開後に削除する

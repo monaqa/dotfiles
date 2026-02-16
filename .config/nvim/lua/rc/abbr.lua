@@ -73,5 +73,22 @@ cabbr:add { prepose = "'<,'>", require_space = false, from = "pc", to = "Partedi
 cabbr:add { from = "ef", to = "EditFtplugin" }
 cabbr:add { from = "es", to = "EditSnippet" }
 cabbr:add { from = "ty", to = "Typscrap" }
+cabbr:add {
+    from = "dia",
+    to = function()
+        local date_hyphen = vim.fn.strftime("%Y-%m-%d")
+        local date_slash = vim.fn.strftime("%Y/%m/%d")
+        local date_ja = ({
+            ["1"] = "月",
+            ["2"] = "火",
+            ["3"] = "水",
+            ["4"] = "木",
+            ["5"] = "金",
+            ["6"] = "土",
+            ["7"] = "日",
+        })[vim.fn.strftime("%u")]
+        return ("Typscrap _diary/%s 日記 - %s (%s)"):format(date_hyphen, date_slash, date_ja)
+    end,
+}
 
 cabbr:register_all()

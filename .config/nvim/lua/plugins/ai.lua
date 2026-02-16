@@ -61,7 +61,7 @@ plugins:push {
             opts = {
                 language = "Japanese",
             },
-            strategies = {
+            interactions = {
                 chat = {
                     adapter = default_adapter,
                     opts = { completion_provider = completion_provider },
