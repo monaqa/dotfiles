@@ -50,7 +50,7 @@ chrds = \chordmode {
   }{
     \clef "bass_8"
     \override MultiMeasureRest.expand-limit = #2
-    << { \fixed c, {\body} } { \silents } >>
+    << { \silents } { \fixed c, {\body} } >>
   }
   % \new TabStaff \with {
   %   stringTunings = #bass-five-string-tuning

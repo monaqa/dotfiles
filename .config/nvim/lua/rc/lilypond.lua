@@ -5,9 +5,11 @@ local S = lpeg.S
 local P = lpeg.P
 local C = lpeg.C
 
+local M = {}
+
 ---@param key string
 ---@return string, string, string
-local function parse_key(key)
+function M.parse_key(key)
     local pat_pitch = S("cdefgab")
     local pat_acc = P("isis") + P("eses") + P("is") + P("es")
     local pat_tonality = P([[\major]]) + P([[\minor]])
@@ -17,15 +19,13 @@ end
 
 ---@param note string
 ---@return string, string, string
-local function parse_note(note)
+function M.parse_note(note)
     local pat_pitch = S("cdefgab")
     local pat_acc = P("isis") + P("eses") + P("is") + P("es")
     local pat_octave = P(",") ^ 1 ^ -2 + P("'") ^ 1 ^ -2
     local pattern = C(pat_pitch) * C(pat_acc ^ 0 ^ -1) * C(pat_octave ^ 0 ^ -1)
     return pattern:match(note)
 end
-
-local M = {}
 
 -- (tonal center, pitch) → 使うべき pitch 音の辞書
 ---@type (0 | 2 | 4 | 5 | 7 | 9 | 11 | nil)[][]
@@ -77,7 +77,7 @@ function M.note_to_tuple(note)
     local octave_dict = { [",,"] = 1, [","] = 2, [""] = 3, ["'"] = 4, ["''"] = 5 }
     local acc_dict = { ["eses"] = -2, ["es"] = -1, [""] = 0, ["is"] = 1, ["isis"] = 2 }
     local pitch_dict = { c = 0, d = 2, e = 4, f = 5, g = 7, a = 9, b = 11 }
-    local pitch, acc, octave = parse_note(note)
+    local pitch, acc, octave = M.parse_note(note)
     return {
         octave_dict[octave],
         pitch_dict[pitch],
@@ -91,7 +91,7 @@ function M.key_to_center(key)
     local acc_dict = { ["eses"] = -2, ["es"] = -1, [""] = 0, ["is"] = 1, ["isis"] = 2 }
     local pitch_dict = { c = 0, d = 2, e = 4, f = 5, g = 7, a = 9, b = 11 }
     local tonality_dict = { [ [[\major]] ] = 0, [ [[\minor]] ] = 3 }
-    local key_pitch, key_acc, tonality = parse_key(key)
+    local key_pitch, key_acc, tonality = M.parse_key(key)
     return (pitch_dict[key_pitch] + acc_dict[key_acc] + tonality_dict[tonality] + 12) % 12
 end
 

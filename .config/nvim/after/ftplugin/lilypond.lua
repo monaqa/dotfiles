@@ -214,6 +214,9 @@ local key_to_scale_notes = {
     ["f\\major"] = { "f", "g", "a", "bes", "c", "d", "e" },
     ["d\\minor"] = { "f", "g", "a", "bes", "c", "d", "e" },
 
+    ["fis\\major"] = { "fis", "gis", "ais", "b", "cis", "dis", "eis" },
+    ["dis\\minor"] = { "fis", "gis", "ais", "b", "cis", "dis", "eis" },
+
     ["ges\\major"] = { "ges", "aes", "bes", "ces", "des", "ees", "f" },
     ["ees\\minor"] = { "ges", "aes", "bes", "ces", "des", "ees", "f" },
 
@@ -231,8 +234,6 @@ local key_to_scale_notes = {
 
     ["b\\major"] = { "b", "cis", "dis", "e", "fis", "gis", "ais" },
     ["gis\\minor"] = { "b", "cis", "dis", "e", "fis", "gis", "ais" },
-
-    ["fis\\major"] = { "fis", "gis", "ais", "b", "cis", "dis", "eis" },
 }
 
 local function create_query_str(scale_notes)

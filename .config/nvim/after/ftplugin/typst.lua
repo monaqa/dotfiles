@@ -1,4 +1,3 @@
-local uv = vim.uv
 local monaqa = require("monaqa")
 local tree = monaqa.tree
 local mapset = monaqa.shorthand.mapset_local
@@ -21,6 +20,7 @@ opt.formatoptions:append("r")
 opt.formatoptions:remove("o")
 opt.conceallevel = 2
 opt.concealcursor = "nc"
+opt.spell = true
 
 opt.comments = {
     "b:- #TODO",

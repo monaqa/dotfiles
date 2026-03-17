@@ -27,3 +27,5 @@
 (term
   term: (text) @text.strong
  )
+
+(text) @spell

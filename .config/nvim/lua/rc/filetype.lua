@@ -13,6 +13,8 @@ vim.filetype.add {
         jison = "yacc",
         jsonl = "jsonl",
         kk = "koka",
+        loon = "loon",
+        oo = "loon",
         mbt = "moonbit",
         mdx = "markdown",
         mmd = "mermaid",

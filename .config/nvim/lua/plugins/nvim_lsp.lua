@@ -290,7 +290,7 @@ plugins:push {
         local mini_snippets = require("mini.snippets")
         local gen_loader = mini_snippets.gen_loader
         local function ft_loader()
-            local file = "~/.config/nvim/snippets/" .. vim.bo.filetype .. ".lua"
+            local file = vim.fn.expand("~/.config/nvim/snippets/" .. vim.bo.filetype .. ".lua")
             if logic.to_bool(vim.fn.filereadable(file)) then
                 return gen_loader.from_file(file)
             end

@@ -29,6 +29,7 @@ vim.lsp.enable {
     "fish",
     "jsonls",
     "lua_ls",
+    "loon",
     "ruff",
     "rust_analyzer",
     "svelte",

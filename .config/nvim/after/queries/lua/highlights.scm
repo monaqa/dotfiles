@@ -4,6 +4,8 @@
  (#bufname-vim-match? "foo\\.lua")
  )
 
+(comment) @nospell
+
 ; (
 ;  (
 ;   chunk

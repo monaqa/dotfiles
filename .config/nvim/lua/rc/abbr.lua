@@ -5,6 +5,7 @@ cabbr:add { prepose = "'<,'>", require_space = false, from = "w", to = "<C-u>w" 
 cabbr:add { from = "w2", to = "w" }
 cabbr:add { from = "w3", to = "w" }
 cabbr:add { from = "w]", to = "w" }
+cabbr:add { from = "w[", to = "w" }
 cabbr:add { from = "w:", to = "w" }
 
 -- workaround: blink.cmp の不具合？により、
@@ -23,6 +24,7 @@ cabbr:add { prepose = "'<,'>", require_space = false, from = "s", to = "s///g<Le
 cabbr:add { prepose = "'<,'>", require_space = false, from = "gd", to = "g//d" }
 cabbr:add { prepose = "'<,'>", require_space = false, from = "vd", to = "v//d" }
 cabbr:add { from = "nw", to = "noautocmd w" }
+cabbr:add { from = "p", to = "put +" }
 
 -- coc.nvim 周りはもう消そう
 -- cabbr:add { from = "c", to = "CocCommand" }

@@ -31,6 +31,8 @@ autocmd_vimrc { "VimEnter", "WinEnter" } {
     command = [[
         highlight link UnicodeSpaces Error
         match UnicodeSpaces /[\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/
+        highlight link UnicodeInvalid Error
+        match UnicodeInvalid /[\u2F00-\u2FDF]/
     ]],
 }
 autocmd_vimrc("ColorScheme") {
@@ -454,20 +456,13 @@ end
 query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
 query.add_predicate("range-longer-line?", range_longer_line)
 
--- §§1 Terminal
+-- §§1 spell
 
--- autocmd("TermOpen") {
---     pattern = "*",
---     callback = function(meta)
---         if not vim.endswith(meta.file, "fish") then
---             vim.cmd.startinsert()
---         end
---     end,
--- }
-
--- autocmd_vimrc("TermClose") {
---     pattern = "*",
---     callback = function()
---         pcall(vim.cmd.bdelete, { bang = true, args = { vim.fn.expand("<abuf>") } })
---     end,
--- }
+autocmd_vimrc("BufWritePost") {
+    pattern = {
+        "*/spell/*.utf-8.add",
+    },
+    callback = function()
+        vim.cmd.mkspell { bang = true, mods = { silent = true }, args = { "%" } }
+    end,
+}

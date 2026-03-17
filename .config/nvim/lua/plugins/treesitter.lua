@@ -61,7 +61,6 @@ plugins:push {
             astro = {},
             bash = {},
             css = {},
-            d2 = {},
             dot = {},
             fish = {},
             go = {},
@@ -96,6 +95,16 @@ plugins:push {
                 },
                 filetype = { "koka" },
                 indent = true,
+            },
+
+            loon = {
+                custom_installer = {
+                    tier = 2,
+                    install_info = {
+                        path = "~/ghq/github.com/ecto/loon/tree-sitter-loon",
+                    },
+                },
+                filetype = { "loon" },
             },
 
             -- monaqa parsers

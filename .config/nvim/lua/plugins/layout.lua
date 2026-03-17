@@ -34,8 +34,10 @@ plugins:push {
         end
 
         local bg = require("colorimetry.subscheme.dark").bg
+        local fg = require("colorimetry.subscheme.dark").fg
 
         sethl("VisualMatch") { bg = bg.g }
+        sethl("@punctuation.bracket.block.loon") { fg = fg.w5 }
 
         autocmd_vimrc("BufWritePost") {
             pattern = vim.env.HOME .. "/ghq/github.com/monaqa/colorimetry.nvim/*.lua",

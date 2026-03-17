@@ -1,0 +1,99 @@
+# WezTerm の設定ファイル (wezterm.lua) から変換された Ghostty の設定です。
+# 構文は "key = value" 形式です。
+
+# --- シェル設定 ---
+# wezterm の `default_prog` に相当します。
+command = /opt/homebrew/bin/fish -l
+
+# --- フォント設定 ---
+# フォールバックフォントは `font-family` を複数回指定することで設定します。
+# CommitMono の weight=450 は、もし可変フォントであれば `font-variation = wght=450` で指定できる可能性があります。
+font-family = "CommitMono-height105-nokern"
+font-family = "Hack Nerd Font"
+font-family = "Noto Sans CJK JP"
+font-size = 16.0
+
+# --- ウィンドウ設定 ---
+# `initial_rows` と `initial_cols` に相当します。
+window-height = 58
+window-width = 187
+
+# `use_fancy_tab_bar = true` に最も近い設定です。
+# タイトルバーにタブが統合されたカスタムスタイルになります。
+macos-titlebar-style = tabs
+
+# `send_composed_key_when_left_alt_is_pressed = false` に相当します。
+# macOS の Option キーをターミナルアプリケーション向けの Alt キーとして扱います。
+macos-option-as-alt = true
+
+# --- 色と透明度 ---
+# WezTerm の設定では "colorimetry" というカスタムモジュールが使われていました。
+# そのため、色の値を手動で移植する必要があります。以下はプレースホルダーです。
+# 色は "ffffff" のような16進数コードで指定します。
+
+# background = 282c34
+# foreground = ffffff
+
+# 16色のANSIカラーパレット (wezterm の `ansi` と `brights` に相当)
+# palette = 0=...  # black
+# palette = 1=...  # red
+# ...
+# palette = 15=... # bright white
+
+# 選択範囲の色
+# selection-background = "..."
+# selection-foreground = "..."
+
+# `window_background_opacity` に相当します。値は 0.0 から 1.0 の浮動小数点数です。
+background-opacity = 0.85
+
+# `text_background_opacity` に相当します。
+# 個別に背景色が設定されたセルにも `background-opacity` を適用します。
+background-opacity-cells = true
+
+
+# --- キーバインド ---
+# キーバインドは `トリガー=アクション` 形式で指定します。
+# wezterm の設定で `key_map_preference = "Physical"` を使用していたため、
+# Ghostty でも `KeyA` のような物理キーコードでの指定が推奨されます。
+
+# Ctrl+Tab をアプリケーションに渡す
+keybind = ctrl+tab=unbind
+keybind = ctrl+shift+tab=unbind
+
+# フォントサイズの変更
+# 注: wezterm でのキー設定が特殊だったため、標準的なキー(cmd+-, cmd+=, cmd+0)を仮定しています。
+# 必要に応じて調整してください。
+keybind = cmd+0=reset_font_size
+keybind = cmd+-=decrease_font_size:1.0
+keybind = cmd+shift+=increase_font_size:1.0
+# keybind = cmd+ctrl+0=reset_font_size # 2つ目のリセット設定
+
+# タブ操作
+keybind = cmd+h=previous_tab
+keybind = cmd+l=next_tab
+keybind = cmd+shift+h=move_tab:-1
+keybind = cmd+shift+l=move_tab:1
+# 注: 特定のCWDで新しいタブを開くことは直接サポートされていません。
+# デフォルトで cmd+t に new_tab が割り当てられています。
+
+# ペイン・タブ・ウィンドウを閉じる
+# `close_surface` は状況に応じて動作します。
+# 確認ダイアログを無効にするには `confirm-close-surface = false` を設定します。
+keybind = cmd+d=close_surface
+
+# 分割操作
+# `_` が shift+-、`raw:93` が `]` であると仮定しています。
+# Wezterm の SplitVertical は上下分割、SplitHorizontal は左右分割です。
+keybind = cmd+shift+-=new_split:down
+keybind = cmd+shift+]=new_split:right
+
+# 分割ペイン間の移動
+keybind = alt+h=goto_split:left
+keybind = alt+j=goto_split:down
+keybind = alt+k=goto_split:up
+keybind = alt+l=goto_split:right
+
+# スクロールバックをエディタで開く
+# 'open' アクションはOSのデフォルトテキストエディタを使用します。
+keybind = cmd+y=write_scrollback_file:open
