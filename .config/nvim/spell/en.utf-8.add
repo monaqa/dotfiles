@@ -1,0 +1,34 @@
+# technical terms
+api
+args
+auth
+config
+conv
+enum
+init
+jp
+js
+json
+len
+localhost
+logger
+lsp
+param
+str
+tsv
+upsert
+url
+
+# 固有名詞
+tmux
+wezterm
+
+# vim specific
+avante.nvim
+coc.nvim
+
+# python specific
+httpx
+pytest
+aiter
+noqa

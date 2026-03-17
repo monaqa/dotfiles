@@ -103,6 +103,11 @@ vim.opt.modelines = 3
 
 vim.opt.hidden = true
 vim.opt.spelllang = { "en", "cjk" }
+vim.opt.spellfile = { vim.env.HOME .. "/.config/nvim/spell/local.en.utf-8.add" }
+vim.opt.spelloptions = {
+    "camel",
+    "noplainbuffer",
+}
 vim.opt.backspace = { "indent", "eol", "start", "nostop" }
 vim.opt.history = 10000
 

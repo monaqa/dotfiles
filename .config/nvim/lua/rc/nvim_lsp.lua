@@ -178,6 +178,8 @@ mapset.n(")") {
                 return
             end
         end
+
+        vim.cmd.normal("]S")
     end,
 }
 mapset.n("(") {
@@ -190,6 +192,8 @@ mapset.n("(") {
                 return
             end
         end
+
+        vim.cmd.normal("[S")
     end,
 }
 
@@ -276,6 +280,16 @@ create_cmd("LspLog") {
     desc = [[Opens the Nvim LSP client log.]],
     function()
         vim.cmd(string.format("tabnew %s", vim.lsp.log.get_filename()))
+    end,
+}
+
+create_cmd("LspFormat") {
+    desc = [[Format current buffer with LSP.]],
+    function()
+        vim.lsp.buf.format {
+            async = false,
+            timeout_ms = 2000,
+        }
     end,
 }
 
