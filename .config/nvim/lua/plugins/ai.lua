@@ -34,6 +34,15 @@ plugins:push {
             default_adapter = "gemini_cli"
             adapters.acp.gemini_cli = function()
                 return require("codecompanion.adapters").extend("gemini_cli", {
+                    commands = {
+                        -- pro が使えなくて動作が止まるので書いておく
+                        default = {
+                            "gemini",
+                            "--acp",
+                            "--model",
+                            "gemini-3-flash-preview",
+                        },
+                    },
                     defaults = {
                         auth_method = "oauth-personal", -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
                     },
@@ -44,9 +53,9 @@ plugins:push {
             end
         end
 
-        adapters.http.gpt_oss = function()
+        adapters.http.ollama = function()
             return require("codecompanion.adapters").extend("ollama", {
-                name = "gpt-oss",
+                name = "ollama",
                 schema = {
                     model = {
                         default = "gpt-oss:20b",

@@ -514,7 +514,7 @@ plugins:push {
     dependencies = { "https://github.com/thinca/vim-partedit" },
     cond = cond_dev("monaqa/nvim-treesitter-clipping"),
     keys = {
-        { "<Space>c", "<Plug>(ts-clipping-clip)" },
+        { mode = { "n" },      "<Space>c", "<Plug>(ts-clipping-clip)" },
         { mode = { "x", "o" }, "<Space>c", "<Plug>(ts-clipping-select)" },
     },
 }
@@ -558,27 +558,26 @@ plugins:push {
         require("general_converter").setup {
             converters = {
                 {
-                    desc = "小文字を大文字にする (abc -> ABC)",
+                    desc = "半角文字を全角文字に変換する (abcABC -> ａｂｃＡＢＣ)",
                     converter = gc_util.charwise_converter(function(c)
                         local codepoint = vim.fn.char2nr(c)
-                        local start_codepoint = vim.fn.char2nr("a")
-                        local end_codepoint = vim.fn.char2nr("z")
-                        if start_codepoint <= codepoint and codepoint <= end_codepoint then
-                            codepoint = codepoint - 0x20
+                        if vim.fn.char2nr("A") <= codepoint and codepoint <= vim.fn.char2nr("z") then
+                            codepoint = codepoint + 0xfee0
                             return vim.fn.nr2char(codepoint)
                         end
                         return nil
                     end),
                 },
                 {
-                    desc = "半角文字を全角文字に変換する (abcABC -> ａｂｃＡＢＣ)",
+                    desc = "全角文字を半角文字に変換する (ａｂｃＡＢＣ -> abcABC)",
                     converter = gc_util.charwise_converter(function(c)
                         local codepoint = vim.fn.char2nr(c)
-                        local start_codepoint = vim.fn.char2nr("A")
-                        local end_codepoint = vim.fn.char2nr("z")
-                        if start_codepoint <= codepoint and codepoint <= end_codepoint then
-                            codepoint = codepoint + 0xfee0
+                        if vim.fn.char2nr("！") <= codepoint and codepoint <= vim.fn.char2nr("～") then
+                            codepoint = codepoint - 0xfee0
                             return vim.fn.nr2char(codepoint)
+                        end
+                        if c == "　" then
+                            return " "
                         end
                         return nil
                     end),

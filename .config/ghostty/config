@@ -31,21 +31,33 @@ macos-option-as-alt = true
 # そのため、色の値を手動で移植する必要があります。以下はプレースホルダーです。
 # 色は "ffffff" のような16進数コードで指定します。
 
-# background = 282c34
-# foreground = ffffff
+background = 1e212b
+foreground = e0ded7
 
 # 16色のANSIカラーパレット (wezterm の `ansi` と `brights` に相当)
-# palette = 0=...  # black
-# palette = 1=...  # red
-# ...
-# palette = 15=... # bright white
+palette = 0=272a35
+palette = 1=ce828e
+palette = 2=90c183
+palette = 3=c9b054
+palette = 4=88b6e5
+palette = 5=bf84ba
+palette = 6=75c1bc
+palette = 7=9e9b94
+palette = 8=88867f
+palette = 9=ce828e
+palette = 10=add59d
+palette = 11=dcc778
+palette = 12=a6cbf5
+palette = 13=e3b7e0
+palette = 14=99d5cf
+palette = 15=cac7c0
 
 # 選択範囲の色
 # selection-background = "..."
 # selection-foreground = "..."
 
 # `window_background_opacity` に相当します。値は 0.0 から 1.0 の浮動小数点数です。
-background-opacity = 0.85
+background-opacity = 0.80
 
 # `text_background_opacity` に相当します。
 # 個別に背景色が設定されたセルにも `background-opacity` を適用します。

@@ -298,41 +298,15 @@ autocmd_vimrc { "BufRead" } {
 }
 
 -- §§1 保存時のコマンド実行
-
----@param callback fun(): nil
-local function keep_cursor(callback)
-    local curwin_id = vim.fn.win_getid()
-    local view = vim.fn.winsaveview()
-    local _, _ = pcall(callback)
-    if vim.fn.win_getid() == curwin_id then
-        vim.fn.winrestview(view)
-    end
-end
-
 autocmd_vimrc("BufWritePost") {
-    pattern = { "*.lua", ".init.lua.local" },
+    pattern = ".nvim.lua",
     callback = function()
-        -- fold の状態を保持するために mkview と loadview を入れた
-        vim.cmd([[mkview]])
-        keep_cursor(function()
-            vim.fn.system([[stylua --search-parent-directories ]] .. vim.fn.expand("%:p"))
-            vim.cmd([[edit]])
-        end)
-        vim.cmd([[loadview]])
+        local result = vim.fn.confirm("Do you trust this file?", "&Yes\n&No")
+        if result == 1 then
+            vim.cmd.trust()
+        end
     end,
-    desc = "execute stylua",
 }
-
--- autocmd "BufWritePost" {
---     pattern = { "*.typ" },
---     callback = function()
---         keep_cursor(function()
---             vim.fn.system([[typstfmt ]] .. vim.fn.expand "%:p")
---             vim.cmd [[edit]]
---         end)
---     end,
---     desc = "execute typstfmt",
--- }
 
 -- auto repeatable macro （ドットリピートや通常マクロのほうが直感的なのでボツ）
 
