@@ -45,7 +45,6 @@ vim.cmd([[
 ]])
 
 vim.opt_local.shiftwidth = 4
-vim.opt_local.spell = true
 vim.opt_local.foldmethod = "expr"
 vim.opt_local.foldexpr = "MarkdownLevel(v:lnum)"
 vim.opt_local.suffixesadd:append(".md")

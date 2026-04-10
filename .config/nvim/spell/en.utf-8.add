@@ -1,4 +1,9 @@
-# technical terms
+# 一般名詞
+mook
+
+# 一般的な技術用語
+LLM/=
+WebVTT/=
 api
 args
 auth
@@ -18,17 +23,32 @@ str
 tsv
 upsert
 url
+lua
+tokenizer
+detokenizer
 
-# 固有名詞
+# プロダクト名等の固有名詞
 tmux
 wezterm
 
 # vim specific
+nvim
 avante.nvim
 coc.nvim
+nvim.cmp
+ddc.vim
+statusline
+lualine.nvim
+dotfiles
 
 # python specific
-httpx
-pytest
+aiohttp
 aiter
+asyncio
+httpx
 noqa
+pytest
+streamlit
+pydantic
+
+# Inbox

@@ -50,21 +50,8 @@ end
 --- @field mods string
 --- @field smods table
 
---- @class monaqa.cmd_args
---- @field [1] fun(args: monaqa.cmd_fn_args): nil
---- @field buffer? boolean | number
---- @field addr? any
---- @field bang? boolean
---- @field bar? boolean
---- @field complete? any
---- @field count? any
---- @field desc? any
---- @field force? boolean
---- @field keepscript? boolean
---- @field nargs? any
---- @field preview? any
---- @field range? any
---- @field register? boolean
+--- @class monaqa.cmd_args: vim.api.keyset.user_command
+--- @field [1] string | fun(args: monaqa.cmd_fn_args): nil
 
 --- nvim_create_user_command って長ったらしいしオプション省略できないっぽいので。
 ---@param name string

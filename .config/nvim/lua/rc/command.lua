@@ -180,6 +180,16 @@ create_cmd("PutClipboardImage") {
     },
 }
 
+-- §§1 spell
+create_cmd("Vocabrary") {
+    function()
+        vim.iter(vim.opt.spellfile:get()):each(function(file)
+            vim.cmd.split { file }
+            vim.cmd.setfiletype { "conf" }
+        end)
+    end
+}
+
 -- §§1 misc
 create_cmd("CocEditSnippet") {
     function()

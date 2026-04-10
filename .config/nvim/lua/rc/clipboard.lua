@@ -59,12 +59,25 @@ end
 
 ---@param text string
 ---@param filetype? string
-function M.copy_html_to_clipboard(text, filetype)
+---@param lua_filters? string | string[]
+function M.copy_html_to_clipboard(text, filetype, lua_filters)
     if filetype == nil then
         filetype = "markdown"
     end
+    if lua_filters == nil then
+        lua_filters = {}
+    end
+    if type(lua_filters) == "string" then
+        lua_filters = { lua_filters }
+    end
 
-    local result = vim.system({ "pandoc", "-f", filetype, "-t", "html", "--wrap=none" }, { stdin = text }):wait()
+    local cmd = { "pandoc", "-f", filetype, "-t", "html", "--wrap=none" }
+
+    for _, filter in ipairs(lua_filters) do
+        cmd[#cmd + 1] = "--lua-filter=" .. filter
+    end
+
+    local result = vim.system(cmd, { cwd = vim.fn.expand("%:p:h"), stdin = text }):wait()
     if result.code ~= 0 then
         vim.notify(result.stderr, vim.log.levels.ERROR)
         return

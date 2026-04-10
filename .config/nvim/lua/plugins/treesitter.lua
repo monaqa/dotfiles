@@ -22,7 +22,7 @@ plugins:push {
     branch = "main",
     lazy = false,
     keys = {
-        { "v", mode = "x" },
+        { "v",     mode = "x" },
         { "<C-o>", mode = "x" },
         { "<C-i>", mode = "x" },
     },
@@ -64,6 +64,7 @@ plugins:push {
             dot = {},
             fish = {},
             go = {},
+            gomod = {},
             html = {},
             javascript = {},
             json = { indent = true },
@@ -97,15 +98,15 @@ plugins:push {
                 indent = true,
             },
 
-            loon = {
-                custom_installer = {
-                    tier = 2,
-                    install_info = {
-                        path = "~/ghq/github.com/ecto/loon/tree-sitter-loon",
-                    },
-                },
-                filetype = { "loon" },
-            },
+            -- loon = {
+            --     custom_installer = {
+            --         tier = 2,
+            --         install_info = {
+            --             path = "~/ghq/github.com/ecto/loon/tree-sitter-loon",
+            --         },
+            --     },
+            --     filetype = { "loon" },
+            -- },
 
             -- monaqa parsers
             jsonl = {

@@ -102,8 +102,12 @@ vim.opt.modeline = true
 vim.opt.modelines = 3
 
 vim.opt.hidden = true
+vim.opt.spell = true
 vim.opt.spelllang = { "en", "cjk" }
-vim.opt.spellfile = { vim.env.HOME .. "/.config/nvim/spell/local.en.utf-8.add" }
+vim.opt.spellfile = {
+    vim.env.HOME .. "/.config/nvim/spell/local.en.utf-8.add", -- zg ではこっちに追加
+    vim.env.HOME .. "/.config/nvim/spell/en.utf-8.add",
+}
 vim.opt.spelloptions = {
     "camel",
     "noplainbuffer",
