@@ -390,7 +390,7 @@ plugins:push {
                 migemo = {
                     prompt = "[migemo]/",
                     converter = function(query)
-                        return [[\c\v]] .. vim.fn["kensaku#query"](query)
+                        return vim.fn["kensaku#query"](query)
                     end,
                 },
             },
@@ -526,10 +526,16 @@ plugins:push {
     config = function()
         local gc_util = require("general_converter.util")
 
-        local function yank_pandoc_result(lang_from, lang_to, post_process)
+        local function yank_pandoc_result(lang_from, lang_to, post_process, lua_filter)
             return function(s)
+                local cmd = { "pandoc", "-f", lang_from, "-t", lang_to }
+                if lua_filter ~= nil then
+                    for _, filter in ipairs(lua_filter) do
+                        cmd[#cmd + 1] = "--lua-filter=" .. filter
+                    end
+                end
                 vim.system(
-                    { "pandoc", "-f", lang_from, "-t", lang_to },
+                    cmd,
                     {
                         cwd = vim.fn.expand("%:p:h"),
                         stdin = s,

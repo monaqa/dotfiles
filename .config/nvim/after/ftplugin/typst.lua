@@ -201,7 +201,9 @@ autocmd_vimrc { "TextChanged", "TextChangedI" } {
     key = "typst-create-conceals",
     pattern = "*.typ",
     callback = function()
-        create_conceals()
+        if vim.bo.filetype == "typst" then
+            create_conceals()
+        end
     end,
 }
 

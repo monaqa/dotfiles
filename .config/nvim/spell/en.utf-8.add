@@ -1,10 +1,14 @@
-# 一般名詞
+# 一般名詞 {{{
 mook
+# }}}
 
-# 一般的な技術用語
+# 一般的な技術用語 {{{
+FIXME
 LLM/=
 WebVTT/=
+ack
 api
+async
 args
 async
 auth
@@ -21,18 +25,24 @@ localhost
 logger
 lsp
 lua
+nack
 param
 str
 tokenizer
 tsv
 upsert
 url
+websocket
+# }}}
 
-# プロダクト名等の固有名詞
+# プロダクト名等の固有名詞 {{{
+kubernetes
+miro
 tmux
 wezterm
+# }}}
 
-# vim specific
+# vim specific {{{
 avante.nvim
 coc.nvim
 ddc.vim
@@ -41,16 +51,20 @@ lualine.nvim
 nvim
 nvim.cmp
 statusline
+# }}}
 
-# python specific
+# python specific {{{
 aiohttp
 aiter
 asyncio
 docstring
 httpx
 noqa
+pyannote
 pydantic
 pytest
 streamlit
+zensical
+# }}}
 
 # Inbox
