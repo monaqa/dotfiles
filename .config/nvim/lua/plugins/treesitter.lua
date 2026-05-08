@@ -58,7 +58,7 @@ plugins:push {
         ---@type table<string, monaqa.TSConfig>
         local parser_configs = {
             -- standard parsers
-            astro = {},
+            astro = { indent = true },
             bash = {},
             css = {},
             dot = {},

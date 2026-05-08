@@ -1,9 +1,25 @@
 local mapset = require("monaqa.shorthand").mapset_local
 local create_cmd = require("monaqa.shorthand").create_cmd_local
 
+vim.opt_local.shiftwidth = 4
+vim.opt_local.comments = {
+    "nb:>",
+    "b:* [x]",
+    "b:* [ ]",
+    "b:*",
+    "b:- [x]",
+    "b:- [ ]",
+    "b:-",
+    "b:1. ",
+}
+vim.opt_local.formatoptions:remove("c")
+vim.opt_local.formatoptions:append("j")
+vim.opt_local.formatoptions:append("r")
+
 local Path = require("plenary.path")
 local data_path = vim.fn.stdpath("data")
 local save_folder = Path:new(data_path, "cc_saves")
+
 
 -- thanks to https://gist.github.com/itsfrank/942780f88472a14c9cbb3169012a3328
 -- save current chat, `CodeCompanionSave foo bar baz` will save as 'foo-bar-baz.md'

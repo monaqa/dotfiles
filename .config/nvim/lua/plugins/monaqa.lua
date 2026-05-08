@@ -471,8 +471,6 @@ plugins:push {
         local function set_line_specific_pos(percent)
             return function()
                 local target_line = math.floor(1 + (vim.fn.winheight(0) - 1) * percent)
-                local wrap = vim.opt.wrap:get()
-                vim.opt.wrap = false
                 vim.fn["smooth_scroll#flick"](
                     vim.fn.winline() - target_line,
                     10,
@@ -480,7 +478,6 @@ plugins:push {
                     vim.api.nvim_replace_termcodes("<C-y>", true, true, true),
                     true
                 )
-                vim.opt.wrap = wrap
             end
         end
 
@@ -680,6 +677,13 @@ plugins:push {
                         return vim.uri_decode(s)
                     end,
                     labels = { "uri" },
+                },
+                {
+                    desc = "base64 encodeする",
+                    converter = function(s)
+                        return vim.base64.encode(s)
+                    end,
+                    labels = { "base64" },
                 },
                 {
                     desc = "pandoc で変換し、クリップボードにいれる (typst -> markdown)",

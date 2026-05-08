@@ -6,9 +6,11 @@ LLM/=
 WebVTT/=
 api
 args
+async
 auth
 config
 conv
+detokenizer
 enum
 init
 jp
@@ -18,37 +20,37 @@ len
 localhost
 logger
 lsp
+lua
 param
 str
+tokenizer
 tsv
 upsert
 url
-lua
-tokenizer
-detokenizer
 
 # プロダクト名等の固有名詞
 tmux
 wezterm
 
 # vim specific
-nvim
 avante.nvim
 coc.nvim
-nvim.cmp
 ddc.vim
-statusline
-lualine.nvim
 dotfiles
+lualine.nvim
+nvim
+nvim.cmp
+statusline
 
 # python specific
 aiohttp
 aiter
 asyncio
+docstring
 httpx
 noqa
+pydantic
 pytest
 streamlit
-pydantic
 
 # Inbox

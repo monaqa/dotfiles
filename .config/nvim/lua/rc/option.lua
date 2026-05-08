@@ -11,6 +11,7 @@ vim.opt.lazyredraw = true
 vim.opt.ttyfast = true
 vim.opt.ambiwidth = "single"
 vim.opt.wrap = true
+vim.opt.smoothscroll = true
 vim.opt.colorcolumn = "80"
 vim.opt.list = true
 vim.opt.listchars = {

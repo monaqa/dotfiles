@@ -39,7 +39,7 @@ mapset.c("$1") { "$0" }
 register("xnoremap") { [=[
 mapset.x("$1") {
     desc = [[]],
-    funxtion ()
+    function ()
         $0
     end,
 }
@@ -51,7 +51,7 @@ mapset.x("$1") { "$0" }
 register("onoremap") { [=[
 mapset.o("$1") {
     desc = [[]],
-    funotion ()
+    function ()
         $0
     end,
 }
