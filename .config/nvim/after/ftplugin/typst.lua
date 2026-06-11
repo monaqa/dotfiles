@@ -38,6 +38,7 @@ mapset.ia("]") {
 
 ---@class modeline
 ---@field target? string
+---@field auto? boolean
 ---@field format? string
 ---@field cmd? string
 ---@field root? string
@@ -138,6 +139,9 @@ autocmd_vimrc("BufWritePost") {
     pattern = "*.typ",
     callback = function()
         local modeline = get_modeline()
+        if modeline.auto == false then
+            return
+        end
         vim.system(compile_cmdargs(modeline), {}, function(result)
             if result.code ~= 0 then
                 vim.notify(result.stderr, vim.log.levels.ERROR)

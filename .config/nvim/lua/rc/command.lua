@@ -201,3 +201,25 @@ create_cmd("EditSnippet") {
         monaqa.snippet.edit_snippet_file(vim.bo.filetype)
     end,
 }
+
+create_cmd("Codequote") {
+    range = true,
+    function(meta)
+        local filename = vim.fn.expand("%:t")
+        local filetype = vim.bo.filetype
+        local start_line = meta.line1
+        local lines = vim.api.nvim_buf_get_lines(0, meta.line1 - 1, meta.line2, false)
+        local content = table.concat(lines, "\n")
+
+        local result = string.format(
+            '#codequote("%s:%d")(````%s\n%s\n````)',
+            filename,
+            start_line,
+            filetype,
+            content
+        )
+        vim.fn.setreg("+", result)
+        vim.fn.setreg('"', result)
+        vim.notify("Codequoted to clipboard")
+    end,
+}

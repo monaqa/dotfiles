@@ -31,7 +31,9 @@ autocmd_vimrc("BufWritePost") {
                 if format == "pdf" then
                     table.insert(command, "--pdfFit")
                 end
-                vim.system(command)
+                vim.system(command, function(out)
+                    vim.print(out.stderr)
+                end)
             end
         end
     end,
