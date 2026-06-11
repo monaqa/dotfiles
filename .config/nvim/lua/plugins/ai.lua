@@ -13,6 +13,7 @@ plugins:push {
         "CodeCompanionChat",
         "CodeCompanionCmd",
         "CodeCompanionLoad",
+        "CodeCompanionWithMcp",
     },
     keys = {
         "@a",
@@ -76,6 +77,10 @@ plugins:push {
                 chat = {
                     adapter = default_adapter,
                     opts = { completion_provider = completion_provider },
+                    keymaps = {
+                        fold_code = false, -- gf
+                        clear = false,     -- gx
+                    }
                 },
                 inline = { adapter = default_adapter },
             },
@@ -93,8 +98,6 @@ plugins:push {
                 -- },
             },
         }
-
-        mapset.n("@a") { "<Cmd>CodeCompanionChat Toggle<CR>" }
 
         -- thanks to https://gist.github.com/itsfrank/942780f88472a14c9cbb3169012a3328
         -- create a folder to store our chats
@@ -130,6 +133,15 @@ plugins:push {
                 end
                 start_picker()
             end,
+        }
+
+        create_cmd("CodeCompanionWithMcp") {
+            function()
+                local config = require("codecompanion.config")
+                config.mcp.opts.default_servers = {}
+                require("codecompanion.mcp").restart_servers()
+                vim.cmd [[CodeCompanionChat]]
+            end
         }
     end,
 }

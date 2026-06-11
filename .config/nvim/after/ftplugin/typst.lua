@@ -79,9 +79,29 @@ local function compile_cmdname(modeline)
     return "typst"
 end
 
+---@class Compiler
+---@field ext string
+---@field compiler string
+---@field format string
+
+---@type table<string, Compiler>
+local output_compiler = {
+    pdf = {
+        compiler = "typst",
+        format = "pdf",
+        ext = "pdf",
+    },
+    markdown = {
+        compiler = "pandoc",
+        format = "gfm+hard_line_breaks",
+        ext = "md",
+    },
+}
+
 ---@param modeline modeline
+---@param compiler Compiler
 ---@return string[]
-local function compile_cmdargs(modeline)
+local function typst_compile_cmdargs(modeline, compiler)
     local v = {
         compile_cmdname(modeline),
         "compile",
@@ -90,16 +110,46 @@ local function compile_cmdargs(modeline)
         "--input",
         "typscrap_root=/Users/monaqa/Documents/typscrap-contents/content/",
         resolve_target(modeline),
+        "--format",
+        compiler.format,
     }
     if modeline.root ~= nil then
         v[#v + 1] = "--root"
         v[#v + 1] = vim.fn.resolve(vim.fn.expand("%:h") .. "/" .. modeline.root)
     end
-    if modeline.format ~= nil then
-        v[#v + 1] = "--format"
-        v[#v + 1] = modeline.format
-    end
     return v
+end
+
+---@param modeline modeline
+---@param compiler Compiler
+---@return string[]
+local function pandoc_compile_cmdargs(modeline, compiler)
+    local objective = resolve_target(modeline)
+    local output = vim.fn.fnamemodify(objective, ":r") .. "." .. compiler.ext
+    local v = {
+        "pandoc",
+        "-f",
+        "typst",
+        "-t",
+        compiler.format,
+        "--lua-filter=" .. vim.fn.expand("~/.config/nvim/resource/filter-embed.lua"),
+        objective,
+        "-o",
+        output,
+    }
+    return v
+end
+
+---@param modeline modeline
+---@return string[]
+local function compile_cmdargs(modeline)
+    local compiler = output_compiler[modeline.format or "pdf"]
+    if compiler.compiler == "typst" then
+        return typst_compile_cmdargs(modeline, compiler)
+    elseif compiler.compiler == "pandoc" then
+        return pandoc_compile_cmdargs(modeline, compiler)
+    end
+    return {}
 end
 
 mapset.n("@o") {

@@ -301,9 +301,15 @@ autocmd_vimrc { "BufRead" } {
 autocmd_vimrc("BufWritePost") {
     pattern = ".nvim.lua",
     callback = function()
-        local result = vim.fn.confirm("Do you trust this file?", "&Yes\n&No")
-        if result == 1 then
-            vim.cmd.trust()
+        if vim.b.nvim_lua_trust_file == nil then
+            local result = vim.fn.confirm("Do you trust this file?", "&Yes\n&No")
+            if result == 1 then
+                vim.b.nvim_lua_trust_file = true
+            end
+        end
+
+        if vim.b.nvim_lua_trust_file == true then
+            vim.cmd.trust { mods = { silent = true } }
         end
     end,
 }

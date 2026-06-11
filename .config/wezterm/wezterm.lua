@@ -95,9 +95,9 @@ return {
     -- /Users/monaqa/Library/Fonts/Hack Regular Nerd Font Complete.ttf, CoreText
     -- font = wezterm.font("Hack Nerd Font", {weight="Regular", stretch="Normal", italic=false}),
     font = wezterm.font_with_fallback {
-        { family = "CommitMono-height105-nokern", weight = 450, stretch = "Normal", style = "Normal" },
-        { family = "Hack Nerd Font", weight = "Regular", stretch = "Normal" },
-        { family = "Noto Sans CJK JP", weight = "Regular", stretch = "Normal" },
+        { family = "CommitMono-height105-nokern", weight = 450,       stretch = "Normal", style = "Normal" },
+        { family = "Hack Nerd Font",              weight = "Regular", stretch = "Normal" },
+        { family = "Noto Sans CJK JP",            weight = "Regular", stretch = "Normal" },
     },
 
     font_size = 16.0,
@@ -148,7 +148,7 @@ return {
     keys = {
         -- works as a hotkey
         { key = "Enter", mods = "CMD", action = "ToggleFullScreen" },
-        { key = " ", mods = "CMD", action = "HideApplication" },
+        { key = " ",     mods = "CMD", action = "HideApplication" },
 
         {
             key = "f",
@@ -160,23 +160,24 @@ return {
 
         -- works as default
 
-        { key = "q", mods = "CTRL", action = wezterm.action { SendString = "\x11" } },
-        { key = "Tab", mods = "CTRL", action = "DisableDefaultAssignment" },
-        { key = "Tab", mods = "CTRL|SHIFT", action = "DisableDefaultAssignment" },
+        { key = "q",      mods = "CTRL",       action = wezterm.action { SendString = "\x11" } },
+        { key = "Tab",    mods = "CTRL",       action = "DisableDefaultAssignment" },
+        { key = "Tab",    mods = "CTRL|SHIFT", action = "DisableDefaultAssignment" },
+        { key = "_",      mods = "CTRL",       action = "DisableDefaultAssignment" },
 
         -- change font size
 
         -- { key = "raw:27", mods = "CMD|SHIFT", action = "ResetFontSize" },
-        { key = "!", mods = "CMD|SHIFT", action = "ResetFontSize" },
-        { key = "raw:27", mods = "CMD", action = "DecreaseFontSize" },
-        { key = "raw:41", mods = "CMD|SHIFT", action = "IncreaseFontSize" },
-        { key = "0", mods = "CMD|CTRL", action = "ResetFontSize" },
+        { key = "!",      mods = "CMD|SHIFT",  action = "ResetFontSize" },
+        { key = "raw:27", mods = "CMD",        action = "DecreaseFontSize" },
+        { key = "raw:41", mods = "CMD|SHIFT",  action = "IncreaseFontSize" },
+        { key = "0",      mods = "CMD|CTRL",   action = "ResetFontSize" },
 
-        { key = "u", mods = "CMD|SHIFT", action = wezterm.action.CharSelect {} },
+        { key = "u",      mods = "CMD|SHIFT",  action = wezterm.action.CharSelect {} },
 
         -- タブの生成、移動、削除
         -- thanks to sankantsu: https://zenn.dev/sankantsu/articles/e713d52825dbbb
-        { key = "t", mods = "CMD", action = wezterm.action { SpawnCommandInNewTab = { cwd = HOME_DIR } } },
+        { key = "t",      mods = "CMD",        action = wezterm.action { SpawnCommandInNewTab = { cwd = HOME_DIR } } },
         {
             key = "t",
             mods = "CMD|SHIFT",
@@ -215,7 +216,7 @@ return {
                     wezterm.action.InputSelector {
                         action = wezterm.action_callback(function(_, _, id, label)
                             if not id and not label then
-                                wezterm.log_info("Workspace selection canceled") -- 入力が空ならキャンセル
+                                wezterm.log_info("Workspace selection canceled")                         -- 入力が空ならキャンセル
                             else
                                 win:perform_action(wezterm.action.SwitchToWorkspace { name = id }, pane) -- workspace を移動
                             end
@@ -229,16 +230,16 @@ return {
                 )
             end),
         },
-        { key = "h", mods = "CMD", action = wezterm.action.ActivateTabRelative(-1) },
-        { key = "l", mods = "CMD", action = wezterm.action.ActivateTabRelative(1) },
+        { key = "h", mods = "CMD",       action = wezterm.action.ActivateTabRelative(-1) },
+        { key = "l", mods = "CMD",       action = wezterm.action.ActivateTabRelative(1) },
         { key = "h", mods = "CMD|SHIFT", action = wezterm.action.MoveTabRelative(-1) },
         { key = "l", mods = "CMD|SHIFT", action = wezterm.action.MoveTabRelative(1) },
-        { key = "j", mods = "CMD", action = wezterm.action.SwitchWorkspaceRelative(1) },
-        { key = "k", mods = "CMD", action = wezterm.action.SwitchWorkspaceRelative(-1) },
-        { key = "d", mods = "CMD", action = wezterm.action { CloseCurrentPane = { confirm = false } } },
+        { key = "j", mods = "CMD",       action = wezterm.action.SwitchWorkspaceRelative(1) },
+        { key = "k", mods = "CMD",       action = wezterm.action.SwitchWorkspaceRelative(-1) },
+        { key = "d", mods = "CMD",       action = wezterm.action { CloseCurrentPane = { confirm = false } } },
 
         -- window の分割、移動
-        { key = "_", mods = "CMD", action = wezterm.action { SplitVertical = { domain = "CurrentPaneDomain" } } },
+        { key = "_", mods = "CMD",       action = wezterm.action { SplitVertical = { domain = "CurrentPaneDomain" } } },
         -- -- CMD + | で縦分割
         {
             key = "raw:93",
