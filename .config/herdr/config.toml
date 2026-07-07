@@ -1,0 +1,94 @@
+# Herdr configuration for the WezTerm -> Ghostty + Herdr migration.
+# Ghostty owns rendering and a few OS/window actions; Herdr owns workspaces,
+# tabs, panes, and scrollback editing.
+
+[theme]
+name = "dracula"
+
+auto_switch = false
+[terminal]
+default_shell = "/opt/homebrew/bin/fish"
+shell_mode = "login"
+new_cwd = "home"
+
+[keys]
+prefix = "ctrl+s"
+
+help = "prefix+?"
+settings = "prefix+,"
+detach = "prefix+q"
+reload_config = "prefix+shift+r"
+
+# Workspaces: WezTerm used Cmd+Shift+t to create, Cmd+s to pick, Cmd+j/k to
+# move relative to the current workspace.
+new_workspace = "prefix+shift+t"
+workspace_picker = "prefix+s"
+next_workspace = "prefix+j"
+previous_workspace = "prefix+k"
+rename_workspace = "prefix+shift+w"
+close_workspace = "prefix+shift+d"
+
+# Tabs inside the current workspace. Herdr 0.7.1 does not expose a tab move
+# action, so Cmd+Shift+h/l are translated but currently left unassigned.
+new_tab = "prefix+t"
+previous_tab = "prefix+h"
+next_tab = "prefix+l"
+rename_tab = "prefix+alt+t"
+close_tab = "prefix+shift+x"
+switch_tab = "prefix+1..9"
+
+# Panes: keep the directional movement exactly where it was in WezTerm.
+split_horizontal = "prefix+minus"
+split_vertical = "prefix+v"
+close_pane = "prefix+d"
+focus_pane_left = "alt+h"
+focus_pane_down = "alt+j"
+focus_pane_up = "alt+k"
+focus_pane_right = "alt+l"
+cycle_pane_next = "prefix+tab"
+cycle_pane_previous = "prefix+shift+tab"
+resize_mode = "prefix+r"
+zoom = "prefix+z"
+
+# WezTerm's Cmd+y opened scrollback in nvim. Herdr's native scrollback editor
+# is the closest replacement.
+edit_scrollback = "prefix+y"
+
+toggle_sidebar = "prefix+b"
+goto = "prefix+g"
+new_worktree = "prefix+shift+g"
+
+[ui]
+mouse_capture = true
+confirm_close = false
+prompt_new_tab_name = false
+pane_borders = true
+pane_gaps = true
+show_agent_labels_on_pane_borders = false
+accent = "cyan"
+
+[ui.toast]
+delivery = "herdr"
+delay_seconds = 1
+
+[ui.toast.herdr]
+position = "bottom-right"
+
+[ui.toast.clipboard]
+enabled = true
+position = "bottom-center"
+
+[ui.sound]
+enabled = false
+
+[session]
+resume_agents_on_restore = true
+
+[experimental]
+switch_ascii_input_source_in_prefix = true
+reveal_hidden_cursor_for_cjk_ime = true
+cjk_ime_cursor_shape = "steady_block"
+pane_history = false
+
+[advanced]
+scrollback_limit_bytes = 10000000
