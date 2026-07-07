@@ -31,29 +31,6 @@ plugins:push {
         local adapters = { http = {}, acp = {} }
         local default_adapter = "codex"
 
-        if vim.env["GEMINI_API_KEY"] ~= nil then
-            default_adapter = "gemini_cli"
-            adapters.acp.gemini_cli = function()
-                return require("codecompanion.adapters").extend("gemini_cli", {
-                    commands = {
-                        -- pro が使えなくて動作が止まるので書いておく
-                        default = {
-                            "gemini",
-                            "--acp",
-                            "--model",
-                            "gemini-3-flash-preview",
-                        },
-                    },
-                    defaults = {
-                        auth_method = "oauth-personal", -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
-                    },
-                    env = {
-                        GEMINI_API_KEY = "GEMINI_API_KEY",
-                    },
-                })
-            end
-        end
-
         adapters.http.ollama = function()
             return require("codecompanion.adapters").extend("ollama", {
                 name = "ollama",
@@ -66,7 +43,11 @@ plugins:push {
         end
 
         adapters.acp.codex = function()
-            return require("codecompanion.adapters").extend("codex", {})
+            return require("codecompanion.adapters").extend("codex", {
+                defaults = {
+                    auth_method = "oauth-personal"
+                },
+            })
         end
 
         require("codecompanion").setup {

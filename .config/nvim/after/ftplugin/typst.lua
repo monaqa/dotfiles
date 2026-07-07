@@ -89,12 +89,32 @@ local output_compiler = {
     pdf = {
         compiler = "typst",
         format = "pdf",
-        ext = "pdf",
+        ext = ".pdf",
     },
     markdown = {
         compiler = "pandoc",
         format = "gfm+hard_line_breaks",
-        ext = "md",
+        ext = ".md",
+    },
+    png = {
+        compiler = "typst",
+        format = "png",
+        ext = ".png",
+    },
+    html = {
+        compiler = "typst",
+        format = "html",
+        ext = ".html",
+    },
+    svg = {
+        compiler = "typst",
+        format = "svg",
+        ext = ".svg",
+    },
+    bundle = {
+        compiler = "typst",
+        format = "bundle",
+        ext = "",
     },
 }
 
@@ -105,8 +125,6 @@ local function typst_compile_cmdargs(modeline, compiler)
     local v = {
         compile_cmdname(modeline),
         "compile",
-        "--features",
-        "html",
         "--input",
         "typscrap_root=/Users/monaqa/Documents/typscrap-contents/content/",
         resolve_target(modeline),
@@ -125,7 +143,7 @@ end
 ---@return string[]
 local function pandoc_compile_cmdargs(modeline, compiler)
     local objective = resolve_target(modeline)
-    local output = vim.fn.fnamemodify(objective, ":r") .. "." .. compiler.ext
+    local output = vim.fn.fnamemodify(objective, ":r") .. compiler.ext
     local v = {
         "pandoc",
         "-f",
@@ -156,9 +174,10 @@ mapset.n("@o") {
     desc = [[PDF を開く]],
     function()
         local modeline = get_modeline()
+        local compiler = output_compiler[modeline.format or "pdf"]
         local objective = resolve_target(modeline)
-        local target = vim.fn.fnamemodify(objective, ":r") .. ".pdf"
-        vim.cmd([[!open ]] .. target)
+        local output_file = vim.fn.fnamemodify(objective, ":r") .. compiler.ext
+        vim.cmd([[!open ]] .. output_file)
     end,
 }
 mapset.n("@t") { "<Cmd>TypstPreview<CR>" }

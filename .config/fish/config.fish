@@ -128,6 +128,8 @@ set -x HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK 1
 set -x SATYROGRAPHOS_EXPERIMENTAL 1
 
 set -x MANPAGER 'nvim +Man!'
+
+set -x TYPST_FEATURES html,bundle
 # }}}
 
 # abbr {{{
@@ -394,3 +396,10 @@ end
 # }}}
 
 # eval (starship init fish)
+
+# Added by Antigravity CLI installer
+set -gx PATH "/Users/monaqa/.local/bin" $PATH
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/monaqa/.lmstudio/bin
+# End of LM Studio CLI section
