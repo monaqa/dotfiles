@@ -39,6 +39,21 @@ vim.lsp.enable {
     "yamlls",
 }
 
+local function start_lsp(server_name)
+    local config = vim.deepcopy(vim.lsp.config[server_name])
+
+    if type(config.root_dir) == "function" then
+        config.root_dir(0, function(root_dir)
+            config.root_dir = root_dir
+            vim.schedule(function()
+                vim.lsp.start(config)
+            end)
+        end)
+    else
+        vim.lsp.start(config)
+    end
+end
+
 -- Thanks to Atusy
 -- https://blog.atusy.net/2025/09/03/node-deno-decision-with-monorepo-support/
 autocmd_vimrc("FileType") {
@@ -57,7 +72,7 @@ autocmd_vimrc("FileType") {
         else
             server_name = "ts_ls"
         end
-        vim.lsp.start(vim.lsp.config[server_name])
+        start_lsp(server_name)
     end,
 }
 
@@ -248,7 +263,7 @@ autocmd_vimrc("BufWritePre") {
         end
 
         local client = vim.iter(vim.lsp.get_clients { bufnr = 0 }):find(
-            ---@param client vim.lsp.Client
+        ---@param client vim.lsp.Client
             function(client)
                 return client.supports_method("textDocument/formatting")
             end

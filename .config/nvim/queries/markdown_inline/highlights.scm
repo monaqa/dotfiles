@@ -15,6 +15,7 @@
 
 (
  (emphasis_delimiter) @conceal
+ (#root-lang-any? "markdown" "gfm" "obsidian")
  (#set! conceal "")
  )
 
@@ -46,22 +47,25 @@
 ; Conceal inline links
 (inline_link
   (link_destination) @conceal
+  (#root-lang-any? "markdown" "gfm" "obsidian")
   (#set! conceal "…"))
 
 ; Conceal image links
 (image
   (link_destination) @conceal
+  (#root-lang-any? "markdown" "gfm" "obsidian")
   (#set! conceal "…"))
 
 ; Conceal full reference links
-(full_reference_link
-  [
-    "["
-    "]"
-    (link_label) @conceal
-  ]
-  (#set! conceal "🖼"
-  ))
+; (full_reference_link
+;   [
+;     "["
+;     "]"
+;     (link_label) @conceal
+;   ]
+;   (#root-lang-any? "markdown" "gfm" "obsidian")
+;   (#set! conceal "🖼"
+;   ))
 
 ; skip checking spell
 (code_span) @nospell
@@ -73,24 +77,30 @@
 ; Replace common HTML entities.
 ((entity_reference) @character.special
   (#eq? @character.special "&nbsp;")
+  (#root-lang-any? "markdown" "gfm" "obsidian")
   (#set! conceal " "))
 
 ((entity_reference) @character.special
   (#eq? @character.special "&lt;")
+  (#root-lang-any? "markdown" "gfm" "obsidian")
   (#set! conceal "<"))
 
 ((entity_reference) @character.special
   (#eq? @character.special "&gt;")
+  (#root-lang-any? "markdown" "gfm" "obsidian")
   (#set! conceal ">"))
 
 ((entity_reference) @character.special
   (#eq? @character.special "&amp;")
+  (#root-lang-any? "markdown" "gfm" "obsidian")
   (#set! conceal "&"))
 
 ((entity_reference) @character.special
   (#eq? @character.special "&quot;")
+  (#root-lang-any? "markdown" "gfm" "obsidian")
   (#set! conceal "\""))
 
 ((entity_reference) @character.special
   (#any-of? @character.special "&ensp;" "&emsp;")
+  (#root-lang-any? "markdown" "gfm" "obsidian")
   (#set! conceal " "))

@@ -436,6 +436,29 @@ end
 query.add_predicate("bufname-vim-match?", bufname_vim_match, false)
 query.add_predicate("range-longer-line?", range_longer_line)
 
+query.add_predicate("root-lang-any?",
+    ---@param source integer | string
+    ---@param predicate any[]
+    function(_, _, source, predicate)
+        if type(source) ~= "number" then
+            return false
+        end
+
+        local parser = vim.treesitter.get_parser(source)
+        if parser == nil then
+            return false
+        end
+
+        local root_lang = parser:lang()
+        for i = 2, #predicate do
+            if root_lang == predicate[i] then
+                return true
+            end
+        end
+        return false
+    end
+)
+
 -- §§1 spell
 
 autocmd_vimrc("BufWritePost") {

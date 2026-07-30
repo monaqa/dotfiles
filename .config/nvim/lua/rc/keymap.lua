@@ -128,7 +128,7 @@ autocmd_vimrc("TermOpen") {
         mapset.n("p") { [[pi]] }
         mapset.n("<C-]>") { [[<Nop>]] }
 
-        mapset.x("gb") {
+        mapset.x("gx") {
             desc = [[選択範囲の改行を取っ払って URL として開く]],
             function()
                 local region = vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"), { type = vim.fn.mode() })
@@ -207,8 +207,8 @@ local function reformat_cmdstring(body)
 end
 
 function _G.vimrc.op.send_terminal(type)
-    monaqa.edit.with_opt { selection = "inclusive" }(function()
-        monaqa.edit.borrow_register { "m" }(function()
+    monaqa.edit.with_opt { selection = "inclusive" } (function()
+        monaqa.edit.borrow_register { "m" } (function()
             local visual_range
             if type == "line" then
                 visual_range = "'[V']"
@@ -473,7 +473,7 @@ local function put_richtext_with_convert(doctype)
 
     vim.notify("Converted from Rich Text Format to " .. doctype .. ".", vim.log.levels.INFO)
 
-    require("monaqa.edit").borrow_register { "m" }(function()
+    require("monaqa.edit").borrow_register { "m" } (function()
         vim.fn.setreg("m", text, "V")
         vim.cmd([[put m]])
     end)
@@ -507,7 +507,10 @@ mapset.n("p") {
     end,
 }
 
-mapset.n("<Space>p") {
+mapset.n("<Space>p") { "<Cmd>put +<CR>" }
+mapset.n("<Space>P") { "<Cmd>.-1 put +<CR>" }
+
+mapset.n("<Space><Space>p") {
     desc = [[クリップボードのリッチテキストや画像を現在の filetype に変換して貼り付ける]],
     function()
         local clipboard = require("rc.clipboard")
@@ -1054,10 +1057,10 @@ mapset.c("<C-c>") { "<C-f>", desc = [[<C-c> でコマンドラインモードに
 for i = 1, 12, 1 do
     mapset.nxo(("<F%s>"):format(i)) { "<Nop>" }
 end
-mapset.with_mode { "n", "x", "o", "i", "c", "s" }("<M-F1>") { "<Nop>" }
-mapset.with_mode { "i", "c", "s" }("<F1>") { "<Nop>" }
-mapset.with_mode { "n", "x", "o" }("<Space>") { "<Nop>" }
-mapset.with_mode { "n", "x", "o" }("<CR>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o", "i", "c", "s" } ("<M-F1>") { "<Nop>" }
+mapset.with_mode { "i", "c", "s" } ("<F1>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" } ("<Space>") { "<Nop>" }
+mapset.with_mode { "n", "x", "o" } ("<CR>") { "<Nop>" }
 
 -- Section1 その他
 

@@ -5,7 +5,7 @@ local create_cmd = monaqa.shorthand.create_cmd_local
 local autocmd_vimrc = monaqa.shorthand.autocmd_vimrc
 local opt = vim.opt_local
 
-require("lazy").load { plugins = { "snacks.nvim" } }
+require("lazy").load { plugins = { "snacks.nvim", "open-browser.vim" } }
 
 -- これを読み込むと snacks 内部で使われる namespace が create される
 -- ここで読み込んでおかないと
@@ -43,6 +43,8 @@ mapset.ia("]") {
 ---@field cmd? string
 ---@field root? string
 ---@field nightly? boolean
+---@field editable? boolean
+---@field id? string
 
 ---@return modeline
 local function get_modeline()

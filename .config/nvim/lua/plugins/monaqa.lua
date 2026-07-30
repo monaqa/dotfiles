@@ -244,6 +244,12 @@ plugins:push {
             augend.hexcolor.new { case = "lower" },
             augend.semver.alias.semver,
 
+            augend.constant.new {
+                elements = { "🟢", "🟡", "🔴" },
+                word = true,
+                cyclic = true,
+            }
+
             -- augend.lsp_enum.new {},
         }
 
@@ -688,6 +694,13 @@ plugins:push {
                     desc = "base64 encodeする",
                     converter = function(s)
                         return vim.base64.encode(s)
+                    end,
+                    labels = { "base64" },
+                },
+                {
+                    desc = "base64 decodeする",
+                    converter = function(s)
+                        return vim.base64.decode(vim.trim(s))
                     end,
                     labels = { "base64" },
                 },
