@@ -217,8 +217,8 @@ plugins:push { "https://github.com/notomo/lreload.nvim" }
 plugins:push {
     "https://github.com/haya14busa/vim-asterisk",
     keys = {
-        { "*", "<Plug>(asterisk-z*)" },
-        { "#", "<Plug>(asterisk-z#)" },
+        { "*",  "<Plug>(asterisk-z*)" },
+        { "#",  "<Plug>(asterisk-z#)" },
         { "g*", "<Plug>(asterisk-gz*)" },
         { "g#", "<Plug>(asterisk-gz#)" },
     },
@@ -319,37 +319,37 @@ plugins:push {
     end,
 }
 
-plugins:push {
-    "https://github.com/numToStr/Comment.nvim",
-    dependencies = {
-        "https://github.com/JoosepAlviste/nvim-ts-context-commentstring",
-    },
-    keys = {
-        { "gc", "<Plug>(comment_toggle_linewise)", mode = { "n" } },
-        { "gc", "<Plug>(comment_toggle_linewise_visual)", mode = { "x" } },
-        { "gcc", "<Plug>(comment_toggle_linewise)_", mode = { "n" } },
-    },
-    config = function()
-        require("Comment").setup {
-            ---Add a space b/w comment and the line
-            padding = true,
-            -- ---Whether the cursor should stay at its position
-            -- sticky = true,
-            -- ---Lines to be ignored while (un)comment
-            -- ignore = nil,
-            mappings = {
-                ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-                basic = false,
-                ---Extra mapping; `gco`, `gcO`, `gcA`
-                extra = false,
-            },
-            -- ---Function to call before (un)comment
-            pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-            -- ---Function to call after (un)comment
-            -- post_hook = nil,
-        }
-    end,
-}
+-- plugins:push {
+--     "https://github.com/numToStr/Comment.nvim",
+--     dependencies = {
+--         "https://github.com/JoosepAlviste/nvim-ts-context-commentstring",
+--     },
+--     keys = {
+--         { "gc",  "<Plug>(comment_toggle_linewise)",        mode = { "n" } },
+--         { "gc",  "<Plug>(comment_toggle_linewise_visual)", mode = { "x" } },
+--         { "gcc", "<Plug>(comment_toggle_linewise)_",       mode = { "n" } },
+--     },
+--     config = function()
+--         require("Comment").setup {
+--             ---Add a space b/w comment and the line
+--             padding = true,
+--             -- ---Whether the cursor should stay at its position
+--             -- sticky = true,
+--             -- ---Lines to be ignored while (un)comment
+--             -- ignore = nil,
+--             mappings = {
+--                 ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+--                 basic = false,
+--                 ---Extra mapping; `gco`, `gcO`, `gcA`
+--                 extra = false,
+--             },
+--             -- ---Function to call before (un)comment
+--             pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+--             -- ---Function to call after (un)comment
+--             -- post_hook = nil,
+--         }
+--     end,
+-- }
 
 -- plugins:push { "https://github.com/thinca/vim-qfreplace", ft = { "qf" } }
 -- plugins:push { "https://github.com/itchyny/vim-qfedit", ft = { "qf" } }
@@ -393,7 +393,7 @@ plugins:push {
 }
 
 plugins:push {
-    "https://github.com/PatrickMassot/typst-preview.nvim",
+    "https://github.com/chomosuke/typst-preview.nvim",
     ft = "typst",
     -- version = "1.*",
     build = function()
@@ -445,13 +445,13 @@ plugins:push {
             -- Warning: Be aware that your version might be older than the one
             -- required.
             dependencies_bin = {
-                ["tinymist"] = nil,
+                ["tinymist"] = "tinymist",
                 ["websocat"] = nil,
             },
 
             -- A list of extra arguments (or nil) to be passed to previewer.
             -- For example, extra_args = { "--input=ver=draft", "--ignore-system-fonts" }
-            extra_args = nil,
+            extra_args = { "--verbose" },
 
             -- This function will be called to determine the root of the typst project
             get_root = function(path_of_main_file)

@@ -9,7 +9,7 @@ auto_switch = false
 [terminal]
 default_shell = "/opt/homebrew/bin/fish"
 shell_mode = "login"
-new_cwd = "home"
+new_cwd = "follow"
 
 [keys]
 prefix = "ctrl+s"
@@ -22,7 +22,7 @@ reload_config = "prefix+shift+r"
 # Workspaces: WezTerm used Cmd+Shift+t to create, Cmd+s to pick, Cmd+j/k to
 # move relative to the current workspace.
 new_workspace = "prefix+shift+t"
-workspace_picker = "prefix+s"
+# workspace_picker = "prefix+s"
 next_workspace = "prefix+j"
 previous_workspace = "prefix+k"
 rename_workspace = "prefix+shift+w"
@@ -54,7 +54,7 @@ zoom = "prefix+z"
 # is the closest replacement.
 edit_scrollback = "prefix+y"
 
-toggle_sidebar = "prefix+b"
+toggle_sidebar = "prefix+s"
 goto = "prefix+g"
 new_worktree = "prefix+shift+g"
 
