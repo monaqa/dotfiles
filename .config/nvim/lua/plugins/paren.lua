@@ -241,6 +241,17 @@ plugins:push {
                 end,
             }
         end
+
+        insx.add(
+            [[\x]],
+            {
+                enabled = function(ctx)
+                    return vim.tbl_contains({ "lilypond" }, ctx.filetype)
+                end,
+                action = function(ctx)
+                    ctx.send([[\xNote]])
+                end,
+            })
     end,
 }
 
@@ -432,16 +443,16 @@ plugins:push {
         }
 
         local recipe_escaped = {
-            { input = { [[\(]], [[\)]] }, buns = { [[\(]], [[\)]] }, nesting = 1 },
+            { input = { [[\(]], [[\)]] },     buns = { [[\(]], [[\)]] },     nesting = 1 },
             { input = { [=[\[]=], [=[\]]=] }, buns = { [=[\[]=], [=[\]]=] }, nesting = 1 },
-            { input = { [[\{]], [[\}]] }, buns = { [[\{]], [[\}]] }, nesting = 1 },
+            { input = { [[\{]], [[\}]] },     buns = { [[\{]], [[\}]] },     nesting = 1 },
         }
 
         local recipe_link = vim.iter({
-            { filetype = { "markdown" }, pattern = "[$body]($dest)" },
-            { filetype = { "rst" }, pattern = "`$body <$dest>`_" },
-            { filetype = { "typst" }, pattern = '#link("$dest")[$body]' },
-        })
+                { filetype = { "markdown" }, pattern = "[$body]($dest)" },
+                { filetype = { "rst" },      pattern = "`$body <$dest>`_" },
+                { filetype = { "typst" },    pattern = '#link("$dest")[$body]' },
+            })
             :map(function(t)
                 return {
                     {
@@ -510,7 +521,7 @@ plugins:push {
         }
 
         local recipe_lua = {
-            { filetype = { "lua" }, buns = { "[[", "]]" }, nesting = 0, input = { "s" } },
+            { filetype = { "lua" }, buns = { "[[", "]]" },   nesting = 0, input = { "s" } },
             { filetype = { "lua" }, buns = { "[=[", "]=]" }, nesting = 0, input = { "S" } },
         }
 

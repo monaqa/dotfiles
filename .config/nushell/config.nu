@@ -55,29 +55,23 @@ def "gh pr-fuzzy" [] {
     gh pr checkout $pr_num
 }
 
-def vlsp [] {
-    $env.NVIM_APPNAME = "nvim-nvim_lsp"
-    nvim
-}
-
 def --env gsw [] {
     let worktree = git worktree list | sk | awk '{print $1;}';
     cd $worktree
 }
 
-alias hg = history grep
-alias j = ls
-alias jj = lsd --tree --ignore-glob .git --depth 3
-alias rafls = raf lscd
-alias v = nvim
-
-alias g = ghq cd
-alias ghpc = gh pr-fuzzy
-alias grbc = git rebase --continue
-alias grbm = git rebase (git mom)
-alias gs = git swim
-alias gsc = git switch -c
-alias gsm = git switch (git mom)
+# alias hg = history grep
+# alias j = ls
+# alias jj = lsd --tree --ignore-glob .git --depth 3
+# alias rafls = raf lscd
+# alias v = nvim
+# alias g = ghq cd
+# alias ghpc = gh pr-fuzzy
+# alias grbc = git rebase --continue
+# alias grbm = git rebase (git mom)
+# alias gs = git swim
+# alias gsc = git switch -c
+# alias gsm = git switch (git mom)
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
@@ -93,7 +87,7 @@ $env.config = {
     }
 
     table: {
-        mode: compact # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
+        mode: frameless # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
         index_mode: auto # "always" show indexes, "never" show indexes, "auto" = show indexes when a table has "index" column
         show_empty: true # show 'empty list' and 'empty record' placeholders for command output
         padding: { left: 0, right: 0 } # a left right padding of each column in a table
@@ -152,10 +146,10 @@ $env.config = {
         }
     }
 
-    filesize: {
-        metric: false # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
-        format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, auto
-    }
+    # filesize: {
+    #     metric: false # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
+    #     format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, auto
+    # }
 
     cursor_shape: {
         emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
@@ -164,14 +158,14 @@ $env.config = {
     }
 
     color_config: $colorscheme # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
-    use_grid_icons: true
-    footer_mode: "25" # always, never, number_of_rows, auto
+    # use_grid_icons: true
+    # footer_mode: "25" # always, never, number_of_rows, auto
     float_precision: 2 # the precision for displaying floats in tables
     buffer_editor: "nvim" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
     use_ansi_coloring: true
     bracketed_paste: true # enable bracketed paste, currently useless on windows
     edit_mode: emacs # emacs, vi
-    shell_integration: false # enables terminal shell integration. Off by default, as some terminals have issues with this.
+    # shell_integration: false # enables terminal shell integration. Off by default, as some terminals have issues with this.
     render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
     use_kitty_protocol: false # enables keyboard enhancement protocol implemented by kitty console, only if your terminal support this.
     highlight_resolved_externals: false # true enables highlighting of external commands in the repl resolved by which.
@@ -253,6 +247,22 @@ $env.config = {
             }
         }
     ]
+
+    abbreviations: {
+      hg: "history grep"
+      j: "ls"
+      jj: "lsd --tree --ignore-glob .git --depth 3"
+      rafls: "raf lscd"
+      v: "nvim"
+      g: "ghq cd"
+      ghpc: "gh pr-fuzzy"
+      grbc: "git rebase --continue"
+      grbm: "git rebase (git mom)"
+      gs: "git swim"
+      gsc: "git switch -c"
+      gsm: "git switch (git mom)"
+      s: "just"
+    }
 
     keybindings: [
         {
@@ -728,5 +738,5 @@ use ~/.cache/starship/init.nu
 
 source ~/ghq/github.com/nushell/nu_scripts/custom-completions/git/git-completions.nu
 source ~/ghq/github.com/nushell/nu_scripts/custom-completions/cargo/cargo-completions.nu
-source ~/ghq/github.com/nushell/nu_scripts/custom-completions/pdm/pdm-completions.nu
+source ~/ghq/github.com/nushell/nu_scripts/custom-completions/uv/uv-completions.nu
 source ~/ghq/github.com/nushell/nu_scripts/custom-completions/pnpm/pnpm-completions.nu

@@ -30,6 +30,7 @@ vim.lsp.enable {
     "jsonls",
     "lua_ls",
     "loon",
+    "nu",
     "ruff",
     "rust_analyzer",
     "svelte",
@@ -257,6 +258,7 @@ autocmd_vimrc("BufWritePre") {
                 "oil",
                 "toml",
                 "yaml",
+                "typst",
             }, vim.bo.filetype)
         then
             return
@@ -274,7 +276,7 @@ autocmd_vimrc("BufWritePre") {
 
         vim.lsp.buf.format {
             async = false,
-            timeout_ms = 2000,
+            timeout_ms = 500,
         }
     end,
 }

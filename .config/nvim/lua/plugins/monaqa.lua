@@ -365,9 +365,6 @@ plugins:push {
 plugins:push {
     "https://github.com/monaqa/modesearch.nvim",
     cond = cond_dev("monaqa/modesearch.nvim"),
-    dependencies = {
-        "https://github.com/lambdalisue/kensaku.vim",
-    },
     keys = {
         "/",
     },
@@ -393,12 +390,12 @@ plugins:push {
                         return [[\c\v]] .. vim.fn.escape(query, [[/]])
                     end,
                 },
-                migemo = {
-                    prompt = "[migemo]/",
-                    converter = function(query)
-                        return vim.fn["kensaku#query"](query)
-                    end,
-                },
+                -- migemo = {
+                --     prompt = "[migemo]/",
+                --     converter = function(query)
+                --         return vim.fn["kensaku#query"](query)
+                --     end,
+                -- },
             },
         }
 
@@ -412,7 +409,7 @@ plugins:push {
         mapset.c("<C-x>") {
             desc = [[modesearch のモード切り替え]],
             function()
-                require("modesearch").keymap.mode.cycle { "rawstr", "migemo", "regexp" }
+                require("modesearch").keymap.mode.cycle { "rawstr", "regexp" }
             end,
         }
     end,

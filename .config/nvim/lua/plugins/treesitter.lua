@@ -73,6 +73,7 @@ plugins:push {
             markdown = { indent = true, filetype = { "mdx", "obsidian" } },
             markdown_inline = {},
             mermaid = {},
+            nu = {},
             python = { indent = true },
             query = {},
             rust = { indent = true },
