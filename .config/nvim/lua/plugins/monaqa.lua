@@ -16,12 +16,12 @@ plugins:push {
     "https://github.com/monaqa/dial.nvim",
     cond = cond_dev("monaqa/dial.nvim"),
     -- dir = "~/ghq/github.com/monaqa/dial.nvim",
-    -- keys = {
-    --     { "<C-a>", mode = { "n", "x" } },
-    --     { "<C-x>", mode = { "n", "x" } },
-    --     { "g<C-a>", mode = { "n", "x" } },
-    --     { "g<C-x>", mode = { "n", "x" } },
-    -- },
+    keys = {
+        { "<C-a>",  mode = { "n", "x" } },
+        { "<C-x>",  mode = { "n", "x" } },
+        { "g<C-a>", mode = { "n", "x" } },
+        { "g<C-x>", mode = { "n", "x" } },
+    },
     config = function()
         local augend = require("dial.augend")
 

@@ -8,6 +8,7 @@ local plugins = vec {}
 
 plugins:push {
     "https://github.com/williamboman/mason.nvim",
+    cmd = { "Mason" },
     config = function()
         require("mason").setup {
             ui = {
@@ -71,6 +72,7 @@ plugins:push {
 
 plugins:push {
     "https://github.com/Saghen/blink.cmp",
+    event = { "InsertEnter" },
     dependencies = {
         "https://github.com/nvim-mini/mini.snippets",
     },
@@ -215,7 +217,7 @@ plugins:push {
                     draw = {
                         columns = {
                             { "kind_icon" },
-                            { "label", "label_description", gap = 1 },
+                            { "label",    "label_description", gap = 1 },
                             { "kind" },
                         },
                         components = {
@@ -321,9 +323,9 @@ plugins:push {
                 insert = function(snippet, opts)
                     monaqa.edit.with_env {
                         TODAY = vim.fn.strftime("%Y/%m/%d"),
-                    }(function()
-                        mini_snippets.default_insert(snippet, opts)
-                    end)
+                    } (function()
+                            mini_snippets.default_insert(snippet, opts)
+                        end)
                 end,
             },
         }
@@ -343,6 +345,9 @@ plugins:push {
 
 plugins:push {
     "https://github.com/lewis6991/hover.nvim",
+    keys = {
+        "K"
+    },
     config = function()
         require("hover").config {
             --- List of modules names to load as providers.
@@ -408,6 +413,9 @@ plugins:push {
 
 plugins:push {
     "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+    keys = {
+        "K"
+    },
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
         "nvim-mini/mini.icons",

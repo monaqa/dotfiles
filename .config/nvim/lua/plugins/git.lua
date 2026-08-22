@@ -203,6 +203,9 @@ plugins:push {
 
 plugins:push {
     "https://github.com/sindrets/diffview.nvim",
+    cmd = {
+        "DiffPrChanges"
+    },
     config = function()
         -- Lua
         local actions = require("diffview.actions")
