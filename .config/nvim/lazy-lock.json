@@ -9,6 +9,7 @@
   "deepl.vim": { "branch": "main", "commit": "d062824f418b52bc15a373f0b282b5a3d8effea1" },
   "dial.nvim": { "branch": "master", "commit": "f2634758455cfa52a8acea6f142dcd6271a1bf57" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
+  "flatten.nvim": { "branch": "main", "commit": "d92ca41e9c330f45c1b854a80c89c8488a9d730c" },
   "general-converter.nvim": { "branch": "master", "commit": "79187f115b80120ec556a96a5db0a93b5b3426fd" },
   "gina.vim": { "branch": "master", "commit": "ff6c2ddeca98f886b57fb42283c12e167d6ab575" },
   "gitsigns.nvim": { "branch": "main", "commit": "5be654f2232c10ddcad19c1607a67b6b4b78fc29" },
@@ -75,6 +76,5 @@
   "vim-textobj-functioncall": { "branch": "master", "commit": "325f3c43241860226b57b3f9417e8a4941a70d38" },
   "vim-textobj-user": { "branch": "master", "commit": "41a675ddbeefd6a93664a4dc52f302fe3086a933" },
   "vim-toml": { "branch": "main", "commit": "da051b7c23bad3c52d18886203c594739780ec09" },
-  "waitevent.nvim": { "branch": "main", "commit": "d9c90f7c41c1b6e961e724b9a885b29b076859df" },
   "zenn-vim": { "branch": "main", "commit": "55a5457837c541a353dd92333d258e348b3d3e7f" }
 }

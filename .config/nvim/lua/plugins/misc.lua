@@ -137,76 +137,104 @@ plugins:push {
 }
 
 plugins:push {
-    "https://github.com/notomo/waitevent.nvim",
+    "https://github.com/willothy/flatten.nvim",
     config = function()
-        -- Use for git command editor.
-        -- This editor finishes the process on save or close.
-        vim.env.GIT_EDITOR = require("waitevent").editor {
-            open = function(ctx, path)
-                vim.cmd.split(path)
-                ctx.lcd()
-                vim.bo.bufhidden = "wipe"
-            end,
-        }
-
-        -- Use for `nvim {file_path}` in :terminal.
-        -- This editor finishes the process as soon as open.
-        -- The fowllowing shell settings is convinient (optional).
-        -- `export EDITOR=nvim` in .bash_profile
-        -- `alias nvim="${EDITOR}"` in .bashrc
-        vim.env.EDITOR = require("waitevent").editor {
-            done_events = {},
-            cancel_events = {},
-        }
-
-        require("waitevent").editor {
-            open = function(ctx, ...)
-                local paths = { ... }
-                for _, path in ipairs(paths) do
-                    vim.cmd.tabedit(path)
-                    ctx.tcd()
-                    vim.bo.bufhidden = "wipe"
-                end
-                if #paths == 0 then
-                    vim.cmd.tabedit()
-                    ctx.tcd()
-                    vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(ctx.stdin, "\n", { plain = true }))
-                    vim.bo.modified = false
-                    vim.bo.bufhidden = "wipe"
-                end
-                if ctx.row then
-                    local row = math.min(ctx.row, vim.api.nvim_buf_line_count(0))
-                    vim.api.nvim_win_set_cursor(0, { row, 0 })
-                end
-            end,
-
-            done_events = {
-                "BufWritePost",
+        local flatten = require("flatten")
+        flatten.setup({
+            hooks = {
+                should_block = flatten.hooks.should_block,
+                should_nest = flatten.hooks.should_nest,
+                pre_open = flatten.hooks.pre_open,
+                post_open = function(_)
+                    vim.opt_local.bufhidden = "unload"
+                end,
+                block_end = flatten.hooks.block_end,
+                no_files = flatten.hooks.no_files,
+                guest_data = flatten.hooks.guest_data,
+                pipe_path = flatten.hooks.pipe_path,
             },
-            on_done = function(ctx)
-                if vim.api.nvim_win_is_valid(ctx.window_id_after_open) and #vim.api.nvim_list_wins() > 1 then
-                    vim.api.nvim_win_close(ctx.window_id_after_open, true)
-                end
-                if not vim.api.nvim_win_is_valid(ctx.window_id_before_open) then
-                    return
-                end
-                vim.api.nvim_set_current_win(ctx.window_id_before_open)
-            end,
-
-            cancel_events = {
-                "BufUnload",
-                "BufDelete",
-                "BufWipeout",
+            block_for = {
+                gitcommit = true,
+                gitrebase = true,
+                nu = true,
             },
-            on_canceled = function(ctx)
-                if not vim.api.nvim_win_is_valid(ctx.window_id_before_open) then
-                    return
-                end
-                vim.api.nvim_set_current_win(ctx.window_id_before_open)
-            end,
-        }
-    end,
+            disable_cmd_passthrough = false,
+            nest_if_no_args = false,
+            nest_if_cmds = false,
+            window = {
+                open = "split",
+                diff = "tab_vsplit",
+                focus = "first",
+            },
+            integrations = {
+                kitty = false,
+                wezterm = false,
+            },
+        })
+    end
+
 }
+
+-- plugins:push {
+--     "https://github.com/notomo/waitevent.nvim",
+--
+--     config = function()
+--
+--         create_cmd("Write") {
+--             function()
+--                 vim.cmd [[doautocmd User MyPlugin]]
+--             end,
+--         },
+--         local default = {
+--             ---@param ctx WaiteventOpenContext
+--             open = function(ctx, path)
+--                 if path == nil then
+--                     vim.cmd.new()
+--                 else
+--                     vim.cmd.split(path)
+--                 end
+--                 ctx.lcd()
+--                 vim.bo.bufhidden = "wipe"
+--             end,
+--             done_events = {
+--                 "User",
+--             },
+--             ---@param ctx WaiteventContext
+--             on_done = function(ctx)
+--                 vim.print(ctx)
+--                 if vim.api.nvim_win_is_valid(ctx.window_id_after_open) and #vim.api.nvim_list_wins() > 1 then
+--                     vim.api.nvim_win_close(ctx.window_id_after_open, true)
+--                 end
+--                 if not vim.api.nvim_win_is_valid(ctx.window_id_before_open) then
+--                     return
+--                 end
+--                 vim.api.nvim_set_current_win(ctx.window_id_before_open)
+--             end,
+--             cancel_events = {
+--                 "BufUnload",
+--                 "BufDelete",
+--                 "BufWipeout",
+--             },
+--             ---@param ctx WaiteventContext
+--             on_canceled = function(ctx)
+--                 if not vim.api.nvim_win_is_valid(ctx.window_id_before_open) then
+--                     return
+--                 end
+--                 vim.api.nvim_set_current_win(ctx.window_id_before_open)
+--             end,
+--         }
+--         -- Use for git command editor.
+--         -- This editor finishes the process on save or close.
+--         vim.env.GIT_EDITOR = require("waitevent").editor(default)
+--
+--         -- Use for `nvim {file_path}` in :terminal.
+--         -- This editor finishes the process as soon as open.
+--         -- The fowllowing shell settings is convinient (optional).
+--         -- `export EDITOR=nvim` in .bash_profile
+--         -- `alias nvim="${EDITOR}"` in .bashrc
+--         vim.env.EDITOR = require("waitevent").editor(default)
+--     end,
+-- }
 
 plugins:push { "https://github.com/notomo/lreload.nvim" }
 
