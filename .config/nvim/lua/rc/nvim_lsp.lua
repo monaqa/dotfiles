@@ -164,6 +164,15 @@ mapset.n("tn") {
     end,
 }
 
+mapset.nx("tf") {
+    function()
+        vim.lsp.buf.format {
+            async = false,
+            timeout_ms = 2000,
+        }
+    end,
+}
+
 ---@param focusable boolean
 local function float_opts(focusable)
     if focusable == nil then
@@ -260,6 +269,8 @@ autocmd_vimrc("BufWritePre") {
                 "yaml",
                 "typst",
             }, vim.bo.filetype)
+            or
+            vim.g.keep_legacy_code == true
         then
             return
         end
@@ -307,6 +318,18 @@ create_cmd("LspFormat") {
             async = false,
             timeout_ms = 2000,
         }
+    end,
+}
+
+create_cmd("LspWriteWithFormat") {
+    desc = [[Format current buffer with LSP.]],
+    function()
+        vim.lsp.buf.format {
+            async = false,
+            timeout_ms = 2000,
+        }
+
+        vim.cmd.write()
     end,
 }
 

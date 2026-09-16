@@ -62,6 +62,11 @@ cabbr:add { prepose = "Telescope", from = "g", to = "live_grep" }
 -- Snacks.nvim
 cabbr:add { from = "sn", to = "lua Snacks.", remove_trigger = true }
 
+-- nvim-lsp
+
+cabbr:add { from = "f", to = "LspFormat" }
+cabbr:add { from = "wf", to = "LspWriteWithFormat" }
+
 -- tree-sitter 関連
 cabbr:add { from = "it", to = "InspectTree" }
 

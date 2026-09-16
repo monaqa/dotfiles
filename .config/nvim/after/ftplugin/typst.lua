@@ -210,6 +210,11 @@ autocmd_vimrc("BufWritePost") {
     pattern = "*.typ",
     callback = function()
         local modeline = get_modeline()
+
+        if vim.fs.root(0, "typst.toml") and modeline.auto ~= true then
+            return
+        end
+
         if modeline.auto == false then
             return
         end
