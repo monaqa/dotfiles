@@ -1,12 +1,6 @@
 ;; extends
 
-(item
-  (shorthand) @shorthand
-  (text) @comment
-
-  (#eq? @shorthand "~")
-  )
-
+; #strike[...] cmd
 (call
   item: (ident) @fname
   (content (text) @text.strike)
@@ -14,18 +8,27 @@
   (#eq? @fname "strike")
   )
 
-(item
-  (code (ident) @done)
-  (#eq? @done "DONE")
- ) @comment.documentation
-
-(item
-  (code (ident) @todo @keyword) @text.strong
-  (#eq? @todo "TODO")
- )
+(text) @spell
 
 (term
   term: (text) @text.strong
  )
 
-(text) @spell
+; cheq 形式の TODO `- [ ]`
+(
+  (item
+    . (text) @bra @text.strong @keyword
+    . (text) @cket @text.strong @keyword
+    (#eq? @bra "[")
+    (#eq? @cket "]")
+    ) @todo
+
+  (#match? @todo "^-[ ][ ]*[[] []]")
+ )
+
+; cheq 形式の DONE `- [x]`
+(
+  (item) @comment.documentation @todo
+
+  (#match? @todo "^-[ ][ ]*[[]x[]]")
+ )

@@ -23,7 +23,7 @@ opt.concealcursor = "nc"
 opt.spell = true
 
 opt.comments = {
-    "b:- #TODO",
+    "b:- [ ]",
     "b:-",
     "b:+",
     "b:1.",
@@ -33,7 +33,7 @@ mapset.n("zM") { "zMzr", desc = [[foldlevel を 0 ではなく 1 にする]] }
 mapset.n("<Space>z") { "zMzrzv", desc = [[foldlevel を 0 ではなく 1 にしたバージョン]] }
 mapset.ia("]") {
     expr = true,
-    [[(getline('.') =~# '\s*- ]') ? '#TODO' : ']']],
+    [[(getline('.') =~# '\s*- ]') ? '[ ]' : ']']],
 }
 
 ---@class modeline

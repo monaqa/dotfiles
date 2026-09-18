@@ -713,7 +713,10 @@ plugins:push {
                             s = vim.re.gsub(s, [["<http" {[^>]*} ">"]], "http%1")
                             return s
                         end,
-                        { vim.fn.expand("~/.config/nvim/resource/filter-embed.lua") }
+                        {
+                            vim.fn.expand("~/.config/nvim/resource/filter-embed.lua"),
+                            vim.fn.expand("~/.config/nvim/resource/tight-lists.lua"),
+                        }
                     ),
                     labels = { "typst-pandoc" },
                 },

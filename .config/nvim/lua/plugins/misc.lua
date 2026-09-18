@@ -136,44 +136,44 @@ plugins:push {
     end,
 }
 
-plugins:push {
-    "https://github.com/willothy/flatten.nvim",
-    config = function()
-        local flatten = require("flatten")
-        flatten.setup({
-            hooks = {
-                should_block = flatten.hooks.should_block,
-                should_nest = flatten.hooks.should_nest,
-                pre_open = flatten.hooks.pre_open,
-                post_open = function(_)
-                    vim.opt_local.bufhidden = "unload"
-                end,
-                block_end = flatten.hooks.block_end,
-                no_files = flatten.hooks.no_files,
-                guest_data = flatten.hooks.guest_data,
-                pipe_path = flatten.hooks.pipe_path,
-            },
-            block_for = {
-                gitcommit = true,
-                gitrebase = true,
-                nu = true,
-            },
-            disable_cmd_passthrough = false,
-            nest_if_no_args = false,
-            nest_if_cmds = false,
-            window = {
-                open = "split",
-                diff = "tab_vsplit",
-                focus = "first",
-            },
-            integrations = {
-                kitty = false,
-                wezterm = false,
-            },
-        })
-    end
-
-}
+-- plugins:push {
+--     "https://github.com/willothy/flatten.nvim",
+--     config = function()
+--         local flatten = require("flatten")
+--         flatten.setup({
+--             hooks = {
+--                 should_block = flatten.hooks.should_block,
+--                 should_nest = flatten.hooks.should_nest,
+--                 pre_open = flatten.hooks.pre_open,
+--                 post_open = function(_)
+--                     vim.opt_local.bufhidden = "unload"
+--                 end,
+--                 block_end = flatten.hooks.block_end,
+--                 no_files = flatten.hooks.no_files,
+--                 guest_data = flatten.hooks.guest_data,
+--                 pipe_path = flatten.hooks.pipe_path,
+--             },
+--             block_for = {
+--                 gitcommit = true,
+--                 gitrebase = true,
+--                 nu = true,
+--             },
+--             disable_cmd_passthrough = false,
+--             nest_if_no_args = false,
+--             nest_if_cmds = false,
+--             window = {
+--                 open = "split",
+--                 diff = "tab_vsplit",
+--                 focus = "first",
+--             },
+--             integrations = {
+--                 kitty = false,
+--                 wezterm = false,
+--             },
+--         })
+--     end
+--
+-- }
 
 -- plugins:push {
 --     "https://github.com/notomo/waitevent.nvim",
