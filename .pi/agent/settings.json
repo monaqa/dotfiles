@@ -1,0 +1,16 @@
+{
+  "lastChangelogVersion": "1.0.3",
+  "deviceId": "669fe785-d12c-439d-b9b6-0ad2735cc4bd",
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-6.1-sol",
+  "defaultTools": [
+    "read",
+    "grep",
+    "find",
+    "ls",
+    "edit",
+    "write"
+  ],
+  "defaultProjectTrust": "ask",
+  "tuiMode": "regular"
+}
