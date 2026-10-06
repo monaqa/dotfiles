@@ -311,11 +311,6 @@ local function apply_typstyle()
 end
 
 mapset.n("g=") {
-    desc = [[]],
-    function() end,
-}
-
-mapset.n("g=") {
     desc = [[選択範囲に typstfmt を適用する]],
     expr = true,
     function()

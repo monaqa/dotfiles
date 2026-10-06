@@ -290,20 +290,35 @@ plugins:push {
             },
         }
 
+        local constant_todo = augend.user.new {
+            find = function(line, cursor)
+                local prefix = line:match("^%s*%- %[()[ x]%]")
+                vim.print { prefix = { prefix } }
+                if prefix == nil or cursor > prefix + 1 then
+                    return
+                end
+                return { from = prefix, to = prefix }
+            end,
+            add = function(text, addend, _cursor)
+                if addend > 0 then
+                    return { text = "x", cursor = 1 }
+                else
+                    return { text = " ", cursor = 1 }
+                end
+            end
+        }
+
         require("dial.config").augends:on_filetype {
             markdown = concat {
                 basic,
-                { augend.misc.alias.markdown_header },
+                {
+                    augend.misc.alias.markdown_header,
+                    constant_todo,
+                },
             },
             typst = concat {
                 basic,
-                {
-                    augend.constant.new {
-                        elements = { "#TODO", "#DONE" },
-                        word = false,
-                        cyclic = false,
-                    },
-                },
+                { constant_todo },
             },
             -- lilypond = concat {
             --     basic,

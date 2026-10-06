@@ -139,6 +139,25 @@ vim.keymap.set(
     { expr = true, buffer = true, desc = "リズム生成用" }
 )
 
+mapset.i("x") {
+    expr = true,
+    replace_keycodes = true,
+    function()
+        local line = vim.api.nvim_get_current_line()
+        local col = vim.fn.col(".")
+        local before_cursor = line:sub(1, col - 1)
+
+        if before_cursor:sub(-3) == "\\gb" then
+            return [[<BS><BS>glissando \bendDown \xNote]]
+        elseif before_cursor:sub(-2) == [[\b]] then
+            return [[endDown \xNote]]
+        elseif before_cursor:sub(-1) == [[\]] then
+            return "xNote"
+        end
+
+        return "x"
+    end }
+
 vim.keymap.set(
     { "n", "x" },
     "@c",
@@ -274,13 +293,13 @@ function key_regions()
         local start_pos = match.note.region.e[1]
         if prev_key ~= nil then
             regions[#regions + 1] =
-                { key = { prev_key.note_name, prev_key.major_minor }, line = { prev_key.start_pos + 1, start_pos } }
+            { key = { prev_key.note_name, prev_key.major_minor }, line = { prev_key.start_pos + 1, start_pos } }
         end
         prev_key = { note_name = note_name, major_minor = major_minor, start_pos = start_pos }
     end
     if prev_key ~= nil then
         regions[#regions + 1] =
-            { key = { prev_key.note_name, prev_key.major_minor }, line = { prev_key.start_pos + 1, -1 } }
+        { key = { prev_key.note_name, prev_key.major_minor }, line = { prev_key.start_pos + 1, -1 } }
     end
     return regions
 end

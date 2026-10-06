@@ -241,17 +241,6 @@ plugins:push {
                 end,
             }
         end
-
-        insx.add(
-            [[\x]],
-            {
-                enabled = function(ctx)
-                    return vim.tbl_contains({ "lilypond" }, ctx.filetype)
-                end,
-                action = function(ctx)
-                    ctx.send([[\xNote]])
-                end,
-            })
     end,
 }
 
