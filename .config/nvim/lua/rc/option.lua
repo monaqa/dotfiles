@@ -1,4 +1,5 @@
 -- vim:fdm=marker:fmr=§§,■■
+local to_bool = require("monaqa.logic").to_bool
 
 -- §§1 表示設定
 vim.cmd([[
@@ -148,3 +149,10 @@ end
 
 -- 正確にはオプションではないがまあオプションっぽく扱おうということで
 vim.g.python3_host_prog = (vim.fn.getenv("HOME")) .. "/.local/share/nvim/venv/neovim/bin/python"
+
+if to_bool(vim.fn.executable("nvr")) then
+    local editor = "uv run --script " .. vim.fn.stdpath("config") .. "/remote_editor.py"
+    vim.env.EDITOR = editor
+    vim.env.VISUAL = editor
+    vim.env.GIT_EDITOR = editor
+end

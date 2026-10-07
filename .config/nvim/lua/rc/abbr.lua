@@ -98,4 +98,14 @@ cabbr:add {
     end,
 }
 
+--- remote editor
+local function remote_editor_command(command)
+    return function(text)
+        return text == ":" .. command and vim.b.remote_editor ~= nil
+    end
+end
+
+cabbr:add { from = "wq", to = "RemoteEditorFinish", condition = remote_editor_command("wq") }
+cabbr:add { from = "q", to = "RemoteEditorAbort", condition = remote_editor_command("q") }
+
 cabbr:register_all()

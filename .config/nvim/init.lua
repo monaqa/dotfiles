@@ -21,6 +21,7 @@ vim.api.nvim_create_augroup("vimrc", { clear = true })
 require("rc.lazy")
 
 require("rc.autocmd")
+require("rc.remote_editor")
 require("rc.option")
 require("rc.abbr")
 require("rc.keymap")
