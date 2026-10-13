@@ -153,10 +153,35 @@ local function remove_common_indent(s)
     return table.concat(new_lines, "\n")
 end
 
+local function trim_terminal_yank(reg)
+    local info = vim.fn.getreginfo(reg)
+    local lines = info.regcontents
+    if not lines then
+        return
+    end
+    local changed = false
+    for i, line in ipairs(lines) do
+        local trimmed = line:gsub("[ \t]+$", "")
+        if trimmed ~= line then
+            line[i] = trimmed
+            changed = true
+        end
+    end
+
+    if changed then
+        vim.fn.setreg(reg, lines, info.regtype)
+    end
+end
+
 autocmd_vimrc("TextYankPost") {
-    desc = "無名レジスタへの yank 操作のときのみ， + レジスタに内容を移す（delete のときはしない）",
-    callback = function()
+    desc = "Pi の yank の行末空白を除去する。また無名レジスタへの yank 操作のときのみ + レジスタに内容を移す（delete のときはしない）",
+    callback = function(args)
         local event = vim.v.event
+
+        if event.operator == "y" and vim.b[args.buf].pi_terminal and event.regname ~= "_" then
+            local reg = event.regname == "" and '"' or event.regname:lower()
+            trim_terminal_yank(reg)
+        end
 
         if event.regname ~= "" then
             return

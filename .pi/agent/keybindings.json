@@ -1,4 +1,16 @@
 {
+  "app.interrupt": [
+    "escape",
+    "ctrl+c"
+  ],
+  "app.clear": [],
+  "app.model.cycleForward": [],
+  "tui.select": [
+    "down",
+    "tab"
+  ],
+  "tui.editor.historyNext": "ctrl+n",
+  "tui.editor.historyPrevious": "ctrl+p",
   "tui.input.submit": [
     "ctrl+enter",
     "ctrl+j"

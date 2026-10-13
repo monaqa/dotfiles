@@ -190,6 +190,77 @@ create_cmd("Vocabrary") {
     end
 }
 
+-- §§1 Pi
+local pi_terminal_bufid = nil
+
+local function pi_terminal_alive(buf)
+    return buf and vim.api.nvim_buf_is_valid(buf)
+        and vim.bo[buf].buftype == "terminal"
+        and vim.fn.jobwait({ vim.b[buf].terminal_job_id }, 0)[1] == -1
+end
+
+function _G.vimrc.fn.has_pi_terminal()
+    return not not pi_terminal_alive(pi_terminal_bufid)
+end
+
+local function map_pi_keys(buf)
+    local mapset = monaqa.shorthand.mapset_local
+
+    local function send(key)
+        return function()
+            vim.api.nvim_chan_send(vim.b[buf].terminal_job_id, vim.keycode(key))
+        end
+    end
+
+    mapset.n("<CR>") {
+        desc = [[Pi: submit (Ctrl + Enter)]],
+        function()
+            vim.api.nvim_chan_send(vim.b[buf].terminal_job_id, "\27[13;5u")
+        end,
+    }
+
+    mapset.n("<C-t>") { send("<C-t>"), desc = [[Pi: thinking blocks]] }
+
+    mapset.n("o") { [[i<C-g>]], desc = [[Pi: open prompt buffer in neovim]] }
+    mapset.n("<Esc>") { send([[<C-\><C-n>]]), desc = [[Pi: back to NORMAL mode]] }
+end
+
+create_cmd("Pi") {
+    desc = [[Pi 専用の terminal window を開く]],
+    nargs = "*",
+    function(meta)
+        -- 引数があるときは指定した引数で新しく起動
+        local reuse = meta.args == "" and pi_terminal_alive(pi_terminal_bufid)
+        if not reuse and not logic.to_bool(vim.fn.executable("fish")) then
+            vim.notify("fish が見つかりません", vim.log.levels.ERROR)
+            return
+        end
+
+        if reuse then
+            local win = vim.fn.bufwinid(pi_terminal_bufid)
+            if win ~= -1 then
+                vim.api.nvim_set_current_win(win)
+                return
+            end
+        end
+
+        monaqa.window.wise_split()
+        if reuse then
+            vim.cmd.buffer { pi_terminal_bufid }
+        else
+            vim.cmd.enew()
+            vim.fn.jobstart(
+                { "fish", "-c", "exec pi" .. (meta.args == "" and "" or " " .. meta.args) },
+                { term = true }
+            )
+            pi_terminal_bufid = vim.api.nvim_get_current_buf()
+            vim.b[pi_terminal_bufid].pi_terminal = true
+            map_pi_keys(pi_terminal_bufid)
+        end
+    end
+
+}
+
 -- §§1 misc
 create_cmd("CocEditSnippet") {
     function()

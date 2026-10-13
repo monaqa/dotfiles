@@ -24,22 +24,10 @@ cabbr:add { prepose = "'<,'>", require_space = false, from = "s", to = "s///g<Le
 cabbr:add { prepose = "'<,'>", require_space = false, from = "gd", to = "g//d" }
 cabbr:add { prepose = "'<,'>", require_space = false, from = "vd", to = "v//d" }
 cabbr:add { from = "nw", to = "noautocmd w" }
-cabbr:add { from = "p", to = "put +" }
-
--- coc.nvim 周りはもう消そう
--- cabbr:add { from = "c", to = "CocCommand" }
--- cabbr:add { prepose = "CocCommand", from = "s", to = "snippets.editSnippets" }
--- cabbr:add { from = "cc", to = "e ~/.config/nvim/coc-settings.json" }
--- cabbr:add { from = "cl", to = "CocList" }
--- cabbr:add { prepose = "CocList", from = "e", to = "extensions" }
--- cabbr:add { from = "clc", to = "CocLocalConfig" }
--- cabbr:add { from = "cr", to = "CocRestart" }
--- cabbr:add { from = "fmt", to = [[call CocActionAsync("format")]] }
--- cabbr:add { from = "wd", to = "Telescope coc workspace_diagnostics" }
 
 -- codecompanion.nvim
-cabbr:add { from = "ca", to = "CodeCompanionActions" }
-cabbr:add { from = "cc", to = "CodeCompanionChat Toggle" }
+-- cabbr:add { from = "ca", to = "CodeCompanionActions" }
+-- cabbr:add { from = "cc", to = "CodeCompanionChat Toggle" }
 
 -- git 操作
 cabbr:add { from = "gby", to = "GinaBrowseYank" }
@@ -80,22 +68,17 @@ cabbr:add { prepose = "'<,'>", require_space = false, from = "pc", to = "Partedi
 cabbr:add { from = "ef", to = "EditFtplugin" }
 cabbr:add { from = "es", to = "EditSnippet" }
 cabbr:add { from = "ty", to = "Typscrap" }
+
 cabbr:add {
-    from = "dia",
+    from = "p",
     to = function()
-        local date_hyphen = vim.fn.strftime("%Y-%m-%d")
-        local date_slash = vim.fn.strftime("%Y/%m/%d")
-        local date_ja = ({
-            ["1"] = "月",
-            ["2"] = "火",
-            ["3"] = "水",
-            ["4"] = "木",
-            ["5"] = "金",
-            ["6"] = "土",
-            ["7"] = "日",
-        })[vim.fn.strftime("%u")]
-        return ("Typscrap _diary/%s 日記 - %s (%s)"):format(date_hyphen, date_slash, date_ja)
-    end,
+        local has_pi = _G.vimrc.fn.has_pi_terminal
+        if has_pi and has_pi() then
+            return "Pi"
+        else
+            return "Pi -c"
+        end
+    end
 }
 
 --- remote editor
