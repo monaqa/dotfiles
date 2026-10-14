@@ -66,9 +66,10 @@ autocmd_vimrc("FileType") {
         "typescriptreact",
         "typescript.tsx",
     },
-    callback = function()
+    callback = function(args)
         local server_name
-        if vim.fn.findfile("package.json", ".;") == "" then
+        -- Resolve from the buffer, not cwd (e.g. nested .pi/package.json).
+        if vim.fs.root(args.buf, "package.json") == nil then
             server_name = "deno"
         else
             server_name = "ts_ls"

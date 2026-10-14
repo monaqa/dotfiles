@@ -192,6 +192,7 @@ create_cmd("Vocabrary") {
 
 -- §§1 Pi
 local pi_terminal_bufid = nil
+local pi_session_buffers = {}
 
 local function pi_terminal_alive(buf)
     return buf and vim.api.nvim_buf_is_valid(buf)
@@ -222,7 +223,7 @@ local function map_pi_keys(buf)
     mapset.n("<C-t>") { send("<C-t>"), desc = [[Pi: thinking blocks]] }
 
     mapset.n("o") { [[i<C-g>]], desc = [[Pi: open prompt buffer in neovim]] }
-    mapset.n("<Esc>") { send([[<C-\><C-n>]]), desc = [[Pi: back to NORMAL mode]] }
+    mapset.t("<Esc>") { [[<C-\><C-n>]], desc = [[Pi: back to NORMAL mode]] }
 end
 
 create_cmd("Pi") {
@@ -258,7 +259,57 @@ create_cmd("Pi") {
             map_pi_keys(pi_terminal_bufid)
         end
     end
+}
 
+create_cmd("PiSessionOpen") {
+    desc = [[カーソル下の #session("...") を Pi で開く]],
+    function()
+        local path = require("rc.pi_session").path_at_cursor()
+        if not path then
+            vim.notify("カーソル下に有効なセッションが存在しません", vim.log.levels.ERROR)
+            return
+        end
+        local buf = pi_session_buffers[path]
+        if pi_terminal_alive(buf) then
+            local win = vim.fn.bufwinid(buf)
+            if win ~= -1 then
+                vim.api.nvim_set_current_win(win)
+                return
+            end
+        else
+            buf = nil
+            pi_session_buffers[path] = nil
+        end
+
+        if not buf and not vim.uv.fs_stat(path) then
+            vim.fn.mkdir(vim.fs.dirname(path), "p")
+            local file, err = io.open(path, "w")
+            if file then
+                file:close()
+            elseif not vim.uv.fs_stat(path) then
+                vim.notify("セッションファイルを作成できません", vim.log.levels.ERROR)
+                return
+            end
+        end
+
+        monaqa.window.wise_split()
+        if buf then
+            vim.cmd.buffer { buf }
+            return
+        end
+
+        vim.cmd.enew()
+        local job = vim.fn.jobstart({ "pi", "--session", path }, { term = true })
+        if job <= 0 then
+            vim.notify("Pi の起動に失敗しました", vim.log.levels.ERROR)
+            return
+        end
+
+        buf = vim.api.nvim_get_current_buf()
+        pi_session_buffers[path] = buf
+        vim.b[buf].pi_terminal = true
+        map_pi_keys(buf)
+    end
 }
 
 -- §§1 misc

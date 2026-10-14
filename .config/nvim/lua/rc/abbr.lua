@@ -72,6 +72,9 @@ cabbr:add { from = "ty", to = "Typscrap" }
 cabbr:add {
     from = "p",
     to = function()
+        if require("rc.pi_session").path_at_cursor() then
+            return "PiSessionOpen"
+        end
         local has_pi = _G.vimrc.fn.has_pi_terminal
         if has_pi and has_pi() then
             return "Pi"

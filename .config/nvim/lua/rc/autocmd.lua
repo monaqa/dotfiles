@@ -161,9 +161,9 @@ local function trim_terminal_yank(reg)
     end
     local changed = false
     for i, line in ipairs(lines) do
-        local trimmed = line:gsub("[ \t]+$", "")
+        local trimmed = line:gsub("[ \t]+$", ""):gsub("^ ", "")
         if trimmed ~= line then
-            line[i] = trimmed
+            lines[i] = trimmed
             changed = true
         end
     end

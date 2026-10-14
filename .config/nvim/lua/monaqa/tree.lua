@@ -17,13 +17,13 @@ local M = {}
 function M.find_matches(query, root, start, stop, source)
     return vim.iter(query:iter_matches(root, 0, start, stop))
         :map(
-            ---@param match table<integer, TSNode[]>
-            ---@param metadata vim.treesitter.query.TSMetadata
+        ---@param match table<integer, TSNode[]>
+        ---@param metadata vim.treesitter.query.TSMetadata
             function(_, match, metadata)
                 local m = vim.iter(pairs(match))
                     :map(
-                        ---@param id integer
-                        ---@param nodes TSNode[]
+                    ---@param id integer
+                    ---@param nodes TSNode[]
                         function(id, nodes)
                             local capture_name = query.captures[id]
                             if vim.startswith(capture_name, "_") then
@@ -73,6 +73,30 @@ function M.find_buf_matches(query_str, opts)
     return M.find_matches(query, root, start, stop)
 end
 
+--- カーソルを含む named capture nodeを返す。
+function M.match_at_cursor(lang, query_str, cursor_capture)
+    local ok, parser = pcall(vim.treesitter.get_parser, 0)
+    if not ok or not parser or parser:lang() ~= lang then
+        return nil
+    end
+
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local query = vim.treesitter.query.parse(lang, query_str)
+    for _, match in query:iter_matches(parser:parse()[1]:root(), 0, row - 1, row) do
+        local captures = {}
+        for id, nodes in pairs(match) do
+            captures[query.captures[id]] = nodes[1]
+        end
+        local node = captures[cursor_capture]
+        if node then
+            local sr, sc, er, ec = node:range()
+            if (row - 1 > sr or row - 1 == sr and col >= sc) and (row - 1 < er or row - 1 == er and col < ec) then
+                return captures
+            end
+        end
+    end
+end
+
 --- query string にマッチする node を replacef の評価結果で置き換える。
 ---@param query_str string
 ---@param replacef fun(s: string, n: TSNode): string
@@ -86,7 +110,7 @@ function M.replace_buf(query_str, replacef, opts)
     local capture_name = opts.capture_name or "-"
 
     vim.iter(matches):rev():each(
-        ---@param match table<string, MatchNode>
+    ---@param match table<string, MatchNode>
         function(match)
             if match[capture_name] == nil then
                 return
@@ -121,7 +145,7 @@ function M.move(query_str, opts)
     ---@type MatchNode[]
     local captures = vim.iter(matches)
         :filter(
-            ---@param match table<string, MatchNode>
+        ---@param match table<string, MatchNode>
             function(match)
                 return match[capture_name] ~= nil
             end
@@ -138,7 +162,7 @@ function M.move(query_str, opts)
     local next_node
     if not opts.backward then
         next_node = vim.iter(captures):find(
-            ---@param capture MatchNode
+        ---@param capture MatchNode
             function(capture)
                 local s_row, s_col = unpack(capture.region.s)
                 return s_row > cur_row or (s_row == cur_row and s_col > cur_col)
@@ -149,7 +173,7 @@ function M.move(query_str, opts)
         end
     else
         next_node = vim.iter(captures):rev():find(
-            ---@param capture MatchNode
+        ---@param capture MatchNode
             function(capture)
                 local s_row, s_col = unpack(capture.region.s)
                 return s_row < cur_row or (s_row == cur_row and s_col < cur_col)

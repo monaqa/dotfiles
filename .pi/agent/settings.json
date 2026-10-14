@@ -9,8 +9,13 @@
     "find",
     "ls",
     "edit",
-    "write"
+    "write",
+    "bash"
   ],
   "defaultProjectTrust": "ask",
-  "tuiMode": "regular"
+  "extensions": [
+    "~/ghq/github.com/monaqa/dotfiles/.pi/agent/extensions"
+  ],
+  "tuiMode": "regular",
+  "hideThinkingBlock": true
 }

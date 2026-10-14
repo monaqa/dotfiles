@@ -8,6 +8,11 @@ register("et") { [=[
 )
 ]=] }
 
+register("session") { [=[
+#session(path("sessions/$0.jsonl"))
+]=] }
+
+
 register("showybox") {
     [=[
 #showybox(
