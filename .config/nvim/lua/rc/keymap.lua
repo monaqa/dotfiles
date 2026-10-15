@@ -113,6 +113,9 @@ mapset.n("q") {
 }
 
 -- Section1 terminal
+local terminal_links = require("rc.terminal_links")
+terminal_links.setup()
+
 mapset.t("<C-]>") { [[<C-\><C-n>]], desc = [[<C-]> で terminal mode を抜けられるように]] }
 mapset.t([[<C-\><C-n>]]) { "<C-]>", desc = [[もしターミナル内で <C-]> を打ちたくなったら ]] }
 
@@ -127,6 +130,20 @@ autocmd_vimrc("TermOpen") {
         mapset.n("A") { [[i<C-e>]] }
         mapset.n("p") { [[pi]] }
         mapset.n("<C-]>") { [[<Nop>]] }
+
+        mapset.n("gx") { terminal_links.open, desc = [[カーソル下の OSC 8 リンクを開く]] }
+        mapset.n("]u") {
+            function()
+                terminal_links.jump(1)
+            end,
+            desc = [[次の OSC 8 リンクへ移動]],
+        }
+        mapset.n("[u") {
+            function()
+                terminal_links.jump(-1)
+            end,
+            desc = [[前の OSC 8 リンクへ移動]],
+        }
 
         mapset.x("gx") {
             desc = [[選択範囲の改行を取っ払って URL として開く]],
