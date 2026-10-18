@@ -299,7 +299,7 @@ create_cmd("PiSessionOpen") {
         end
 
         vim.cmd.enew()
-        local job = vim.fn.jobstart({ "pi", "--session", path }, { term = true })
+        local job = vim.fn.jobstart({ "srt", "pi", "--session", path }, { term = true })
         if job <= 0 then
             vim.notify("Pi の起動に失敗しました", vim.log.levels.ERROR)
             return

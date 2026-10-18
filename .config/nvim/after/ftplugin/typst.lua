@@ -153,6 +153,7 @@ local function pandoc_compile_cmdargs(modeline, compiler)
         "-t",
         compiler.format,
         "--lua-filter=" .. vim.fn.expand("~/.config/nvim/resource/filter-embed.lua"),
+        "--lua-filter=" .. vim.fn.expand("~/.config/nvim/resource/tight-lists.lua"),
         objective,
         "-o",
         output,

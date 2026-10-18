@@ -1,0 +1,59 @@
+{
+  "network": {
+    "allowedDomains": [
+      "github.com",
+      "*.github.com",
+      "githubusercontent.com",
+      "*.githubusercontent.com",
+      "npmjs.com",
+      "*.npmjs.com",
+      "openai.com",
+      "*.openai.com",
+      "anthropic.com",
+      "*.anthropic.com",
+      "opencode.ai",
+      "*.opencode.ai",
+      "*.jina.ai"
+    ],
+    "deniedDomains": [],
+    "allowUnixSockets": [
+      "/var/run/docker.sock"
+    ],
+    "allowAllUnixSockets": true,
+    "allowLocalBinding": false
+  },
+  "filesystem": {
+    "denyRead": [
+      "~/.ssh",
+      ".env",
+      "~/.aws"
+    ],
+    "allowRead": [],
+    "allowWrite": [
+      ".",
+      "/tmp",
+      "~/Documents/typscrap-contents/content/",
+      "~/.pi/agent/",
+      "~/Library/Caches/uv"
+    ],
+    "denyWrite": [
+      "~/.srt-settings.json",
+      "~/.local/state/srt-control"
+    ]
+  },
+  "ignoreViolations": {
+    "*": [
+      "/usr/bin",
+      "/System"
+    ],
+    "git push": [
+      "/usr/bin/nc"
+    ],
+    "npm": [
+      "/private/tmp"
+    ]
+  },
+  "enableWeakerNestedSandbox": false,
+  "enableWeakerNetworkIsolation": false,
+  "allowPty": true
+}
