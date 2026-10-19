@@ -131,7 +131,28 @@ autocmd_vimrc("TermOpen") {
         mapset.n("p") { [[pi]] }
         mapset.n("<C-]>") { [[<Nop>]] }
 
-        mapset.n("gx") { terminal_links.open, desc = [[カーソル下の OSC 8 リンクを開く]] }
+        local default_gx = vim.fn.maparg("gx", "n", false, true).callback
+
+        mapset.n("gx") {
+            desc = [[カーソル下の OSC 8 リンクを開く]],
+            function()
+                if terminal_links.get_link_under_cursor() and terminal_links.open { external = true } then
+                    return
+                end
+                default_gx()
+            end
+        }
+
+        mapset.n("gf") {
+            desc = [[カーソル下の OSC 8 リンクを Neovim 上で開く]],
+            function()
+                if terminal_links.get_link_under_cursor() ~= nil then
+                    terminal_links.open { external = false }
+                end
+                vim.cmd.normal { "gF", bang = true }
+            end
+        }
+
         mapset.n("]u") {
             function()
                 terminal_links.jump(1)
@@ -336,9 +357,18 @@ mapset.n("s/") { "q/G" }
 -- buffer 切り替え
 mapset.n("-") { "<C-^>" }
 
-local mode_bufmove = submode.create_mode("bufmove", "s")
-mode_bufmove.register_mapping("n", "<Cmd>bn<CR>")
-mode_bufmove.register_mapping("p", "<Cmd>bp<CR>")
+-- local mode_bufmove = submode.create_mode("bufmove", "s")
+-- mode_bufmove.register_mapping("n", "<Cmd>bn<CR>")
+-- mode_bufmove.register_mapping("p", "<Cmd>bp<CR>")
+
+mapset.n("sp") {
+    expr = true,
+    desc = [[Open Pi window]],
+    function()
+        local cmd = require("rc.pi_session").get_command()
+        return "<Cmd>" .. cmd .. "<CR>"
+    end,
+}
 
 local mode_winresize = submode.create_mode("winresize", "s")
 mode_winresize.register_mapping("+", "<C-w>+")

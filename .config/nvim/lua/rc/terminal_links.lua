@@ -12,19 +12,36 @@ local function position()
     return { vim.fn.line("."), vim.fn.virtcol(".", true)[1] - 1 }
 end
 
-function M.open()
+function M.get_link_under_cursor()
     local state = buffers[vim.api.nvim_get_current_buf()]
     local pos = position()
     for _, link in ipairs(state and state.links or {}) do
         if not before(pos, link.start) and before(pos, link.finish) then
-            local _, err = vim.ui.open(link.url)
-            if err then
-                vim.notify(err, vim.log.levels.ERROR)
-            end
-            return
+            return link
         end
     end
-    vim.notify("カーソル下に記録済みの OSC 8 リンクはありません")
+end
+
+function M.open(t)
+    t = t or {}
+
+    local line = M.get_link_under_cursor()
+    if link == nil then
+        vim.notify("カーソル下に記録済みの OSC 8 リンクはありません")
+        return false
+    end
+
+    if t.external == true then
+        local _, err = vim.ui.open(link.url)
+        if err then
+            vim.notify(err, vim.log.levels.ERROR)
+            return false
+        end
+        return true
+    else
+        vim.cmd.edit(link.url)
+        return true
+    end
 end
 
 function M.jump(direction)

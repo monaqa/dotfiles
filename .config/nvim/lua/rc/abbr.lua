@@ -69,20 +69,7 @@ cabbr:add { from = "ef", to = "EditFtplugin" }
 cabbr:add { from = "es", to = "EditSnippet" }
 cabbr:add { from = "ty", to = "Typscrap" }
 
-cabbr:add {
-    from = "p",
-    to = function()
-        if require("rc.pi_session").path_at_cursor() then
-            return "PiSessionOpen"
-        end
-        local has_pi = _G.vimrc.fn.has_pi_terminal
-        if has_pi and has_pi() then
-            return "Pi"
-        else
-            return "Pi -c"
-        end
-    end
-}
+cabbr:add { from = "p", to = require("rc.pi_session").get_command }
 
 --- remote editor
 local function remote_editor_command(command)
