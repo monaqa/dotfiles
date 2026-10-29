@@ -5,7 +5,12 @@
   ],
   "app.clear": [],
   "app.model.cycleForward": [],
-  "tui.select": [
+  "app.thinking.cycle": "alt+t",
+  "tui.select.up": [
+    "up",
+    "shift+tab"
+  ],
+  "tui.select.down": [
     "down",
     "tab"
   ],

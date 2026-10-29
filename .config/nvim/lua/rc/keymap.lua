@@ -148,6 +148,7 @@ autocmd_vimrc("TermOpen") {
             function()
                 if terminal_links.get_link_under_cursor() ~= nil then
                     terminal_links.open { external = false }
+                    return
                 end
                 vim.cmd.normal { "gF", bang = true }
             end

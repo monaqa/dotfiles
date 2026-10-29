@@ -25,7 +25,7 @@ end
 function M.open(t)
     t = t or {}
 
-    local line = M.get_link_under_cursor()
+    local link = M.get_link_under_cursor()
     if link == nil then
         vim.notify("カーソル下に記録済みの OSC 8 リンクはありません")
         return false

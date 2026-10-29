@@ -129,6 +129,7 @@ plugins:push {
             end,
             action = function(ctx)
                 if ctx.match([[```\%#```]]) then
+                    ctx.send("``<Left>")
                     return
                 end
                 ctx.send("``<Left>")

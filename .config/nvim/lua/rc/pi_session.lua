@@ -19,6 +19,10 @@ function M.get_command()
     if M.path_at_cursor() then
         return "PiSessionOpen"
     end
+    local session_id = M.session_id_at_cursor()
+    if session_id then
+        return "Pi --session " .. session_id
+    end
     return M.has_pi_terminal() and "Pi" or "Pi -c"
 end
 
@@ -31,6 +35,51 @@ local function map_pi_keys(buf)
         end
     end
 
+    local function paragraph(step)
+        local line = vim.fn.line(".")
+        local last = vim.api.nvim_buf_line_count(buf)
+        local remaining = vim.v.count1
+        local chunk, first, final = {}, 0, -1
+        local function is_blank(lnum)
+            if lnum < first or lnum > final then
+                first = math.max(1, lnum - (step < 0 and 127 or 0))
+                final = math.min(last, first + 127)
+                chunk = vim.api.nvim_buf_get_lines(buf, first - 1, final, false)
+            end
+            return chunk[lnum - first + 1]:match("^%s*$") ~= nil
+        end
+
+        local in_blank = is_blank(line)
+        local target = step > 0 and last or 1
+        for lnum = line + step, target, step do
+            if is_blank(lnum) then
+                if not in_blank then
+                    remaining = remaining - 1
+                    if remaining == 0 then
+                        target = lnum
+                        break
+                    end
+                    in_blank = true
+                end
+            else
+                in_blank = false
+            end
+        end
+        vim.cmd.normal {
+            args = { tostring(target) .. "G" },
+            bang = true,
+        }
+    end
+
+    mapset.nxo("<C-j>") {
+        desc = [[Pi: paragraph motion (down)]],
+        function() paragraph(1) end,
+    }
+    mapset.nxo("<C-k>") {
+        desc = [[Pi: paragraph motion (up)]],
+        function() paragraph(-1) end,
+    }
+
     mapset.n("<CR>") {
         desc = [[Pi: submit (Ctrl + Enter)]],
         function()
@@ -38,8 +87,7 @@ local function map_pi_keys(buf)
         end,
     }
 
-    mapset.n("<C-t>") { send("<C-t>"), desc = [[Pi: thinking blocks]] }
-
+    mapset.n("Z") { send("<C-o>"), desc = [[Pi: toggle collapsing]] }
     mapset.n("o") { [[i<C-g>]], desc = [[Pi: open prompt buffer in neovim]] }
     mapset.t("<Esc>") { [[<C-\><C-n>]], desc = [[Pi: back to NORMAL mode]] }
 end
@@ -102,6 +150,27 @@ function M.path_at_cursor()
     end
 end
 
+function M.session_id_at_cursor()
+    local captures = tree.match_at_cursor("typst", [[
+        (
+         (call item: (ident) @session_cmd
+          (group (string) @session_id)
+         ) @cursor
+         (#eq? @session_cmd "session")
+        )
+    ]], "cursor")
+
+    if not captures then
+        return
+    end
+
+    local ok, session_id = pcall(vim.json.decode, vim.treesitter.get_node_text(captures.session_id, 0))
+    if not ok or type(session_id) ~= "string" then
+        return
+    end
+    return session_id
+end
+
 function M.open_at_cursor()
     local path = require("rc.pi_session").path_at_cursor()
     if not path then
@@ -138,7 +207,7 @@ function M.open_at_cursor()
     end
 
     vim.cmd.enew()
-    local job = vim.fn.jobstart({ "srt", "pi", "--session", path }, { term = true })
+    local job = vim.fn.jobstart({ "pi", "--session", path }, { term = true })
     if job <= 0 then
         vim.notify("Pi の起動に失敗しました", vim.log.levels.ERROR)
         return
